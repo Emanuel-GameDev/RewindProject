@@ -4,17 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+[ RequireComponent(typeof(Character))]
+public class PlayerMovementInput : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] float jumpForce;
-
-    Rigidbody2D rBody;
-
-     float horizontalInput = 0;
-
     PlayerInputs inputs;
-
+    Character player;
 
     private void OnEnable()
     {
@@ -27,33 +21,27 @@ public class PlayerMovement : MonoBehaviour
         inputs.Player.Jump.performed += Jump;
     }
 
-
     private void Start()
     {
-        rBody = GetComponent<Rigidbody2D>();
-    }
-
-    private void Update()
-    {
-        rBody.velocity = new Vector2(horizontalInput * speed, rBody.velocity.y);
+        player = GetComponent<Character>();
     }
 
     private void OnDisable()
     {
-        inputs.Player.Disable();
+        player.horizontalMovement = 0;
 
         inputs.Player.Move.performed -= SetMove;
         inputs.Player.Move.canceled -= SetMove;
+        inputs.Player.Disable();
     }
 
     private void Jump(InputAction.CallbackContext obj)
     {
-        rBody.AddForce(Vector2.up * jumpForce * rBody.gravityScale);
+        player.Jump();
     }
 
     private void SetMove(InputAction.CallbackContext obj)
     {
-        horizontalInput = obj.ReadValue<float>();
+        player.horizontalMovement = obj.ReadValue<float>();
     }
-
 }
