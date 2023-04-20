@@ -5,27 +5,53 @@ using UnityEngine;
 public class ParallaxEffect : MonoBehaviour
 {
     private float length;
-    private float startPos;
+    private float startPosX;
+    private float startPosY;
 
     [SerializeField] GameObject cam;
-    [SerializeField] float parallaxEffect;
+    [SerializeField] float hParallaxRatio;
+    [SerializeField] float vParallaxRatio;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        startPos = transform.position.x;
+        startPosX = transform.position.x;
+        startPosY = transform.position.y;
+
         length = GetComponent<SpriteRenderer>().bounds.size.x;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float temp = (cam.transform.position.x * (1 - parallaxEffect));
-        float dist = (cam.transform.position.x * parallaxEffect);
+        // handle of the parallax in X axis
+        HorizontalParallaxEffect();
 
-        transform.position = new Vector3(startPos + dist, transform.position.y, transform.position.z);
+        // handle of the parallax in Y axis
+        VerticalParallaxEffect();
+    }
 
-        if (temp > startPos + length) startPos += length;
-        else if (temp < startPos - length) startPos -= length;
+    private void HorizontalParallaxEffect()
+    {
+        // Move background var based
+        float dist = (cam.transform.position.x * hParallaxRatio);
+
+        transform.position = new Vector3(startPosX + dist, transform.position.y, transform.position.z);
+
+        // Make background repeat itself
+        float temp = (cam.transform.position.x * (1 - hParallaxRatio));
+
+        if (temp > startPosX + length) startPosX += length;
+        else if (temp < startPosX - length) startPosX -= length;
+    }
+
+    private void VerticalParallaxEffect()
+    {
+        // Move background var based
+        float dist = (cam.transform.position.y * vParallaxRatio);
+
+        transform.position = new Vector3(transform.position.x, startPosY + dist, transform.position.z);
+
     }
 }
