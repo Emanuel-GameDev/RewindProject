@@ -4,14 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float speed;
     [SerializeField] float jumpForce;
 
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] Transform groundCheck;
+
+
     Rigidbody2D rBody;
 
-     float horizontalInput = 0;
+    float horizontalInput = 0;
+    bool grounded;
 
     PlayerInputs inputs;
 
@@ -36,6 +42,17 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         rBody.velocity = new Vector2(horizontalInput * speed, rBody.velocity.y);
+    }
+
+    private void FixedUpdate()
+    {
+        if (Physics2D.CircleCast(groundCheck.position, 0.1f, Vector2.down))
+        {
+            grounded = true;
+        }
+        else
+            grounded = false;
+
     }
 
     private void OnDisable()
