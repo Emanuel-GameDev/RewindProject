@@ -49,6 +49,7 @@ public class ZoneSetter : MonoBehaviour
         go.AddComponent<TimelineZoneChanger>();
         go.GetComponent<TimelineZoneChanger>().SetZone((eZone)(i));
         go.AddComponent<BoxCollider2D>();
+        go.GetComponent<BoxCollider2D>().isTrigger = true;
         go.transform.localScale = new Vector3(1, size, 1);
         go.transform.SetParent(t);
         return go;
