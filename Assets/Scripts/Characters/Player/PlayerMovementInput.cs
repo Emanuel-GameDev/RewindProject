@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 [ RequireComponent(typeof(Character))]
 public class PlayerMovementInput : MonoBehaviour
 {
-    PlayerInputs inputs;
+    public PlayerInputs inputs { get; private set; }
     Character player;
 
     private void OnEnable()
