@@ -6,5 +6,6 @@ using UnityEngine;
 public enum eMessageType
 {
     Message1,
-    Message2
+    Message2,
+    CheckpointVisited
 }
