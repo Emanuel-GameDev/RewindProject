@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -8,14 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class LevelDoor : MonoBehaviour
 {
-    public SceneAsset levelToLoad;
+    [SerializeField] SceneAsset levelToLoad;
     [SerializeField] GameObject levelSelectionMenu;
 
     List<LevelSelectionButton> buttons;
-    public List<LevelLight> lights;
+    List<LevelLight> lights;
     public List<bool> checkpointTaken;
 
-    public Checkpoint spawn;
 
 
     private void OnEnable()
@@ -23,26 +20,14 @@ public class LevelDoor : MonoBehaviour
         lights = new List<LevelLight>(GetComponentsInChildren<LevelLight>());
 
         if (!LevelMaster.instance.levels.ContainsKey(levelToLoad.name))
-        {
             return;
-        }
+
 
         if (LevelMaster.instance.levels[levelToLoad.name].Count > 0)
-        {
             checkpointTaken = LevelMaster.instance.levels[levelToLoad.name];
-        }
+
     }
 
-    private void KindleLights()
-    {
-        for (int i = 0; i < checkpointTaken.Count; i++)
-        {
-            if (checkpointTaken[i] == true)
-            {
-                lights[i].Light();
-            }
-        }
-    }
 
     private void Start()
     {
@@ -57,7 +42,7 @@ public class LevelDoor : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<PlayerMovementInput>())
-            collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed += Interact; 
+            collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed += Interact;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -71,6 +56,17 @@ public class LevelDoor : MonoBehaviour
         PlayerMovementInput.instance.inputs.Player.Interaction.performed -= Interact;
     }
 
+    private void KindleLights()
+    {
+        for (int i = 0; i < checkpointTaken.Count; i++)
+        {
+            if (checkpointTaken[i] == true)
+            {
+                lights[i].Light();
+            }
+        }
+    }
+
     private void Interact(InputAction.CallbackContext obj)
     {
         if (checkpointTaken.FindAll(taken => taken == true).Count < 1)
@@ -79,23 +75,29 @@ public class LevelDoor : MonoBehaviour
             return;
         }
 
-            if (!levelSelectionMenu.activeSelf)
-            {
-                levelSelectionMenu.SetActive(true);
+        if (!levelSelectionMenu.activeSelf)
+        {
+            levelSelectionMenu.SetActive(true);
 
-                for (int i = 0; i < buttons.Count; i++)
+            for (int i = 0; i < checkpointTaken.Count; i++)
+            {
+                buttons[i+1].checkpointToLoadIndex = i;
+
+                if (i == 0)
                 {
-                    buttons[i].checkpointToLoadIndex = i;
-                //qui
-                    if (checkpointTaken[i])
-                        buttons[i].unlocked = true;
-                    else
-                        buttons[i].unlocked = false;
+                    buttons[i].checkpointToLoadIndex = -1;
+                    buttons[i].unlocked = true;
                 }
 
+                if (checkpointTaken[i])
+                    buttons[i + 1].unlocked = true;
+                else
+                    buttons[i + 1].unlocked = false;
             }
-            else
-                levelSelectionMenu.SetActive(false);
+
+        }
+        else
+            levelSelectionMenu.SetActive(false);
 
     }
 

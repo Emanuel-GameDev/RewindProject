@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class LevelMaster : MonoBehaviour
 {
     public  static LevelMaster instance;
     public Dictionary<string, List<bool>> levels;
+
+    public Transform spawnPoint;
+    public int spawnPointId = -1;
 
     
     private void OnEnable()
@@ -22,6 +27,8 @@ public class LevelMaster : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+
+    
 
 
 }

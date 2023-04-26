@@ -15,22 +15,21 @@ public class LevelSelectionButton : MonoBehaviour , IPointerClickHandler,IPointe
     {
         if (unlocked)
         {
-
-        //GetComponentInParent<LevelDoor>().level.lastCheckpointVisitedIndex = checkpointToLoadIndex;
-        GetComponentInParent<LevelDoor>().EnterDoor();
+            LevelMaster.instance.spawnPointId = checkpointToLoadIndex;
+            GetComponentInParent<LevelDoor>().EnterDoor();
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (unlocked)
-            GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 1.1f, rect.localScale.y * 1.1f);
+        //if (unlocked)
+        //    GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 1.1f, rect.localScale.y * 1.1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (unlocked)
-            GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 0.9f, rect.localScale.y * 0.9f);
+        //if (unlocked)
+        //    GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 0.9f, rect.localScale.y * 0.9f);
     }
 
     

@@ -29,8 +29,6 @@ public class PlayerMovementInput : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
-
-        
     }
 
     private void Start()
@@ -47,14 +45,13 @@ public class PlayerMovementInput : MonoBehaviour
 
     //    inputs.Player.Move.performed -= SetMove;
     //    inputs.Player.Move.canceled -= SetMove;
+
     //    inputs.Player.Disable();
     //}
 
     private void Jump(InputAction.CallbackContext obj)
     {
         player.Jump();
-        //solo per debug,da levare o cambaire
-        PlayerPrefs.DeleteAll();
     }
 
     private void SetMove(InputAction.CallbackContext obj)
