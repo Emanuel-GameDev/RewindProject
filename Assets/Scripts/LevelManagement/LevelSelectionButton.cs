@@ -10,25 +10,37 @@ public class LevelSelectionButton : MonoBehaviour , IPointerClickHandler,IPointe
     RectTransform rect;
     public bool unlocked;
 
+
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (unlocked)
+        {
+
         //GetComponentInParent<LevelDoor>().level.lastCheckpointVisitedIndex = checkpointToLoadIndex;
         GetComponentInParent<LevelDoor>().EnterDoor();
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        rect.localScale = new Vector3(rect.localScale.x * 1.1f, rect.localScale.y * 1.1f);
+        if (unlocked)
+            GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 1.1f, rect.localScale.y * 1.1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        rect.localScale = new Vector3(rect.localScale.x * 0.9f, rect.localScale.y * 0.9f);
+        if (unlocked)
+            GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 0.9f, rect.localScale.y * 0.9f);
     }
 
-    void Start()
+    
+
+    void Update()
     {
-        rect = GetComponent<RectTransform>();
+        if (unlocked)
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+        else
+            GetComponent<SpriteRenderer>().color = Color.gray;
     }
 
    

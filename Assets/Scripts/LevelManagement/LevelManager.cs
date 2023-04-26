@@ -9,32 +9,36 @@ public class LevelManager : MonoBehaviour
 {
     public Transform startPoint; 
 
-    public List<Checkpoint> checkpoints;
+    [SerializeField] List<Checkpoint> checkpoints;
 
     public static Transform spawnPoint;
 
-
-
     public List<bool> checkpointsTaken;
+
+    public Scene level;
+
 
     private void OnEnable()
     {
+        level = SceneManager.GetActiveScene();
+
+        if (!LevelMaster.instance.levels.ContainsKey(level.name))
+        {
+            LevelMaster.instance.levels.Add(level.name,checkpointsTaken);
+            Debug.Log("c");
+        }
+        else
+            checkpointsTaken = LevelMaster.instance.levels[level.name];
+
         PlayerMovementInput.instance.inputs.Player.Respawn.performed += OnRespawn;
         PubSub.Instance.RegisterFuncion(eMessageType.CheckpointVisited, SaveCheckpoints);
         //lastCheckpointVisited = checkpoints[levelData.lastCheckpointVisitedIndex];
 
-        if (PlayerPrefsExtra.GetList<bool>("a").Count > 0)
-        {
-            checkpointsTaken = PlayerPrefsExtra.GetList<bool>("a", checkpointsTaken);
-            Debug.Log("i");
-        }
-        else
+        if (checkpointsTaken.Count==0)
         {
             checkpointsTaken.Add(false);
             checkpointsTaken.Add(false);
             checkpointsTaken.Add(false);
-            checkpointsTaken.Add(false);
-            Debug.Log("a");
         }
 
         //checkpointsTaken.Clear();
@@ -56,8 +60,8 @@ public class LevelManager : MonoBehaviour
             checkpointsTaken[i] = checkpoints[i].taken;
         }
 
-        PlayerPrefsExtra.SetList("a", checkpointsTaken);
-        Debug.Log(SceneManager.GetActiveScene().name);
+        LevelMaster.instance.levels[level.name] = checkpointsTaken;
+        //PlayerPrefsExtra.SetList(level.name, checkpointsTaken);
     }
 
     private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)

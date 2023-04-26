@@ -41,8 +41,15 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        menu.SetActive(false);
+
         if (collision.gameObject.GetComponent<PlayerMovementInput>())
             collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed -= Interact;
+    }
+
+    private void OnDisable()
+    {
+        PlayerMovementInput.instance.inputs.Player.Interaction.performed -= Interact;
     }
 
     public void ReturnToHub()
