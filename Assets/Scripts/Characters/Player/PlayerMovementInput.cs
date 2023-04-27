@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-[ RequireComponent(typeof(Character))]
+[RequireComponent(typeof(Character))]
 public class PlayerMovementInput : MonoBehaviour
 {
     public static PlayerMovementInput instance;
@@ -31,12 +31,12 @@ public class PlayerMovementInput : MonoBehaviour
             Destroy(gameObject);
     }
 
+
     private void Start()
     {
         player = GetComponent<Character>();
         DontDestroyOnLoad(gameObject);
     }
-
 
 
     //private void OnDisable()

@@ -14,27 +14,14 @@ public class LevelDoor : MonoBehaviour
     public List<bool> checkpointTaken;
 
 
-
-    private void OnEnable()
-    {
-        lights = new List<LevelLight>(GetComponentsInChildren<LevelLight>());
-
-        if (!LevelMaster.instance.levels.ContainsKey(levelToLoad.name))
-            return;
-
-
-        if (LevelMaster.instance.levels[levelToLoad.name].Count > 0)
-            checkpointTaken = LevelMaster.instance.levels[levelToLoad.name];
-
-    }
-
-
     private void Start()
     {
         buttons = new List<LevelSelectionButton>(GetComponentsInChildren<LevelSelectionButton>());
         lights = new List<LevelLight>(GetComponentsInChildren<LevelLight>());
 
+        GetTakenCheckpoints();
         KindleLights();
+
         levelSelectionMenu.SetActive(false);
     }
 
@@ -49,11 +36,22 @@ public class LevelDoor : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<PlayerMovementInput>())
             collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed -= Interact;
+
+        levelSelectionMenu.SetActive(false);
     }
 
     private void OnDisable()
     {
         PlayerMovementInput.instance.inputs.Player.Interaction.performed -= Interact;
+    }
+
+    private void GetTakenCheckpoints()
+    {
+        if (!LevelMaster.instance.levels.ContainsKey(levelToLoad.name))
+            return;
+
+        if (LevelMaster.instance.levels[levelToLoad.name].Count > 0)
+            checkpointTaken = LevelMaster.instance.levels[levelToLoad.name];
     }
 
     private void KindleLights()
@@ -70,35 +68,31 @@ public class LevelDoor : MonoBehaviour
     private void Interact(InputAction.CallbackContext obj)
     {
         if (checkpointTaken.FindAll(taken => taken == true).Count < 1)
-        {
             EnterDoor();
-            return;
-        }
+        else
+            HandleMenu();
+    }
 
+    private void HandleMenu()
+    {
         if (!levelSelectionMenu.activeSelf)
         {
             levelSelectionMenu.SetActive(true);
 
             for (int i = 0; i < checkpointTaken.Count; i++)
             {
-                buttons[i+1].checkpointToLoadIndex = i;
+                buttons[i].checkpointToLoadIndex = i;
 
-                if (i == 0)
-                {
-                    buttons[i].checkpointToLoadIndex = -1;
-                    buttons[i].unlocked = true;
-                }
 
                 if (checkpointTaken[i])
-                    buttons[i + 1].unlocked = true;
+                    buttons[i].unlocked = true;
                 else
-                    buttons[i + 1].unlocked = false;
+                    buttons[i].unlocked = false;
             }
 
         }
         else
             levelSelectionMenu.SetActive(false);
-
     }
 
     public void EnterDoor()

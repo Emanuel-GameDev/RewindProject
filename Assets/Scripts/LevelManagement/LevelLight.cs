@@ -5,6 +5,7 @@ using UnityEngine;
 public class LevelLight : MonoBehaviour
 {
     public bool light=false;
+
     private void OnEnable()
     {
         GetComponent<SpriteRenderer>().color = Color.black;

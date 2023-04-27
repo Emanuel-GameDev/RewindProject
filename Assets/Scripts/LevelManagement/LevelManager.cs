@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] List<Checkpoint> checkpoints;
 
+    [HideInInspector]
     public List<bool> checkpointsTaken;
 
     Scene level;
@@ -17,36 +18,10 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
-        level = SceneManager.GetActiveScene();
-
-        if (!LevelMaster.instance.levels.ContainsKey(level.name))
-        {
-            LevelMaster.instance.levels.Add(level.name,checkpointsTaken);
-        }
-        else
-            checkpointsTaken = LevelMaster.instance.levels[level.name];
-
-        
-        PubSub.Instance.RegisterFuncion(eMessageType.CheckpointVisited, SaveCheckpoints);
+        //PubSub.Instance.RegisterFuncion(eMessageType.CheckpointVisited, SaveCheckpoints);
 
         PlayerMovementInput.instance.inputs.Player.Respawn.performed += OnRespawn;
         SceneManager.sceneLoaded += OnLevelLoaded;
-
-        if (checkpointsTaken.Count==0)
-        {
-            checkpointsTaken.Add(false);
-            checkpointsTaken.Add(false);
-            checkpointsTaken.Add(false);
-        }
-
-
-        for (int i = 0; i < checkpointsTaken.Count; i++)
-        {
-            checkpoints[i].taken = checkpointsTaken[i];
-        }
-        
-        
-
     }
 
     private void SaveCheckpoints(object obj)
@@ -55,8 +30,11 @@ public class LevelManager : MonoBehaviour
         {
             checkpointsTaken[i] = checkpoints[i].taken;
         }
+
         Checkpoint taken = (Checkpoint)obj;
+
         spawnPoint = taken.transform;
+
         LevelMaster.instance.levels[level.name] = checkpointsTaken;
     }
 
@@ -69,10 +47,29 @@ public class LevelManager : MonoBehaviour
 
     private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)
     {
+        level = SceneManager.GetActiveScene();
+
+        if (!LevelMaster.instance.levels.ContainsKey(level.name))
+        {
+            checkpointsTaken.Add(false);
+            checkpointsTaken.Add(false);
+            checkpointsTaken.Add(false);
+
+            LevelMaster.instance.levels.Add(level.name, checkpointsTaken);
+        }
+        else
+            checkpointsTaken = LevelMaster.instance.levels[level.name];
+
+
         if (LevelMaster.instance.spawnPointId > -1)
             spawnPoint = checkpoints[LevelMaster.instance.spawnPointId].transform;
         else
             spawnPoint = transform;
+
+        for (int i = 0; i < checkpointsTaken.Count; i++)
+        {
+            checkpoints[i].taken = checkpointsTaken[i];
+        }
 
         Respawn();
     }
