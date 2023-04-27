@@ -67,7 +67,7 @@ public class LevelDoor : MonoBehaviour
 
     private void Interact(InputAction.CallbackContext obj)
     {
-        if (checkpointTaken.FindAll(taken => taken == true).Count < 1)
+        if (checkpointTaken.FindAll(taken => taken == true).Count <= 1)
             EnterDoor();
         else
             HandleMenu();
@@ -89,7 +89,6 @@ public class LevelDoor : MonoBehaviour
                 else
                     buttons[i].unlocked = false;
             }
-
         }
         else
             levelSelectionMenu.SetActive(false);

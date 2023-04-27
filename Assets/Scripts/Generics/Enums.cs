@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum EMessageType
 {
-    CameraSwitch
+    CameraSwitch,
+    CheckpointVisited
 }
 

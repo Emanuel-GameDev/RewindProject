@@ -5,12 +5,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(Character))]
-public class PlayerMovementInput : MonoBehaviour
+public class PlayerMovementInput : Character
 {
     public static PlayerMovementInput instance;
     public PlayerInputs inputs { get; private set; }
-    Character player;
+    //Character player;
 
     private void OnEnable()
     {
@@ -31,11 +30,16 @@ public class PlayerMovementInput : MonoBehaviour
             Destroy(gameObject);
     }
 
-
     private void Start()
     {
-        player = GetComponent<Character>();
         DontDestroyOnLoad(gameObject);
+        rBody = GetComponent<Rigidbody2D>();
+    }
+
+
+    private void Update()
+    {
+        rBody.velocity = new Vector2(horizontalMovement * speed, rBody.velocity.y);
     }
 
 
@@ -49,14 +53,22 @@ public class PlayerMovementInput : MonoBehaviour
     //    inputs.Player.Disable();
     //}
 
+
     private void Jump(InputAction.CallbackContext obj)
     {
-        player.Jump();
+        Jump();
     }
+
+    public override void Jump()
+    {
+        if (grounded)
+            rBody.AddForce(Vector2.up * jumpForce * rBody.gravityScale);
+    }
+
 
     private void SetMove(InputAction.CallbackContext obj)
     {
-        player.horizontalMovement = obj.ReadValue<float>();
+        horizontalMovement = obj.ReadValue<float>();
     }
 
 }

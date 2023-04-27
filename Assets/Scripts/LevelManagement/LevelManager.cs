@@ -18,7 +18,7 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //PubSub.Instance.RegisterFuncion(eMessageType.CheckpointVisited, SaveCheckpoints);
+        PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
         PlayerMovementInput.instance.inputs.Player.Respawn.performed += OnRespawn;
         SceneManager.sceneLoaded += OnLevelLoaded;
@@ -38,7 +38,6 @@ public class LevelManager : MonoBehaviour
         LevelMaster.instance.levels[level.name] = checkpointsTaken;
     }
 
-
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnLevelLoaded;
@@ -49,29 +48,44 @@ public class LevelManager : MonoBehaviour
     {
         level = SceneManager.GetActiveScene();
 
+        GetTakenCheckpoint();
+
+        GetSpawnPoint();
+
+        SetCheckpoint();
+
+        Respawn();
+    }
+
+    private void SetCheckpoint()
+    {
+        for (int i = 0; i < checkpointsTaken.Count; i++)
+        {
+            checkpoints[i].taken = checkpointsTaken[i];
+        }
+    }
+
+    private void GetSpawnPoint()
+    {
+        if (LevelMaster.instance.spawnPointId <= 0)
+            spawnPoint = checkpoints[0].transform;
+        else
+            spawnPoint = checkpoints[LevelMaster.instance.spawnPointId].transform;
+    }
+
+    private void GetTakenCheckpoint()
+    {
         if (!LevelMaster.instance.levels.ContainsKey(level.name))
         {
-            checkpointsTaken.Add(false);
-            checkpointsTaken.Add(false);
-            checkpointsTaken.Add(false);
+            foreach (Checkpoint check in checkpoints)
+            {
+                checkpointsTaken.Add(false);
+            }
 
             LevelMaster.instance.levels.Add(level.name, checkpointsTaken);
         }
         else
             checkpointsTaken = LevelMaster.instance.levels[level.name];
-
-
-        if (LevelMaster.instance.spawnPointId > -1)
-            spawnPoint = checkpoints[LevelMaster.instance.spawnPointId].transform;
-        else
-            spawnPoint = transform;
-
-        for (int i = 0; i < checkpointsTaken.Count; i++)
-        {
-            checkpoints[i].taken = checkpointsTaken[i];
-        }
-
-        Respawn();
     }
 
     private void OnRespawn(InputAction.CallbackContext obj)

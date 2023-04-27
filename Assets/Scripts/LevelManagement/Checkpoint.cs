@@ -12,7 +12,7 @@ public class Checkpoint : MonoBehaviour
     public GameObject menu; 
     public SceneAsset Hub;
 
-    
+
     private void Start()
     {
         menu.SetActive(false);
@@ -24,20 +24,6 @@ public class Checkpoint : MonoBehaviour
             collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed += Interact;
     }
 
-    private void Interact(InputAction.CallbackContext obj)
-    {
-        taken = true;
-        SetCheckpoint();
-        OpenMenu();
-    }
-
-    private void OpenMenu()
-    {
-        if (!menu.activeSelf)
-            menu.SetActive(true);
-        else
-            menu.SetActive(false);
-    }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -52,6 +38,21 @@ public class Checkpoint : MonoBehaviour
         PlayerMovementInput.instance.inputs.Player.Interaction.performed -= Interact;
     }
 
+    private void Interact(InputAction.CallbackContext obj)
+    {
+        taken = true;
+        SetCheckpoint();
+        HandleMenu();
+    }
+
+    private void HandleMenu()
+    {
+        if (!menu.activeSelf)
+            menu.SetActive(true);
+        else
+            menu.SetActive(false);
+    }
+
     public void ReturnToHub()
     {
         SceneManager.LoadScene(Hub.name);
@@ -60,6 +61,6 @@ public class Checkpoint : MonoBehaviour
     public void SetCheckpoint()
     {
         LevelMaster.instance.spawnPoint = transform;
-        //PubSub.Instance.SendMessages(eMessageType.CheckpointVisited, this);
+        PubSub.Instance.Notify(EMessageType.CheckpointVisited, this);
     }
 }

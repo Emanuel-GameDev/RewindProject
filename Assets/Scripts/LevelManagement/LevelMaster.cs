@@ -10,7 +10,7 @@ public class LevelMaster : MonoBehaviour
     public Dictionary<string, List<bool>> levels;
 
     public Transform spawnPoint;
-    public int spawnPointId = -1;
+    public int spawnPointId = 0;
 
     
     private void OnEnable()

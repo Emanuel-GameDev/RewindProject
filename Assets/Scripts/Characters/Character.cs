@@ -6,33 +6,24 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] float jumpForce;
+    [SerializeField] internal  float speed;
+    [SerializeField] internal float jumpForce;
 
-    [SerializeField] LayerMask groundMask;
-    [SerializeField] Transform groundCheck;
+    [SerializeField] internal LayerMask groundMask;
+    [SerializeField] internal Transform groundCheck;
 
-    Rigidbody2D rBody;
+    internal Rigidbody2D rBody;
 
-    bool grounded = false;
-    public float horizontalMovement = 0;
+    internal bool grounded = false;
+    internal float horizontalMovement = 0;
 
 
-    private void Start()
-    {
-        rBody = GetComponent<Rigidbody2D>();
-    }
-    private void Update()
-    {
-        rBody.velocity = new Vector2(horizontalMovement * speed, rBody.velocity.y);
-    }
-
-    private void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         GroundCheck();
     }
 
-    internal void Jump()
+    public virtual void Jump()
     {
         if (grounded)
             rBody.AddForce(Vector2.up * jumpForce * rBody.gravityScale);
