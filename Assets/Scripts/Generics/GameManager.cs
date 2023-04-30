@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
+    public static GameManager Instance;
 
     [Header("Managers")]
-    [SerializeField] private CameraManager cameraManager;
+    public CameraManager cameraManager;
+    public AbilityManager abilityManager;
     /* LEEL MANAGER */
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (Instance == null)
+            Instance = this;
         else
             Destroy(gameObject);
 
