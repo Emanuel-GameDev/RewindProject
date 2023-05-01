@@ -8,8 +8,9 @@ public class EnemyOne : BaseEnemy
     Animator animator;
     GameObject attack;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         animator = GetComponent<Animator>();
         attack = GetComponentInChildren<Damager>().gameObject;
         EndAttack();
@@ -24,10 +25,5 @@ public class EnemyOne : BaseEnemy
     public void EndAttack()
     {
         attack.SetActive(false);
-    }
-
-    private void Update()
-    {
-       
     }
 }

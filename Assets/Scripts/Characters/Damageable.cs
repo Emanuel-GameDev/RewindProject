@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class Damageable : MonoBehaviour
 {
-    public int maxHealtPoint { get; private set; } = 3;
-    public int healtPoint { get; private set; } = 3;
+    public float maxHealtPoint { get; private set; } = 3;
+    public float healtPoint { get; private set; } = 3;
 
-    public void SetMaxHP(int HP)
+    public void SetMaxHP(float HP)
     {
         maxHealtPoint = HP;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         healtPoint -= damage;
 
@@ -27,7 +27,7 @@ public class Damageable : MonoBehaviour
 
     }
 
-    public void Heal(int heal)
+    public void Heal(float heal)
     {
         healtPoint += heal;
         if (healtPoint > maxHealtPoint) 
@@ -41,7 +41,7 @@ public class Damageable : MonoBehaviour
         Debug.Log(gameObject.name + " is dead!");
     }
 
-    public void Initilize(int maxHP) 
+    public void Initilize(float maxHP) 
     { 
         SetMaxHP(maxHP);
         healtPoint = maxHP;

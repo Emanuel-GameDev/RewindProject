@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class Damager : MonoBehaviour
 {
-    [SerializeField] int damage = 1;
+    [SerializeField] float damage = 1;
 
-    public void SetDamage(int dmg)
+    public void SetDamage(float dmg)
     {
         damage = dmg;
     }

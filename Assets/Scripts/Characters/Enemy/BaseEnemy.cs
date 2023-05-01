@@ -12,7 +12,7 @@ public class BaseEnemy : MonoBehaviour
 {
     [Header("Enemy Data")]
     [Tooltip("Imposta i punti vita del nemico")]
-    [SerializeField] int healtPoint = 2;
+    [SerializeField] float healtPoint = 2;
 
     [Header("Bheaviour Tree Data")]
     [Tooltip("Imposta l'angolo di rotazione del campo visivo del nemico")]
@@ -51,7 +51,7 @@ public class BaseEnemy : MonoBehaviour
         NavmeshSetup();
     }
 
-    private void Awake()
+    public virtual void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         tree = GetComponentInChildren<BehaviorTree>();
