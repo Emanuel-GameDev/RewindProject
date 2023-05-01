@@ -979,7 +979,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c851ff09d458f494f893416ee69a8a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPoint: {fileID: 0}
   checkpoints:
   - {fileID: 192372509}
   - {fileID: 1293795679}
@@ -1436,13 +1435,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8bac47b7499e85449534899a6f04775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  maxSpeed: 0
   jumpForce: 400
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   groundCheck: {fileID: 606974330}
-  horizontalMovement: 0
 --- !u!114 &999941057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1455,6 +1453,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1e7c9fa27ffb64a9e6879017a4ee2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSpeed: 0
+  jumpForce: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  groundCheck: {fileID: 0}
+  acceleration: 90
+  deAcceleration: 60
+  groundCheckRadius: 1
+  jumpAbortForce: 2
+  _minFallSpeed: 1
+  _maxFallSpeed: 15
 --- !u!61 &999941058
 BoxCollider2D:
   m_ObjectHideFlags: 0

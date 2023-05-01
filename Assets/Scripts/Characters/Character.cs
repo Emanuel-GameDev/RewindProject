@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
-    [SerializeField] internal  float speed;
+    [SerializeField] internal  float maxSpeed;
     [SerializeField] internal float jumpForce;
 
     [SerializeField] internal LayerMask groundMask;
@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
             rBody.AddForce(Vector2.up * jumpForce * rBody.gravityScale);
     }
 
-    private void GroundCheck()
+    public virtual void GroundCheck()
     {
         if (Physics2D.OverlapCircle(groundCheck.position, 0.3f, groundMask))
             grounded = true;
@@ -37,7 +37,7 @@ public class Character : MonoBehaviour
             grounded = false;
     }
 
-    private void OnDrawGizmos()
+    public virtual void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, 0.3f);
     }

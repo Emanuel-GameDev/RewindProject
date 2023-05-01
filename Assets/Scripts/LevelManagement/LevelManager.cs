@@ -20,7 +20,7 @@ public class LevelManager : MonoBehaviour
     {
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
-        PlayerMovementInput.instance.inputs.Player.Respawn.performed += OnRespawn;
+        PlayerController.instance.inputs.Player.Respawn.performed += OnRespawn;
         SceneManager.sceneLoaded += OnLevelLoaded;
     }
 
@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnLevelLoaded;
-        PlayerMovementInput.instance.inputs.Player.Respawn.performed -= OnRespawn;
+        PlayerController.instance.inputs.Player.Respawn.performed -= OnRespawn;
     }
 
     private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)
@@ -95,7 +95,7 @@ public class LevelManager : MonoBehaviour
 
     public void Respawn()
     {
-        PlayerMovementInput.instance.gameObject.transform.position = spawnPoint.position;
+        PlayerController.instance.gameObject.transform.position = spawnPoint.position;
     }
 
 }
