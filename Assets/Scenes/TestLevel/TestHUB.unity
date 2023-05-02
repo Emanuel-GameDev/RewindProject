@@ -909,7 +909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ef0486e6517144489a465ad30bf95da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {fileID: 0}
+  spawnPoint: {fileID: 401548358}
   spawnPointId: 0
 --- !u!4 &401548358
 Transform:
@@ -2734,18 +2734,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1e7c9fa27ffb64a9e6879017a4ee2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
-  jumpForce: 7
+  walkSpeed: 5
+  jumpForce: 15
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   groundCheck: {fileID: 741159268}
+  runSpeed: 15
   acceleration: 50
   deAcceleration: 30
-  groundCheckRadius: 0.41
+  groundCheckRadius: 0.4
   jumpAbortForce: 10
+  maxJumpHeight: 5
   _minFallSpeed: 5
   _maxFallSpeed: 15
+  canDoubleJump: 0
 --- !u!50 &1394890125
 Rigidbody2D:
   serializedVersion: 4

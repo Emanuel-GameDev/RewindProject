@@ -6,11 +6,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Character : MonoBehaviour
 {
-    [SerializeField] internal  float maxSpeed;
+    [Header("MOVEMENT")]
+    [SerializeField] internal  float walkSpeed;
+
+    [Header("JUMP")]
     [SerializeField] internal float jumpForce;
 
+    [Header("GROUND")]
     [SerializeField] internal LayerMask groundMask;
     [SerializeField] internal Transform groundCheck;
+    [SerializeField] float groundCheckRadius = 1;
 
     internal Rigidbody2D rBody;
 
@@ -23,7 +28,7 @@ public class Character : MonoBehaviour
         GroundCheck();
     }
 
-    public virtual void Jump()
+    public virtual void CheckJump()
     {
         if (grounded)
             rBody.AddForce(Vector2.up * jumpForce * rBody.gravityScale);
