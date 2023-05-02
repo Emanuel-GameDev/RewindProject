@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class AbilityWheel : MonoBehaviour
 {
     [SerializeField] Transform rotPoint;
+    [SerializeField] Transform activeSocket;
 
     private List<Transform> _sockets = new List<Transform>();
     private List<Ability> _abilitiesUnlocked = new List<Ability>();
@@ -30,12 +31,17 @@ public class AbilityWheel : MonoBehaviour
         // Load abilities
         for (int i = 0; i < _abilitiesUnlocked.Count; i++)
         {
+            // Spawn abilities
             Ability spawnedAbility = Instantiate(_abilitiesUnlocked[i], _sockets[i]);
             spawnedAbility.GetComponent<RectTransform>().sizeDelta = _sockets[i].GetComponent<RectTransform>().sizeDelta;
 
             // Replace _abilities with abilities spawned, otherwise we will modify prefab
             _abilitiesUnlocked.RemoveAt(i);
             _abilitiesUnlocked.Insert(i, spawnedAbility);
+
+            // First give of the active ability to the holders
+            if (_sockets[i] == activeSocket && activeSocket.childCount > 0)
+                PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, spawnedAbility);
         }
     }
 
@@ -44,37 +50,36 @@ public class AbilityWheel : MonoBehaviour
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         // Check mouse scroll
-        if (scroll != 0f)
+        if (scroll > 0.1)
         {
-            if (scroll > 0.1)
+            for (int i = 0; i < _abilitiesUnlocked.Count; i++)
             {
-                for (int i = 0; i < _abilitiesUnlocked.Count; i++)
-                {
-                    int tmp = (currentIndex + i + _sockets.Count) % _sockets.Count;
-                    _abilitiesUnlocked[i].transform.SetParent(_sockets[tmp], false);
-                    _abilitiesUnlocked[i].GetComponent<RectTransform>().sizeDelta = _abilitiesUnlocked[i].transform.parent.GetComponent<RectTransform>().sizeDelta;
-                }
-                currentIndex++;
+                int tmp = (currentIndex + i + _sockets.Count) % _sockets.Count;
+                _abilitiesUnlocked[i].transform.SetParent(_sockets[tmp], false);
+                _abilitiesUnlocked[i].GetComponent<RectTransform>().sizeDelta = _abilitiesUnlocked[i].transform.parent.GetComponent<RectTransform>().sizeDelta;
+
+                // Give new ability to holders
+                if (_sockets[tmp] == activeSocket)
+                    PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[i]);
             }
-            else if (scroll < -0.1)
+            currentIndex++;
+        }
+        else if (scroll < -0.1)
+        {
+            for (int i = 0; i < _abilitiesUnlocked.Count; i++)
             {
-                for (int i = 0; i < _abilitiesUnlocked.Count; i++)
-                {
-                    // Non sicuro di questa linea
-                    int tmp = ((currentIndex - i + _sockets.Count) % _sockets.Count + _sockets.Count) % _sockets.Count;
-                    _abilitiesUnlocked[i].transform.SetParent(_sockets[tmp], false);
-                    _abilitiesUnlocked[i].GetComponent<RectTransform>().sizeDelta = _abilitiesUnlocked[i].transform.parent.GetComponent<RectTransform>().sizeDelta;
-                }
-                // NOn sicuro di questa linea
-                currentIndex = ((currentIndex - 1 + _sockets.Count) % _sockets.Count + _sockets.Count) % _sockets.Count;
+                // Non sicuro di questa linea
+                int tmp = ((currentIndex - i + _sockets.Count) % _sockets.Count + _sockets.Count) % _sockets.Count;
+                _abilitiesUnlocked[i].transform.SetParent(_sockets[tmp], false);
+                _abilitiesUnlocked[i].GetComponent<RectTransform>().sizeDelta = _abilitiesUnlocked[i].transform.parent.GetComponent<RectTransform>().sizeDelta;
+
+                // Give new ability to holders
+                if (_sockets[tmp] == activeSocket)
+                    PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[i]);
             }
-            Debug.Log(currentIndex);
+            // NOn sicuro di questa linea
+            currentIndex = ((currentIndex - 1 + _sockets.Count) % _sockets.Count + _sockets.Count) % _sockets.Count;
         }
 
-    }
-
-    private int Mod(int a, int n)
-    {
-        return ((a % n) + n) % n;
     }
 }

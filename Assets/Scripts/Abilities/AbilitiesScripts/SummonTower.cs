@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class SummonTower : Ability
 {
-
+    public override void Activate(GameObject parent)
+    {
+        base.Activate(parent);
+        Debug.Log(name);
+    }
 }

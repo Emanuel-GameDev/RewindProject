@@ -5,11 +5,14 @@ using UnityEngine;
 
 public class AbilityManager : MonoBehaviour
 {
-    List<ScriptableAbility> _abilities = new List<ScriptableAbility>();
+    private List<ScriptableAbility> _abilities = new List<ScriptableAbility>();
+    
+    [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
     private void Awake()
     {
         _abilities = Resources.LoadAll<ScriptableAbility>("Abilities").ToList();
+        PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
     }
 
     public List<Ability> GetUnlockedAbilities()
@@ -17,5 +20,18 @@ public class AbilityManager : MonoBehaviour
         return _abilities.Where(ability => ability.abilityPrefab.unlocked == true)
                                 .Select(ability => ability.abilityPrefab)
                                 .ToList(); 
+    }
+
+    // Da usare ipoteticamente per dare l'abilità al player
+    // volendo il manager ha una lista degli holders così può distribuire l'abilità attiva a tutti
+    public void GiveAbility(object obj)
+    {
+        if (obj is not Ability) return;
+        Ability ability = (Ability)obj;
+
+        foreach (AbilityHolder holder in _holders)
+        {
+            holder.activeAbility = ability;
+        }
     }
 }
