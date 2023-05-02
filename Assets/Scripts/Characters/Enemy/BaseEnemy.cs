@@ -61,7 +61,7 @@ public class BaseEnemy : MonoBehaviour
     private void Update()
     {
         FlipCharacter();
-        FlipView();
+        //FlipView();
     }
 
     private void InitialSetup()
@@ -103,11 +103,13 @@ public class BaseEnemy : MonoBehaviour
         {
             if (moveDirection.x < 0)
             {
-                spriteRenderer.flipX = true;
+                //spriteRenderer.flipX = true;
+                transform.rotation = Quaternion.Euler(0, 180, 0);
             }
             else if (moveDirection.x > 0)
             {
-                spriteRenderer.flipX = false;
+                //spriteRenderer.flipX = false;
+                transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
     }
