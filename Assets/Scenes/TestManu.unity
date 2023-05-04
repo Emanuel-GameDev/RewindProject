@@ -2127,12 +2127,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1e7c9fa27ffb64a9e6879017a4ee2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  walkSpeed: 0
   jumpForce: 400
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   groundCheck: {fileID: 1251624168}
+  groundCheckRadius: 1
+  runSpeed: 15
+  acceleration: 90
+  deAcceleration: 60
+  jumpAbortForce: 20
+  maxJumpHeight: 5
+  _minFallSpeed: 15
+  _maxFallSpeed: 30
+  canDoubleJump: 0
 --- !u!114 &1311625601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2145,12 +2154,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9adebafa3606be4eb0ba6afdd36e326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
+  walkSpeed: 0
   jumpForce: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   groundCheck: {fileID: 1251624168}
+  groundCheckRadius: 1
   activeAbility: {fileID: 0}
   interactKey: 101
 --- !u!1 &1338858036
@@ -2402,7 +2412,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1501941500
