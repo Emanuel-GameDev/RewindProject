@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 public enum PlayerState
 {
     PlayerIdle,
-    PlayerWalking,
-    PlayerRunning,
+    PlayerMooving,
     PlayerJumping,
     PlayerFalling
 }
@@ -26,8 +25,8 @@ public class PlayerController : Character
     float horizontalInput = 0;
 
     [Header("JUMP")]
-    [SerializeField] float jumpForce;
-    [SerializeField] float jumpAbortForce = 20;
+    [SerializeField] float jumpForce=10;
+    [SerializeField] float jumpAbortForce = 50;
     [SerializeField] float maxJumpHeight = 5;
 
     [Header("GROUND")]
@@ -41,10 +40,10 @@ public class PlayerController : Character
     
     Vector2 jumpStartPoint;
 
-    bool isJumping = false;
-    bool isFalling = false;
-    bool isMooving = false;
-    bool isRunning = false;
+    public bool isJumping = false;
+    public bool isFalling = false;
+    public bool isMooving = false;
+    public bool isRunning = false;
 
     Rigidbody2D rBody;
 
@@ -85,6 +84,10 @@ public class PlayerController : Character
         rBody = GetComponent<Rigidbody2D>();
 
         stateMachine.RegisterState(PlayerState.PlayerIdle, new PlayerIdleState(this));
+        stateMachine.RegisterState(PlayerState.PlayerJumping, new PlayerJumpingState(this));
+        stateMachine.RegisterState(PlayerState.PlayerFalling, new PlayerFallingState(this));
+        stateMachine.RegisterState(PlayerState.PlayerMooving, new PlayerMoovingState(this));
+        stateMachine.SetState(PlayerState.PlayerIdle);
     }
 
 
@@ -95,11 +98,6 @@ public class PlayerController : Character
         // da cambiare per l'abilità
         if (Input.GetKeyDown(KeyCode.G))
             InvertGravity();
-
-        CalculateHorizontalMovement();
-        AbortJump();
-        CalculateFallSpeed();
-
     }
 
     public  void FixedUpdate()
@@ -174,10 +172,15 @@ public class PlayerController : Character
             horizontalMovement = Mathf.MoveTowards(horizontalMovement, 0, deAcceleration * Time.deltaTime);
         }
 
+        if (horizontalMovement == 0)
+            isMooving = false;
+        else
+            isMooving = true;
+
         rBody.velocity = new Vector2(horizontalMovement, rBody.velocity.y);
     }
 
-    private void CalculateFallSpeed()
+    public void CalculateFallSpeed()
     {
         if (IsGravityDownward())
         {
@@ -222,12 +225,14 @@ public class PlayerController : Character
             jumpStartPoint = transform.position;
             rBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isJumping = true;
+            isFalling = false;
         }
         else
         {
             jumpStartPoint = transform.position;
             rBody.AddForce(Vector2.down * jumpForce, ForceMode2D.Impulse);
             isJumping = true;
+            isFalling = false;
         }
     }
 
@@ -250,7 +255,7 @@ public class PlayerController : Character
 
     }
 
-    private void AbortJump()
+    public void AbortJump()
     {
         CalculateMaxJumpHeightReached();
 
@@ -297,7 +302,10 @@ public class PlayerController : Character
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
 
         if (!isJumping && grounded)
+        {
             doubleJump = true;
+            isFalling = false;
+        }
     }
 
     #endregion

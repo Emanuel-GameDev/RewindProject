@@ -47,11 +47,11 @@ public class LevelDoor : MonoBehaviour
 
     private void GetTakenCheckpoints()
     {
-        if (!LevelMaster.instance.levels.ContainsKey(levelToLoad.name))
+        if (!LevelMaster.Instance.levels.ContainsKey(levelToLoad.name))
             return;
 
-        if (LevelMaster.instance.levels[levelToLoad.name].Count > 0)
-            checkpointTaken = LevelMaster.instance.levels[levelToLoad.name];
+        if (LevelMaster.Instance.levels[levelToLoad.name].Count > 0)
+            checkpointTaken = LevelMaster.Instance.levels[levelToLoad.name];
     }
 
     private void KindleLights()

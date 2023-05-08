@@ -39,7 +39,7 @@ public class LevelManager : MonoBehaviour
 
         spawnPoint = taken.transform;
 
-        LevelMaster.instance.levels[level.name] = checkpointsTaken;
+        LevelMaster.Instance.levels[level.name] = checkpointsTaken;
     }
 
     private void OnDisable()
@@ -78,25 +78,25 @@ public class LevelManager : MonoBehaviour
     {
         if (checkpoints.Count <1)
             spawnPoint = transform;
-        else if (LevelMaster.instance.spawnPointId <= 0)
+        else if (LevelMaster.Instance.spawnPointId <= 0)
             spawnPoint = checkpoints[0].transform;
         else
-            spawnPoint = checkpoints[LevelMaster.instance.spawnPointId].transform;
+            spawnPoint = checkpoints[LevelMaster.Instance.spawnPointId].transform;
     }
 
     private void GetTakenCheckpoint()
     {
-        if (!LevelMaster.instance.levels.ContainsKey(level.name))
+        if (!LevelMaster.Instance.levels.ContainsKey(level.name))
         {
             foreach (Checkpoint check in checkpoints)
             {
                 checkpointsTaken.Add(false);
             }
 
-            LevelMaster.instance.levels.Add(level.name, checkpointsTaken);
+            LevelMaster.Instance.levels.Add(level.name, checkpointsTaken);
         }
         else
-            checkpointsTaken = LevelMaster.instance.levels[level.name];
+            checkpointsTaken = LevelMaster.Instance.levels[level.name];
     }
 
     private void OnRespawn(InputAction.CallbackContext obj)

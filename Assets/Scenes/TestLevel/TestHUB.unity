@@ -3100,16 +3100,20 @@ MonoBehaviour:
   runSpeed: 15
   acceleration: 50
   deAcceleration: 30
-  jumpForce: 30
-  jumpAbortForce: 50
+  jumpForce: 15
+  jumpAbortForce: 100
   maxJumpHeight: 5
   groundMask:
     serializedVersion: 2
     m_Bits: 8
   groundCheck: {fileID: 741159268}
   groundCheckRadius: 0.4
-  _minFallSpeed: 20
+  _minFallSpeed: 10
   _maxFallSpeed: 30
+  isJumping: 0
+  isFalling: 0
+  isMooving: 0
+  isRunning: 0
   canDoubleJump: 0
 --- !u!50 &1394890125
 Rigidbody2D:
