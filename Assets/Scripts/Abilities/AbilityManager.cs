@@ -22,8 +22,6 @@ public class AbilityManager : MonoBehaviour
                                 .ToList(); 
     }
 
-    // Da usare ipoteticamente per dare l'abilità al player
-    // volendo il manager ha una lista degli holders così può distribuire l'abilità attiva a tutti
     public void GiveAbility(object obj)
     {
         if (obj is not Ability) return;

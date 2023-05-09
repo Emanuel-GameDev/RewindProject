@@ -15,4 +15,15 @@ public abstract class Ability : MonoBehaviour
     {
         
     }
+
+    public virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Character>() != null)
+        {
+            Ability ability = GetComponent<Ability>();
+            PubSub.Instance.Notify(EMessageType.AbilityPicked, ability);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
+        }
+    }
 }

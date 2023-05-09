@@ -12,6 +12,8 @@ public class AbilityHolder : Character
 
     private void Update()
     {
+        if (activeAbility == null) return;
+
         switch (state)
         {
             case EAbilityState.ready:
