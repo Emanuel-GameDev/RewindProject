@@ -14,13 +14,12 @@ public class EnemyFollowAndJump : MonoBehaviour
     [SerializeField] float searchRadius = 15f; // raggio di ricerca
     [SerializeField] float arriveDistance = 0.1f;
     [SerializeField] LayerMask layerMask; // layer degli oggetti da cercare
-    private List<Collider2D> nearColliders = new List<Collider2D>(); // lista dei NavMeshModifier  trovati
+    private List<Collider2D> nearColliders = new List<Collider2D>();
     private bool isJumping = false;
     private Vector3 pointToJump = Vector3.zero;
     private float lerp = 0f; // il valore di interpolazione per muovere l'oggetto lungo la parabola
     private Vector3 startJumpPoint = Vector3.zero;
     private Vector2 centerOfCollider;
-
     private Vector3 actualTargetPoint;
 
     private NavMeshAgent navMeshAgent;
@@ -50,9 +49,24 @@ public class EnemyFollowAndJump : MonoBehaviour
         {
             JumpToPoint(pointToJump, paraboleMaxHeight);
         }
+
+        if (target != null)
+        {
+           // FollowTarget();
+        } 
     }
 
-    //Funzioni per il Salto
+    //Gestione Follow
+    //=============================================================================================================================
+    private void FollowTarget()
+    {
+        Vector3 targetPosition = new Vector3(target.transform.position.x, transform.position.y, transform.position.x);
+        navMeshAgent.SetDestination(targetPosition);
+    }
+
+
+
+    //Gestione Salto
     //=============================================================================================================================
 
     private Vector2 FindCenterOfColldier()
@@ -71,9 +85,17 @@ public class EnemyFollowAndJump : MonoBehaviour
         // Trova tutti gli oggetti all'interno del raggio specificato
         Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, searchRadius, layerMask);
 
+        // Ottenere il collider dell'oggetto che chiama la funzione
+        Collider2D objectCollider = GetComponent<Collider2D>();
+
         // Cicla attraverso tutti gli oggetti trovati e controlla se hanno il componente NavMeshModifier 
         foreach (Collider2D collider in colliders)
         {
+            if (collider.IsTouching(objectCollider))
+            {
+                continue; // Se sono in contatto, passa al prossimo collider
+            }
+
             NavMeshModifier modifier = collider.GetComponent<NavMeshModifier>();
             if (modifier != null)
             {
