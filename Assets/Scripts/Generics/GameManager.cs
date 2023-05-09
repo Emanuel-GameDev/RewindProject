@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Managers")]
     public CameraManager cameraManager;
     public AbilityManager abilityManager;
-    /* LEEL MANAGER */
+    public LevelMaster levelMaster;
 
     private void Awake()
     {

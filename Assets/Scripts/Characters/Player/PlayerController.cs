@@ -54,6 +54,9 @@ public class PlayerController : Character
     public bool canDoubleJump;
     bool doubleJump = false;
 
+    public float verticalSpeed=0;
+    public float horizontalSpeed = 0;
+
     #region UnityFunctions
 
     private void OnEnable()
@@ -172,10 +175,16 @@ public class PlayerController : Character
             horizontalMovement = Mathf.MoveTowards(horizontalMovement, 0, deAcceleration * Time.deltaTime);
         }
 
+
         if (horizontalMovement == 0)
             isMooving = false;
         else
             isMooving = true;
+
+
+        //da levare
+        verticalSpeed = rBody.velocity.y;
+        horizontalSpeed = rBody.velocity.x;
 
         rBody.velocity = new Vector2(horizontalMovement, rBody.velocity.y);
     }
