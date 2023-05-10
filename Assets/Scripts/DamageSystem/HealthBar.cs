@@ -4,17 +4,40 @@ using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField]  Damageable damageable;
-    [SerializeField] GameObject healtIconPrefab;
+    [SerializeField] GameObject healthIconPrefab;
 
-    List<HealthIcon> icons;
+    List<GameObject> icons;
 
-    private void Start()
+    private void Awake()
     {
-        for (int i = 0; i < damageable.maxHealth; i++)
+        icons = new List<GameObject>();
+    }
+
+    public void InitializeHealthBar(int health)
+    {
+        for (int i = 0; i < icons.Count; i++)
         {
-            Instantiate(healtIconPrefab,transform);
+            Destroy(icons[i]);
+        }
+
+        icons.Clear();
+
+        for (int i = 0; i < health; i++)
+        {
+            icons.Add(Instantiate(healthIconPrefab, transform));
         }
     }
+
+    public void UpdateHealthBar(int health)
+    {
+        for (int i = 0; i < icons.Count; i++)
+        {
+            if(i < health)
+                icons[i].SetActive(true);
+            else
+                icons[i].SetActive(false);
+        }
+    }
+
 
 }

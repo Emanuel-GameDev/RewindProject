@@ -6,19 +6,40 @@ public class Damageable : MonoBehaviour
 {
     public int maxHealth = 1;
 
-    int health;
+    [SerializeField] HealthBar healthBar;
 
+    int _health;
+
+    public int Health 
+    {
+        get => _health; 
+
+        set
+        {
+            _health = Mathf.Clamp(value, 0, maxHealth);
+            healthBar.UpdateHealthBar(_health);
+        }
+    }
 
     private void Start()
     {
-        health = maxHealth;
+        _health = maxHealth;
+        healthBar.InitializeHealthBar(_health);
     }
 
-    public void ChangeHealth(int healthChanged)
+    private void ChangeHealth(int healthChanged)
     {
-        health += healthChanged;
+        Health += healthChanged;
+    }
 
-        health = Mathf.Clamp(health,0,maxHealth);
+    public void Heal(int healthToHeal)
+    {
+        ChangeHealth(healthToHeal);
+    }
+
+    public void TakeDamage(int healthToRemove)
+    {
+        ChangeHealth(-healthToRemove);
     }
 
 }

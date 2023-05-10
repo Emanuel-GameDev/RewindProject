@@ -16,7 +16,7 @@ public class Damager : MonoBehaviour
 
     public void DealDamage(Damageable damageable)
     {
-        damageable.ChangeHealth(-damage);
+        damageable.TakeDamage(damage);
     }
     
 }
