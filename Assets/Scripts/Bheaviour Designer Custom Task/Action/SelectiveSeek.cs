@@ -58,8 +58,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
                 if (!followOnZ.Value)
                     destination.z = gameObject.transform.position.z;
 
-                Debug.Log(destination);
-
                 return destination;
             }
 
