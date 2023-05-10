@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Damageable : MonoBehaviour
+{
+    public int maxHealth = 1;
+
+    [SerializeField] HealthBar healthBar;
+
+    int _health;
+
+    public int Health 
+    {
+        get => _health; 
+
+        set
+        {
+            _health = Mathf.Clamp(value, 0, maxHealth);
+            healthBar.UpdateHealthBar(_health);
+        }
+    }
+
+    private void Start()
+    {
+        _health = maxHealth;
+        healthBar.InitializeHealthBar(_health);
+    }
+
+    private void ChangeHealth(int healthChanged)
+    {
+        Health += healthChanged;
+    }
+
+    public void Heal(int healthToHeal)
+    {
+        ChangeHealth(healthToHeal);
+    }
+
+    public void TakeDamage(int healthToRemove)
+    {
+        ChangeHealth(-healthToRemove);
+    }
+
+}

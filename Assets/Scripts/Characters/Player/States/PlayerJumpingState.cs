@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-internal class PlayerIdleState : State
+public class PlayerJumpingState : State
 {
     private PlayerController player;
-    public PlayerIdleState(PlayerController player)
+
+    public PlayerJumpingState(PlayerController player)
     {
         this.player = player;
     }
@@ -18,18 +19,14 @@ internal class PlayerIdleState : State
     public override void Update()
     {
         player.CalculateHorizontalMovement();
+        player.AbortJump();
         player.CalculateFallSpeed();
 
         
 
-        if (player.isJumping)
-            player.stateMachine.SetState(PlayerState.PlayerJumping);
-
-        if(player.isMooving)
-            player.stateMachine.SetState(PlayerState.PlayerMooving);
-
         if (player.isFalling)
             player.stateMachine.SetState(PlayerState.PlayerFalling);
+
     }
 
     public override void Exit()

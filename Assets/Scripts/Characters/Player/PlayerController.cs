@@ -1,14 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 public enum PlayerState
 {
     PlayerIdle,
-    PlayerWalking,
+    PlayerMooving,
     PlayerJumping,
     PlayerFalling
 }
@@ -20,48 +16,81 @@ public class PlayerController : Character
     public PlayerInputs inputs { get; private set; }
     public StateMachine<PlayerState> stateMachine { get; } = new();
 
+    [Header("MOVEMENT")]
+    [SerializeField] float walkSpeed = 10;
+    [SerializeField] float runSpeed = 15;
     [SerializeField] float acceleration = 90;
     [SerializeField] float deAcceleration = 60f;
-    [SerializeField] float groundCheckRadius = 1;
 
     float horizontalInput = 0;
 
-    [SerializeField] float jumpAbortForce=2;
+    [Header("JUMP")]
+    [SerializeField] float jumpForce=10;
+    [SerializeField] float jumpAbortForce = 50;
+    [SerializeField] float maxJumpHeight = 5;
 
-    [SerializeField] private float _minFallSpeed = 1f;
-    [SerializeField] private float _maxFallSpeed = 15f;
+    [Header("GROUND")]
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] Transform groundCheck;
+    [SerializeField] float groundCheckRadius = 1;
 
-    bool isJumping = false;
-    bool isFalling = false;
-    bool isMooving = false;
+    [Header("FALL")]
+    [SerializeField] float _minFallSpeed = 15f;
+    [SerializeField] float _maxFallSpeed = 30f;
+    
+    Vector2 jumpStartPoint;
 
+    public bool isJumping = false;
+    public bool isFalling = false;
+    public bool isMooving = false;
+    public bool isRunning = false;
+
+    Rigidbody2D rBody;
+
+    bool grounded = false;
+    float horizontalMovement = 0;
+
+    //da usare per l'abilità
+    public bool canDoubleJump;
+    bool doubleJump = false;
+
+    public float verticalSpeed=0;
+    public float horizontalSpeed = 0;
+
+    #region UnityFunctions
 
     private void OnEnable()
     {
         inputs = new PlayerInputs();
         inputs.Player.Enable();
 
-        inputs.Player.Move.performed += SetHorizontalInput;
-        inputs.Player.Move.canceled += SetHorizontalInput;
+        inputs.Player.Walk.performed += SetHorizontalInput;
+        inputs.Player.Walk.canceled += SetHorizontalInput;
 
-        inputs.Player.Jump.performed += Jump;
+        inputs.Player.Run.performed += RunInput;
+        inputs.Player.Run.canceled += RunInput;
+
+        inputs.Player.Jump.performed += JumpInput;
     }
-
 
     private void Awake()
     {
-        if (instance == null)
+       // if (instance == null)
             instance = this;
-        else
-            Destroy(gameObject);
+        //else
+        //    Destroy(gameObject);
     }
 
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
         rBody = GetComponent<Rigidbody2D>();
 
         stateMachine.RegisterState(PlayerState.PlayerIdle, new PlayerIdleState(this));
+        stateMachine.RegisterState(PlayerState.PlayerJumping, new PlayerJumpingState(this));
+        stateMachine.RegisterState(PlayerState.PlayerFalling, new PlayerFallingState(this));
+        stateMachine.RegisterState(PlayerState.PlayerMooving, new PlayerMoovingState(this));
+        stateMachine.SetState(PlayerState.PlayerIdle);
     }
 
 
@@ -69,30 +98,47 @@ public class PlayerController : Character
     {
         stateMachine.StateUpdate();
 
-        if (Input.GetKeyDown(KeyCode.R))
+        // da cambiare per l'abilità
+        if (Input.GetKeyDown(KeyCode.G))
             InvertGravity();
+    }
 
-        CalculateWalk();
-        AbortJump();
-        CalculateFallSpeed();
-        
+    public  void FixedUpdate()
+    {
+        GroundCheck();
+    }
+
+    public void OnDrawGizmos()
+    {
+        if (groundCheck != null)
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y + maxJumpHeight, 0));
     }
 
 
-    //private void OnDisable()
-    //{
-    //    horizontalMovement = 0;
-
-    //    inputs.Player.Move.performed -= SetHorizontalInput;
-    //    inputs.Player.Move.canceled -= SetHorizontalInput;
-
-    //    inputs.Player.Disable();
-    //}
-
-
-    private void Jump(InputAction.CallbackContext obj)
+    private void OnDisable()
     {
-        Jump();
+        horizontalMovement = 0;
+
+        inputs.Player.Walk.performed -= SetHorizontalInput;
+        inputs.Player.Walk.canceled -= SetHorizontalInput;
+
+        inputs.Player.Run.performed -= RunInput;
+        inputs.Player.Run.canceled -= RunInput;
+
+        inputs.Player.Jump.performed -= JumpInput;
+
+        inputs.Player.Disable();
+    }
+
+    #endregion
+
+    #region Inputs
+
+    private void JumpInput(InputAction.CallbackContext obj)
+    {
+        CheckJump();
     }
 
     private void SetHorizontalInput(InputAction.CallbackContext obj)
@@ -100,9 +146,52 @@ public class PlayerController : Character
         horizontalInput = obj.ReadValue<float>();
     }
 
-    private void CalculateFallSpeed()
+    private void RunInput(InputAction.CallbackContext obj)
     {
-        if (rBody.gravityScale > 0)
+        isRunning = obj.performed;
+    }
+
+    #endregion
+
+    #region Movement
+
+    public void CalculateHorizontalMovement()
+    {
+        if (horizontalInput != 0)
+        {
+            //calcolo movimento
+            horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
+
+            //controllo per la corsa
+            if (!isRunning)
+                horizontalMovement = Mathf.Clamp(horizontalMovement, -walkSpeed, walkSpeed);
+            else
+                horizontalMovement = Mathf.Clamp(horizontalMovement, -runSpeed, runSpeed);
+
+        }
+        else
+        {
+            //decellerazione se non c'è input
+            horizontalMovement = Mathf.MoveTowards(horizontalMovement, 0, deAcceleration * Time.deltaTime);
+        }
+
+
+        if (horizontalMovement == 0)
+            isMooving = false;
+        else
+            isMooving = true;
+
+
+        //da levare
+        verticalSpeed = rBody.velocity.y;
+        horizontalSpeed = rBody.velocity.x;
+
+        rBody.velocity = new Vector2(horizontalMovement, rBody.velocity.y);
+    }
+
+    public void CalculateFallSpeed()
+    {
+        if (IsGravityDownward())
         {
             if (rBody.velocity.y < 0)
             {
@@ -110,7 +199,7 @@ public class PlayerController : Character
                 isFalling = true;
             }
         }
-        else if (rBody.gravityScale < 0)
+        else
         {
             if (rBody.velocity.y > 0)
             {
@@ -120,70 +209,113 @@ public class PlayerController : Character
         }
     }
 
-    private void CalculateWalk()
-    {
-        if (horizontalInput != 0)
-        {
-            horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
-
-            horizontalMovement = Mathf.Clamp(horizontalMovement, -maxSpeed, maxSpeed);
-        }
-        else
-        {
-            horizontalMovement = Mathf.MoveTowards(horizontalMovement, 0, deAcceleration * Time.deltaTime);
-        }
-        rBody.velocity = new Vector2(horizontalMovement, rBody.velocity.y);
-    }
-
-    
-
-
-    public override void Jump()
+    public void CheckJump()
     {
         if (grounded)
         {
-            isJumping = true;
-           rBody.AddForce(Vector2.up * jumpForce * rBody.gravityScale, ForceMode2D.Impulse);
+            //salto
+            Jump();
         }
-    }
-
-    private void AbortJump()
-    {
-        if(rBody.gravityScale > 0) 
-        { 
-            if (rBody.velocity.y > 0 && inputs.Player.Jump.WasReleasedThisFrame())
-            {
-                isJumping = false;
-                rBody.velocity = new Vector2(rBody.velocity.x, rBody.velocity.y / jumpAbortForce);
-            }
-        }
-
-        if(rBody.gravityScale < 0)
+        else if (canDoubleJump && !grounded && doubleJump)
         {
-            if (rBody.velocity.y < 0 && inputs.Player.Jump.WasReleasedThisFrame())
+            //doppio salto se possibile
+            Jump();
+            doubleJump = false;
+        }
+    }
+
+    private void Jump()
+    {
+        rBody.velocity = new Vector2(rBody.velocity.x, 0);
+
+        //salto in base alla direzione della gravità
+        if (IsGravityDownward())
+        {
+            jumpStartPoint = transform.position;
+            rBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            isJumping = true;
+            isFalling = false;
+        }
+        else
+        {
+            jumpStartPoint = transform.position;
+            rBody.AddForce(Vector2.down * jumpForce, ForceMode2D.Impulse);
+            isJumping = true;
+            isFalling = false;
+        }
+    }
+
+    void CalculateMaxJumpHeightReached()
+    {
+        //controllo altezza massima del salto raggiunta
+        if (!isJumping)
+            return;
+
+        if (IsGravityDownward())
+        {
+            if (transform.position.y >= jumpStartPoint.y + maxJumpHeight)
+                isJumping = false;
+        }
+        else
+        {
+            if (transform.position.y <= jumpStartPoint.y - maxJumpHeight)
+                isJumping = false;
+        }
+
+    }
+
+    public void AbortJump()
+    {
+        CalculateMaxJumpHeightReached();
+
+        //Decellerazione alla fine del salto
+        if (IsGravityDownward())
+        {
+            if (rBody.velocity.y > 0 && !inputs.Player.Jump.IsPressed() || rBody.velocity.y > 0 && !isJumping)
             {
                 isJumping = false;
-                rBody.velocity = new Vector2(rBody.velocity.x, rBody.velocity.y / jumpAbortForce);
+                rBody.AddForce(Vector3.down * jumpAbortForce);
+            }
+        }
+        else
+        {
+            if (rBody.velocity.y < 0 && !inputs.Player.Jump.IsPressed() || rBody.velocity.y < 0 && !isJumping)
+            {
+                isJumping = false;
+                rBody.AddForce(Vector3.up * jumpAbortForce);
             }
         }
     }
 
+    #endregion
+
+    #region Functions
+
+    bool IsGravityDownward()
+    {
+        if (rBody.gravityScale >= 0)
+            return true;
+        else
+            return false;
+    }
+
+    //da usare per l'abilità
     public void InvertGravity()
     {
         rBody.gravityScale = -rBody.gravityScale;
-        transform.localScale =new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+        transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
     }
 
-    public override void GroundCheck()
+    public void GroundCheck()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
-        //if (grounded)
-        //    isFalling = false;
+
+        if (!isJumping && grounded)
+        {
+            doubleJump = true;
+            isFalling = false;
+        }
     }
 
-
-    public override void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
-    }
+    #endregion
 }

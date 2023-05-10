@@ -60,7 +60,7 @@ public class Checkpoint : MonoBehaviour
 
     public void SetCheckpoint()
     {
-        LevelMaster.instance.spawnPoint = transform;
+        LevelMaster.Instance.spawnPoint = transform;
         PubSub.Instance.Notify(EMessageType.CheckpointVisited, this);
     }
 }
