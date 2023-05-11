@@ -22,6 +22,7 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         inputs = new PlayerInputs();
+        inputs.Player.Enable();
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
         inputs.Player.Respawn.performed += OnRespawn;
@@ -44,6 +45,8 @@ public class LevelManager : MonoBehaviour
 
     private void OnDisable()
     {
+        inputs.Player.Disable();
+
         SceneManager.sceneLoaded -= OnLevelLoaded;
         inputs.Player.Respawn.performed -= OnRespawn;
     }
@@ -107,6 +110,7 @@ public class LevelManager : MonoBehaviour
     public void Respawn()
     {
         PlayerController.instance.gameObject.transform.position = spawnPoint.position;
+        PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }
 
 }

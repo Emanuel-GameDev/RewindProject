@@ -54,9 +54,6 @@ public class PlayerController : Character
     public bool canDoubleJump;
     bool doubleJump = false;
 
-    public float verticalSpeed=0;
-    public float horizontalSpeed = 0;
-
     #region UnityFunctions
 
     private void OnEnable()
@@ -75,15 +72,11 @@ public class PlayerController : Character
 
     private void Awake()
     {
-       // if (instance == null)
-            instance = this;
-        //else
-        //    Destroy(gameObject);
+        instance = this;
     }
 
     private void Start()
     {
-        //DontDestroyOnLoad(gameObject);
         rBody = GetComponent<Rigidbody2D>();
 
         stateMachine.RegisterState(PlayerState.PlayerIdle, new PlayerIdleState(this));
@@ -181,10 +174,6 @@ public class PlayerController : Character
         else
             isMooving = true;
 
-
-        //da levare
-        verticalSpeed = rBody.velocity.y;
-        horizontalSpeed = rBody.velocity.x;
 
         rBody.velocity = new Vector2(horizontalMovement, rBody.velocity.y);
     }
