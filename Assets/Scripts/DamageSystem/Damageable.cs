@@ -17,14 +17,25 @@ public class Damageable : MonoBehaviour
         set
         {
             _health = Mathf.Clamp(value, 0, maxHealth);
-            healthBar.UpdateHealthBar(_health);
+            healthBar?.UpdateHealthBar(_health);
+
+            if (_health == 0)
+            {
+                //da rivedere quando ci saranno le animazioni
+                Die();
+            }
         }
     }
 
     private void Start()
     {
+        SetMaxHealth();
+    }
+
+    public void SetMaxHealth()
+    {
         _health = maxHealth;
-        healthBar.InitializeHealthBar(_health);
+        healthBar?.InitializeHealthBar(_health);
     }
 
     private void ChangeHealth(int healthChanged)
@@ -42,4 +53,8 @@ public class Damageable : MonoBehaviour
         ChangeHealth(-healthToRemove);
     }
 
+    public void Die()
+    {
+        gameObject.SetActive(false);
+    }
 }

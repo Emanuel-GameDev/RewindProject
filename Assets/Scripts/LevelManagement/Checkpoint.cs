@@ -61,6 +61,7 @@ public class Checkpoint : MonoBehaviour
     public void SetCheckpoint()
     {
         LevelMaster.Instance.spawnPoint = transform;
+        PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
         PubSub.Instance.Notify(EMessageType.CheckpointVisited, this);
     }
 }

@@ -34,7 +34,6 @@ public class LevelMaster : MonoBehaviour
 
     private void Awake()
     {
-
         DontDestroyOnLoad(gameObject);
     }
 }

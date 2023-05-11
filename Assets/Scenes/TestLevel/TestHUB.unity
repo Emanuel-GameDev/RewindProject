@@ -2942,7 +2942,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 30, y: 40}
+  m_CellSize: {x: 100, y: 100}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -3213,11 +3213,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1e7c9fa27ffb64a9e6879017a4ee2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
-  runSpeed: 15
-  acceleration: 50
-  deAcceleration: 30
-  jumpForce: 10
+  walkSpeed: 15
+  runSpeed: 20
+  acceleration: 80
+  deAcceleration: 50
+  jumpForce: 15
   jumpAbortForce: 100
   maxJumpHeight: 5
   groundMask:
@@ -3232,8 +3232,6 @@ MonoBehaviour:
   isMooving: 0
   isRunning: 0
   canDoubleJump: 0
-  verticalSpeed: 0
-  horizontalSpeed: 0
 --- !u!50 &1394890125
 Rigidbody2D:
   serializedVersion: 4
