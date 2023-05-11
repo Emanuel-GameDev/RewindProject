@@ -3,25 +3,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
+using UnityEngine.InputSystem;
 
 public class AbilityWheel : MonoBehaviour
 {
     [SerializeField] Transform rotPoint;
     [SerializeField] Transform selectionSocket;
+    [SerializeField] float rotDuration;
+    [SerializeField] float rotAngle = 45.0f;
 
     private List<Transform> _sockets = new List<Transform>();
     private List<Transform> _images = new List<Transform>();
     private List<Ability> _abilitiesUnlocked = new List<Ability>();
 
-    private int currentIndex = 0;
     private int activeSockets = 0;
+    private float currentRot;
+    private bool isRotating = false;
+
+    private PlayerInputs inputs;
 
     private void Start()
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToWheel);
         SetupLists();
     }
-    
+
+    private void OnEnable()
+    {
+        inputs = new PlayerInputs();
+        inputs.UI.Enable();
+
+        inputs.UI.ScrollWheel.performed += ScrollInput;
+    }
+
+    private void OnDisable()
+    {
+        inputs.UI.Disable();
+
+        inputs.UI.ScrollWheel.performed -= ScrollInput;
+    }
+
     private void SetupLists()
     {
         // Ref to sockets
@@ -79,37 +101,75 @@ public class AbilityWheel : MonoBehaviour
         }
     }
 
-    private void Update()
+    IEnumerator Rotate(float duration, float rotation)
     {
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-        if (_abilitiesUnlocked.Count <= 2) return;
-
-        // Check mouse scroll
-        if (scroll > 0f)
+        isRotating = true;
+        float startRotation = rotPoint.GetComponent<RadialLayout>().StartAngle;
+        Debug.Log(startRotation);
+        float endRotation = startRotation + rotation;
+        float t = 0.0f;
+        while (t < duration)
         {
-            currentIndex = (currentIndex + 1) % activeSockets;
-            for (int i = 0; i < activeSockets; i++)
-            {
-                _images[i].SetParent(_sockets[(currentIndex + i) % activeSockets], false);
+            t += Time.deltaTime;
+            float zRotation = Mathf.Lerp(startRotation, endRotation, t / duration) % rotation;
+            rotPoint.GetComponent<RadialLayout>().StartAngle = zRotation;
+            rotPoint.GetComponent<RadialLayout>().UpdateLayout();
+            //_sockets[0].eulerAngles = new Vector3(_sockets[0].eulerAngles.x, _sockets[0].eulerAngles.y,
+            //zRotation);
 
-                // Notify holders if current active ability changed
-                if (_sockets[(currentIndex + i) % activeSockets] == selectionSocket)
-                    PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[i]);
-            }
+            yield return null;
         }
-        else if (scroll < 0f)
+        rotPoint.GetComponent<RadialLayout>().StartAngle = endRotation;
+        rotPoint.GetComponent<RadialLayout>().UpdateLayout();
+        isRotating = false;
+    }
+
+    private void ScrollInput(InputAction.CallbackContext scroll)
+    {
+        if (scroll.ReadValue<Vector2>().y > 0f)
         {
-            currentIndex = (currentIndex + activeSockets - 1) % activeSockets;
-
-            for (int i = 0; i < activeSockets; i++)
-            {
-                _images[(currentIndex + i) % activeSockets].SetParent(_sockets[activeSockets - 1 - i], false);
-
-                // Notify holders if current active ability changed
-                if (_sockets[activeSockets - 1 - i] == selectionSocket)
-                    PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[(currentIndex + i) % activeSockets]);
-            }
+            StartCoroutine(Rotate(rotDuration, rotAngle));
+        }
+        else if (scroll.ReadValue<Vector2>().y < 0f)
+        {
+            StartCoroutine(Rotate(rotDuration, -rotAngle));
         }
     }
+
+    //private void Update()
+    //{
+    //    float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+    //    //if (_abilitiesUnlocked.Count <= 2) return;
+
+    //    // Check mouse scroll
+    //    if (scroll > 0f && !isRotating)
+    //    {
+    //        //currentIndex = (currentIndex + 1) % activeSockets;
+    //        //for (int i = 0; i < activeSockets; i++)
+    //        //{
+    //        //    _images[i].SetParent(_sockets[(currentIndex + i) % activeSockets], false);
+
+    //        //    // Notify holders if current active ability changed
+    //        //    if (_sockets[(currentIndex + i) % activeSockets] == selectionSocket)
+    //        //        PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[i]);
+    //        //}
+
+    //        StartCoroutine(Rotate(rotDuration, rotAngle));
+    //    }
+    //    else if (scroll < 0f && !isRotating)
+    //    {
+    //        //currentIndex = (currentIndex + activeSockets - 1) % activeSockets;
+
+    //        //for (int i = 0; i < activeSockets; i++)
+    //        //{
+    //        //    _images[(currentIndex + i) % activeSockets].SetParent(_sockets[activeSockets - 1 - i], false);
+
+    //        //    // Notify holders if current active ability changed
+    //        //    if (_sockets[activeSockets - 1 - i] == selectionSocket)
+    //        //        PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[(currentIndex + i) % activeSockets]);
+    //        //}
+
+    //        //StartCoroutine(Rotate(rotDuration, -rotAngle));
+    //    }
 }
