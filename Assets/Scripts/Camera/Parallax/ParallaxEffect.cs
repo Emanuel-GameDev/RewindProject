@@ -12,8 +12,6 @@ public class ParallaxEffect : MonoBehaviour
     [SerializeField] float hParallaxRatio;
     [SerializeField] float vParallaxRatio;
 
-    public bool tmp = true;
-
 
     // Start is called before the first frame update
     void Start()
@@ -50,12 +48,9 @@ public class ParallaxEffect : MonoBehaviour
 
     private void VerticalParallaxEffect()
     {
-        if (tmp) return;
-
         // Move background var based
         float dist = (cam.transform.position.y * vParallaxRatio);
 
         transform.position = new Vector3(transform.position.x, startPosY + dist, transform.position.z);
-
     }
 }

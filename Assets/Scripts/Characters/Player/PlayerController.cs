@@ -47,7 +47,7 @@ public class PlayerController : Character
 
     Rigidbody2D rBody;
 
-    bool grounded = false;
+    [HideInInspector] public bool grounded = false;
     float horizontalMovement = 0;
 
     //da usare per l'abilità
