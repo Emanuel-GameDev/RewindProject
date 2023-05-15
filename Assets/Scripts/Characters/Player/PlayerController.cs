@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -66,6 +67,7 @@ public class PlayerController : Character
 
         inputs.Player.Run.performed += RunInput;
         inputs.Player.Run.canceled += RunInput;
+
 
         inputs.Player.Jump.performed += JumpInput;
     }

@@ -4,14 +4,13 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LevelSelectionButton : MonoBehaviour , IPointerClickHandler,IPointerEnterHandler,IPointerExitHandler
+public class LevelSelectionButton : MenuButton
 {
-    public int checkpointToLoadIndex;
-    RectTransform rect;
-    public bool unlocked;
+    [HideInInspector] public int checkpointToLoadIndex;
+    [HideInInspector] public bool unlocked;
 
 
-    public void OnPointerClick(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData eventData)
     {
         if (unlocked)
         {
@@ -20,20 +19,7 @@ public class LevelSelectionButton : MonoBehaviour , IPointerClickHandler,IPointe
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        //if (unlocked)
-        //    GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 1.1f, rect.localScale.y * 1.1f);
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        //if (unlocked)
-        //    GetComponent<RectTransform>().localScale = new Vector3(GetComponent<RectTransform>().localScale.x * 0.9f, rect.localScale.y * 0.9f);
-    }
-
-    
-
+    // da rivedere
     void Update()
     {
         if (unlocked)
