@@ -68,8 +68,15 @@ public class PlayerController : Character
         inputs.Player.Run.performed += RunInput;
         inputs.Player.Run.canceled += RunInput;
 
+        inputs.Player.OpenMenu.performed += OpenMenuInput;
 
         inputs.Player.Jump.performed += JumpInput;
+    }
+
+    private void OpenMenuInput(InputAction.CallbackContext obj)
+    {
+        GameManager.Instance.pauseMenuManager.OpenMenu(GameManager.Instance.pauseMenuManager.menus[0]);
+        inputs.Player.Disable();
     }
 
     private void Awake()
@@ -123,6 +130,8 @@ public class PlayerController : Character
         inputs.Player.Run.canceled -= RunInput;
 
         inputs.Player.Jump.performed -= JumpInput;
+
+        inputs.Player.OpenMenu.performed -= OpenMenuInput;
 
         inputs.Player.Disable();
     }

@@ -8,23 +8,50 @@ public class MenuManager : MonoBehaviour
 {
     public PlayerInputs inputs { get; private set; }
 
+
+    [HideInInspector] public Menu[] menus;
+
     private void OnEnable()
     {
         inputs = new PlayerInputs();
-        inputs.Player.Enable();
+        inputs.Menu.CloseMenu.performed += CloseMenuInput;
 
-        inputs.Menu.OpenMenu.performed += OpenMenuInput;
-
-        PlayerController.instance.inputs.Player.Disable();
+        menus = gameObject.GetComponentsInChildren<Menu>(true);
     }
 
-    private void OpenMenuInput(InputAction.CallbackContext obj)
+    public void OpenMenu(Menu menu)
+    {
+        inputs.Menu.Enable();
+        
+        menu.gameObject.SetActive(true);
+    }
+
+    private void CloseMenuInput(InputAction.CallbackContext obj)
+    {
+        CloseActiveMenu();
+    }
+
+    public void CloseActiveMenu()
     {
         
+        Menu menuToClose = GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1];
+
+        if (menuToClose.gameObject.activeSelf)
+        {
+            menuToClose.gameObject.SetActive(false);
+        }
+
+        if(menuToClose == menus[0])
+        {
+            PlayerController.instance.inputs.Player.Enable();
+
+            inputs.Menu.Disable();
+        }
     }
 
     private void OnDisable()
     {
-        PlayerController.instance.inputs.Player.Enable();
+        inputs.Menu.CloseMenu.performed -= CloseMenuInput;
+        //PlayerController.instance.inputs.Player.Enable();
     }
 }

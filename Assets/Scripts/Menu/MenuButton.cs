@@ -36,11 +36,16 @@ public class MenuButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         GetComponent<RectTransform>().localScale = new Vector3(normalSize.x - 0.1f, normalSize.y - 0.1f);
     }
 
-    // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
         buttonText = GetComponentInChildren<TextMeshProUGUI>();
         buttonText.color = baseColor;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         normalSize = GetComponent<RectTransform>().localScale;
     }
 

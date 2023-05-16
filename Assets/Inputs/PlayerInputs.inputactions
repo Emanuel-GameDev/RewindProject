@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "Hold(duration=0.3)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenMenu",
+                    "type": "Button",
+                    "id": "ffca9f9f-9253-4b53-b7c9-98ec420e1726",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -170,6 +179,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0375b3eb-17eb-4396-a91e-ba08741eb616",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "OpenMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -764,7 +784,7 @@
             "id": "0ccc0971-4893-4827-8779-97df1eb16e5f",
             "actions": [
                 {
-                    "name": "OpenMenu",
+                    "name": "CloseMenu",
                     "type": "Button",
                     "id": "d4a8d2da-6742-4133-9df8-502645405cd5",
                     "expectedControlType": "Button",
@@ -781,7 +801,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "OpenMenu",
+                    "action": "CloseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
