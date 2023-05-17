@@ -707,7 +707,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536140292}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 105.54, y: 6.2, z: 0}
+  m_LocalPosition: {x: 101.52, y: -3.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1729,9 +1729,12 @@ MonoBehaviour:
   jumpSpeed: 0.5
   searchRadius: 15
   arriveDistance: 0.01
+  distanceFromPlatformToJump: 2.5
+  yTollerance: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 769
+  raycastOrigins: {x: 1, y: 0}
 --- !u!195 &1560618334
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1742,7 +1745,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 100
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -1851,7 +1854,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1560618332}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 76.02, y: -3.39, z: 0}
+  m_LocalPosition: {x: 89.35, y: -3.47, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
