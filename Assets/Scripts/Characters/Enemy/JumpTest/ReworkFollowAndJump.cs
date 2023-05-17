@@ -1,13 +1,14 @@
+using NavMeshPlus.Components;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using NavMeshPlus.Components;
-using System;
 using UnityEngine.AI;
 
-public class EnemyFollowAndJump : MonoBehaviour
+public class ReworkFollowAndJump : MonoBehaviour
 {
     [SerializeField] GameObject target;
+    [SerializeField] float maxJumpHeight = 7f;
     [SerializeField] float maxJumpDistance = 7f;
     [SerializeField] float parabolaHeight = 1f;
     [SerializeField] float jumpSpeed = 0.1f; // velocità di movimento lungo la parabola
@@ -20,21 +21,15 @@ public class EnemyFollowAndJump : MonoBehaviour
 
     private NavMeshAgent navMeshAgent;
     private List<Collider2D> nearColliders = new();
-    private Collider2D nearestPlatform;
-    private float lerp = 0f; // il valore di interpolazione per muovere l'oggetto lungo la parabola
-    private Vector3 pointToJump = Vector3.zero;
-    private Vector3 startJumpPoint = Vector3.zero;
-    private Vector3 actualTargetPoint;
-    private Vector2 centerOfCollider;
-    private Vector2 raycastOrigin => new Vector2(transform.position.x + raycastOrigins.x, transform.position.y + raycastOrigins.y);
-
-    
-    private bool isSameHeight = true;
-    private bool thereIsFloor = true;
     private bool isJumping = false;
-   
-            
-      
+    private Vector3 pointToJump = Vector3.zero;
+    private float lerp = 0f; // il valore di interpolazione per muovere l'oggetto lungo la parabola
+    private Vector3 startJumpPoint = Vector3.zero;
+    private Vector2 centerOfCollider;
+    private Vector3 actualTargetPoint;
+    private bool canReachTarget = true;
+    private Collider2D nearestPlatform;
+    private Vector2 raycastOrigin => new Vector2(transform.position.x + raycastOrigins.x, transform.position.y + raycastOrigins.y);
 
 
 
@@ -49,105 +44,64 @@ public class EnemyFollowAndJump : MonoBehaviour
 
     private void Update()
     {
-        BoolsUpdate();
-        MoveUpdate();
-        
-        
         if (Input.GetKeyDown(KeyCode.E) && !isJumping)
         {
             FindPoint();
-            SetIsJumping(true);
+            isJumping = true;
+            startJumpPoint = transform.position;
+            lerp = 0f;
+        }
+
+        if (isJumping)
+        {
+            JumpToPoint(pointToJump, parabolaHeight);
+        }
+
+        if (target != null && !isJumping)
+        {
+            FollowTarget();
         }
     }
-
 
     //Gestione Follow
     //=============================================================================================================================
     #region Gestione Follow
 
-
-    private void MoveUpdate()
+    private void FollowTarget()
     {
-        if (isJumping)
+        if (CanReachTarget())
         {
-            JumpToPoint(pointToJump, parabolaHeight);
+            actualTargetPoint = new Vector3(target.transform.position.x, transform.position.y, transform.position.z);
         }
         else
         {
-            if (!isSameHeight)
+            if (Mathf.Abs(transform.position.x - actualTargetPoint.x) < arriveDistance)
             {
-                if (Mathf.Abs(transform.position.x - actualTargetPoint.x) < arriveDistance)
-                {
-                    SetIsJumping(true);
-                }
-                else
-                {
-                    FindPoint();
-                    actualTargetPoint = startJumpPoint;
-                }
+                isJumping = true;
             }
-
-            if (!thereIsFloor)
+            else
             {
                 FindPoint();
-                if (Vector2.Distance(pointToJump, transform.position) < maxJumpDistance)
-                {
-                    actualTargetPoint = pointToJump;
-                    SetIsJumping(true);
-                }
-                else
-                {
-                    actualTargetPoint = transform.position;
-                }
+                actualTargetPoint = startJumpPoint;
             }
 
         }
 
         navMeshAgent.SetDestination(actualTargetPoint);
-
     }
 
-    private void SetIsJumping(bool value)
-    {
-        isJumping = value;
-        if (value)
-        {
-            lerp = 0;
-            startJumpPoint = transform.position;
-        }
-    }
-
-    private void BoolsUpdate()
-    {
-        //Controllo se sta saltando e se è arrivatoa  destinazione
-        if (isJumping)
-        {
-            if (Vector2.Distance(pointToJump, transform.position) < arriveDistance)
-            {
-                SetIsJumping(false);
-            }
-        }
-        else
-        {
-            //Controllo dell'altezza del Target
-            isSameHeight = CheckTargetHeight();
-
-            //Controllo del Pavimento
-            thereIsFloor = FloorPrsence();
-        }
-
-    }
-
-    private bool CheckTargetHeight()
+    private bool CanReachTarget()
     {
         if (MathF.Abs(target.transform.position.y - transform.position.y) > heightDifferenceTollerance)
         {
-            return false;
+            canReachTarget = false;
         }
         else
         {
-            return true;
+            canReachTarget = true;
         }
+
+        return canReachTarget;
     }
 
     #endregion
@@ -162,7 +116,7 @@ public class EnemyFollowAndJump : MonoBehaviour
         Vector2 size = collider.bounds.size;
         float offsetX = size.x / 2f;
         float offsetY = size.y / 2f;
-        Vector2 distances = new Vector2(offsetX,offsetY);
+        Vector2 distances = new Vector2(offsetX, offsetY);
         return distances;
     }
 
@@ -193,25 +147,28 @@ public class EnemyFollowAndJump : MonoBehaviour
 
     private Collider2D FindClosestCollider()
     {
-        Vector2 position = transform.position;
-        Vector2 targetPosition = target.transform.position;
+        Vector3 position = transform.position;
+        Vector3 targetPosition = target.transform.position;
         Collider2D closestCollider = null;
         float closestDistance = float.MaxValue;
 
         foreach (Collider2D collider in nearColliders)
         {
-            Vector2 directionToCollider = new Vector2(collider.transform.position.x - position.x, collider.transform.position.y - position.y);
-            float dotProduct = Vector2.Dot(directionToCollider, targetPosition - position);
-            if (dotProduct > 0)
+            float yDifference = Mathf.Abs(position.y - collider.transform.position.y);
+            if (yDifference <= maxJumpHeight)
             {
-                float distance = Vector2.Distance(position, collider.transform.position);
-                if (distance <= maxJumpDistance && distance < closestDistance)
+                Vector3 directionToCollider = collider.transform.position - position;
+                float dotProduct = Vector3.Dot(directionToCollider, targetPosition - position);
+                if (dotProduct > 0)
                 {
-                   closestDistance = distance;
-                   closestCollider = collider;
+                    float distance = Vector3.Distance(position, collider.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestCollider = collider;
+                    }
                 }
             }
-            
         }
 
         return closestCollider;
@@ -230,6 +187,11 @@ public class EnemyFollowAndJump : MonoBehaviour
         float y = Mathf.Lerp(startJumpPoint.y, pointToJump.y, lerp) + maxYJump * Mathf.Sin(Mathf.Lerp(0f, Mathf.PI, lerp));
 
         transform.position = new Vector3(x, y, 0);
+
+        if (Vector2.Distance(pointToJump, transform.position) < arriveDistance)
+        {
+            isJumping = false;
+        }
     }
 
     private Vector3 FindPointsForTheJump()
@@ -261,7 +223,7 @@ public class EnemyFollowAndJump : MonoBehaviour
 
             }
         }
-           
+
         return closestPoint;
     }
 
@@ -273,7 +235,7 @@ public class EnemyFollowAndJump : MonoBehaviour
     #region Raycast
     private bool FloorPrsence()
     {
-        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, maxJumpDistance, layerMask);
+        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, maxJumpHeight, layerMask);
 
         // Controlla se il raycast ha colpito un oggetto
         if (hit.collider != null)
@@ -301,9 +263,9 @@ public class EnemyFollowAndJump : MonoBehaviour
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, searchRadius);
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, maxJumpDistance);
+        Gizmos.DrawWireSphere(transform.position, maxJumpHeight);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(raycastOrigin, (new Vector2(raycastOrigin.x, raycastOrigin.y - maxJumpDistance)));
+        Gizmos.DrawLine(raycastOrigin, (new Vector2(raycastOrigin.x, raycastOrigin.y - maxJumpHeight)));
 
     }
 
@@ -316,5 +278,4 @@ public class EnemyFollowAndJump : MonoBehaviour
 
 
     #endregion
-
 }
