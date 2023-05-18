@@ -12,21 +12,32 @@ public class PlayerFallingState : State
 
     public override void Enter()
     {
-        base.Enter();
+        player.fallStartPoint = player.transform.position.y;
     }
 
     public override void Update()
     {
         player.CalculateHorizontalMovement();
+        player.AbortJump();
         player.CalculateFallSpeed();
 
         
+        if (player.isJumping)
+        {
+            player.stateMachine.SetState(PlayerState.PlayerJumping);
+        }
 
         if (!player.isFalling)
-            player.stateMachine.SetState(PlayerState.PlayerIdle);
+        {
+            if (player.CheckMaxFallDistanceReached())
+            {
+                player.GetComponent<Damageable>().TakeDamage(1);
+                GameManager.Instance.levelMaster.FastRespawn();
+            }
 
-        if (player.isJumping)
-            player.stateMachine.SetState(PlayerState.PlayerJumping);
+            player.stateMachine.SetState(PlayerState.PlayerIdle);
+        }
+
     }
 
     public override void Exit()

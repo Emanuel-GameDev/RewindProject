@@ -52,6 +52,5 @@ public class MenuManager : MonoBehaviour
     private void OnDisable()
     {
         inputs.Menu.CloseMenu.performed -= CloseMenuInput;
-        //PlayerController.instance.inputs.Player.Enable();
     }
 }

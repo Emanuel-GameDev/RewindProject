@@ -36,9 +36,12 @@ public class PlayerController : Character
     [SerializeField] float groundCheckRadius = 1;
 
     [Header("FALL")]
-    [SerializeField] float _minFallSpeed = 15f;
-    [SerializeField] float _maxFallSpeed = 30f;
-    
+    [SerializeField] float minFallSpeed = 15f;
+    [SerializeField] float maxFallSpeed = 30f;
+    [SerializeField] float maxFallDistanceWithoutTakingDamage = 5;
+
+    [HideInInspector] public float fallStartPoint;
+
     Vector2 jumpStartPoint;
 
     public bool isJumping = false;
@@ -116,6 +119,8 @@ public class PlayerController : Character
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
 
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y + maxJumpHeight, 0));
+
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - maxFallDistanceWithoutTakingDamage, 0));
     }
 
 
@@ -195,7 +200,7 @@ public class PlayerController : Character
         {
             if (rBody.velocity.y < 0)
             {
-                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, -_maxFallSpeed, -_minFallSpeed));
+                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, -maxFallSpeed, -minFallSpeed));
                 isFalling = true;
             }
         }
@@ -203,7 +208,7 @@ public class PlayerController : Character
         {
             if (rBody.velocity.y > 0)
             {
-                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, _minFallSpeed, _maxFallSpeed));
+                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, minFallSpeed, maxFallSpeed));
                 isFalling = true;
             }
         }
@@ -273,23 +278,47 @@ public class PlayerController : Character
         {
             if (rBody.velocity.y > 0 && !inputs.Player.Jump.IsPressed() || rBody.velocity.y > 0 && !isJumping)
             {
-                isJumping = false;
                 rBody.AddForce(Vector3.down * jumpAbortForce);
             }
+
+            if(rBody.velocity.y < 0)
+                isJumping = false;
         }
         else
         {
             if (rBody.velocity.y < 0 && !inputs.Player.Jump.IsPressed() || rBody.velocity.y < 0 && !isJumping)
             {
-                isJumping = false;
                 rBody.AddForce(Vector3.up * jumpAbortForce);
             }
+
+            if (rBody.velocity.y > 0)
+                isJumping = false;
         }
+        
     }
+
+    
 
     #endregion
 
     #region Functions
+
+
+    public bool CheckMaxFallDistanceReached()
+    {
+        if (IsGravityDownward())
+        {
+            if (maxFallDistanceWithoutTakingDamage < fallStartPoint - transform.position.y)
+                return true;
+        }
+        else
+        {
+            if (maxFallDistanceWithoutTakingDamage < fallStartPoint + transform.position.y)
+                return true;
+        }
+
+        return false;
+    }
 
     bool IsGravityDownward()
     {

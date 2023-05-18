@@ -9,44 +9,34 @@ using UnityEditor;
 
 public class MenuButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    TextMeshProUGUI buttonText;
+    TextMeshProUGUI buttonTextUI;
 
-    [SerializeField] Color baseColor;
-    [SerializeField] Color selectedColor;
+    [SerializeField] internal Color baseColor;
+    [SerializeField] internal Color selectedColor;
 
     [SerializeField] UnityEvent OnClick;
 
-    Vector3 normalSize;
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         OnClick.Invoke();
-        GetComponent<RectTransform>().localScale = new Vector3(normalSize.x - 0.1f, normalSize.y - 0.1f);
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        buttonText.color = selectedColor;
-        GetComponent<RectTransform>().localScale = new Vector3(normalSize.x+0.1f,normalSize.y+0.1f);
+        buttonTextUI.color = selectedColor;
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        buttonText.color = baseColor;
-        GetComponent<RectTransform>().localScale = new Vector3(normalSize.x - 0.1f, normalSize.y - 0.1f);
+        buttonTextUI.color = baseColor;
     }
 
 
-    private void OnEnable()
+    public virtual void OnEnable()
     {
-        buttonText = GetComponentInChildren<TextMeshProUGUI>();
-        buttonText.color = baseColor;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        normalSize = GetComponent<RectTransform>().localScale;
+        buttonTextUI = GetComponentInChildren<TextMeshProUGUI>();
+        buttonTextUI.color = baseColor;
     }
 
     public void LoadLevel(SceneAsset levelToLoad)

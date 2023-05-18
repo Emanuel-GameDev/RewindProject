@@ -6,7 +6,7 @@ public class Damager : MonoBehaviour
 {
     [SerializeField] int damage = 1;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Damageable>())
         {
