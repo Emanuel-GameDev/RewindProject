@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class MenuManager : MonoBehaviour
 {
+    public static MenuManager Instance;
+
     public PlayerInputs inputs { get; private set; }
 
 
@@ -13,6 +15,8 @@ public class MenuManager : MonoBehaviour
 
     private void OnEnable()
     {
+        Instance = this;
+
         inputs = new PlayerInputs();
         inputs.Menu.CloseMenu.performed += CloseMenuInput;
 

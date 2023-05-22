@@ -78,7 +78,8 @@ public class PlayerController : Character
 
     private void OpenMenuInput(InputAction.CallbackContext obj)
     {
-        GameManager.Instance.pauseMenuManager.OpenMenu(GameManager.Instance.pauseMenuManager.menus[0]);
+        if(MenuManager.Instance!=null)
+            MenuManager.Instance.OpenMenu(MenuManager.Instance.menus[0]);
         inputs.Player.Disable();
     }
 
@@ -303,17 +304,16 @@ public class PlayerController : Character
 
     #region Functions
 
-
     public bool CheckMaxFallDistanceReached()
     {
         if (IsGravityDownward())
         {
-            if (maxFallDistanceWithoutTakingDamage < fallStartPoint - transform.position.y)
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) - transform.position.y))
                 return true;
         }
         else
         {
-            if (maxFallDistanceWithoutTakingDamage < fallStartPoint + transform.position.y)
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) + transform.position.y))
                 return true;
         }
 

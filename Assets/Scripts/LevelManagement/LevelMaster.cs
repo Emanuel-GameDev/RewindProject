@@ -35,7 +35,7 @@ public class LevelMaster : MonoBehaviour
     {
         if(PlayerController.instance.grounded)
         {
-            if (fastRespawnTimer < 0.5f)
+            if (fastRespawnTimer < 0.8f)
                 fastRespawnTimer += Time.deltaTime;
             else
             {
