@@ -27,17 +27,14 @@ public class EnemyFollowAndJump : MonoBehaviour
     private Vector3 actualTargetPoint;
     private Vector2 centerOfCollider;
     private Vector2 raycastOrigin => FlipRaycast();
+    private float raycastDistance => maxJumpDistance - raycastOrigins.x*2f;
+    private float overlapSize = 0.25f;
 
-    
     private bool isSameHeight = true;
     private bool thereIsFloor = true;
     private bool isJumping = false;
    
-            
-      
-
-
-
+          
     //Start&Update
     //=============================================================================================================================
     void Start()
@@ -128,7 +125,6 @@ public class EnemyFollowAndJump : MonoBehaviour
             if (Vector2.Distance(pointToJump, transform.position) < arriveDistance)
             {
                 SetIsJumping(false);
-
             }
         }
 
@@ -136,7 +132,7 @@ public class EnemyFollowAndJump : MonoBehaviour
         isSameHeight = CheckTargetHeight();
 
         //Controllo del Pavimento
-        thereIsFloor = FloorPrsence();
+        thereIsFloor = FloorPresence();
     }
 
     private bool CheckTargetHeight()
@@ -182,6 +178,14 @@ public class EnemyFollowAndJump : MonoBehaviour
             if (collider.IsTouching(objectCollider))
             {
                 continue; // Se sono in contatto, passa al prossimo collider
+            }
+
+            if(nearestPlatform != null)
+            {
+                if(collider == nearestPlatform)
+                {
+                    continue;
+                }
             }
 
             NavMeshModifier modifier = collider.GetComponent<NavMeshModifier>();
@@ -298,14 +302,24 @@ public class EnemyFollowAndJump : MonoBehaviour
     //Raicast
     //=============================================================================================================================
     #region Raycast
-    private bool FloorPrsence()
+    private bool FloorPresence()
     {
-        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, maxJumpDistance, layerMask);
-
-        // Controlla se il raycast ha colpito un oggetto
-        if (hit.collider != null)
+        Collider2D circleHit = Physics2D.OverlapCircle(raycastOrigin, overlapSize,layerMask);
+        if (circleHit != null)
         {
             return true;
+        }
+
+        if(target.transform.position.x < transform.position.x)
+        {
+            RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, raycastDistance, layerMask);
+
+            // Controlla se il raycast ha colpito un oggetto
+            if (hit.collider != null)
+            {
+                return true;
+            }
+
         }
 
         return false;
@@ -316,16 +330,18 @@ public class EnemyFollowAndJump : MonoBehaviour
     {
         Vector2 raycastDirection;
         // Otteniamo la direzione del movimento
-        Vector3 moveDirection = navMeshAgent.desiredVelocity;
+        Vector3 moveDirection = Vector3.right;
+        if (navMeshAgent != null)
+            moveDirection = navMeshAgent.desiredVelocity;
 
-            if (moveDirection.x > 0)
-            {
-                raycastDirection = new Vector2(transform.position.x + raycastOrigins.x, transform.position.y + raycastOrigins.y);
-            }
-            else
-            {
-                raycastDirection = new Vector2(transform.position.x - raycastOrigins.x, transform.position.y + raycastOrigins.y);
-            }
+        if (moveDirection.x > 0)
+        {
+            raycastDirection = new Vector2(transform.position.x + raycastOrigins.x, transform.position.y + raycastOrigins.y);
+        }
+        else
+        {
+            raycastDirection = new Vector2(transform.position.x - raycastOrigins.x, transform.position.y + raycastOrigins.y);
+        }
         
 
         return raycastDirection;
@@ -350,7 +366,8 @@ public class EnemyFollowAndJump : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, maxJumpDistance);
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(raycastOrigin, (new Vector2(raycastOrigin.x, raycastOrigin.y - maxJumpDistance)));
+        Gizmos.DrawWireSphere(raycastOrigin, overlapSize);
+        Gizmos.DrawLine(raycastOrigin, (new Vector2(raycastOrigin.x, raycastOrigin.y - raycastDistance)));
         Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(startJumpPoint, 0.5f);
         Gizmos.color = Color.yellow;
