@@ -11,14 +11,7 @@ public class LevelSelectionButton : MenuButton
      public bool unlocked =false;
     TextMeshPro buttonText;
 
-    public override void OnPointerClick(PointerEventData eventData)
-    {
-        if (unlocked)
-        {
-            LevelMaster.Instance.spawnPointId = checkpointToLoadIndex;
-            GetComponentInParent<LevelDoor>().EnterDoor();
-        }
-    }
+    
 
     public override void OnPointerEnter(PointerEventData eventData)
     {

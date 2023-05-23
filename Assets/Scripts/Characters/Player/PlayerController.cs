@@ -40,6 +40,9 @@ public class PlayerController : Character
     [SerializeField] float maxFallSpeed = 30f;
     [SerializeField] float maxFallDistanceWithoutTakingDamage = 5;
 
+    [Header("OTHER")]
+    [SerializeField] float fastRespawnRefreshTimer = 0.5f;
+
     [HideInInspector] public float fallStartPoint;
 
     Vector2 jumpStartPoint;
@@ -76,14 +79,7 @@ public class PlayerController : Character
         inputs.Player.Jump.performed += JumpInput;
     }
 
-    private void OpenMenuInput(InputAction.CallbackContext obj)
-    {
-        if (MenuManager.Instance != null)
-        {
-            MenuManager.Instance.OpenMenu(MenuManager.Instance.menus[0]);
-            inputs.Player.Disable();
-        }
-    }
+    
 
     private void Awake()
     {
@@ -109,11 +105,25 @@ public class PlayerController : Character
         // da cambiare per l'abilità
         if (Input.GetKeyDown(KeyCode.G))
             InvertGravity();
+
     }
 
     public  void FixedUpdate()
     {
         GroundCheck();
+
+        if (grounded)
+        {
+            if (GameManager.Instance.levelMaster.fastRespawnTimer < fastRespawnRefreshTimer)
+                GameManager.Instance.levelMaster.fastRespawnTimer += Time.deltaTime;
+            else
+            {
+                GameManager.Instance.levelMaster.fastSpawnPoint = transform.position;
+                GameManager.Instance.levelMaster.fastRespawnTimer = 0;
+            }
+        }
+        else
+            GameManager.Instance.levelMaster.fastRespawnTimer = 0;
     }
 
     public void OnDrawGizmos()
@@ -161,6 +171,15 @@ public class PlayerController : Character
     private void RunInput(InputAction.CallbackContext obj)
     {
         isRunning = obj.performed;
+    }
+
+    private void OpenMenuInput(InputAction.CallbackContext obj)
+    {
+        if (MenuManager.Instance != null)
+        {
+            MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
+            inputs.Player.Disable();
+        }
     }
 
     #endregion

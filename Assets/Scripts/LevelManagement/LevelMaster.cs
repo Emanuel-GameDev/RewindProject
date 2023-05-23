@@ -14,7 +14,7 @@ public class LevelMaster : MonoBehaviour
     [HideInInspector] public Vector3 fastSpawnPoint;
     [HideInInspector] public int spawnPointId = 0;
 
-    float fastRespawnTimer = 0;
+    [HideInInspector] public float fastRespawnTimer = 0;
 
     private void OnEnable()
     {
@@ -31,21 +31,7 @@ public class LevelMaster : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
     
-    private void Update()
-    {
-        if(PlayerController.instance.grounded)
-        {
-            if (fastRespawnTimer < 0.8f)
-                fastRespawnTimer += Time.deltaTime;
-            else
-            {
-                fastSpawnPoint = PlayerController.instance.transform.position;
-                fastRespawnTimer = 0;
-            }
-        }
-        else
-            fastRespawnTimer = 0;
-    }
+   
 
     public void Respawn()
     {
@@ -60,7 +46,7 @@ public class LevelMaster : MonoBehaviour
 
     public void Teleport(GameObject objectToTeleport, Vector3 teleportPosition)
     {
-        objectToTeleport.transform.position = new Vector3(teleportPosition.x,teleportPosition.y,0) ;
+        objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0) ;
     }
 
     

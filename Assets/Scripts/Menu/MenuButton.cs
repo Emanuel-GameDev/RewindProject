@@ -32,7 +32,6 @@ public class MenuButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         buttonTextUI.color = baseColor;
     }
 
-
     public virtual void OnEnable()
     {
         buttonTextUI = GetComponentInChildren<TextMeshProUGUI>();

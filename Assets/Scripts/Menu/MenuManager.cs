@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -10,16 +11,25 @@ public class MenuManager : MonoBehaviour
 
     public PlayerInputs inputs { get; private set; }
 
-    [HideInInspector] public Menu[] menus;
+    [HideInInspector] public Menu[] submenus;
 
     private void OnEnable()
     {
-        Instance = this;
-
         inputs = new PlayerInputs();
         inputs.Menu.CloseMenu.performed += CloseMenuInput;
 
-        menus = gameObject.GetComponentsInChildren<Menu>(true);
+        submenus = GetComponentsInChildren<Menu>(true);
+    }
+
+
+    private void Start()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
+        DontDestroyOnLoad(gameObject);
     }
 
     public void OpenMenu(Menu menu)
@@ -36,7 +46,6 @@ public class MenuManager : MonoBehaviour
 
     public void CloseActiveMenu()
     {
-        
         Menu menuToClose = GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1];
 
         if (menuToClose.gameObject.activeSelf)
@@ -44,7 +53,7 @@ public class MenuManager : MonoBehaviour
             menuToClose.gameObject.SetActive(false);
         }
 
-        if(menuToClose == menus[0])
+        if(menuToClose == submenus[0])
         {
             PlayerController.instance.inputs.Player.Enable();
 
