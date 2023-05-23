@@ -182,7 +182,7 @@ public class EnemyFollowAndJump : MonoBehaviour
 
             if(nearestPlatform != null)
             {
-                if(collider == nearestPlatform)
+                if(collider == FrontOverlap())
                 {
                     continue;
                 }
@@ -304,13 +304,13 @@ public class EnemyFollowAndJump : MonoBehaviour
     #region Raycast
     private bool FloorPresence()
     {
-        Collider2D circleHit = Physics2D.OverlapCircle(raycastOrigin, overlapSize,layerMask);
+        Collider2D circleHit = FrontOverlap();
         if (circleHit != null)
         {
             return true;
         }
 
-        if(target.transform.position.x < transform.position.x)
+        if (target.transform.position.x < transform.position.x)
         {
             RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.down, raycastDistance, layerMask);
 
@@ -325,6 +325,10 @@ public class EnemyFollowAndJump : MonoBehaviour
         return false;
     }
 
+    private Collider2D FrontOverlap()
+    {
+        return Physics2D.OverlapCircle(raycastOrigin, overlapSize, layerMask);
+    }
 
     private Vector2 FlipRaycast()
     {
