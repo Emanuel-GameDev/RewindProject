@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 public class LevelSelectionButton : MenuButton
 {
     [HideInInspector] public int checkpointToLoadIndex;
-    [HideInInspector] public bool unlocked;
+     public bool unlocked =false;
     TextMeshPro buttonText;
 
     public override void OnPointerClick(PointerEventData eventData)

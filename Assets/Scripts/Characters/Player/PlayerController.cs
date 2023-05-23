@@ -78,9 +78,11 @@ public class PlayerController : Character
 
     private void OpenMenuInput(InputAction.CallbackContext obj)
     {
-        if(MenuManager.Instance!=null)
+        if (MenuManager.Instance != null)
+        {
             MenuManager.Instance.OpenMenu(MenuManager.Instance.menus[0]);
-        inputs.Player.Disable();
+            inputs.Player.Disable();
+        }
     }
 
     private void Awake()

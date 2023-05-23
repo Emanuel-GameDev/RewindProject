@@ -10,7 +10,6 @@ public class MenuManager : MonoBehaviour
 
     public PlayerInputs inputs { get; private set; }
 
-
     [HideInInspector] public Menu[] menus;
 
     private void OnEnable()
