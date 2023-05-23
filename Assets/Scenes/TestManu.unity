@@ -3281,6 +3281,7 @@ MonoBehaviour:
   cameraManager: {fileID: 540455070}
   abilityManager: {fileID: 1533999505}
   levelMaster: {fileID: 0}
+  pauseMenuManager: {fileID: 0}
 --- !u!1 &1135962023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4061,8 +4062,11 @@ MonoBehaviour:
     m_Bits: 8
   groundCheck: {fileID: 1251624168}
   groundCheckRadius: 0.5
-  _minFallSpeed: 1
-  _maxFallSpeed: 15
+  minFallSpeed: 15
+  maxFallSpeed: 30
+  maxFallDistanceWithoutTakingDamage: 5
+  fastRespawnRefreshTimer: 0.5
+  fallStartPoint: 0
   isJumping: 0
   isFalling: 0
   isMooving: 0
@@ -4651,6 +4655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotPoint: {fileID: 818058441}
   rotationAmount: 0
+  rotationSpeed: 0
 --- !u!95 &1501941501
 Animator:
   serializedVersion: 5
@@ -5713,7 +5718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2016892009
 Transform:
   m_ObjectHideFlags: 0
@@ -6145,6 +6150,10 @@ PrefabInstance:
     - target: {fileID: 5098983914508363125, guid: 8824333c960fb6a4eb88410a6472c81a, type: 3}
       propertyPath: m_Name
       value: TaroccoTorre
+      objectReference: {fileID: 0}
+    - target: {fileID: 5098983914508363125, guid: 8824333c960fb6a4eb88410a6472c81a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8824333c960fb6a4eb88410a6472c81a, type: 3}
