@@ -52,6 +52,5 @@ public class ParallaxEffect : MonoBehaviour
         float dist = (cam.transform.position.y * vParallaxRatio);
 
         transform.position = new Vector3(transform.position.x, startPosY + dist, transform.position.z);
-
     }
 }

@@ -20,8 +20,8 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerMovementInput>())
-            collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed += Interact;
+        if (collision.gameObject.GetComponent<PlayerController>())
+            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
     }
 
 
@@ -29,13 +29,13 @@ public class Checkpoint : MonoBehaviour
     {
         menu.SetActive(false);
 
-        if (collision.gameObject.GetComponent<PlayerMovementInput>())
-            collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed -= Interact;
+        if (collision.gameObject.GetComponent<PlayerController>())
+            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed -= Interact;
     }
 
     private void OnDisable()
     {
-        PlayerMovementInput.instance.inputs.Player.Interaction.performed -= Interact;
+        PlayerController.instance.inputs.Player.Interaction.performed -= Interact;
     }
 
     private void Interact(InputAction.CallbackContext obj)
@@ -60,7 +60,8 @@ public class Checkpoint : MonoBehaviour
 
     public void SetCheckpoint()
     {
-        LevelMaster.instance.spawnPoint = transform;
+        LevelMaster.Instance.spawnPoint = transform;
+        PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
         PubSub.Instance.Notify(EMessageType.CheckpointVisited, this);
     }
 }

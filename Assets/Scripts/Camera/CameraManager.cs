@@ -15,31 +15,33 @@ public class CameraManager : MonoBehaviour
     void Start()
     {
         PubSub.Instance.RegisterFunction(EMessageType.CameraSwitch, TriggerZoom);
-        Setup();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        TriggerCameras(false);
+        mainCam.gameObject.SetActive(true);
     }
 
     private void TriggerZoom(object obj)
     {
-        if (obj is not bool) return;
-        bool mode = (bool)obj;
+        if (obj is not CinemachineVirtualCamera) return;
 
-        mainCam.gameObject.SetActive(!mode);
-        cameras[0].gameObject.SetActive(mode);
+        CinemachineVirtualCamera camera = (CinemachineVirtualCamera)obj;
+
+        if (camera == mainCam)
+        {
+            mainCam.gameObject.SetActive(true);
+            TriggerCameras(false);
+        }
+        else
+        {
+            camera.gameObject.SetActive(true);
+            mainCam.gameObject.SetActive(false);
+        }
     }
 
-    private void Setup()
+    private void TriggerCameras(bool mode)
     {
         foreach (CinemachineVirtualCamera cam in cameras)
         {
-            cam.gameObject.SetActive(false);
+            cam.gameObject.SetActive(mode);
         }
-
-        mainCam.gameObject.SetActive(true);
     }
 }

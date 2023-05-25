@@ -16,11 +16,16 @@ public class LevelManager : MonoBehaviour
 
     Transform spawnPoint;
 
+    public PlayerInputs inputs { get; private set; }
+    
+
     private void OnEnable()
     {
+        inputs = new PlayerInputs();
+        inputs.Player.Enable();
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
-        PlayerMovementInput.instance.inputs.Player.Respawn.performed += OnRespawn;
+        inputs.Player.Respawn.performed += OnRespawn;
         SceneManager.sceneLoaded += OnLevelLoaded;
     }
 
@@ -31,17 +36,19 @@ public class LevelManager : MonoBehaviour
             checkpointsTaken[i] = checkpoints[i].taken;
         }
 
-        Checkpoint taken = (Checkpoint)obj;
+        Checkpoint taken = (Checkpoint) obj;
 
         spawnPoint = taken.transform;
 
-        LevelMaster.instance.levels[level.name] = checkpointsTaken;
+        LevelMaster.Instance.levels[level.name] = checkpointsTaken;
     }
 
     private void OnDisable()
     {
+        inputs.Player.Disable();
+
         SceneManager.sceneLoaded -= OnLevelLoaded;
-        PlayerMovementInput.instance.inputs.Player.Respawn.performed -= OnRespawn;
+        inputs.Player.Respawn.performed -= OnRespawn;
     }
 
     private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)
@@ -59,33 +66,40 @@ public class LevelManager : MonoBehaviour
 
     private void SetCheckpoint()
     {
+        if (checkpoints.Count < 1)
+            return;
+
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
             checkpoints[i].taken = checkpointsTaken[i];
         }
+
+        checkpoints[0].taken = true;
     }
 
     private void GetSpawnPoint()
     {
-        if (LevelMaster.instance.spawnPointId <= 0)
+        if (checkpoints.Count <1)
+            spawnPoint = transform;
+        else if (LevelMaster.Instance.spawnPointId <= 0)
             spawnPoint = checkpoints[0].transform;
         else
-            spawnPoint = checkpoints[LevelMaster.instance.spawnPointId].transform;
+            spawnPoint = checkpoints[LevelMaster.Instance.spawnPointId].transform;
     }
 
     private void GetTakenCheckpoint()
     {
-        if (!LevelMaster.instance.levels.ContainsKey(level.name))
+        if (!LevelMaster.Instance.levels.ContainsKey(level.name))
         {
             foreach (Checkpoint check in checkpoints)
             {
                 checkpointsTaken.Add(false);
             }
 
-            LevelMaster.instance.levels.Add(level.name, checkpointsTaken);
+            LevelMaster.Instance.levels.Add(level.name, checkpointsTaken);
         }
         else
-            checkpointsTaken = LevelMaster.instance.levels[level.name];
+            checkpointsTaken = LevelMaster.Instance.levels[level.name];
     }
 
     private void OnRespawn(InputAction.CallbackContext obj)
@@ -95,7 +109,8 @@ public class LevelManager : MonoBehaviour
 
     public void Respawn()
     {
-        PlayerMovementInput.instance.gameObject.transform.position = spawnPoint.position;
+        PlayerController.instance.gameObject.transform.position = spawnPoint.position;
+        PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }
 
 }

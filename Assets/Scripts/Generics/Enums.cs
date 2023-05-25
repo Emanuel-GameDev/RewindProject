@@ -5,6 +5,15 @@ using UnityEngine;
 public enum EMessageType
 {
     CameraSwitch,
-    CheckpointVisited
+    CheckpointVisited,
+    ActiveAbilityChanged,
+    AbilityPicked
+}
+
+public enum EAbilityState
+{
+    ready,
+    active,
+    cooldown
 }
 

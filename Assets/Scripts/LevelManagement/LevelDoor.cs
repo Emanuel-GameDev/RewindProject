@@ -28,35 +28,35 @@ public class LevelDoor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerMovementInput>())
-            collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed += Interact;
+        if (collision.gameObject.GetComponent<PlayerController>())
+            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerMovementInput>())
-            collision.gameObject.GetComponent<PlayerMovementInput>().inputs.Player.Interaction.performed -= Interact;
+        if (collision.gameObject.GetComponent<PlayerController>())
+            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed -= Interact;
 
         levelSelectionMenu.SetActive(false);
     }
 
     private void OnDisable()
     {
-        PlayerMovementInput.instance.inputs.Player.Interaction.performed -= Interact;
+        PlayerController.instance.inputs.Player.Interaction.performed -= Interact;
     }
 
     private void GetTakenCheckpoints()
     {
-        if (!LevelMaster.instance.levels.ContainsKey(levelToLoad.name))
+        if (!LevelMaster.Instance.levels.ContainsKey(levelToLoad.name))
             return;
 
-        if (LevelMaster.instance.levels[levelToLoad.name].Count > 0)
-            checkpointTaken = LevelMaster.instance.levels[levelToLoad.name];
+        if (LevelMaster.Instance.levels[levelToLoad.name].Count > 0)
+            checkpointTaken = LevelMaster.Instance.levels[levelToLoad.name];
     }
 
     private void KindleLights()
     {
-        for (int i = 0; i < checkpointTaken.Count; i++)
+        for (int i = 0; i < lights.Count; i++)
         {
             if (checkpointTaken[i] == true)
             {

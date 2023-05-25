@@ -15,7 +15,7 @@ public class LevelSelectionButton : MonoBehaviour , IPointerClickHandler,IPointe
     {
         if (unlocked)
         {
-            LevelMaster.instance.spawnPointId = checkpointToLoadIndex;
+            LevelMaster.Instance.spawnPointId = checkpointToLoadIndex;
             GetComponentInParent<LevelDoor>().EnterDoor();
         }
     }
