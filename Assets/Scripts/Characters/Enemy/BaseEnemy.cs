@@ -6,13 +6,13 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-[RequireComponent(typeof(Damageable))]
+
 [RequireComponent(typeof(BehaviorTree))]
 public class BaseEnemy : MonoBehaviour
 {
     [Header("Enemy Data")]
     [Tooltip("Imposta i punti vita del nemico")]
-    [SerializeField] float healtPoint = 2;
+    [SerializeField] int healtPoint = 2;
 
     [Header("Bheaviour Tree Data")]
     [Tooltip("Imposta l'angolo di rotazione del campo visivo del nemico")]
@@ -73,7 +73,9 @@ public class BaseEnemy : MonoBehaviour
         tree.SetVariableValue(RUN_SPEED, runSpeed);
         tree.SetVariableValue(STOP_DISTANCE, stopDistance);
         tree.SetVariableValue(TIME_BETWEEN_ATTACKS, timeBetweenAttacks);
-        damageable.Initilize(healtPoint);
+
+        if(damageable != null)
+            damageable.maxHealth = healtPoint;
     }
 
 
