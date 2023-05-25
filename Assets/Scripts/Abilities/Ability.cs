@@ -9,7 +9,6 @@ public abstract class Ability : MonoBehaviour
     public Sprite icon;
     public float activeTime;
     public float cooldownTime;
-    public bool unlocked = false;
 
     public virtual void Activate(GameObject parent)
     {

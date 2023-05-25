@@ -10,10 +10,10 @@ public class AbilityWheel : MonoBehaviour
 {
     //  ====== GENERAL ======
     [SerializeField] RectTransform rotPoint;
-    [SerializeField] RectTransform selectionSocket;
 
     private PlayerInputs inputs;
 
+    private Image selectionImage;
     private List<RectTransform> images = new List<RectTransform>();
     private int cardId = 0;
     private int numCards = 0;
@@ -47,7 +47,6 @@ public class AbilityWheel : MonoBehaviour
 
     private void Start()
     {
-        PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToWheel);
         SetUpLists();
     }
 
@@ -59,20 +58,14 @@ public class AbilityWheel : MonoBehaviour
         }
     }
 
-    private void AddToWheel(object obj)
+    public void AddToWheel(Ability ability)
     {
-        if (obj is not Ability) return;
-        Ability ability = obj as Ability;
-
         if (ability == null) return;
 
-        // Cambio abilità attiva agli holders
-        PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, ability);
-
-        // Parte nuova
         SetupCard(ability);
         numCards++;
 
+        UpdateSelectedAbility();
     }
 
     private void SetupCard(Ability ability)
@@ -113,10 +106,7 @@ public class AbilityWheel : MonoBehaviour
 
                 break;
         }
-
     }
-
-
 
     #endregion
 
@@ -185,6 +175,9 @@ public class AbilityWheel : MonoBehaviour
             newImage.sprite = shiftedImage.sprite;
             newImage.gameObject.SetActive(true);
             shiftedImage.gameObject.SetActive(false);
+
+            UpdateSelectedAbility();
+            
         }
         else
         {
@@ -196,6 +189,23 @@ public class AbilityWheel : MonoBehaviour
             newImage.sprite = shiftedImage.sprite;
             newImage.gameObject.SetActive(true);
             shiftedImage.gameObject.SetActive(false);
+
+            UpdateSelectedAbility();
+        }
+    }
+
+    private void UpdateSelectedAbility()
+    {
+        int middleIndex = (images.Count - 3) / 2;
+        int indexOffset = (cardId - 1) % images.Count;
+
+        int index = (middleIndex - indexOffset + images.Count) % images.Count;
+
+        Image newSelectedImage = images[index].GetComponent<Image>();
+        if (selectionImage != newSelectedImage)
+        {
+            PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, newSelectedImage);
+            selectionImage = newSelectedImage;
         }
     }
 
