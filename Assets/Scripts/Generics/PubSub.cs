@@ -3,46 +3,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class FunctionsList : Dictionary<EMessageType, List<Action<object>>> { }
+
 public class PubSub : MonoBehaviour
 {
     private static PubSub _instance;
-
     public static PubSub Instance
     {
         get
         {
-            if (_instance == null)
+            if (_instance != null)
             {
-                GameObject pubsubObject = new GameObject("# PubSub");
-                _instance = pubsubObject.AddComponent<PubSub>();
+                return _instance;
             }
+
+            GameObject pubsubObject = new GameObject("# PubSub");
+
+            _instance = pubsubObject.AddComponent<PubSub>();
+
             return _instance;
         }
     }
 
-    private Dictionary<eMessageType, List<Action<object>>> _registeredFunction = new();
+    private FunctionsList _registeredFunctions = new();
 
-    public void SendMessages(eMessageType messageType, object messageContent)
+    public void RegisterFunction(EMessageType messageType, Action<object> function)
     {
-        foreach (Action<object> function in _registeredFunction[messageType])
+        if (_registeredFunctions.ContainsKey(messageType))
         {
-            function.Invoke(messageContent);
-        }
-    }
-
-
-    public void RegisterFuncion(eMessageType messageType, Action<object> fuction)
-    {
-        if (_registeredFunction.ContainsKey(messageType))
-        {
-            _registeredFunction[messageType].Add(fuction);
+            _registeredFunctions[messageType].Add(function);
         }
         else
         {
             List<Action<object>> newList = new();
-            newList.Add(fuction);
+            newList.Add(function);
 
-            _registeredFunction.Add(messageType, newList);
+            _registeredFunctions.Add(messageType, newList);
+        }
+    }
+
+    public void Notify(EMessageType messageType, object messageContent)
+    {
+        foreach (Action<object> function in _registeredFunctions[messageType])
+        {
+            function.Invoke(messageContent);
         }
     }
 

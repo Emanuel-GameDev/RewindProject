@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum eMessageType
+public enum EMessageType
 {
-    Message1,
-    Message2
+    CameraSwitch,
+    CheckpointVisited
 }
+

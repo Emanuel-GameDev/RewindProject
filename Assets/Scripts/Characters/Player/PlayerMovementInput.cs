@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-[ RequireComponent(typeof(Character))]
-public class PlayerMovementInput : MonoBehaviour
+public class PlayerMovementInput : Character
 {
-    PlayerInputs inputs;
-    Character player;
+    public static PlayerMovementInput instance;
+    public PlayerInputs inputs { get; private set; }
+    //Character player;
 
     private void OnEnable()
     {
@@ -21,27 +22,53 @@ public class PlayerMovementInput : MonoBehaviour
         inputs.Player.Jump.performed += Jump;
     }
 
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
+
     private void Start()
     {
-        player = GetComponent<Character>();
+        DontDestroyOnLoad(gameObject);
+        rBody = GetComponent<Rigidbody2D>();
     }
 
-    private void OnDisable()
+
+    private void Update()
     {
-        player.horizontalMovement = 0;
-
-        inputs.Player.Move.performed -= SetMove;
-        inputs.Player.Move.canceled -= SetMove;
-        inputs.Player.Disable();
+        rBody.velocity = new Vector2(horizontalMovement * speed, rBody.velocity.y);
     }
+
+
+    //private void OnDisable()
+    //{
+    //    player.horizontalMovement = 0;
+
+    //    inputs.Player.Move.performed -= SetMove;
+    //    inputs.Player.Move.canceled -= SetMove;
+
+    //    inputs.Player.Disable();
+    //}
+
 
     private void Jump(InputAction.CallbackContext obj)
     {
-        player.Jump();
+        Jump();
     }
+
+    public override void Jump()
+    {
+        if (grounded)
+            rBody.AddForce(Vector2.up * jumpForce * rBody.gravityScale);
+    }
+
 
     private void SetMove(InputAction.CallbackContext obj)
     {
-        player.horizontalMovement = obj.ReadValue<float>();
+        horizontalMovement = obj.ReadValue<float>();
     }
+
 }

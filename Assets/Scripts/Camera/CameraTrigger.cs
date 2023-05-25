@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class CameraTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private bool hasToSwitch = true;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        // COntrollare che collision sia player
+        if (collision.gameObject.tag == "Player")
+        {
+            PubSub.Instance.Notify(EMessageType.CameraSwitch, hasToSwitch);
+        }
     }
 }

@@ -10,32 +10,27 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera mainCam;
     [SerializeField] List<CinemachineVirtualCamera> cameras = new List<CinemachineVirtualCamera>();
 
-    private CinemachineBrain brain;
-
-    // Per Debug
-    public bool switchCam = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        brain = Camera.main.gameObject.GetComponent<CinemachineBrain>();
+        PubSub.Instance.RegisterFunction(EMessageType.CameraSwitch, TriggerZoom);
         Setup();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (switchCam)
-        {
-            ActivateZoom();
-            switchCam = false;
-        }
+
     }
 
-    private void ActivateZoom()
+    private void TriggerZoom(object obj)
     {
-        mainCam.gameObject.SetActive(false);
-        cameras[0].gameObject.SetActive(true);
+        if (obj is not bool) return;
+        bool mode = (bool)obj;
+
+        mainCam.gameObject.SetActive(!mode);
+        cameras[0].gameObject.SetActive(mode);
     }
 
     private void Setup()
