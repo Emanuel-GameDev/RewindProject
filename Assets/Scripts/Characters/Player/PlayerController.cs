@@ -79,7 +79,6 @@ public class PlayerController : Character
         inputs.Player.Jump.performed += JumpInput;
     }
 
-    
 
     private void Awake()
     {
@@ -178,7 +177,7 @@ public class PlayerController : Character
         if (MenuManager.Instance != null)
         {
             MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
-            inputs.Player.Disable();
+            //inputs.Player.Disable();
         }
     }
 

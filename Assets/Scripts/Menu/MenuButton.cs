@@ -9,33 +9,46 @@ using UnityEditor;
 
 public class MenuButton : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    TextMeshProUGUI buttonTextUI;
+    internal TextMeshProUGUI buttonTextUI;
 
     [SerializeField] internal Color baseColor;
     [SerializeField] internal Color selectedColor;
 
-    [SerializeField] UnityEvent OnClick;
+    [SerializeField] internal UnityEvent OnClick;
 
+    public bool locked = false;
+    
 
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-        OnClick.Invoke();
+        if (!locked)
+            OnClick.Invoke();
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        buttonTextUI.color = selectedColor;
+        if (!locked)
+            buttonTextUI.color = selectedColor;
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        buttonTextUI.color = baseColor;
+        if (!locked)
+            buttonTextUI.color = baseColor;
     }
 
     public virtual void OnEnable()
     {
         buttonTextUI = GetComponentInChildren<TextMeshProUGUI>();
-        buttonTextUI.color = baseColor;
+
+        if (locked)
+        {
+            buttonTextUI.color = Color.gray;
+        }
+        else
+        {
+            buttonTextUI.color = baseColor;
+        }
     }
 
     public void LoadLevel(SceneAsset levelToLoad)

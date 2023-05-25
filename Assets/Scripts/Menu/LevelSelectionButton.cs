@@ -8,35 +8,30 @@ using UnityEngine.EventSystems;
 public class LevelSelectionButton : MenuButton
 {
     [HideInInspector] public int checkpointToLoadIndex;
-     public bool unlocked =false;
-    TextMeshPro buttonText;
 
-    
+    [HideInInspector] public TextMeshPro buttonText;
 
     public override void OnPointerEnter(PointerEventData eventData)
     {
+        if(!locked)
         buttonText.color = selectedColor;
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
-        buttonText.color = baseColor;
+        if (!locked)
+            buttonText.color = baseColor;
     }
 
     public override void OnEnable()
     {
         buttonText = GetComponentInChildren<TextMeshPro>();
         buttonText.color = baseColor;
-    }
 
-
-
-    // da rivedere
-    void Update()
-    {
-        if (!unlocked)
+        if (locked)
             buttonText.color = Color.gray;
     }
+
 
 
 }

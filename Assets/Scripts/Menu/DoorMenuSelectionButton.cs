@@ -5,11 +5,9 @@ using UnityEngine.EventSystems;
 
 public class DoorMenuSelectionButton : LevelSelectionButton
 {
-    
-
     public void EnterDoorWithSelectedCheckpoint()
     {
-        if (unlocked)
+        if (!locked)
         {
             LevelMaster.Instance.spawnPointId = checkpointToLoadIndex;
             GetComponentInParent<LevelDoor>().EnterDoor();
