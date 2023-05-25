@@ -5,20 +5,19 @@ using UnityEngine;
 
 public class AbilityManager : MonoBehaviour
 {
-    private List<ScriptableAbility> _abilities = new List<ScriptableAbility>();
+    private List<Ability> _abilities = new List<Ability>();
     
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
     private void Awake()
     {
-        _abilities = Resources.LoadAll<ScriptableAbility>("Abilities").ToList();
+        _abilities = Resources.LoadAll<Ability>("Abilities").ToList();
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
     }
 
     public List<Ability> GetUnlockedAbilities()
     {
-        return _abilities.Where(ability => ability.abilityPrefab.unlocked == true)
-                                .Select(ability => ability.abilityPrefab)
+        return _abilities.Where(ability => ability.unlocked == true)
                                 .ToList(); 
     }
 

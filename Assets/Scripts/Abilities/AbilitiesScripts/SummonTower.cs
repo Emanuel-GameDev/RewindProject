@@ -14,4 +14,9 @@ public class SummonTower : Ability
     {
         base.OnTriggerEnter2D(collision);
     }
+
+    public override void Start()
+    {
+        base.Start();
+    }
 }

@@ -16,12 +16,16 @@ public abstract class Ability : MonoBehaviour
         
     }
 
+    public virtual void Start()
+    {
+        icon = GetComponent<SpriteRenderer>().sprite;  
+    }
+
     public virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Character>() != null)
         {
-            Ability ability = GetComponent<Ability>();
-            PubSub.Instance.Notify(EMessageType.AbilityPicked, ability);
+            PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
             //Destroy(gameObject);
             gameObject.SetActive(false);
         }
