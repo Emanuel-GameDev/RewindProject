@@ -1,35 +1,48 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;   
 
 public class AbilityManager : MonoBehaviour
 {
-    private List<ScriptableAbility> _abilities = new List<ScriptableAbility>();
+    private List<Ability> _abilities = new List<Ability>();
     
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
+    [SerializeField] private AbilityWheel _wheel;
 
     private void Awake()
     {
-        _abilities = Resources.LoadAll<ScriptableAbility>("Abilities").ToList();
+        PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
     }
 
-    public List<Ability> GetUnlockedAbilities()
+    private void AddToAbilities(object obj)
     {
-        return _abilities.Where(ability => ability.abilityPrefab.unlocked == true)
-                                .Select(ability => ability.abilityPrefab)
-                                .ToList(); 
+        if (obj is not Ability) return;
+        Ability newAbility = (Ability)obj;
+
+        _abilities.Add(newAbility);
+
+        _wheel.AddToWheel(newAbility);
     }
 
     public void GiveAbility(object obj)
     {
-        if (obj is not Ability) return;
-        Ability ability = (Ability)obj;
+        if (obj is not Image) return;
+
+        Image abilityIcon = (Image)obj;
+        Ability newActiveAbility = GetAbilityFrom(abilityIcon);
 
         foreach (AbilityHolder holder in _holders)
         {
-            holder.activeAbility = ability;
+            holder.activeAbility = newActiveAbility;
         }
+    }
+
+    private Ability GetAbilityFrom(Image abilityIcon)
+    {
+        return _abilities.Where(ability => ability.icon == abilityIcon.sprite).First();
     }
 }

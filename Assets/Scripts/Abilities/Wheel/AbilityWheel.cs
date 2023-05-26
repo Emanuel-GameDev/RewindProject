@@ -8,27 +8,24 @@ using UnityEngine.InputSystem;
 
 public class AbilityWheel : MonoBehaviour
 {
-    [SerializeField] Transform rotPoint;
-    [SerializeField] Transform selectionSocket;
-    [SerializeField] float rotDuration;
-    [SerializeField] float rotAngle = 45.0f;
-
-    private List<Transform> _sockets = new List<Transform>();
-    private List<Transform> _images = new List<Transform>();
-    private List<Ability> _abilitiesUnlocked = new List<Ability>();
-
-    private int activeSockets = 0;
-    private float currentRot;
-    private bool isRotating = false;
+    //  ====== GENERAL ======
+    [SerializeField] RectTransform rotPoint;
 
     private PlayerInputs inputs;
 
-    private void Start()
-    {
-        PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToWheel);
-        SetupLists();
-    }
+    private Image selectionImage;
+    private List<RectTransform> images = new List<RectTransform>();
+    private int cardId = 0;
+    private int numCards = 0;
 
+    //  ====== SPECIFIC ======
+    [Header("ROTATION")]
+    [SerializeField] private float rotationAmount;
+    [SerializeField] private float rotationSpeed;
+
+    private bool isRotating = false;
+
+    #region Inputs
     private void OnEnable()
     {
         inputs = new PlayerInputs();
@@ -44,132 +41,174 @@ public class AbilityWheel : MonoBehaviour
         inputs.UI.ScrollWheel.performed -= ScrollInput;
     }
 
-    private void SetupLists()
+    #endregion
+
+    #region General
+
+    private void Start()
     {
-        // Ref to sockets
+        SetUpLists();
+    }
+
+    private void SetUpLists()
+    {
         for (int i = 0; i < rotPoint.childCount; i++)
         {
-            _sockets.Add(rotPoint.GetChild(i));
-
-            // Check if socket is visible
-            if (rotPoint.GetChild(i).gameObject.activeSelf)
-                activeSockets++;
-        }
-
-        // Ref to images
-        foreach (Transform t in _sockets)
-        {
-            _images.Add(t.GetChild(0));
+            images.Add(rotPoint.GetChild(i).GetChild(0).GetComponent<RectTransform>());
         }
     }
 
-    private void AddToWheel(object obj)
+    public void AddToWheel(Ability ability)
     {
-        if (obj == null || obj is not Ability) return;
-        Ability ability = (Ability)obj;
+        if (ability == null) return;
 
-        for (int i = 0; i < _sockets.Count; i++)
+        SetupCard(ability);
+        numCards++;
+
+        UpdateSelectedAbility();
+    }
+
+    private void SetupCard(Ability ability)
+    {
+        switch (numCards)
         {
-            // Check for buffer socket
-            if (!_sockets[i].gameObject.activeSelf)
-            {
-                _sockets[i].gameObject.SetActive(true);
-                activeSockets++;
-            }
+            // caso in cui ho preso la prima carta
+            case 0:
+                images[3].GetComponent<Image>().sprite = ability.icon;
+                images[3].gameObject.SetActive(true);
 
-            Image socketImage = _sockets[i].GetChild(0).GetComponent<Image>();
-            if (socketImage.sprite == null)
-            {
-                // Set icon
-                socketImage.sprite = ability.icon;
-
-                // Set alpha
-                Color tempColor = socketImage.color;
-                tempColor.a = 1f;
-                socketImage.color = tempColor;
-
-                // Add to list
-                ability.unlocked = true;
-                _abilitiesUnlocked.Add(ability);
-
-                // Notify holders if ability has been loaded in active socket
-                if (_sockets[i] == selectionSocket)
-                    PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, ability);
+                images[1].GetComponent<Image>().sprite = ability.icon;
+                images[1].gameObject.SetActive(true);
+                images[5].GetComponent<Image>().sprite = ability.icon;
+                images[5].gameObject.SetActive(true);
 
                 break;
-            }
+
+            // caso in cui ho preso la seconda carta
+            case 1:
+                images[4].GetComponent<Image>().sprite = ability.icon;
+                images[4].gameObject.SetActive(true);
+
+                images[2].GetComponent<Image>().sprite = ability.icon;
+                images[2].gameObject.SetActive(true);
+
+                images[0].GetComponent<Image>().sprite = ability.icon;
+                images[0].gameObject.SetActive(true);
+
+                images[6].GetComponent<Image>().sprite = ability.icon;
+                images[6].gameObject.SetActive(true);
+
+                break;
+
+            case 2:
+                images[0].GetComponent<Image>().sprite = ability.icon;
+                images[4].GetComponent<Image>().sprite = ability.icon;
+
+                break;
         }
     }
 
-    IEnumerator Rotate(float duration, float rotation)
+    #endregion
+
+    #region Scroll
+    private void ScrollInput(InputAction.CallbackContext scroll)
+    {
+        float scrollValue = scroll.ReadValue<Vector2>().y;
+        float currentRotation = rotPoint.localEulerAngles.z;
+
+        if (scrollValue > 0f && CanRotate())
+        {
+            Quaternion newRotation = Quaternion.Euler(0f, 0f, currentRotation + rotationAmount);
+
+            StartCoroutine(Rotate(newRotation, clockwise: true));
+
+        }
+        else if (scrollValue < 0f && CanRotate())
+        {
+            Quaternion newRotation = Quaternion.Euler(0f, 0f, currentRotation - rotationAmount);
+
+            StartCoroutine(Rotate(newRotation, clockwise: false));
+        }
+    }
+
+    private bool CanRotate()
+    {
+        bool canRotate = false;
+
+        if (numCards > 1 && !isRotating)
+            canRotate = true;
+
+        return canRotate;
+    }
+
+    private IEnumerator Rotate(Quaternion newRotation, bool clockwise)
     {
         isRotating = true;
-        float startRotation = rotPoint.GetComponent<RadialLayout>().StartAngle;
-        Debug.Log(startRotation);
-        float endRotation = startRotation + rotation;
-        float t = 0.0f;
-        while (t < duration)
+
+        // Loop finché l'angolo tra le due rotazioni non è vicino a 0
+        while (Quaternion.Angle(rotPoint.localRotation, newRotation) > 0.01f)
         {
-            t += Time.deltaTime;
-            float zRotation = Mathf.Lerp(startRotation, endRotation, t / duration) % rotation;
-            rotPoint.GetComponent<RadialLayout>().StartAngle = zRotation;
-            rotPoint.GetComponent<RadialLayout>().UpdateLayout();
-            //_sockets[0].eulerAngles = new Vector3(_sockets[0].eulerAngles.x, _sockets[0].eulerAngles.y,
-            //zRotation);
+            // Applico rotazione z
+            rotPoint.localRotation = Quaternion.Lerp(rotPoint.localRotation, newRotation, rotationSpeed * Time.deltaTime);
 
             yield return null;
         }
-        rotPoint.GetComponent<RadialLayout>().StartAngle = endRotation;
-        rotPoint.GetComponent<RadialLayout>().UpdateLayout();
+
         isRotating = false;
+        rotPoint.localRotation = newRotation;
+
+        // Controllo in base al tipo di rotazione se aumentare o diminuire l'indice della carta
+        cardId = clockwise ? cardId + 1 : cardId - 1;
+
+        UpdateCards(clockwise);
     }
 
-    private void ScrollInput(InputAction.CallbackContext scroll)
+    private void UpdateCards(bool clockwise)
     {
-        if (scroll.ReadValue<Vector2>().y > 0f)
+        if (clockwise)
         {
-            StartCoroutine(Rotate(rotDuration, rotAngle));
+            int index = (images.Count - 1 - (cardId % images.Count)) % images.Count;
+
+            Image newImage = images[(index + 1) % images.Count].GetComponent<Image>();
+            Image shiftedImage = images[index].GetComponent<Image>();
+
+            newImage.sprite = shiftedImage.sprite;
+            newImage.gameObject.SetActive(true);
+            shiftedImage.gameObject.SetActive(false);
+
+            UpdateSelectedAbility();
+            
         }
-        else if (scroll.ReadValue<Vector2>().y < 0f)
+        else
         {
-            StartCoroutine(Rotate(rotDuration, -rotAngle));
+            int index = (images.Count - 2 - (cardId % images.Count)) % images.Count;
+
+            Image newImage = images[index % images.Count].GetComponent<Image>();
+            Image shiftedImage = images[(index + 1) % images.Count].GetComponent<Image>();
+
+            newImage.sprite = shiftedImage.sprite;
+            newImage.gameObject.SetActive(true);
+            shiftedImage.gameObject.SetActive(false);
+
+            UpdateSelectedAbility();
         }
     }
 
-    //private void Update()
-    //{
-    //    float scroll = Input.GetAxis("Mouse ScrollWheel");
+    private void UpdateSelectedAbility()
+    {
+        int middleIndex = (images.Count - 3) / 2;
+        int indexOffset = (cardId - 1) % images.Count;
 
-    //    //if (_abilitiesUnlocked.Count <= 2) return;
+        int index = (middleIndex - indexOffset + images.Count) % images.Count;
 
-    //    // Check mouse scroll
-    //    if (scroll > 0f && !isRotating)
-    //    {
-    //        //currentIndex = (currentIndex + 1) % activeSockets;
-    //        //for (int i = 0; i < activeSockets; i++)
-    //        //{
-    //        //    _images[i].SetParent(_sockets[(currentIndex + i) % activeSockets], false);
+        Image newSelectedImage = images[index].GetComponent<Image>();
+        if (selectionImage != newSelectedImage)
+        {
+            PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, newSelectedImage);
+            selectionImage = newSelectedImage;
+        }
+    }
 
-    //        //    // Notify holders if current active ability changed
-    //        //    if (_sockets[(currentIndex + i) % activeSockets] == selectionSocket)
-    //        //        PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[i]);
-    //        //}
+    #endregion
 
-    //        StartCoroutine(Rotate(rotDuration, rotAngle));
-    //    }
-    //    else if (scroll < 0f && !isRotating)
-    //    {
-    //        //currentIndex = (currentIndex + activeSockets - 1) % activeSockets;
-
-    //        //for (int i = 0; i < activeSockets; i++)
-    //        //{
-    //        //    _images[(currentIndex + i) % activeSockets].SetParent(_sockets[activeSockets - 1 - i], false);
-
-    //        //    // Notify holders if current active ability changed
-    //        //    if (_sockets[activeSockets - 1 - i] == selectionSocket)
-    //        //        PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, _abilitiesUnlocked[(currentIndex + i) % activeSockets]);
-    //        //}
-
-    //        //StartCoroutine(Rotate(rotDuration, -rotAngle));
-    //    }
 }
