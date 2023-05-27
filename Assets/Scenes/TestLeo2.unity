@@ -177,7 +177,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 15
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1476,8 +1476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8585df80cec68954d91671e2ebadde8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <maxHealtPoint>k__BackingField: 3
-  <healtPoint>k__BackingField: 3
 --- !u!1 &949733545
 GameObject:
   m_ObjectHideFlags: 0
@@ -2052,6 +2050,8 @@ GameObject:
   - component: {fileID: 1924871654}
   - component: {fileID: 1924871655}
   - component: {fileID: 1924871656}
+  - component: {fileID: 1924871658}
+  - component: {fileID: 1924871657}
   m_Layer: 6
   m_Name: Test "Player"
   m_TagString: Player
@@ -2095,7 +2095,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &1924871652
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2226,3 +2226,36 @@ MonoBehaviour:
   rewindTimeWhenHitted: 5
   immunityTime: 5
   playerController: {fileID: 0}
+--- !u!95 &1924871657
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924871648}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a8c05dd2638868e49b8816508697fa79, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1924871658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924871648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 044b24eb1622fa448aac388700f60116, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

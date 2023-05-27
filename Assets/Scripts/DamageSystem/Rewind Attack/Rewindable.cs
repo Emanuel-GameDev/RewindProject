@@ -20,6 +20,7 @@ public class Rewindable : MonoBehaviour
     private int maxDataCount => (int)(maxRecordedTime * (1f / Time.fixedDeltaTime));
     private Rigidbody2D rb;
     public PlayerController playerController;
+    private SpriteRenderer spriteRenderer;
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class Rewindable : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         playerController = GetComponent<PlayerController>();  
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
     }
 
@@ -56,7 +58,7 @@ public class Rewindable : MonoBehaviour
 
     private void RecordData()
     {
-        RewindData data = new RewindData(transform.position, transform.rotation, transform.localScale);
+        RewindData data = new RewindData(transform.position, transform.rotation, transform.localScale, spriteRenderer.sprite, spriteRenderer.flipX);
 
         rewindData.Insert(0, data);
 
@@ -73,6 +75,8 @@ public class Rewindable : MonoBehaviour
             transform.position = rewindData[0].position;
             transform.rotation = rewindData[0].rotation;
             transform.localScale = rewindData[0].scale;
+            spriteRenderer.sprite = rewindData[0].sprite;
+            spriteRenderer.flipX = rewindData[0].spriteFlipX;
             rewindData.RemoveAt(0);
             rewindElapsedTime += Time.deltaTime;
         }
@@ -117,6 +121,13 @@ public class Rewindable : MonoBehaviour
     private void DisableImmunity()
     {
         isImmune = false;
+    }
+
+    public bool GetIsRewinding()
+    {
+        bool value = isRewinding;
+
+        return value;
     }
 
 }
