@@ -5,12 +5,17 @@ using UnityEngine;
 public class Damager : MonoBehaviour
 {
     [SerializeField] int damage = 1;
+    [SerializeField] LayerMask targetLayers;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Damageable>())
+       
+        if(IsInLayerMask(collision.gameObject.layer, targetLayers))
         {
-            DealDamage(collision.gameObject.GetComponent<Damageable>());
+            if (collision.gameObject.GetComponent<Damageable>())
+            {
+                DealDamage(collision.gameObject.GetComponent<Damageable>());
+            }
         }
     }
 
@@ -18,5 +23,14 @@ public class Damager : MonoBehaviour
     {
         damageable.TakeDamage(damage);
     }
-    
+
+    private bool IsInLayerMask(int layer, LayerMask layerMask)
+    {
+        // Converte la LayerMask in un intero bit a bit
+        int layerMaskValue = layerMask.value;
+
+        // Controlla se il bit corrispondente alla layer dell'oggetto è attivo
+        return (layerMaskValue & (1 << layer)) != 0;
+    }
+
 }
