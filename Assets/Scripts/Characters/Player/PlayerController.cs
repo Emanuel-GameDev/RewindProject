@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,11 +21,11 @@ public class PlayerController : Character
     [SerializeField] float runSpeed = 15;
     [SerializeField] float acceleration = 90;
     [SerializeField] float deAcceleration = 60f;
+    [SerializeField] float maxSlope = 45;
 
-    float horizontalInput = 0;
 
     [Header("JUMP")]
-    [SerializeField] float jumpForce=10;
+    [SerializeField] float jumpForce = 10;
     [SerializeField] float jumpAbortForce = 50;
     [SerializeField] float maxJumpHeight = 5;
 
@@ -42,6 +41,8 @@ public class PlayerController : Character
 
     [Header("OTHER")]
     [SerializeField] float fastRespawnRefreshTimer = 0.5f;
+    [SerializeField] PhysicsMaterial2D noFriction;
+    [SerializeField] PhysicsMaterial2D fullFriction;
 
     [HideInInspector] public float fallStartPoint;
 
@@ -51,11 +52,13 @@ public class PlayerController : Character
     public bool isFalling = false;
     public bool isMooving = false;
     public bool isRunning = false;
+    bool grounded = false;
 
     Rigidbody2D rBody;
 
-    [HideInInspector] public bool grounded = false;
+    float horizontalInput = 0;
     float horizontalMovement = 0;
+    float groundAngle = 0;
 
     //da usare per l'abilità
     public bool canDoubleJump;
@@ -96,9 +99,9 @@ public class PlayerController : Character
         stateMachine.SetState(PlayerState.PlayerIdle);
     }
 
-
     private void Update()
     {
+
         stateMachine.StateUpdate();
 
         // da cambiare per l'abilità
@@ -107,7 +110,7 @@ public class PlayerController : Character
 
     }
 
-    public  void FixedUpdate()
+    public void FixedUpdate()
     {
         GroundCheck();
 
@@ -133,6 +136,7 @@ public class PlayerController : Character
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y + maxJumpHeight, 0));
 
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - maxFallDistanceWithoutTakingDamage, 0));
+
     }
 
 
@@ -177,7 +181,7 @@ public class PlayerController : Character
         if (MenuManager.Instance != null)
         {
             MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
-            //inputs.Player.Disable();
+            inputs.Player.Disable();
         }
     }
 
@@ -211,15 +215,16 @@ public class PlayerController : Character
         else
             isMooving = true;
 
+        Vector2 relativMovement = Quaternion.Euler(0, 0, -groundAngle) * new Vector3(horizontalMovement, 0, 0);
 
-        rBody.velocity = new Vector2(horizontalMovement, rBody.velocity.y);
+        rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
 
     public void CalculateFallSpeed()
     {
         if (IsGravityDownward())
         {
-            if (rBody.velocity.y < 0)
+            if (rBody.velocity.y < -1 && !grounded)
             {
                 rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, -maxFallSpeed, -minFallSpeed));
                 isFalling = true;
@@ -227,13 +232,14 @@ public class PlayerController : Character
         }
         else
         {
-            if (rBody.velocity.y > 0)
+            if (rBody.velocity.y > 1 && !grounded)
             {
                 rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, minFallSpeed, maxFallSpeed));
                 isFalling = true;
             }
         }
     }
+    
 
     public void CheckJump()
     {
@@ -302,7 +308,7 @@ public class PlayerController : Character
                 rBody.AddForce(Vector3.down * jumpAbortForce);
             }
 
-            if(rBody.velocity.y < 0)
+            if (rBody.velocity.y < 0)
                 isJumping = false;
         }
         else
@@ -315,10 +321,44 @@ public class PlayerController : Character
             if (rBody.velocity.y > 0)
                 isJumping = false;
         }
-        
+
+    }
+    
+    public void CheckRotation()
+    {
+        RaycastHit2D[] hits = new RaycastHit2D[2];
+
+        int h;
+
+        if (IsGravityDownward())
+            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.down, hits, 1.5f);
+        else
+            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.up, hits, 1.5f);
+
+        if (h > 1)
+        { 
+            groundAngle = Mathf.Atan2(hits[1].normal.x, hits[1].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
+
+            transform.rotation = Quaternion.Euler(0, 0, -groundAngle / 2);
+        }
+
+        CheckSlope();
     }
 
-    
+    public void CheckSlope()
+    {//modifica la frizione in base a l'inclinazione del terreno
+        if (!isMooving)
+        {
+            if (Mathf.Abs(groundAngle) < maxSlope)
+                rBody.sharedMaterial = fullFriction;
+            else
+                rBody.sharedMaterial = noFriction;
+            
+        }
+        else
+            rBody.sharedMaterial = noFriction;
+
+    }
 
     #endregion
 
@@ -358,6 +398,7 @@ public class PlayerController : Character
     public void GroundCheck()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
+
 
         if (!isJumping && grounded)
         {
