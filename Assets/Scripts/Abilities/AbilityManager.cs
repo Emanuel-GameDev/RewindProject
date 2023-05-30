@@ -43,6 +43,6 @@ public class AbilityManager : MonoBehaviour
 
     private Ability GetAbilityFrom(Image abilityIcon)
     {
-        return _abilities.Where(ability => ability.icon == abilityIcon.sprite).First();
+        return _abilities.Where(ability => ability.icon == abilityIcon.sprite)?.First();
     }
 }

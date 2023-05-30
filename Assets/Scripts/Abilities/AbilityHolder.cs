@@ -6,7 +6,8 @@ public class AbilityHolder : Character
 {
     public Ability activeAbility;
 
-    private EAbilityState state = EAbilityState.ready; 
+    private EAbilityState state = EAbilityState.ready;
+    private float tmpCooldown; 
 
     [SerializeField] KeyCode interactKey;
 
@@ -20,6 +21,7 @@ public class AbilityHolder : Character
                 if (Input.GetKeyDown(interactKey))
                 {
                     activeAbility.Activate(gameObject);
+                    tmpCooldown = activeAbility.cooldownTime;
                     state = EAbilityState.active;
                 }
                 break;
@@ -34,9 +36,9 @@ public class AbilityHolder : Character
                 }
                 break;
             case EAbilityState.cooldown:
-                if (activeAbility.cooldownTime > 0)
+                if (tmpCooldown > 0)
                 {
-                    activeAbility.cooldownTime -= Time.deltaTime;
+                    tmpCooldown -= Time.deltaTime;
                 }
                 else
                 {
