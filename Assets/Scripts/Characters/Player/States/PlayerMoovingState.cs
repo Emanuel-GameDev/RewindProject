@@ -19,8 +19,8 @@ public class PlayerMoovingState : State
     {
         player.CalculateHorizontalMovement();
         player.CalculateFallSpeed();
+        player.CheckRotation();
 
-        
 
         if (!player.isMooving)
             player.stateMachine.SetState(PlayerState.PlayerIdle);
