@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public CameraManager cameraManager;
     public AbilityManager abilityManager;
     public LevelMaster levelMaster;
+    public MenuManager pauseMenuManager;
 
     private void Awake()
     {

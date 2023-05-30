@@ -14,7 +14,6 @@ public class LevelManager : MonoBehaviour
 
     Scene level;
 
-    Transform spawnPoint;
 
     public PlayerInputs inputs { get; private set; }
     
@@ -27,6 +26,7 @@ public class LevelManager : MonoBehaviour
 
         inputs.Player.Respawn.performed += OnRespawn;
         SceneManager.sceneLoaded += OnLevelLoaded;
+
     }
 
     private void SaveCheckpoints(object obj)
@@ -38,7 +38,7 @@ public class LevelManager : MonoBehaviour
 
         Checkpoint taken = (Checkpoint) obj;
 
-        spawnPoint = taken.transform;
+        GameManager.Instance.levelMaster.spawnPoint = taken.transform;
 
         LevelMaster.Instance.levels[level.name] = checkpointsTaken;
     }
@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
 
         SetCheckpoint();
 
-        Respawn();
+        GameManager.Instance.levelMaster.Respawn();
     }
 
     private void SetCheckpoint()
@@ -80,11 +80,11 @@ public class LevelManager : MonoBehaviour
     private void GetSpawnPoint()
     {
         if (checkpoints.Count <1)
-            spawnPoint = transform;
+            GameManager.Instance.levelMaster.spawnPoint = transform;
         else if (LevelMaster.Instance.spawnPointId <= 0)
-            spawnPoint = checkpoints[0].transform;
+            GameManager.Instance.levelMaster.spawnPoint = checkpoints[0].transform;
         else
-            spawnPoint = checkpoints[LevelMaster.Instance.spawnPointId].transform;
+            GameManager.Instance.levelMaster.spawnPoint = checkpoints[LevelMaster.Instance.spawnPointId].transform;
     }
 
     private void GetTakenCheckpoint()
@@ -104,13 +104,9 @@ public class LevelManager : MonoBehaviour
 
     private void OnRespawn(InputAction.CallbackContext obj)
     {
-        Respawn();
+        GameManager.Instance.levelMaster.Respawn();
     }
 
-    public void Respawn()
-    {
-        PlayerController.instance.gameObject.transform.position = spawnPoint.position;
-        PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
-    }
+    
 
 }
