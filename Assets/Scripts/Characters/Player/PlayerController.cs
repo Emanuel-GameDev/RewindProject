@@ -52,7 +52,7 @@ public class PlayerController : Character
     public bool isFalling = false;
     public bool isMooving = false;
     public bool isRunning = false;
-    bool grounded = false;
+    [HideInInspector] public bool grounded = false;
 
     Rigidbody2D rBody;
 
@@ -113,19 +113,22 @@ public class PlayerController : Character
     public void FixedUpdate()
     {
         GroundCheck();
-
-        if (grounded)
+        if (GameManager.Instance.levelMaster != null)
         {
-            if (GameManager.Instance.levelMaster.fastRespawnTimer < fastRespawnRefreshTimer)
-                GameManager.Instance.levelMaster.fastRespawnTimer += Time.deltaTime;
-            else
+            if (grounded)
             {
-                GameManager.Instance.levelMaster.fastSpawnPoint = transform.position;
-                GameManager.Instance.levelMaster.fastRespawnTimer = 0;
+                if (GameManager.Instance.levelMaster.fastRespawnTimer < fastRespawnRefreshTimer)
+                    GameManager.Instance.levelMaster.fastRespawnTimer += Time.deltaTime;
+                else
+                {
+                    GameManager.Instance.levelMaster.fastSpawnPoint = transform.position;
+                    GameManager.Instance.levelMaster.fastRespawnTimer = 0;
+                }
             }
+            else
+                GameManager.Instance.levelMaster.fastRespawnTimer = 0;
+
         }
-        else
-            GameManager.Instance.levelMaster.fastRespawnTimer = 0;
     }
 
     public void OnDrawGizmos()
@@ -239,7 +242,7 @@ public class PlayerController : Character
             }
         }
     }
-    
+
 
     public void CheckJump()
     {
@@ -323,7 +326,7 @@ public class PlayerController : Character
         }
 
     }
-    
+
     public void CheckRotation()
     {
         RaycastHit2D[] hits = new RaycastHit2D[2];
@@ -336,7 +339,7 @@ public class PlayerController : Character
             h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.up, hits, 1.5f);
 
         if (h > 1)
-        { 
+        {
             groundAngle = Mathf.Atan2(hits[1].normal.x, hits[1].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
 
             transform.rotation = Quaternion.Euler(0, 0, -groundAngle / 2);
@@ -353,7 +356,7 @@ public class PlayerController : Character
                 rBody.sharedMaterial = fullFriction;
             else
                 rBody.sharedMaterial = noFriction;
-            
+
         }
         else
             rBody.sharedMaterial = noFriction;

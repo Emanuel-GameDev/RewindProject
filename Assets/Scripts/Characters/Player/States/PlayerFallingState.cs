@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerFallingState : State
@@ -22,7 +20,7 @@ public class PlayerFallingState : State
         player.AbortJump();
         player.CalculateFallSpeed();
 
-        
+
         if (player.isJumping)
         {
             player.stateMachine.SetState(PlayerState.PlayerJumping);
@@ -32,8 +30,12 @@ public class PlayerFallingState : State
         {
             if (player.CheckMaxFallDistanceReached())
             {
-                player.GetComponent<Damageable>().TakeDamage(1);
-                GameManager.Instance.levelMaster.FastRespawn();
+                if (player.GetComponent<Damageable>() != null)
+                {
+                    player.GetComponent<Damageable>().TakeDamage(1);
+                    GameManager.Instance.levelMaster.FastRespawn();
+
+                }
             }
 
             player.stateMachine.SetState(PlayerState.PlayerIdle);
