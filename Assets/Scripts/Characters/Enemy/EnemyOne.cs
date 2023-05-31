@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class EnemyOne : BaseEnemy
 {
-    [Header("Bheaviour Tree Data")]
+    [Header("Specific Tree Data")]
     [Tooltip("Imposta l'angolo di rotazione del campo visivo del nemico")]
     [SerializeField] float viewRotation = 90;
     [Tooltip("Imposta l'ampiezza del campo visivo del nemico")]
@@ -28,7 +28,6 @@ public class EnemyOne : BaseEnemy
     protected NavMeshAgent navMeshAgent;
 
     //Nomi delle variabili nel behaviour tree
-    private const string TARGET = "Target";
     private const string VIEW_ROTATION = "View Rotation";
     private const string FIELD_OF_VIEW = "Field Of View Angle";
     private const string VIEW_DISTANCE = "View Distance";
@@ -66,16 +65,6 @@ public class EnemyOne : BaseEnemy
             }
         }
     }
-
-    public override void Awake()
-    {
-        base.Awake();
-        InitialSetup();
-        animator = GetComponent<Animator>();
-        attack = GetComponentInChildren<Damager>().gameObject;
-        EndAttack();
-    }
-
     public void Attack()
     {
         attack.SetActive(true);
@@ -87,8 +76,9 @@ public class EnemyOne : BaseEnemy
         attack.SetActive(false);
     }
 
-    private void InitialSetup()
+    protected override void InitialSetup()
     {
+        base.InitialSetup();
         tree.SetVariableValue(VIEW_ROTATION, viewRotation);
         tree.SetVariableValue(FIELD_OF_VIEW, fieldOfView);
         tree.SetVariableValue(VIEW_DISTANCE, viewDistance);
@@ -96,6 +86,10 @@ public class EnemyOne : BaseEnemy
         tree.SetVariableValue(RUN_SPEED, runSpeed);
         tree.SetVariableValue(STOP_DISTANCE, stopDistance);
         tree.SetVariableValue(TIME_BETWEEN_ATTACKS, timeBetweenAttacks);
+
+        animator = GetComponent<Animator>();
+        attack = GetComponentInChildren<Damager>().gameObject;
+        EndAttack();
     }
 
     private void NavmeshSetup()
@@ -105,9 +99,5 @@ public class EnemyOne : BaseEnemy
         navMeshAgent.updateUpAxis = false;
     }
 
-    public void SetTarget(GameObject target)
-    {
-        tree.SetVariableValue(TARGET, target);
-    }
 
 }

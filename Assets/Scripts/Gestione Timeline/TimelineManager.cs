@@ -12,12 +12,16 @@ public class TimelineManager : MonoBehaviour
     [SerializeField] PlayableDirector timelineDirector;
     [SerializeField] float timelineSpeed = 1.0f;
     [SerializeField] float timelineSpeedMultiplier = 2.0f;
+    [SerializeField] float lockTime = 5f;
     [SerializeField] List<TimeZone> timeZones;
 
     private float speed;
     private float timelineDuration;
     private PlayerInputs playerInputs;
     private eZone actualZone;
+    private bool isPlaying = false;
+    private bool isLocked = false;
+    private float elapsedTime = 0;
 
     //Instance
     //==========================================================================================================
@@ -44,6 +48,28 @@ public class TimelineManager : MonoBehaviour
     void Update()
     {
         TimelineControls();
+
+        if(Input.GetKeyDown(KeyCode.P)) { PlayCurrentTimeline(); } ///Temporanea per test
+        if (Input.GetKeyDown(KeyCode.O)) { LockInTime(); } ///Temporanea per test
+
+        if (isPlaying)
+        {
+            if(timelineDirector.time >= timelineDuration)
+            {
+                timelineDirector.Pause();
+                isPlaying = false;
+            }   
+        }
+
+        if (isLocked)
+        {
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime > lockTime) 
+            {
+                PlayCurrentTimeline();
+            }
+        }
+
     }
 
     private void Awake()
@@ -71,6 +97,10 @@ public class TimelineManager : MonoBehaviour
     {
         if (timelineDirector == null)
             timelineDirector = GetComponent<PlayableDirector>();
+
+        timelineDirector.playOnAwake = false;
+        timelineDirector.extrapolationMode = DirectorWrapMode.Hold;
+
     }
 
     private void CalculateDuration()
@@ -95,13 +125,13 @@ public class TimelineManager : MonoBehaviour
 
         if (rewindTime && timelineDirector.time > 0)
         {
-            timelineDirector.time -= speed;
+            timelineDirector.time -= speed * Time.deltaTime;
             timelineDirector.Evaluate();
         }
 
         if (forwardingTime && timelineDirector.time < timelineDuration)
         {
-            timelineDirector.time += speed;
+            timelineDirector.time += speed * Time.deltaTime;
             timelineDirector.Evaluate();
         }
     }
@@ -139,4 +169,19 @@ public class TimelineManager : MonoBehaviour
 
         actualZone = zone;
     }
+
+    public void PlayCurrentTimeline()
+    {
+        timelineDirector.Play();
+        isPlaying = true;
+    }
+
+    public void LockInTime()
+    {
+        isLocked = true;
+        isPlaying = false;
+        timelineDirector.Pause();
+        elapsedTime = 0;
+    }
+
 }

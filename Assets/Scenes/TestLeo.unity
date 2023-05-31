@@ -429,10 +429,10 @@ PlayableDirector:
   m_GameObject: {fileID: 531577898}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: cc7716878f697ea40a1c6654233ea0a7, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: c6f052c02120b064abcd026ae92c6ddd, type: 2}
   m_InitialState: 0
   m_WrapMode: 0
-  m_DirectorUpdateMode: 3
+  m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: 4462965120539279950, guid: c6f052c02120b064abcd026ae92c6ddd, type: 2}
@@ -441,6 +441,8 @@ PlayableDirector:
     value: {fileID: 166621165}
   - key: {fileID: 3741344692956509708, guid: cc7716878f697ea40a1c6654233ea0a7, type: 2}
     value: {fileID: 2132789844}
+  - key: {fileID: -8993782814698088546, guid: 90b94ff51cd72f24bbec8d9e33b6d0b7, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!114 &531577901
@@ -458,6 +460,7 @@ MonoBehaviour:
   timelineDirector: {fileID: 531577900}
   timelineSpeed: 0.005
   timelineSpeedMultiplier: 2
+  lockTime: 5
   timeZones:
   - zone: 0
     timeline: {fileID: 11400000, guid: c6f052c02120b064abcd026ae92c6ddd, type: 2}
