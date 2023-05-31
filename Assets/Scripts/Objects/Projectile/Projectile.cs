@@ -11,6 +11,13 @@ public class Projectile : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D body;
 
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        body = GetComponent<Rigidbody2D>();
+        body.isKinematic = true;
+    }
+
     void Update()
     {
         body.velocity = direction * speed * Time.deltaTime;
@@ -35,11 +42,11 @@ public class Projectile : MonoBehaviour
         this.direction = direction;
         if(direction == Vector2.left)
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipY = true;
         }
         else
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipY = false;
         }
         this.speed = speed;
         transform.position = position;

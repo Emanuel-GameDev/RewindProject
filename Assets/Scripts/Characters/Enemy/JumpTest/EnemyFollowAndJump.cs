@@ -114,7 +114,7 @@ public class EnemyFollowAndJump : MonoBehaviour
             startJumpPoint = transform.position;
         }
 
-        Debug.Log("Set Jumping: " + value);
+        //Debug.Log("Set Jumping: " + value);
     }
 
     private void BoolsUpdate()

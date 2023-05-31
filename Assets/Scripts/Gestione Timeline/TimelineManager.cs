@@ -11,11 +11,11 @@ public class TimelineManager : MonoBehaviour
 {
     [SerializeField] PlayableDirector timelineDirector;
     [SerializeField] float timelineSpeed = 1.0f;
-    [SerializeField] float timelineSpeedMultiplier = 2.0f;
+    //[SerializeField] float timelineSpeedMultiplier = 2.0f;
     [SerializeField] float lockTime = 5f;
     [SerializeField] List<TimeZone> timeZones;
 
-    private float speed;
+    //private float timelineSpeed;
     private float timelineDuration;
     private PlayerInputs playerInputs;
     private eZone actualZone;
@@ -47,29 +47,33 @@ public class TimelineManager : MonoBehaviour
 
     void Update()
     {
-        TimelineControls();
+        TimelineControls(); //da Togliere quando diventerà un'abilità
 
-        if(Input.GetKeyDown(KeyCode.P)) { PlayCurrentTimeline(); } ///Temporanea per test
-        if (Input.GetKeyDown(KeyCode.O)) { LockInTime(); } ///Temporanea per test
+        CheckIsPlaying();
+        CheckIsLocked();
+    }
 
-        if (isPlaying)
-        {
-            if(timelineDirector.time >= timelineDuration)
-            {
-                timelineDirector.Pause();
-                isPlaying = false;
-            }   
-        }
-
+    private void CheckIsLocked()
+    {
         if (isLocked)
         {
             elapsedTime += Time.deltaTime;
-            if (elapsedTime > lockTime) 
+            if (elapsedTime > lockTime)
             {
                 PlayCurrentTimeline();
             }
         }
+    }
 
+    private void CheckIsPlaying()
+    {
+        if (isPlaying)
+        {
+            if (timelineDirector.time >= timelineDuration)
+            {
+                PauseTimeline();
+            }
+        }
     }
 
     private void Awake()
@@ -110,30 +114,34 @@ public class TimelineManager : MonoBehaviour
 
     private void TimelineControls()
     {
-        bool speedUpTime = playerInputs.TimelineController.SpeedUpTime.ReadValue<float>() > 0;
+        //bool speedUpTime = playerInputs.TimelineController.SpeedUpTime.ReadValue<float>() > 0;
         bool forwardingTime = playerInputs.TimelineController.ForwardingTime.ReadValue<float>() > 0;
         bool rewindTime = playerInputs.TimelineController.RewindTime.ReadValue<float>() > 0;
 
-        if (speedUpTime)
+        if (Input.GetKeyDown(KeyCode.P)) { PlayCurrentTimeline(); } ///Temporanea per test
+        if (Input.GetKeyDown(KeyCode.O)) { LockInTime(); } ///Temporanea per test
+
+        //if (speedUpTime)
+        //{
+        //    speed = timelineSpeed * timelineSpeedMultiplier;
+        //}
+        //else
+        //{
+        //    speed = timelineSpeed;
+        //}
+
+        if (rewindTime)
         {
-            speed = timelineSpeed * timelineSpeedMultiplier;
-        }
-        else
-        {
-            speed = timelineSpeed;
+            RewindTimeline();
         }
 
-        if (rewindTime && timelineDirector.time > 0)
+        if (forwardingTime)
         {
-            timelineDirector.time -= speed * Time.deltaTime;
-            timelineDirector.Evaluate();
+            ForwardingTimeline();
         }
 
-        if (forwardingTime && timelineDirector.time < timelineDuration)
-        {
-            timelineDirector.time += speed * Time.deltaTime;
-            timelineDirector.Evaluate();
-        }
+
+
     }
 
     private void SetTime(float actualTime)
@@ -153,7 +161,9 @@ public class TimelineManager : MonoBehaviour
     {
         if(zone == actualZone) 
             return;
-        
+
+        PauseTimeline();
+
         TimeZone timezone = timeZones.Find(x => x.zone == zone);
         PlayableAsset timeline = timezone.timeline;
 
@@ -179,9 +189,32 @@ public class TimelineManager : MonoBehaviour
     public void LockInTime()
     {
         isLocked = true;
+        PauseTimeline();
+        elapsedTime = 0;
+    }
+
+    public void PauseTimeline()
+    {
         isPlaying = false;
         timelineDirector.Pause();
-        elapsedTime = 0;
+    }
+
+    public void RewindTimeline()
+    {
+        if (timelineDirector.time > 0)
+        {
+            timelineDirector.time -= timelineSpeed * Time.deltaTime;
+            timelineDirector.Evaluate();
+        }
+    }
+
+    public void ForwardingTimeline()
+    {
+        if (timelineDirector.time < timelineDuration)
+        {
+            timelineDirector.time += timelineSpeed * Time.deltaTime;
+            timelineDirector.Evaluate();
+        }
     }
 
 }
