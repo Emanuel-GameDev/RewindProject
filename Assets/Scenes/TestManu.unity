@@ -949,6 +949,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276229196}
   m_CullTransparentMesh: 1
+--- !u!1 &335419122 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1982189614669392607, guid: 6017ee8456ed03941be201570318bd30, type: 3}
+  m_PrefabInstance: {fileID: 5082305744404532161}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &335419127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335419122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b1fa40b64f21e44d8f1bdb41bd59367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: InvertGravity
+  icon: {fileID: 0}
+  activeTime: 0
+  cooldownTime: 2
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &433139128
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,8 +2104,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 839285089}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.2, y: 4, z: 0}
-  m_LocalScale: {x: 19.72, y: 1, z: 1}
+  m_LocalPosition: {x: -28.4, y: 8, z: 0}
+  m_LocalScale: {x: 19.72, y: 1.4185, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -5154,5 +5178,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AbilityDeath
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1321821263270293322, guid: 6017ee8456ed03941be201570318bd30, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6017ee8456ed03941be201570318bd30, type: 3}
