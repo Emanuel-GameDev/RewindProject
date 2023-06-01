@@ -828,6 +828,34 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Dialogue"",
+            ""id"": ""42052923-dd01-4a00-ad90-24023ff498e8"",
+            ""actions"": [
+                {
+                    ""name"": ""NextLyne"",
+                    ""type"": ""Button"",
+                    ""id"": ""57b51108-2a00-41cb-a9f3-14a6823421a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""628b8987-bbe6-4647-b111-e7302eca5de1"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""NextLyne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -921,6 +949,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_CloseMenu = m_Menu.FindAction("CloseMenu", throwIfNotFound: true);
+        // Dialogue
+        m_Dialogue = asset.FindActionMap("Dialogue", throwIfNotFound: true);
+        m_Dialogue_NextLyne = m_Dialogue.FindAction("NextLyne", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1290,6 +1321,52 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         }
     }
     public MenuActions @Menu => new MenuActions(this);
+
+    // Dialogue
+    private readonly InputActionMap m_Dialogue;
+    private List<IDialogueActions> m_DialogueActionsCallbackInterfaces = new List<IDialogueActions>();
+    private readonly InputAction m_Dialogue_NextLyne;
+    public struct DialogueActions
+    {
+        private @PlayerInputs m_Wrapper;
+        public DialogueActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @NextLyne => m_Wrapper.m_Dialogue_NextLyne;
+        public InputActionMap Get() { return m_Wrapper.m_Dialogue; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DialogueActions set) { return set.Get(); }
+        public void AddCallbacks(IDialogueActions instance)
+        {
+            if (instance == null || m_Wrapper.m_DialogueActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_DialogueActionsCallbackInterfaces.Add(instance);
+            @NextLyne.started += instance.OnNextLyne;
+            @NextLyne.performed += instance.OnNextLyne;
+            @NextLyne.canceled += instance.OnNextLyne;
+        }
+
+        private void UnregisterCallbacks(IDialogueActions instance)
+        {
+            @NextLyne.started -= instance.OnNextLyne;
+            @NextLyne.performed -= instance.OnNextLyne;
+            @NextLyne.canceled -= instance.OnNextLyne;
+        }
+
+        public void RemoveCallbacks(IDialogueActions instance)
+        {
+            if (m_Wrapper.m_DialogueActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IDialogueActions instance)
+        {
+            foreach (var item in m_Wrapper.m_DialogueActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_DialogueActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public DialogueActions @Dialogue => new DialogueActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1366,5 +1443,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     public interface IMenuActions
     {
         void OnCloseMenu(InputAction.CallbackContext context);
+    }
+    public interface IDialogueActions
+    {
+        void OnNextLyne(InputAction.CallbackContext context);
     }
 }
