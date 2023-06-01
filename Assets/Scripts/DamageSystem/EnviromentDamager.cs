@@ -6,7 +6,10 @@ public class EnviromentDamager : Damager
 {
     public override void OnTriggerEnter2D(Collider2D collision)
     {
-        base.OnTriggerEnter2D(collision);
-        GameManager.Instance.levelMaster.FastRespawn();
+        if (collision.gameObject.GetComponent<Damageable>())
+        {
+            GameManager.Instance.levelMaster.FastRespawn();
+            DealDamage(collision.gameObject.GetComponent<Damageable>());
+        }
     }
 }

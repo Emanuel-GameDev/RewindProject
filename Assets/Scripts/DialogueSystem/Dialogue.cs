@@ -8,6 +8,8 @@ public class Dialogue : MonoBehaviour
 {
     [SerializeField] Line[] lines;
     [SerializeField] float characterPerSecond;
+
+    [Header ("Boxes")]
     [SerializeField] TextMeshProUGUI speakerTextBox;
     [SerializeField] TextMeshProUGUI dialogueTextBox;
 
