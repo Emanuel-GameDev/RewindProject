@@ -19,6 +19,8 @@ public class MenuManager : MonoBehaviour
         inputs.Menu.CloseMenu.performed += CloseMenuInput;
 
         submenus = GetComponentsInChildren<Menu>(true);
+
+        
     }
 
 
@@ -29,11 +31,25 @@ public class MenuManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+
+        
         DontDestroyOnLoad(gameObject);
     }
 
     public void OpenMenu(Menu menu)
     {
+        foreach (Menu m in submenus)
+        {
+            if (m.unlocked)
+            {
+                foreach (Menu p in m.GetComponentsInParent<Menu>(true))
+                {
+                    p.unlocked = true;
+                }
+
+            }
+        }
+
         inputs.Menu.Enable();
         
         menu.gameObject.SetActive(true);

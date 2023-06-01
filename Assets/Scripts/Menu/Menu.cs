@@ -7,6 +7,12 @@ public class Menu : MonoBehaviour
     public List<NotificationDot> notificationsInThisMenu;
     public bool newNotificationsInThisMenu;
 
+    public bool unlocked = false;
+
+    private void OnEnable()
+    {
+        
+    }
 
     private void Start()
     {

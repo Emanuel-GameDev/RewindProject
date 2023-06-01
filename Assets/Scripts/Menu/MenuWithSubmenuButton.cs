@@ -15,7 +15,7 @@ public class MenuWithSubmenuButton : MenuButton
 
         notificationDot = GetComponentInChildren<NotificationDot>(true);
 
-        if (locked)
+        if (!submenuToOpen.unlocked)
         {
             if (notificationDot != null)
                 notificationDot.gameObject.SetActive(false);
@@ -35,8 +35,20 @@ public class MenuWithSubmenuButton : MenuButton
 
     public override void OnPointerClick(PointerEventData eventData)
     {
-        if (!locked)
+        if (submenuToOpen.unlocked)
             OnClick.Invoke();
+    }
+
+    public override void OnPointerEnter(PointerEventData eventData)
+    {
+        if (submenuToOpen.unlocked)
+            buttonTextUI.color = selectedColor;
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        if (submenuToOpen.unlocked)
+            buttonTextUI.color = baseColor;
     }
 
     public void OpenSubmenu()
