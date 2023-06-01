@@ -104,10 +104,6 @@ public class PlayerController : Character
 
         stateMachine.StateUpdate();
 
-        // da cambiare per l'abilità
-        if (Input.GetKeyDown(KeyCode.G))
-            InvertGravity();
-
     }
 
     public void FixedUpdate()

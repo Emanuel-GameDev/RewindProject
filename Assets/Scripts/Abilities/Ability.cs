@@ -17,16 +17,14 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void Start()
     {
-        icon = GetComponent<SpriteRenderer>().sprite;  
+        // Per testing, alla fine bisognerà assegnare lo sprite della carta direttamente da editor
+        // poiché ci sarà la luce come oggetto raccoglibile
+        //icon = GetComponent<SpriteRenderer>().sprite;  
     }
 
-    public virtual void OnTriggerEnter2D(Collider2D collision)
+    public virtual void Pick(Character picker)
     {
-        if (collision.gameObject.GetComponent<Character>() != null)
-        {
-            PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
-            //Destroy(gameObject);
-            gameObject.SetActive(false);
-        }
+        PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
+        gameObject.SetActive(false);
     }
 }

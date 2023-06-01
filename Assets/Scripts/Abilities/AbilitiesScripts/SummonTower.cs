@@ -15,11 +15,6 @@ public class SummonTower : Ability
             Instantiate(towerPrefab, player.gameObject.transform.position, player.gameObject.transform.rotation);
     }
 
-    public override void OnTriggerEnter2D(Collider2D collision)
-    {
-        base.OnTriggerEnter2D(collision);
-    }
-
     public override void Start()
     {
         base.Start();
