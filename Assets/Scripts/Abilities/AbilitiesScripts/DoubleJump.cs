@@ -9,9 +9,9 @@ public class DoubleJump : Ability
         base.Activate(parent);
     }
 
-    public override void OnTriggerEnter2D(Collider2D collision)
+    public override void Pick(Character picker)
     {
-        PlayerController controller = collision.GetComponent<PlayerController>();
+        PlayerController controller = picker.GetComponent<PlayerController>();
 
         if (controller == null) return;
 
