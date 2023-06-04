@@ -21,6 +21,8 @@ public class TimelineManager : MonoBehaviour
     private eZone actualZone;
     private bool isPlaying = false;
     private bool isLocked = false;
+    private bool timelineIsNotAtStart => timelineDirector.time > 0;
+    private bool timelineIsNotAtEnd => timelineDirector.time < timelineDuration;
     private float elapsedTime = 0;
 
     //Instance
@@ -188,9 +190,12 @@ public class TimelineManager : MonoBehaviour
 
     public void LockInTime()
     {
-        isLocked = true;
-        PauseTimeline();
-        elapsedTime = 0;
+        if(timelineIsNotAtStart || timelineIsNotAtEnd)
+        {
+            isLocked = true;
+            PauseTimeline();
+            elapsedTime = 0;
+        }
     }
 
     public void PauseTimeline()
@@ -201,7 +206,7 @@ public class TimelineManager : MonoBehaviour
 
     public void RewindTimeline()
     {
-        if (timelineDirector.time > 0)
+        if (timelineIsNotAtStart)
         {
             timelineDirector.time -= timelineSpeed * Time.deltaTime;
             timelineDirector.Evaluate();
@@ -210,7 +215,7 @@ public class TimelineManager : MonoBehaviour
 
     public void ForwardingTimeline()
     {
-        if (timelineDirector.time < timelineDuration)
+        if (timelineIsNotAtEnd)
         {
             timelineDirector.time += timelineSpeed * Time.deltaTime;
             timelineDirector.Evaluate();
