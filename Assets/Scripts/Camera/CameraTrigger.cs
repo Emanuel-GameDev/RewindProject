@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class CameraTrigger : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera cam;
+    [Tooltip("New value for orthografic size in the Lens menù inside Cinemachine")]
+    [SerializeField] private float zoomAmount;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // COntrollare che collision sia player
-        if (collision.gameObject.tag == "Player")
+        // Controllare che collision sia player
+        if (collision.gameObject.GetComponent<Character>() != null)
         {
-            PubSub.Instance.Notify(EMessageType.CameraSwitch, cam);
+            PubSub.Instance.Notify(EMessageType.CameraSwitch, zoomAmount);
         }
     }
 }
