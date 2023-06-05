@@ -19,7 +19,7 @@ public class PlayerFallingState : State
         player.CalculateHorizontalMovement();
         player.AbortJump();
         player.CalculateFallSpeed();
-
+        player.CheckFriction();
 
         if (player.isJumping)
         {

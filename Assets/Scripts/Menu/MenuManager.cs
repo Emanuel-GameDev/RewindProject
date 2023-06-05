@@ -20,7 +20,32 @@ public class MenuManager : MonoBehaviour
 
         submenus = GetComponentsInChildren<Menu>(true);
 
-        
+        SceneManager.sceneLoaded += registerFuntion;
+        //SceneManager.sceneUnloaded += unregisterFuntion;
+    }
+    private void registerFuntion(Scene arg0, LoadSceneMode arg1)
+    {
+        PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, UnlockMenu);
+    }
+
+    private void UnlockMenu(object obj)
+    {
+        AbilityMenu[] abilityMenus = GetComponentsInChildren<AbilityMenu>(true);
+
+        //da rivedere
+        if (obj is not Ability)
+            return;
+
+        Ability abilityPicked = (Ability)obj;
+
+        foreach(AbilityMenu am in abilityMenus)
+        {
+            //if (am.ability == abilityPicked.eAbility)
+            //{
+            //    am.UnlockMenu();
+            //}
+        }
+
     }
 
 
@@ -38,17 +63,6 @@ public class MenuManager : MonoBehaviour
 
     public void OpenMenu(Menu menu)
     {
-        foreach (Menu m in submenus)
-        {
-            if (m.unlocked)
-            {
-                foreach (Menu p in m.GetComponentsInParent<Menu>(true))
-                {
-                    p.unlocked = true;
-                }
-
-            }
-        }
 
         inputs.Menu.Enable();
         
@@ -80,5 +94,9 @@ public class MenuManager : MonoBehaviour
     private void OnDisable()
     {
         inputs.Menu.CloseMenu.performed -= CloseMenuInput;
+
+        PubSub.Instance.UnregisterFunction(EMessageType.AbilityPicked, UnlockMenu);
+
+        SceneManager.sceneLoaded -= registerFuntion;
     }
 }

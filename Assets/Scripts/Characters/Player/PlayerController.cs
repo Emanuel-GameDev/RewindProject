@@ -21,7 +21,6 @@ public class PlayerController : Character
     [SerializeField] float runSpeed = 15;
     [SerializeField] float acceleration = 90;
     [SerializeField] float deAcceleration = 60f;
-    [SerializeField] float maxSlope = 45;
 
 
     [Header("JUMP")]
@@ -38,6 +37,10 @@ public class PlayerController : Character
     [SerializeField] float minFallSpeed = 15f;
     [SerializeField] float maxFallSpeed = 30f;
     [SerializeField] float maxFallDistanceWithoutTakingDamage = 5;
+
+    [Header("Slope")]
+    [SerializeField] float maxSlope = 45;
+    [SerializeField] float rotationRatioOnSlopes = 3;
 
     [Header("OTHER")]
     [SerializeField] float fastRespawnRefreshTimer = 0.5f;
@@ -338,13 +341,21 @@ public class PlayerController : Character
         {
             groundAngle = Mathf.Atan2(hits[1].normal.x, hits[1].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
 
-            transform.rotation = Quaternion.Euler(0, 0, -groundAngle / 2);
+            if(!IsGravityDownward())
+            {
+                if (groundAngle >= 0)
+                    groundAngle -= 180;
+                else
+                    groundAngle += 180;
+            }
+
+            transform.rotation = Quaternion.Euler(0, 0, -groundAngle / rotationRatioOnSlopes);
         }
 
-        CheckSlope();
+        CheckFriction();
     }
 
-    public void CheckSlope()
+    public void CheckFriction()
     {//modifica la frizione in base a l'inclinazione del terreno
         if (!isMooving)
         {

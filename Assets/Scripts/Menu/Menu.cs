@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
-    public List<NotificationDot> notificationsInThisMenu;
-    public bool newNotificationsInThisMenu;
+    public bool notificationInThisMenu;
 
     public bool unlocked = false;
 
@@ -17,5 +16,30 @@ public class Menu : MonoBehaviour
     private void Start()
     {
         gameObject.SetActive(false);
+        
+    }
+
+    public virtual void UnlockMenu()
+    {
+        if (unlocked)
+            return;
+
+        unlocked = true;
+        notificationInThisMenu = true;
+
+        foreach (Menu p in GetComponentsInParent<Menu>(true))
+        {
+            p.unlocked = true;
+            p.notificationInThisMenu = true;
+        }
+
+    }
+
+    public void CancelNotification()
+    {
+        foreach (Menu p in GetComponentsInParent<Menu>(true))
+        {
+            p.notificationInThisMenu=false;
+        }
     }
 }

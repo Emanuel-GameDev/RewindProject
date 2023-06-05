@@ -5,17 +5,10 @@ using UnityEngine.UI;
 
 public class NotificationDot : MonoBehaviour
 {
-    [HideInInspector] public bool newNotification = true;
-    Image dotImage;
 
-    private void OnEnable()
+    private void Start()
     {
-        dotImage = GetComponent<Image>();
-
-        if (newNotification)
-            dotImage.enabled = true;
-        else
-            dotImage.enabled = false;
+        gameObject.SetActive(false);
     }
 
 }

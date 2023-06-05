@@ -17,26 +17,38 @@ public class MenuWithSubmenuButton : MenuButton
 
         if (!submenuToOpen.unlocked)
         {
-            if (notificationDot != null)
-                notificationDot.gameObject.SetActive(false);
             buttonTextUI.color = Color.gray;
         }
         else
         {
-            if (notificationDot != null)
-                notificationDot.gameObject.SetActive(true);
             buttonTextUI.color = baseColor;
         }
+    }
 
-        if (submenuToOpen.notificationsInThisMenu.Count > 0)
-            notificationDot.newNotification = true;
-
+    private void Update()
+    {
+        if (notificationDot != null)
+        {
+            if (submenuToOpen.notificationInThisMenu)
+                notificationDot.gameObject.SetActive(true);
+            else
+                notificationDot.gameObject.SetActive(false);
+        }
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
+        if (notificationDot != null)
+        {
+            if (submenuToOpen.notificationInThisMenu)
+            {
+                notificationDot.gameObject.SetActive(true);
+            }
+        }
+
         if (submenuToOpen.unlocked)
             OnClick.Invoke();
+
     }
 
     public override void OnPointerEnter(PointerEventData eventData)

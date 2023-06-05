@@ -1782,9 +1782,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1723585876}
-  - {fileID: 1743533409}
-  - {fileID: 1232962865}
-  - {fileID: 184719299}
   m_Father: {fileID: 1947004217}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2144,8 +2141,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 184719298}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.411621, y: -13.754517, z: 4.1121707}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 6.125279, y: -11.3673525, z: 4.1121707}
+  m_LocalScale: {x: 0.82644624, y: 0.82644624, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1150586372}
@@ -2155,7 +2152,7 @@ Transform:
   - {fileID: 879020727}
   - {fileID: 542732657}
   - {fileID: 277095620}
-  m_Father: {fileID: 143156056}
+  m_Father: {fileID: 1232962865}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &202172136
@@ -2483,6 +2480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &227285823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2660,6 +2658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &277095622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4197,7 +4196,7 @@ GameObject:
   - component: {fileID: 413039290}
   - component: {fileID: 413039293}
   - component: {fileID: 413039292}
-  - component: {fileID: 413039291}
+  - component: {fileID: 413039294}
   m_Layer: 5
   m_Name: TemperanzaText
   m_TagString: Untagged
@@ -4226,36 +4225,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &413039291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 413039289}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 542732658}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 0
 --- !u!114 &413039292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4294,6 +4263,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413039289}
   m_CullTransparentMesh: 1
+--- !u!114 &413039294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413039289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 413039294}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 542732658}
 --- !u!1 &418549359
 GameObject:
   m_ObjectHideFlags: 0
@@ -4435,7 +4435,7 @@ GameObject:
   - component: {fileID: 438960917}
   - component: {fileID: 438960920}
   - component: {fileID: 438960919}
-  - component: {fileID: 438960918}
+  - component: {fileID: 438960921}
   m_Layer: 5
   m_Name: GiustiziaText
   m_TagString: Untagged
@@ -4464,36 +4464,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &438960918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 438960916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1896024341}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 0
 --- !u!114 &438960919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4532,6 +4502,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 438960916}
   m_CullTransparentMesh: 1
+--- !u!114 &438960921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438960916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 438960921}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 1896024341}
 --- !u!1 &506963631
 GameObject:
   m_ObjectHideFlags: 0
@@ -4846,6 +4847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &542732659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6168,7 +6170,7 @@ GameObject:
   - component: {fileID: 752396549}
   - component: {fileID: 752396552}
   - component: {fileID: 752396551}
-  - component: {fileID: 752396550}
+  - component: {fileID: 752396553}
   m_Layer: 5
   m_Name: AppesoText
   m_TagString: Untagged
@@ -6197,36 +6199,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &752396550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 752396548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1077738407}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 1
 --- !u!114 &752396551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6265,6 +6237,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 752396548}
   m_CullTransparentMesh: 1
+--- !u!114 &752396553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 752396548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 752396553}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 1077738407}
 --- !u!1 &753942845
 GameObject:
   m_ObjectHideFlags: 0
@@ -7122,6 +7125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &879020729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7928,6 +7932,7 @@ GameObject:
   - component: {fileID: 1068511756}
   - component: {fileID: 1068511755}
   - component: {fileID: 1068511754}
+  - component: {fileID: 1068511757}
   m_Layer: 5
   m_Name: ArcanesButton
   m_TagString: Untagged
@@ -8024,6 +8029,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068511752}
   m_CullTransparentMesh: 1
+--- !u!114 &1068511757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1068511752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1068511757}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 1232962866}
 --- !u!1 &1071939992
 GameObject:
   m_ObjectHideFlags: 0
@@ -8155,6 +8191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &1077738408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9038,6 +9075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &1150586374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9432,19 +9470,20 @@ RectTransform:
   m_GameObject: {fileID: 1232962864}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.21, y: 1.21, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 398895328}
   - {fileID: 1108399847}
   - {fileID: 141051485}
-  m_Father: {fileID: 143156056}
-  m_RootOrder: 2
+  - {fileID: 184719299}
+  m_Father: {fileID: 1743533409}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0.00012207031}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1232962866
 MonoBehaviour:
@@ -9460,6 +9499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &1232962867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9509,7 +9549,7 @@ GameObject:
   - component: {fileID: 1250951255}
   - component: {fileID: 1250951258}
   - component: {fileID: 1250951257}
-  - component: {fileID: 1250951256}
+  - component: {fileID: 1250951259}
   m_Layer: 5
   m_Name: EremitaText
   m_TagString: Untagged
@@ -9538,36 +9578,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1250951256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1250951254}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 227285822}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 0
 --- !u!114 &1250951257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9606,6 +9616,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250951254}
   m_CullTransparentMesh: 1
+--- !u!114 &1250951259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250951254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1250951259}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 227285822}
 --- !u!1 &1262854860
 GameObject:
   m_ObjectHideFlags: 0
@@ -9932,7 +9973,7 @@ GameObject:
   - component: {fileID: 1344652607}
   - component: {fileID: 1344652610}
   - component: {fileID: 1344652609}
-  - component: {fileID: 1344652608}
+  - component: {fileID: 1344652611}
   m_Layer: 5
   m_Name: TutorialButton
   m_TagString: Untagged
@@ -9961,36 +10002,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1344652608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1344652606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: CloseMenu
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 1
 --- !u!114 &1344652609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10029,6 +10040,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344652606}
   m_CullTransparentMesh: 1
+--- !u!114 &1344652611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344652606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: CloseMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 1
 --- !u!1 &1358706504
 GameObject:
   m_ObjectHideFlags: 0
@@ -10040,7 +10081,7 @@ GameObject:
   - component: {fileID: 1358706505}
   - component: {fileID: 1358706508}
   - component: {fileID: 1358706507}
-  - component: {fileID: 1358706506}
+  - component: {fileID: 1358706509}
   m_Layer: 5
   m_Name: TorreText
   m_TagString: Untagged
@@ -10069,36 +10110,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1358706506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1358706504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 277095621}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 1
 --- !u!114 &1358706507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10137,6 +10148,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1358706504}
   m_CullTransparentMesh: 1
+--- !u!114 &1358706509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358706504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1358706509}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 277095621}
 --- !u!1 &1394890116
 GameObject:
   m_ObjectHideFlags: 0
@@ -10244,7 +10286,6 @@ MonoBehaviour:
   runSpeed: 15
   acceleration: 80
   deAcceleration: 50
-  maxSlope: 45
   jumpForce: 30
   jumpAbortForce: 100
   maxJumpHeight: 5
@@ -10256,6 +10297,8 @@ MonoBehaviour:
   minFallSpeed: 15
   maxFallSpeed: 20
   maxFallDistanceWithoutTakingDamage: 20
+  maxSlope: 45
+  rotationRatioOnSlopes: 3
   fastRespawnRefreshTimer: 0.3
   noFriction: {fileID: 6200000, guid: 9775ba6ee0a60004293f5156640f7d5a, type: 2}
   fullFriction: {fileID: 6200000, guid: 10a9534580af12747ba7f7fa3a7a01d6, type: 2}
@@ -11657,7 +11700,7 @@ GameObject:
   - component: {fileID: 1668784734}
   - component: {fileID: 1668784737}
   - component: {fileID: 1668784736}
-  - component: {fileID: 1668784735}
+  - component: {fileID: 1668784738}
   m_Layer: 5
   m_Name: BagattoTarothText
   m_TagString: Untagged
@@ -11686,36 +11729,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1668784735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1668784733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1150586373}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 1
 --- !u!114 &1668784736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11754,6 +11767,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1668784733}
   m_CullTransparentMesh: 1
+--- !u!114 &1668784738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668784733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1668784738}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 1150586373}
 --- !u!1 &1671641882
 GameObject:
   m_ObjectHideFlags: 0
@@ -11950,6 +11994,7 @@ RectTransform:
   - {fileID: 1980595077}
   - {fileID: 508441632}
   - {fileID: 946433839}
+  - {fileID: 1743533409}
   m_Father: {fileID: 143156056}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12010,6 +12055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!1 &1743533408
 GameObject:
   m_ObjectHideFlags: 0
@@ -12038,19 +12084,20 @@ RectTransform:
   m_GameObject: {fileID: 1743533408}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.21, y: 1.21, z: 1}
+  m_LocalScale: {x: 1.1, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 74671141}
   - {fileID: 1812307045}
   - {fileID: 532483114}
-  m_Father: {fileID: 143156056}
-  m_RootOrder: 1
+  - {fileID: 1232962865}
+  m_Father: {fileID: 1723585876}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0.00012207031}
+  m_AnchoredPosition: {x: 0.63986206, y: -2.0400085}
+  m_SizeDelta: {x: 1342.72, y: 213.84009}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1743533410
 MonoBehaviour:
@@ -12104,6 +12151,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!1 &1748857050
 GameObject:
   m_ObjectHideFlags: 0
@@ -13122,6 +13170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   notificationsInThisMenu: []
   newNotificationsInThisMenu: 0
+  unlocked: 0
 --- !u!114 &1896024342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13707,7 +13756,7 @@ GameObject:
   - component: {fileID: 1980595077}
   - component: {fileID: 1980595080}
   - component: {fileID: 1980595079}
-  - component: {fileID: 1980595078}
+  - component: {fileID: 1980595081}
   m_Layer: 5
   m_Name: DiaryButton
   m_TagString: Untagged
@@ -13736,36 +13785,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1980595078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1980595076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1743533412}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 0
 --- !u!114 &1980595079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13804,6 +13823,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980595076}
   m_CullTransparentMesh: 1
+--- !u!114 &1980595081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980595076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1980595081}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 1743533412}
 --- !u!1 &2007253547
 GameObject:
   m_ObjectHideFlags: 3
@@ -13903,7 +13953,7 @@ GameObject:
   - component: {fileID: 2014401608}
   - component: {fileID: 2014401611}
   - component: {fileID: 2014401610}
-  - component: {fileID: 2014401609}
+  - component: {fileID: 2014401612}
   m_Layer: 5
   m_Name: MorteText
   m_TagString: Untagged
@@ -13932,36 +13982,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2014401609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014401607}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 1}
-  selectedColor: {r: 0.9339623, g: 0.62915033, b: 0, a: 1}
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1947004216}
-        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
-        m_MethodName: OpenMenu
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 879020728}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  locked: 0
 --- !u!114 &2014401610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14000,6 +14020,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2014401607}
   m_CullTransparentMesh: 1
+--- !u!114 &2014401612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014401607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee326f9d5515644f9fe3de6594c03fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseColor: {r: 1, g: 1, b: 1, a: 1}
+  selectedColor: {r: 0.9333334, g: 0.627451, b: 0, a: 1}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2014401612}
+        m_TargetAssemblyTypeName: MenuWithSubmenuButton, Assembly-CSharp
+        m_MethodName: OpenSubmenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  locked: 0
+  submenuToOpen: {fileID: 879020728}
 --- !u!1 &2028851098
 GameObject:
   m_ObjectHideFlags: 0
