@@ -1,6 +1,7 @@
 using BehaviorDesigner.Runtime.Tasks.Unity.UnityTransform;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -43,7 +44,17 @@ public class JumpLink : MonoBehaviour
     #endregion
 
     [SerializeField] float enemyMaxJumpDistance = 7;
+    [SerializeField] List<JumpPoint> jumpPoints;
 
+    private void Start()
+    {
+        SearchJumpPoints();
+    }
+
+    private void SearchJumpPoints()
+    {
+        jumpPoints = GetComponentsInChildren<JumpPoint>().ToList<JumpPoint>();
+    }
 
     private void OnDrawGizmos()
     {

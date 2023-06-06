@@ -48,13 +48,6 @@ public class EnemyFollowAndJump : MonoBehaviour
     {
         BoolsUpdate();
         MoveUpdate();
-        
-        
-        //if (Input.GetKeyDown(KeyCode.E) && !isJumping)
-        //{
-        //    FindPoint();
-        //    SetIsJumping(true);
-        //}
     }
 
 
@@ -113,8 +106,6 @@ public class EnemyFollowAndJump : MonoBehaviour
             lerp = 0;
             startJumpPoint = transform.position;
         }
-
-        //Debug.Log("Set Jumping: " + value);
     }
 
     private void BoolsUpdate()
@@ -276,9 +267,7 @@ public class EnemyFollowAndJump : MonoBehaviour
             Vector3 topRight = bounds.max;
 
             topLeft.x += centerOfCollider.x;
-            topLeft.y += centerOfCollider.y;
             topRight.x -= centerOfCollider.x;
-            topRight.y += centerOfCollider.y;
 
             if ((transform.position - topLeft).sqrMagnitude < (transform.position - topRight).sqrMagnitude)
             {
@@ -292,7 +281,11 @@ public class EnemyFollowAndJump : MonoBehaviour
 
             }
         }
-           
+
+        RaycastHit2D hit = Physics2D.Raycast(closestPoint, Vector2.down, layerMask);
+        closestPoint = hit.point + new Vector2( 0, centerOfCollider.y);
+
+
         return closestPoint;
     }
 
