@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogueTrigger : MonoBehaviour
+public class DialogueTrigger : MonoBehaviour /*, IDataPersistance*/
 {
-    bool done=false;
+    bool dialogueTriggered = false;
 
     private void OnEnable()
     {
@@ -13,10 +13,20 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!done)
+        if (!dialogueTriggered)
         {
             GetComponentInChildren<Dialogue>(true).gameObject.SetActive(true);
-            done = true;
+            dialogueTriggered = true;
         }
     }
+
+    //void IDataPersistance.LoadData(GameData data)
+    //{
+    //    this.dialogueTriggered = data.dialogue;
+    //}
+
+    //void IDataPersistance.SaveData(ref GameData data)
+    //{
+    //    data.dialogue = this.dialogueTriggered;
+    //}
 }

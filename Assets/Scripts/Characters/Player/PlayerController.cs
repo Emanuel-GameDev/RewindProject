@@ -58,6 +58,7 @@ public class PlayerController : Character
     [HideInInspector] public bool grounded = false;
 
     Rigidbody2D rBody;
+    SpriteRenderer bodySprite;
 
     float horizontalInput = 0;
     float horizontalMovement = 0;
@@ -89,6 +90,7 @@ public class PlayerController : Character
     private void Awake()
     {
         instance = this;
+        bodySprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Start()
@@ -333,9 +335,9 @@ public class PlayerController : Character
         int h;
 
         if (IsGravityDownward())
-            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.down, hits, 1.5f);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 1.5f);
         else
-            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.up, hits, 1.5f);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.up, hits, 1.5f);
 
         if (h > 1)
         {
@@ -350,11 +352,12 @@ public class PlayerController : Character
             }
 
             transform.rotation = Quaternion.Euler(0, 0, -groundAngle / rotationRatioOnSlopes);
+
         }
 
         CheckFriction();
     }
-
+    
     public void CheckFriction()
     {//modifica la frizione in base a l'inclinazione del terreno
         if (!isMooving)
