@@ -9,14 +9,14 @@ public class LevelDoor : MonoBehaviour
     [SerializeField] SceneAsset levelToLoad;
     [SerializeField] GameObject levelSelectionMenu;
 
-    List<LevelSelectionButton> buttons;
+    List<DoorMenuSelectionButton> buttons;
     List<LevelLight> lights;
     public List<bool> checkpointTaken;
 
 
     private void Start()
     {
-        buttons = new List<LevelSelectionButton>(GetComponentsInChildren<LevelSelectionButton>());
+        buttons = new List<DoorMenuSelectionButton>(GetComponentsInChildren<DoorMenuSelectionButton>());
         lights = new List<LevelLight>(GetComponentsInChildren<LevelLight>());
 
         GetTakenCheckpoints();
@@ -85,9 +85,15 @@ public class LevelDoor : MonoBehaviour
 
 
                 if (checkpointTaken[i])
-                    buttons[i].unlocked = true;
+                {
+                    buttons[i].locked = false;
+                    buttons[i].buttonText.color = buttons[i].baseColor;
+                }
                 else
-                    buttons[i].unlocked = false;
+                {
+                    buttons[i].locked = true;
+                    buttons[i].buttonText.color = Color.gray;
+                }
             }
         }
         else

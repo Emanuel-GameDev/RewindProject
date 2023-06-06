@@ -6,26 +6,15 @@ using UnityEngine.SceneManagement;
 
 public class LevelMaster : MonoBehaviour
 {
-    static LevelMaster _instance;
-    public static LevelMaster Instance
-    {
-        get
-        {
-            if (_instance != null)
-                return _instance;
-
-            GameObject levelMasterObject = new GameObject("LevelMaster");
-
-            _instance = levelMasterObject.AddComponent<LevelMaster>();
-
-            return _instance;
-        }
-    }
+     public static LevelMaster Instance;
 
     public Dictionary<string, List<bool>> levels;
 
-    public Transform spawnPoint;
-    public int spawnPointId = 0;
+    [HideInInspector] public Transform spawnPoint;
+    [HideInInspector] public Vector3 fastSpawnPoint;
+    [HideInInspector] public int spawnPointId = 0;
+
+    [HideInInspector] public float fastRespawnTimer = 0;
 
     private void OnEnable()
     {
@@ -34,6 +23,31 @@ public class LevelMaster : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+
         DontDestroyOnLoad(gameObject);
     }
+    
+   
+
+    public void Respawn()
+    {
+        Teleport(PlayerController.instance.gameObject, spawnPoint.position);
+        PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
+    }
+
+    public void FastRespawn()
+    {
+        Teleport(PlayerController.instance.gameObject, fastSpawnPoint);
+    }
+
+    public void Teleport(GameObject objectToTeleport, Vector3 teleportPosition)
+    {
+        objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0) ;
+    }
+
+    
 }

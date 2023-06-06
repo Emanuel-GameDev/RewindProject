@@ -13,14 +13,15 @@ internal class PlayerIdleState : State
     public override void Enter()
     {
         base.Enter();
+        //player.isFalling = false;
     }
 
     public override void Update()
     {
         player.CalculateHorizontalMovement();
         player.CalculateFallSpeed();
+        player.CheckRotation();
 
-        
 
         if (player.isJumping)
             player.stateMachine.SetState(PlayerState.PlayerJumping);

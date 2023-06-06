@@ -22,10 +22,9 @@ public class PlayerController : Character
     [SerializeField] float acceleration = 90;
     [SerializeField] float deAcceleration = 60f;
 
-    float horizontalInput = 0;
 
     [Header("JUMP")]
-    [SerializeField] float jumpForce=10;
+    [SerializeField] float jumpForce = 10;
     [SerializeField] float jumpAbortForce = 50;
     [SerializeField] float maxJumpHeight = 5;
 
@@ -35,20 +34,34 @@ public class PlayerController : Character
     [SerializeField] float groundCheckRadius = 1;
 
     [Header("FALL")]
-    [SerializeField] float _minFallSpeed = 15f;
-    [SerializeField] float _maxFallSpeed = 30f;
-    
+    [SerializeField] float minFallSpeed = 15f;
+    [SerializeField] float maxFallSpeed = 30f;
+    [SerializeField] float maxFallDistanceWithoutTakingDamage = 5;
+
+    [Header("Slope")]
+    [SerializeField] float maxSlope = 45;
+    [SerializeField] float rotationRatioOnSlopes = 3;
+
+    [Header("OTHER")]
+    [SerializeField] float fastRespawnRefreshTimer = 0.5f;
+    [SerializeField] PhysicsMaterial2D noFriction;
+    [SerializeField] PhysicsMaterial2D fullFriction;
+
+    [HideInInspector] public float fallStartPoint;
+
     Vector2 jumpStartPoint;
 
     public bool isJumping = false;
     public bool isFalling = false;
     public bool isMooving = false;
     public bool isRunning = false;
+    [HideInInspector] public bool grounded = false;
 
     Rigidbody2D rBody;
 
-    [HideInInspector] public bool grounded = false;
+    float horizontalInput = 0;
     float horizontalMovement = 0;
+    float groundAngle = 0;
 
     //da usare per l'abilità
     public bool canDoubleJump;
@@ -67,8 +80,11 @@ public class PlayerController : Character
         inputs.Player.Run.performed += RunInput;
         inputs.Player.Run.canceled += RunInput;
 
+        inputs.Player.OpenMenu.performed += OpenMenuInput;
+
         inputs.Player.Jump.performed += JumpInput;
     }
+
 
     private void Awake()
     {
@@ -86,19 +102,32 @@ public class PlayerController : Character
         stateMachine.SetState(PlayerState.PlayerIdle);
     }
 
-
     private void Update()
     {
+
         stateMachine.StateUpdate();
 
-        // da cambiare per l'abilità
-        if (Input.GetKeyDown(KeyCode.G))
-            InvertGravity();
     }
 
-    public  void FixedUpdate()
+    public void FixedUpdate()
     {
         GroundCheck();
+        if (GameManager.Instance.levelMaster != null)
+        {
+            if (grounded)
+            {
+                if (GameManager.Instance.levelMaster.fastRespawnTimer < fastRespawnRefreshTimer)
+                    GameManager.Instance.levelMaster.fastRespawnTimer += Time.deltaTime;
+                else
+                {
+                    GameManager.Instance.levelMaster.fastSpawnPoint = transform.position;
+                    GameManager.Instance.levelMaster.fastRespawnTimer = 0;
+                }
+            }
+            else
+                GameManager.Instance.levelMaster.fastRespawnTimer = 0;
+
+        }
     }
 
     public void OnDrawGizmos()
@@ -107,6 +136,9 @@ public class PlayerController : Character
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
 
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y + maxJumpHeight, 0));
+
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - maxFallDistanceWithoutTakingDamage, 0));
+
     }
 
 
@@ -121,6 +153,8 @@ public class PlayerController : Character
         inputs.Player.Run.canceled -= RunInput;
 
         inputs.Player.Jump.performed -= JumpInput;
+
+        inputs.Player.OpenMenu.performed -= OpenMenuInput;
 
         inputs.Player.Disable();
     }
@@ -142,6 +176,15 @@ public class PlayerController : Character
     private void RunInput(InputAction.CallbackContext obj)
     {
         isRunning = obj.performed;
+    }
+
+    private void OpenMenuInput(InputAction.CallbackContext obj)
+    {
+        if (MenuManager.Instance != null)
+        {
+            MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
+            inputs.Player.Disable();
+        }
     }
 
     #endregion
@@ -174,29 +217,31 @@ public class PlayerController : Character
         else
             isMooving = true;
 
+        Vector2 relativMovement = Quaternion.Euler(0, 0, -groundAngle) * new Vector3(horizontalMovement, 0, 0);
 
-        rBody.velocity = new Vector2(horizontalMovement, rBody.velocity.y);
+        rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
 
     public void CalculateFallSpeed()
     {
         if (IsGravityDownward())
         {
-            if (rBody.velocity.y < 0)
+            if (rBody.velocity.y < -1 && !grounded)
             {
-                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, -_maxFallSpeed, -_minFallSpeed));
+                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, -maxFallSpeed, -minFallSpeed));
                 isFalling = true;
             }
         }
         else
         {
-            if (rBody.velocity.y > 0)
+            if (rBody.velocity.y > 1 && !grounded)
             {
-                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, _minFallSpeed, _maxFallSpeed));
+                rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, minFallSpeed, maxFallSpeed));
                 isFalling = true;
             }
         }
     }
+
 
     public void CheckJump()
     {
@@ -262,23 +307,88 @@ public class PlayerController : Character
         {
             if (rBody.velocity.y > 0 && !inputs.Player.Jump.IsPressed() || rBody.velocity.y > 0 && !isJumping)
             {
-                isJumping = false;
                 rBody.AddForce(Vector3.down * jumpAbortForce);
             }
+
+            if (rBody.velocity.y < 0)
+                isJumping = false;
         }
         else
         {
             if (rBody.velocity.y < 0 && !inputs.Player.Jump.IsPressed() || rBody.velocity.y < 0 && !isJumping)
             {
-                isJumping = false;
                 rBody.AddForce(Vector3.up * jumpAbortForce);
             }
+
+            if (rBody.velocity.y > 0)
+                isJumping = false;
         }
+
+    }
+
+    public void CheckRotation()
+    {
+        RaycastHit2D[] hits = new RaycastHit2D[2];
+
+        int h;
+
+        if (IsGravityDownward())
+            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.down, hits, 1.5f);
+        else
+            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.up, hits, 1.5f);
+
+        if (h > 1)
+        {
+            groundAngle = Mathf.Atan2(hits[1].normal.x, hits[1].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
+
+            if(!IsGravityDownward())
+            {
+                if (groundAngle >= 0)
+                    groundAngle -= 180;
+                else
+                    groundAngle += 180;
+            }
+
+            transform.rotation = Quaternion.Euler(0, 0, -groundAngle / rotationRatioOnSlopes);
+        }
+
+        CheckFriction();
+    }
+
+    public void CheckFriction()
+    {//modifica la frizione in base a l'inclinazione del terreno
+        if (!isMooving)
+        {
+            if (Mathf.Abs(groundAngle) < maxSlope)
+                rBody.sharedMaterial = fullFriction;
+            else
+                rBody.sharedMaterial = noFriction;
+
+        }
+        else
+            rBody.sharedMaterial = noFriction;
+
     }
 
     #endregion
 
     #region Functions
+
+    public bool CheckMaxFallDistanceReached()
+    {
+        if (IsGravityDownward())
+        {
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) - transform.position.y))
+                return true;
+        }
+        else
+        {
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) + transform.position.y))
+                return true;
+        }
+
+        return false;
+    }
 
     bool IsGravityDownward()
     {
@@ -298,6 +408,7 @@ public class PlayerController : Character
     public void GroundCheck()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
+
 
         if (!isJumping && grounded)
         {

@@ -14,6 +14,7 @@ public class PlayerJumpingState : State
     public override void Enter()
     {
         base.Enter();
+        player.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     public override void Update()
@@ -21,8 +22,8 @@ public class PlayerJumpingState : State
         player.CalculateHorizontalMovement();
         player.AbortJump();
         player.CalculateFallSpeed();
+        player.CheckFriction();
 
-        
 
         if (player.isFalling)
             player.stateMachine.SetState(PlayerState.PlayerFalling);
