@@ -17,10 +17,4 @@ public enum EAbilityState
     cooldown
 }
 
-public enum EAbility
-{
-    doubleJump,
-    gravity,
-    tower
-}
 

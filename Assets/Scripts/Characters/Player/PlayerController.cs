@@ -1,3 +1,4 @@
+using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -109,6 +110,11 @@ public class PlayerController : Character
 
         stateMachine.StateUpdate();
 
+        if (Input.GetKeyDown(KeyCode.Delete))
+        {
+            DataSerializer.DeleteAll();
+            Debug.Log("Saving deleted");
+        }
     }
 
     public void FixedUpdate()
