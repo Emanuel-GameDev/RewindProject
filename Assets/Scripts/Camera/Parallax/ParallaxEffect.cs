@@ -6,11 +6,13 @@ using Cinemachine;
 
 public class ParallaxEffect : MonoBehaviour
 {
-    private float length;
     private float startPosX;
     private float startPosY;
 
     private CinemachineVirtualCamera cam;
+
+    [SerializeField] private float length = 30f;
+    [SerializeField] private float shiftOffset = 5;
 
     [Tooltip("Speed of the horizontal parallax effect\n" +
         "(1 = not moving and 0 = same speed of player)")]
@@ -29,9 +31,6 @@ public class ParallaxEffect : MonoBehaviour
 
         startPosX = transform.position.x;
         startPosY = transform.position.y;
-
-        length = GetComponent<SpriteRenderer>().bounds.size.x;
-        Debug.Log(length + "  " + name);
 
         transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, 0);
     }
@@ -56,11 +55,11 @@ public class ParallaxEffect : MonoBehaviour
         // Make background repeat itself
         float temp = (cam.transform.position.x * (1 - hParallaxRatio));
 
-        if (temp >= startPosX + ((length*2) - 5))
+        if (temp >= startPosX + ((length*2) - shiftOffset))
         {
             startPosX += (length*2);
         }
-        else if (temp <= startPosX - ((length * 2) - 5))
+        else if (temp <= startPosX - ((length * 2) - shiftOffset))
         {
             startPosX -= (length*2);
         }
@@ -72,5 +71,11 @@ public class ParallaxEffect : MonoBehaviour
         float dist = (cam.transform.position.y * vParallaxRatio);
 
         transform.position = new Vector3(transform.position.x, startPosY + dist, transform.position.z);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(new Vector3(startPosX, 0), new Vector3(0, 10f));
     }
 }
