@@ -11,6 +11,7 @@ public class TestPickable : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PubSub.Instance.Notify(EMessageType.AbilityPicked, ab);
+        Do.Invoke();
+        //PubSub.Instance.Notify(EMessageType.AbilityPicked, ab);
     }
 }

@@ -18,7 +18,6 @@ public class LevelDoor : MonoBehaviour
     {
         if (DataSerializer.HasKey(levelToLoad.name + "TAKENCHECKPOINTS"))
             checkpointTaken = DataSerializer.Load<List<bool>>(levelToLoad.name + "TAKENCHECKPOINTS");
-        else Debug.Log("Else");
             
     }
 
@@ -27,10 +26,6 @@ public class LevelDoor : MonoBehaviour
         buttons = new List<DoorMenuSelectionButton>(GetComponentsInChildren<DoorMenuSelectionButton>());
         lights = new List<LevelLight>(GetComponentsInChildren<LevelLight>(true));
 
-        
-
-
-        //GetTakenCheckpoints();
         KindleLights();
 
         levelSelectionMenu.SetActive(false);
@@ -55,15 +50,6 @@ public class LevelDoor : MonoBehaviour
     {
         PlayerController.instance.inputs.Player.Interaction.performed -= Interact;
     }
-
-    //private void GetTakenCheckpoints()
-    //{
-    //    if (!DataSerializer.HasKey(levelToLoad.name))
-    //        return;
-
-    //    if (LevelMaster.Instance.levels[levelToLoad.name].Count > 0)
-    //        checkpointTaken = LevelMaster.Instance.levels[levelToLoad.name];
-    //}
 
     private void KindleLights()
     {  

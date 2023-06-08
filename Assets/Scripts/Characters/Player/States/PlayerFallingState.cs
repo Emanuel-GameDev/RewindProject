@@ -34,7 +34,6 @@ public class PlayerFallingState : State
                 {
                     player.GetComponent<Damageable>().TakeDamage(1);
                     LevelManager.instance.FastRespawn();
-
                 }
             }
 
