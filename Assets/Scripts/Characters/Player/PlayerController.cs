@@ -49,9 +49,9 @@ public class PlayerController : Character
     [SerializeField] PhysicsMaterial2D fullFriction;
 
     [HideInInspector] public float fallStartPoint;
-
+    [HideInInspector] public float fastRespawnTimer = 0;
     Vector2 jumpStartPoint;
-
+    [HideInInspector] public Vector3 fastSpawnPoint;
     public bool isJumping = false;
     public bool isFalling = false;
     public bool isMooving = false;
@@ -120,22 +120,21 @@ public class PlayerController : Character
     public void FixedUpdate()
     {
         GroundCheck();
-        if (GameManager.Instance.levelMaster != null)
-        {
-            if (grounded)
-            {
-                if (GameManager.Instance.levelMaster.fastRespawnTimer < fastRespawnRefreshTimer)
-                    GameManager.Instance.levelMaster.fastRespawnTimer += Time.deltaTime;
-                else
-                {
-                    GameManager.Instance.levelMaster.fastSpawnPoint = transform.position;
-                    GameManager.Instance.levelMaster.fastRespawnTimer = 0;
-                }
-            }
-            else
-                GameManager.Instance.levelMaster.fastRespawnTimer = 0;
 
+        if (grounded)
+        {
+            if (fastRespawnTimer < fastRespawnRefreshTimer)
+                fastRespawnTimer += Time.deltaTime;
+            else
+            {
+                fastSpawnPoint = transform.position;
+                fastRespawnTimer = 0;
+            }
         }
+        else
+            fastRespawnTimer = 0;
+
+
     }
 
     public void OnDrawGizmos()
@@ -349,7 +348,7 @@ public class PlayerController : Character
         {
             groundAngle = Mathf.Atan2(hits[1].normal.x, hits[1].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
 
-            if(!IsGravityDownward())
+            if (!IsGravityDownward())
             {
                 if (groundAngle >= 0)
                     groundAngle -= 180;
@@ -363,7 +362,7 @@ public class PlayerController : Character
 
         CheckFriction();
     }
-    
+
     public void CheckFriction()
     {//modifica la frizione in base a l'inclinazione del terreno
         if (!isMooving)

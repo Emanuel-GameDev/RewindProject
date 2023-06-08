@@ -51,21 +51,18 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        if (Instance == null)
             Instance = this;
-        else
-            Destroy(gameObject);
 
 
-        
-        DontDestroyOnLoad(gameObject);
+
+        //DontDestroyOnLoad(gameObject);
     }
 
     public void OpenMenu(Menu menu)
     {
 
         inputs.Menu.Enable();
-        
+
         menu.gameObject.SetActive(true);
     }
 
