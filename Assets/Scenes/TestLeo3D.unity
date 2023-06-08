@@ -200,8 +200,8 @@ MonoBehaviour:
   viewRotation: 90
   fieldOfView: 90
   viewDistance: 15
-  walkSpeed: 1
-  runSpeed: 2
+  walkSpeed: 2.5
+  runSpeed: 5
   stopDistance: 3
   timeBetweenAttacks: 1
 --- !u!212 &96739661
@@ -310,7 +310,7 @@ MonoBehaviour:
         See Object","Instant":true,"BooleanusePhysics2D":true,"SharedGameObjecttargetObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"GameObjectmValue":0},"SharedGameObjectListtargetObjects":{"Type":"BehaviorDesigner.Runtime.SharedGameObjectList","Name":null,"List`1mValue":[]},"SharedStringtargetTag":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":""},"LayerMaskobjectLayerMask":64,"Int32maxCollisionCount":200,"LayerMaskignoreLayerMask":132,"SharedFloatfieldOfViewAngle":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Field
         Of View Angle","IsShared":true,"SinglemValue":90},"SharedFloatviewDistance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"View
         Distance","IsShared":true,"SinglemValue":15},"SharedVector3offset":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"},"SharedVector3targetOffset":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"},"SharedFloatangleOffset2D":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"View
-        Rotation","IsShared":true,"SinglemValue":90},"SharedBooluseTargetBone":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"HumanBodyBonestargetBone":"Hips","SharedBooldrawDebugRay":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBooldisableAgentColliderLayer":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedGameObjectreturnedObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null}},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables.SetSharedBool","NodeData":{"Offset":"(0.831619263,146.100708)"},"ID":4,"Name":"Set
+        Rotation","IsShared":true,"SinglemValue":90},"SharedBooluseTargetBone":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"HumanBodyBonestargetBone":"Hips","SharedBooldrawDebugRay":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBooldisableAgentColliderLayer":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedGameObjectreturnedObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null}},{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables.SetSharedBool","NodeData":{"Offset":"(0.831619263,146.100708)"},"ID":4,"Name":"Set
         Shared Bool","Instant":true,"SharedBooltargetValue":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBooltargetVariable":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Have
         See Target","IsShared":true,"BooleanmValue":false}},{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(152.25885,147.652771)"},"ID":5,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Repeater","NodeData":{"Offset":"(-103.881241,150.4606)"},"ID":6,"Name":"Repeater","Instant":true,"SharedIntcount":{"Type":"BehaviorDesigner.Runtime.SharedInt","Name":null,"Int32mValue":0},"SharedBoolrepeatForever":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"SharedBoolendOnFailure":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true},"Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(0.591739655,154.999847)"},"ID":7,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Movement.WithinDistance","NodeData":{"Offset":"(-446.6835,146.441254)"},"ID":8,"Name":"Within
         Distance","Instant":true,"BooleanusePhysics2D":true,"SharedGameObjecttargetObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"GameObjectmValue":1},"SharedStringtargetTag":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":""},"LayerMaskobjectLayerMask":64,"Int32maxCollisionCount":200,"SharedFloatmagnitude":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Stop
@@ -448,13 +448,13 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      time: 0.9833374
+      value: 0
+      inSlope: -2.028137
+      outSlope: -2.028137
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.050851382
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -469,7 +469,7 @@ GameObject:
   m_Component:
   - component: {fileID: 281218325}
   - component: {fileID: 281218324}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1680,10 +1680,10 @@ MonoBehaviour:
   m_AgentTypeID: 0
   m_StartPoint: {x: 1.7492294, y: 0.25305247, z: 0}
   m_EndPoint: {x: 4.053315, y: -8.182518, z: 0}
-  m_Width: -0
+  m_Width: 0
   m_CostModifier: -1
   m_Bidirectional: 0
-  m_AutoUpdatePosition: 0
+  m_AutoUpdatePosition: 1
   m_Area: 0
 --- !u!114 &2007275621
 MonoBehaviour:
