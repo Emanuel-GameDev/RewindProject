@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField] CinemachineVirtualCamera mainCam;
+    public CinemachineVirtualCamera mainCam;
 
     [Tooltip("Start value for orthografic size in the Lens menù inside Cinemachine")]
     public float StartZoomAmount = 7f;

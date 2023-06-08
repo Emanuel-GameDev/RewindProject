@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class ParallaxEffect : MonoBehaviour
 {
@@ -9,9 +10,7 @@ public class ParallaxEffect : MonoBehaviour
     private float startPosX;
     private float startPosY;
 
-    private List<Transform> _backgrounds = new List<Transform>();
-
-    [SerializeField] GameObject cam;
+    private CinemachineVirtualCamera cam;
 
     [Tooltip("Speed of the horizontal parallax effect\n" +
         "(1 = not moving and 0 = same speed of player)")]
@@ -23,24 +22,22 @@ public class ParallaxEffect : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] float vParallaxRatio;
 
-
     // Start is called before the first frame update
     void Start()
     {
+        cam = GameManager.Instance.cameraManager.mainCam;
+
         startPosX = transform.position.x;
         startPosY = transform.position.y;
 
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            _backgrounds.Add(transform.GetChild(i));
-        }
-
         length = GetComponent<SpriteRenderer>().bounds.size.x;
+        Debug.Log(length + "  " + name);
+
+        transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, 0);
     }
 
     // Update is called once per frame
-
-    void Update()
+    void LateUpdate()
     {
         // handle of the parallax in X axis
         HorizontalParallaxEffect();
@@ -59,8 +56,14 @@ public class ParallaxEffect : MonoBehaviour
         // Make background repeat itself
         float temp = (cam.transform.position.x * (1 - hParallaxRatio));
 
-        if (temp >= startPosX + length) startPosX += length; // Shift right
-        else if (temp <= startPosX - length) startPosX -= length;    // Shift left
+        if (temp >= startPosX + ((length*2) - 5))
+        {
+            startPosX += (length*2);
+        }
+        else if (temp <= startPosX - ((length * 2) - 5))
+        {
+            startPosX -= (length*2);
+        }
     }
 
     private void VerticalParallaxEffect()
