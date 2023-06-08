@@ -10,7 +10,6 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log(SceneManager.GetActiveScene().name+name);
         DataSerializer.TryLoad(SceneManager.GetActiveScene().name + name, out dialogueTriggered);
         GetComponentInChildren<Dialogue>(true).gameObject.SetActive(false);
     }

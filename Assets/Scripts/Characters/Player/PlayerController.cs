@@ -110,7 +110,7 @@ public class PlayerController : Character
 
         stateMachine.StateUpdate();
 
-        if (Input.GetKeyDown(KeyCode.Delete))
+        if (Input.GetKeyDown(KeyCode.CapsLock))
         {
             DataSerializer.DeleteAll();
             Debug.Log("Saving deleted");
