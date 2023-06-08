@@ -7,12 +7,20 @@ public abstract class Ability : MonoBehaviour
 {
     public new string name;
     public Sprite icon;
-    public float activeTime;
     public float cooldownTime;
 
-    public virtual void Activate(GameObject parent)
+    public virtual void Activate1(GameObject parent)
     {
         
+    }
+
+    public virtual void Activate2(GameObject parent)
+    {
+
+    }
+    public virtual void Activate3(GameObject parent)
+    {
+
     }
 
     public virtual void Start()

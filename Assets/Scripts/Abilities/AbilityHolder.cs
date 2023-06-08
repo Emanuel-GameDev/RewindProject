@@ -6,45 +6,55 @@ public class AbilityHolder : Character
 {
     public Ability activeAbility;
 
-    private EAbilityState state = EAbilityState.ready;
-    private float tmpCooldown; 
-
-    [SerializeField] KeyCode interactKey;
+    private PlayerInputs playerInputs;
 
     private void Update()
     {
         if (activeAbility == null) return;
 
-        switch (state)
-        {
-            case EAbilityState.ready:
-                if (Input.GetKeyDown(interactKey))
-                {
-                    activeAbility.Activate(gameObject);
-                    tmpCooldown = activeAbility.cooldownTime;
-                    state = EAbilityState.active;
-                }
-                break;
-            case EAbilityState.active:
-                if ( activeAbility.activeTime > 0 )
-                {
-                    activeAbility.activeTime -= Time.deltaTime;
-                }
-                else
-                {
-                    state = EAbilityState.cooldown;
-                }
-                break;
-            case EAbilityState.cooldown:
-                if (tmpCooldown > 0)
-                {
-                    tmpCooldown -= Time.deltaTime;
-                }
-                else
-                {
-                    state = EAbilityState.ready;
-                }
-                break;
-        }
+        //bool activate1 = playerInputs.AbilityController.Activate1.ReadValue<float>() > 0;
+        //bool activate2 = playerInputs.AbilityController.Activate2.ReadValue<float>() > 0;
+        //bool activate3 = playerInputs.AbilityController.Activate3.ReadValue<float>() > 0;
+
+        //if(activate1) activeAbility.Activate1(gameObject);
+        //if(activate2) activeAbility.Activate2(gameObject);
+        //if(activate3) activeAbility.Activate3(gameObject);  
     }
+
+    private void Awake()
+    {
+        playerInputs = new PlayerInputs();
+    }
+
+    private void OnEnable()
+    {
+        playerInputs.AbilityController.Activate1.performed += Activate1;
+        playerInputs.AbilityController.Activate2.performed += Activate2;
+        playerInputs.AbilityController.Activate3.performed += Activate3;
+
+
+        playerInputs.Enable();
+    }
+
+    private void Activate3(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        activeAbility.Activate3(gameObject);
+    }
+
+    private void Activate2(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        activeAbility.Activate2(gameObject);
+    }
+
+    private void Activate1(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        activeAbility.Activate1(gameObject);
+    }
+
+    private void OnDisable()
+    {
+        playerInputs.Disable();
+    }
+
+
 }

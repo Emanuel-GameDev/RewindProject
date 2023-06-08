@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -10,19 +11,43 @@ using UnityEngine.Playables;
 public class TimelineManager : MonoBehaviour
 {
     [SerializeField] PlayableDirector timelineDirector;
+    [Tooltip("Imposta la velocità di movimento degli oggtti lungo la timeline")]
     [SerializeField] float timelineSpeed = 1.0f;
-    //[SerializeField] float timelineSpeedMultiplier = 2.0f;
+    [Tooltip("Imposta per quanto tempo rimangono bloccati nel tempo gli oggetti")]
     [SerializeField] float lockTime = 5f;
+    [Tooltip("Usato per collegare le timeline con le Zone corrispondenti")]
     [SerializeField] List<TimeZone> timeZones;
 
-    //private float timelineSpeed;
+
     private float timelineDuration;
-    private PlayerInputs playerInputs;
+    //private PlayerInputs playerInputs;
     private eZone actualZone;
     private bool isPlaying = false;
     private bool isLocked = false;
-    private bool timelineIsNotAtStart => timelineDirector.time > 0;
-    private bool timelineIsNotAtEnd => timelineDirector.time < timelineDuration;
+    private bool _rewindIsActive;
+    private bool RewindIsactive
+    {
+        get { return _rewindIsActive; }
+        set
+        {
+            if (value)
+            {
+                //playerInputs.Player.Disable();
+                PlayerController.instance.inputs.Player.Disable();
+                Debug.Log("Disable " + Time.time);
+            }
+            else
+            {
+                PlayerController.instance.inputs.Player.Enable();
+                //playerInputs.Player.Enable();
+                Debug.Log("Enable " + Time.time);
+            }
+            _rewindIsActive = value;
+        }
+    }
+
+    private bool timelineIsAtStart => timelineDirector.time <= 0;
+    private bool timelineIsAtEnd => timelineDirector.time >= timelineDuration;
     private float elapsedTime = 0;
 
     //Instance
@@ -49,10 +74,54 @@ public class TimelineManager : MonoBehaviour
 
     void Update()
     {
-        TimelineControls(); //da Togliere quando diventerà un'abilità
-
         CheckIsPlaying();
         CheckIsLocked();
+    }
+
+    private void Awake()
+    {
+       // playerInputs = new PlayerInputs();
+        InstanceSet();
+    }
+
+   
+
+    private void OnEnable()
+    {
+        //playerInputs.Enable();
+    }
+
+    private void OnDisable()
+    {
+       // playerInputs.Disable();
+    }
+
+    //FUNZIONI PRIVATE
+    //==========================================================================================================
+    #region Funzioni Private
+    private void InitialSetup()
+    {
+        if (timelineDirector == null)
+            timelineDirector = GetComponent<PlayableDirector>();
+
+        timelineDirector.playOnAwake = false;
+        timelineDirector.extrapolationMode = DirectorWrapMode.Hold;
+        RewindIsactive = false;
+    }
+
+    private void CalculateDuration()
+    {
+        timelineDuration = (float)timelineDirector.duration;
+    }
+
+    private void SetTime(float actualTime)
+    {
+        timelineDirector.time = actualTime;
+    }
+
+    private void ResetTime()
+    {
+        timelineDirector.time = 0;
     }
 
     private void CheckIsLocked()
@@ -77,88 +146,11 @@ public class TimelineManager : MonoBehaviour
             }
         }
     }
-
-    private void Awake()
-    {
-        playerInputs = new PlayerInputs();
-        InstanceSet();
-    }
-
-   
-
-    private void OnEnable()
-    {
-        playerInputs.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerInputs.Disable();
-    }
-
-    //FUNZIONI PRIVATE
-    //==========================================================================================================
-
-    private void InitialSetup()
-    {
-        if (timelineDirector == null)
-            timelineDirector = GetComponent<PlayableDirector>();
-
-        timelineDirector.playOnAwake = false;
-        timelineDirector.extrapolationMode = DirectorWrapMode.Hold;
-
-    }
-
-    private void CalculateDuration()
-    {
-        timelineDuration = (float)timelineDirector.duration;
-    }
-
-    private void TimelineControls()
-    {
-        //bool speedUpTime = playerInputs.TimelineController.SpeedUpTime.ReadValue<float>() > 0;
-        bool forwardingTime = playerInputs.TimelineController.ForwardingTime.ReadValue<float>() > 0;
-        bool rewindTime = playerInputs.TimelineController.RewindTime.ReadValue<float>() > 0;
-
-        if (Input.GetKeyDown(KeyCode.P)) { PlayCurrentTimeline(); } ///Temporanea per test
-        if (Input.GetKeyDown(KeyCode.O)) { LockInTime(); } ///Temporanea per test
-
-        //if (speedUpTime)
-        //{
-        //    speed = timelineSpeed * timelineSpeedMultiplier;
-        //}
-        //else
-        //{
-        //    speed = timelineSpeed;
-        //}
-
-        if (rewindTime)
-        {
-            RewindTimeline();
-        }
-
-        if (forwardingTime)
-        {
-            ForwardingTimeline();
-        }
-
-
-
-    }
-
-    private void SetTime(float actualTime)
-    {
-        timelineDirector.time = actualTime;
-    }
-
-    private void ResetTime()
-    {
-        timelineDirector.time = 0;
-    }
+    #endregion
 
     //FUNZIONI PUBBLICHE
     //==========================================================================================================
-
+    #region Funzioni Pubbliche
     public void ChangeTimeline(eZone zone)
     {
         if(zone == actualZone) 
@@ -186,15 +178,21 @@ public class TimelineManager : MonoBehaviour
     {
         timelineDirector.Play();
         isPlaying = true;
+        isLocked = false;
     }
 
     public void LockInTime()
     {
-        if(timelineIsNotAtStart || timelineIsNotAtEnd)
+        if (timelineIsAtStart || timelineIsAtEnd)
+        {
+            RewindIsactive = false;
+        }
+        else
         {
             isLocked = true;
             PauseTimeline();
             elapsedTime = 0;
+            RewindIsactive = false;
         }
     }
 
@@ -206,7 +204,15 @@ public class TimelineManager : MonoBehaviour
 
     public void RewindTimeline()
     {
-        if (timelineIsNotAtStart)
+        if (isLocked) return;
+        if (isPlaying) return;
+        
+        if (!RewindIsactive)
+        {
+            StartStopRewinding();
+        }
+
+        if (!timelineIsAtStart)
         {
             timelineDirector.time -= timelineSpeed * Time.deltaTime;
             timelineDirector.Evaluate();
@@ -215,11 +221,30 @@ public class TimelineManager : MonoBehaviour
 
     public void ForwardingTimeline()
     {
-        if (timelineIsNotAtEnd)
+        if (isLocked) return;
+        if (isPlaying) return;
+
+        if (!RewindIsactive)
+        {
+            StartStopRewinding();
+        }
+
+        if (!timelineIsAtEnd)
         {
             timelineDirector.time += timelineSpeed * Time.deltaTime;
             timelineDirector.Evaluate();
         }
     }
 
+    public void StartStopRewinding()
+    {
+        if (isLocked || isPlaying)
+            return;
+        
+        if (!RewindIsactive)
+            RewindIsactive = true;
+        else
+            LockInTime();
+    }
+    #endregion
 }
