@@ -10,7 +10,7 @@ public class OneWayPlatform : MonoBehaviour
 
     [SerializeField] private bool playerCanGoDown = true;
 
-    [Tooltip("Increase if platform too big or player will be snapped out, changes time for the ignore collision player-platform")]
+    [Tooltip("Changes time for the ignore collision player-platform")]
     [SerializeField] private float snapOffset = 1f;
 
     private PlayerInputs inputs;
@@ -60,7 +60,7 @@ public class OneWayPlatform : MonoBehaviour
     private IEnumerator DisablePlatform()
     {
         coroutineRunning = true;
-        PolygonCollider2D platCollider = GetComponent<PolygonCollider2D>();
+        BoxCollider2D platCollider = GetComponent<BoxCollider2D>();
 
         // Disattivo collisione
         if (playerCollider != null && platCollider != null)

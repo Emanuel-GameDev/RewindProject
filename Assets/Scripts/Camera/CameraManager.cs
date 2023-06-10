@@ -7,41 +7,45 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    [SerializeField] CinemachineVirtualCamera mainCam;
-    [SerializeField] List<CinemachineVirtualCamera> cameras = new List<CinemachineVirtualCamera>();
+    public CinemachineVirtualCamera mainCam;
 
+    [Tooltip("Start value for orthografic size in the Lens menù inside Cinemachine")]
+    public float StartZoomAmount = 7f;
+
+    [Tooltip("Speed of the zoom action\n " +
+        "N.B. the action is an interpolation so it scales over time")]
+    [SerializeField] private float zoomSpeed;
+
+    private float currentZoom;
 
     // Start is called before the first frame update
     void Start()
     {
         PubSub.Instance.RegisterFunction(EMessageType.CameraSwitch, TriggerZoom);
-        TriggerCameras(false);
+        mainCam.m_Lens.OrthographicSize = StartZoomAmount;
+        currentZoom = StartZoomAmount;
         mainCam.gameObject.SetActive(true);
     }
 
     private void TriggerZoom(object obj)
     {
-        if (obj is not CinemachineVirtualCamera) return;
+        if (obj is not float) return;
+        float zoomAmount = (float)obj;
 
-        CinemachineVirtualCamera camera = (CinemachineVirtualCamera)obj;
+        if (zoomAmount <= 0 || zoomAmount == currentZoom) return; 
 
-        if (camera == mainCam)
-        {
-            mainCam.gameObject.SetActive(true);
-            TriggerCameras(false);
-        }
-        else
-        {
-            camera.gameObject.SetActive(true);
-            mainCam.gameObject.SetActive(false);
-        }
+        StartCoroutine(Zoom(zoomAmount));
     }
 
-    private void TriggerCameras(bool mode)
+    private IEnumerator Zoom(float targetZoom)
     {
-        foreach (CinemachineVirtualCamera cam in cameras)
+        while (Mathf.Abs(currentZoom - targetZoom) > 0.01f)
         {
-            cam.gameObject.SetActive(mode);
+            currentZoom = Mathf.Lerp(currentZoom, targetZoom, zoomSpeed * Time.deltaTime);
+            mainCam.m_Lens.OrthographicSize = currentZoom;
+            yield return null;
         }
     }
+
+
 }

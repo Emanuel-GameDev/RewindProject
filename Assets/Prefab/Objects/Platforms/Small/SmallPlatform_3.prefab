@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3628558738201513417}
   - component: {fileID: 3628558738201513419}
   - component: {fileID: 3628558738201513415}
-  - component: {fileID: 5909337999937667852}
+  - component: {fileID: 1203117316419324896}
   m_Layer: 3
   m_Name: SmallPlatform_3
   m_TagString: Untagged
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1953429257
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f23d028a4093a6042a2b2af14be8ca51, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCanGoDown: 1
---- !u!60 &5909337999937667852
-PolygonCollider2D:
+  snapOffset: 1
+--- !u!61 &1203117316419324896
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -132,7 +133,7 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.1452161, y: 0.56924874}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -142,26 +143,6 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.78999996, y: -0.34}
-      - {x: 0.96, y: -0.19}
-      - {x: 1.02, y: -0.01}
-      - {x: 1.0699999, y: 0.26999998}
-      - {x: 1.17, y: 0.57}
-      - {x: 1.17, y: 0.59}
-      - {x: 1.15, y: 0.61}
-      - {x: -0.85999995, y: 0.61}
-      - {x: -0.88, y: 0.59999996}
-      - {x: -0.88, y: 0.56}
-      - {x: -0.87, y: 0.51}
-      - {x: -0.76, y: 0.29}
-      - {x: -0.64, y: 0.03}
-      - {x: -0.58, y: -0.04}
-      - {x: -0.26999998, y: -0.26999998}
-      - {x: 0, y: -0.42}
-      - {x: 0.06, y: -0.44}
-      - {x: 0.11, y: -0.44}
-      - {x: 0.29999998, y: -0.26}
-      - {x: 0.48999998, y: -0.19}
-      - {x: 0.63, y: -0.22999999}
+  serializedVersion: 2
+  m_Size: {x: 1.9934385, y: 0.072708964}
+  m_EdgeRadius: 0
