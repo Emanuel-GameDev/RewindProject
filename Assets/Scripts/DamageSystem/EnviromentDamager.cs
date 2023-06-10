@@ -8,8 +8,11 @@ public class EnviromentDamager : Damager
     {
         if (collision.gameObject.GetComponent<Damageable>())
         {
+            if(collision.gameObject.GetComponent<Damageable>().Health<=1)
             LevelManager.instance.FastRespawn();
+
             DealDamage(collision.gameObject.GetComponent<Damageable>());
+
         }
     }
 }

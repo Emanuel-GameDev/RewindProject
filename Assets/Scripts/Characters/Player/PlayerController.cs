@@ -59,6 +59,7 @@ public class PlayerController : Character
     [HideInInspector] public bool grounded = false;
 
     Rigidbody2D rBody;
+    [HideInInspector] public Animator animator;
     SpriteRenderer bodySprite;
 
     float horizontalInput = 0;
@@ -91,6 +92,7 @@ public class PlayerController : Character
     private void Awake()
     {
         instance = this;
+        animator = GetComponent<Animator>();
         bodySprite = GetComponentInChildren<SpriteRenderer>();
     }
 
@@ -225,6 +227,12 @@ public class PlayerController : Character
             isMooving = true;
 
         Vector2 relativMovement = Quaternion.Euler(0, 0, -groundAngle) * new Vector3(horizontalMovement, 0, 0);
+
+        if (horizontalMovement > 0.1)
+            bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
+        else if(horizontalMovement < -0.1)
+            bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+
 
         rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
@@ -381,17 +389,17 @@ public class PlayerController : Character
     #endregion
 
     #region Functions
-
+    public float debug;
     public bool CheckMaxFallDistanceReached()
     {
         if (IsGravityDownward())
         {
-            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) - transform.position.y))
-                return true;
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(fallStartPoint - transform.position.y))
+                    return true;
         }
         else
         {
-            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) + transform.position.y))
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(fallStartPoint + transform.position.y))
                 return true;
         }
 

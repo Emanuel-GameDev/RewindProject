@@ -45,5 +45,6 @@ public class PlayerFallingState : State
     public override void Exit()
     {
         base.Exit();
+        player.fallStartPoint = 0;
     }
 }
