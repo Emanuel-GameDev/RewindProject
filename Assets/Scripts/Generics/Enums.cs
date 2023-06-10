@@ -7,7 +7,7 @@ public enum EMessageType
     CameraSwitch,
     CheckpointVisited,
     ActiveAbilityChanged,
-    AbilityPicked
+    AbilityPicked,
 }
 
 public enum EAbilityState
