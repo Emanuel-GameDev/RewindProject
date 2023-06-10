@@ -20,7 +20,6 @@ public class TimelineManager : MonoBehaviour
 
 
     private float timelineDuration;
-    //private PlayerInputs playerInputs;
     private eZone actualZone;
     private bool isPlaying = false;
     private bool isLocked = false;
@@ -32,14 +31,12 @@ public class TimelineManager : MonoBehaviour
         {
             if (value)
             {
-                //playerInputs.Player.Disable();
                 PlayerController.instance.inputs.Player.Disable();
                 Debug.Log("Disable " + Time.time);
             }
             else
             {
                 PlayerController.instance.inputs.Player.Enable();
-                //playerInputs.Player.Enable();
                 Debug.Log("Enable " + Time.time);
             }
             _rewindIsActive = value;
@@ -49,6 +46,10 @@ public class TimelineManager : MonoBehaviour
     private bool timelineIsAtStart => timelineDirector.time <= 0;
     private bool timelineIsAtEnd => timelineDirector.time >= timelineDuration;
     private float elapsedTime = 0;
+
+    private bool isForwarding = false;
+    private bool isRewinding = false;
+
 
     //Instance
     //==========================================================================================================
@@ -76,24 +77,18 @@ public class TimelineManager : MonoBehaviour
     {
         CheckIsPlaying();
         CheckIsLocked();
+        ManipulateTimeline();
+    }
+
+    private void ManipulateTimeline()
+    {
+        if (isForwarding) ForwardingTimeline();
+        if (isRewinding) RewindTimeline();
     }
 
     private void Awake()
     {
-       // playerInputs = new PlayerInputs();
         InstanceSet();
-    }
-
-   
-
-    private void OnEnable()
-    {
-        //playerInputs.Enable();
-    }
-
-    private void OnDisable()
-    {
-       // playerInputs.Disable();
     }
 
     //FUNZIONI PRIVATE
@@ -146,6 +141,20 @@ public class TimelineManager : MonoBehaviour
             }
         }
     }
+
+    private bool CheckStatus()
+    {
+        if (isLocked) return true;
+        if (isPlaying) return true;
+
+        if (!RewindIsactive)
+        {
+            StartStopControlTimeline();
+        }
+
+        return false;
+    }
+
     #endregion
 
     //FUNZIONI PUBBLICHE
@@ -204,14 +213,6 @@ public class TimelineManager : MonoBehaviour
 
     public void RewindTimeline()
     {
-        if (isLocked) return;
-        if (isPlaying) return;
-        
-        if (!RewindIsactive)
-        {
-            StartStopRewinding();
-        }
-
         if (!timelineIsAtStart)
         {
             timelineDirector.time -= timelineSpeed * Time.deltaTime;
@@ -221,13 +222,7 @@ public class TimelineManager : MonoBehaviour
 
     public void ForwardingTimeline()
     {
-        if (isLocked) return;
-        if (isPlaying) return;
-
-        if (!RewindIsactive)
-        {
-            StartStopRewinding();
-        }
+        if (CheckStatus()) return;
 
         if (!timelineIsAtEnd)
         {
@@ -236,7 +231,7 @@ public class TimelineManager : MonoBehaviour
         }
     }
 
-    public void StartStopRewinding()
+    public void StartStopControlTimeline()
     {
         if (isLocked || isPlaying)
             return;
@@ -246,5 +241,28 @@ public class TimelineManager : MonoBehaviour
         else
             LockInTime();
     }
+
+    public void StartForwarding()
+    {
+        if (CheckStatus()) return;
+        isForwarding = true;
+    }
+
+    public void StartRewinding()
+    {
+        if (CheckStatus()) return;
+        isRewinding = true;
+    }
+
+    public void StopForwarding()
+    {
+        isForwarding = false;
+    }
+
+    public void StopRewinding()
+    {
+        isRewinding = false;
+    }
+
     #endregion
 }

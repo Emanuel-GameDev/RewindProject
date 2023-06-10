@@ -792,7 +792,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""9b3d7da6-3978-48f6-bf4a-53e78eeefef6"",
                     ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": ""Hold(duration=0.1,pressPoint=0.1)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Activate3"",

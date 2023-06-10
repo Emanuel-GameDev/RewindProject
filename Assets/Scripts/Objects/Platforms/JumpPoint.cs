@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JumpPoint : MonoBehaviour
 {
-    [SerializeField] bool isEndPoint = false;
+    //[SerializeField] bool isEndPoint = false;
 
     private void OnDrawGizmos()
     {

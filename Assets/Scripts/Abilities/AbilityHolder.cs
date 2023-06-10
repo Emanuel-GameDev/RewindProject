@@ -1,25 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AbilityHolder : Character
 {
     public Ability activeAbility;
 
     private PlayerInputs playerInputs;
-
-    private void Update()
-    {
-        if (activeAbility == null) return;
-
-        //bool activate1 = playerInputs.AbilityController.Activate1.ReadValue<float>() > 0;
-        //bool activate2 = playerInputs.AbilityController.Activate2.ReadValue<float>() > 0;
-        //bool activate3 = playerInputs.AbilityController.Activate3.ReadValue<float>() > 0;
-
-        //if(activate1) activeAbility.Activate1(gameObject);
-        //if(activate2) activeAbility.Activate2(gameObject);
-        //if(activate3) activeAbility.Activate3(gameObject);  
-    }
 
     private void Awake()
     {
@@ -32,8 +21,26 @@ public class AbilityHolder : Character
         playerInputs.AbilityController.Activate2.performed += Activate2;
         playerInputs.AbilityController.Activate3.performed += Activate3;
 
+        playerInputs.AbilityController.Activate1.canceled += Disactivate1;
+        playerInputs.AbilityController.Activate2.canceled += Disactivate2;
+        playerInputs.AbilityController.Activate3.canceled += Disactivate3;
 
         playerInputs.Enable();
+    }
+
+    private void Disactivate3(InputAction.CallbackContext obj)
+    {
+        activeAbility.Disactivate3(gameObject);
+    }
+
+    private void Disactivate2(InputAction.CallbackContext obj)
+    {
+        activeAbility.Disactivate2(gameObject);
+    }
+
+    private void Disactivate1(InputAction.CallbackContext obj)
+    {
+        activeAbility.Disactivate1(gameObject);
     }
 
     private void Activate3(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -53,6 +60,14 @@ public class AbilityHolder : Character
 
     private void OnDisable()
     {
+        playerInputs.AbilityController.Activate1.performed -= Activate1;
+        playerInputs.AbilityController.Activate2.performed -= Activate2;
+        playerInputs.AbilityController.Activate3.performed -= Activate3;
+
+        playerInputs.AbilityController.Activate1.canceled -= Disactivate1;
+        playerInputs.AbilityController.Activate2.canceled -= Disactivate2;
+        playerInputs.AbilityController.Activate3.canceled -= Disactivate3;
+
         playerInputs.Disable();
     }
 
