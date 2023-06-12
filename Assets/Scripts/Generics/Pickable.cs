@@ -1,13 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using ToolBox.Serialization;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Pickable : MonoBehaviour
 {
     private Ability ability;
     // pagina
-
     private Animator animator;
+
+    public UnityEvent OnPickup;
+    bool pickedUp = false;
 
     private void Start()
     {
@@ -15,6 +17,12 @@ public class Pickable : MonoBehaviour
 
         if (TryGetComponent(out ability))
         {
+            if (DataSerializer.TryLoad(ability.name, out pickedUp))
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             animator.SetTrigger("ability");
         }
 
@@ -27,9 +35,14 @@ public class Pickable : MonoBehaviour
             Character character = collision.gameObject.GetComponent<Character>();
 
             if (ability != null)
+            {
                 ability.Pick(character);
+                DataSerializer.Save(ability.name, pickedUp);
+            }
 
             // Aggiungere raccolta della pagina con else if
+
+            OnPickup.Invoke();
         }
     }
 }

@@ -19,7 +19,7 @@ public class PlayerFallingState : State
         player.CalculateHorizontalMovement();
         player.AbortJump();
         player.CalculateFallSpeed();
-
+        player.CheckFriction();
 
         if (player.isJumping)
         {
@@ -33,8 +33,7 @@ public class PlayerFallingState : State
                 if (player.GetComponent<Damageable>() != null)
                 {
                     player.GetComponent<Damageable>().TakeDamage(1);
-                    GameManager.Instance.levelMaster.FastRespawn();
-
+                    LevelManager.instance.FastRespawn();
                 }
             }
 
@@ -46,5 +45,6 @@ public class PlayerFallingState : State
     public override void Exit()
     {
         base.Exit();
+        player.fallStartPoint = 0;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ToolBox.Serialization;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -60,7 +61,7 @@ public class Checkpoint : MonoBehaviour
 
     public void SetCheckpoint()
     {
-        LevelMaster.Instance.spawnPoint = transform;
+        DataSerializer.Save("SPAWNPOINT", transform.position);
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
         PubSub.Instance.Notify(EMessageType.CheckpointVisited, this);
     }
