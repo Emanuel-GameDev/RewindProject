@@ -53,7 +53,6 @@ public class LevelManager : MonoBehaviour
     {
         level = SceneManager.GetActiveScene();
 
-        //GetTakenCheckpoint();
 
         GetSpawnPoint();
 
@@ -81,8 +80,12 @@ public class LevelManager : MonoBehaviour
 
     private void GetSpawnPoint()
     {
-        DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad);
+        if (!DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad))
+            return;
+
         DataSerializer.DeleteKey("CHECKPOINTIDTOLOAD");
+
+
 
         if (checkpoints.Count < 1)
             DataSerializer.Save("SPAWNPOINT", transform.position);
@@ -94,30 +97,17 @@ public class LevelManager : MonoBehaviour
 
 
 
-    //private void GetTakenCheckpoint()
-    //{
-    //    if (!DataSerializer.TryLoad(level.name,out checkpoints)/*LevelMaster.Instance.levels.ContainsKey(level.name)*/)
-    //    {
-    //        foreach (Checkpoint check in checkpoints)
-    //        {
-    //            checkpointsTaken.Add(false);
-    //        }
-
-    //        LevelMaster.Instance.levels.Add(level.name, checkpointsTaken);
-    //    }
-    //    else
-    //        checkpointsTaken = LevelMaster.Instance.levels[level.name];
-    //}
-
     private void OnRespawn(InputAction.CallbackContext obj)
     {
         Respawn();
     }
+
     public void Respawn()
     {
-
         if(DataSerializer.TryLoad("SPAWNPOINT", out Vector3 spawnPoint))
-        Teleport(PlayerController.instance.gameObject, spawnPoint);
+            Teleport(PlayerController.instance.gameObject, spawnPoint);
+        else
+            Teleport(PlayerController.instance.gameObject, checkpoints[0].transform.position);
 
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }

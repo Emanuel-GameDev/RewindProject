@@ -58,7 +58,7 @@ public class PlayerController : Character
     public bool isRunning = false;
     [HideInInspector] public bool grounded = false;
 
-    Rigidbody2D rBody;
+    internal Rigidbody2D rBody;
     [HideInInspector] public Animator animator;
     SpriteRenderer bodySprite;
 
@@ -390,7 +390,7 @@ public class PlayerController : Character
     #endregion
 
     #region Functions
-    public float debug;
+
     public bool CheckMaxFallDistanceReached()
     {
         if (IsGravityDownward())
