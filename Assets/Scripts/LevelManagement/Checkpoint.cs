@@ -16,19 +16,22 @@ public class Checkpoint : MonoBehaviour
 
     private void Start()
     {
-        menu.SetActive(false);
+        if (menu != null)
+            menu.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<PlayerController>())
             collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
+        
     }
 
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        menu.SetActive(false);
+        if (menu != null)
+            menu.SetActive(false);
 
         if (collision.gameObject.GetComponent<PlayerController>())
             collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed -= Interact;
@@ -48,6 +51,9 @@ public class Checkpoint : MonoBehaviour
 
     private void HandleMenu()
     {
+        if (menu == null)
+            return;
+
         if (!menu.activeSelf)
             menu.SetActive(true);
         else

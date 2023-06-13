@@ -8,7 +8,7 @@ public class EnviromentDamager : Damager
     {
         if (collision.gameObject.GetComponent<Damageable>())
         {
-            if(collision.gameObject.GetComponent<Damageable>().Health<=1)
+            if(collision.gameObject.GetComponent<Damageable>().Health>damage)
             LevelManager.instance.FastRespawn();
 
             DealDamage(collision.gameObject.GetComponent<Damageable>());
