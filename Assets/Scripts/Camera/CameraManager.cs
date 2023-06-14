@@ -42,21 +42,21 @@ public class CameraManager : MonoBehaviour
         float zoomAmount = newValues[0];
         if (zoomAmount >= 0 || zoomAmount != currentZoom)
         {
-            StartCoroutine(Zoom(zoomAmount));
+            StartCoroutine(Zoom(newValues));
         }
 
-        float offsetAmountY = newValues[1];
-        float offsetDashMultiplier = newValues[2];
-        float deadZoneXAmount = newValues[3];
-        float deadZoneYAmount = newValues[4];
-        float screenY = newValues[4];
+        //float offsetAmountY = newValues[1];
+        //float offsetDashMultiplier = newValues[2];
+        //float deadZoneXAmount = newValues[3];
+        //float deadZoneYAmount = newValues[4];
+        //float screenY = newValues[4];
 
-        CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
-        transposer.m_DeadZoneWidth = deadZoneXAmount;
-        transposer.m_DeadZoneHeight = deadZoneYAmount;
-        transposer.m_ScreenY = screenY;
+        //CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //transposer.m_DeadZoneWidth = deadZoneXAmount;
+        //transposer.m_DeadZoneHeight = deadZoneYAmount;
+        //transposer.m_ScreenY = screenY;
 
-        OffsetUpdate(offsetAmountY, offsetDashMultiplier);
+        //OffsetUpdate(offsetAmountY, offsetDashMultiplier);
 
     }
 
@@ -67,14 +67,29 @@ public class CameraManager : MonoBehaviour
         transposer.m_TrackedObjectOffset.y = offsetAmountY;
     }
 
-    private IEnumerator Zoom(float targetZoom)
+    private IEnumerator Zoom(List<float> newValues)
     {
-        while (Mathf.Abs(currentZoom - targetZoom) > 0.01f)
+        while (Mathf.Abs(currentZoom - newValues[0]) > 0.01f)
         {
-            currentZoom = Mathf.Lerp(currentZoom, targetZoom, zoomSpeed * Time.deltaTime);
+            currentZoom = Mathf.Lerp(currentZoom, newValues[0], zoomSpeed * Time.deltaTime);
             mainCam.m_Lens.OrthographicSize = currentZoom;
-            yield return null;
         }
+
+        float offsetAmountY = newValues[1];
+        float offsetDashMultiplier = newValues[2];
+        OffsetUpdate(offsetAmountY, offsetDashMultiplier);
+
+        float deadZoneXAmount = newValues[3];
+        float deadZoneYAmount = newValues[4];
+        float screenY = newValues[4];
+
+        CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
+        transposer.m_DeadZoneWidth = deadZoneXAmount;
+        transposer.m_DeadZoneHeight = deadZoneYAmount;
+        transposer.m_ScreenY = screenY;
+
+
+        yield return null;
     }
 
 
