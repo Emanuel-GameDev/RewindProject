@@ -50,4 +50,13 @@ public class PubSub : MonoBehaviour
         }
     }
 
+    public void UnregisterFunction(EMessageType messageType, Action<object> function)
+    {
+        if (_registeredFunctions.ContainsKey(messageType))
+        {
+            _registeredFunctions[messageType].Remove(function);
+        }
+        
+    }
+
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,7 +10,7 @@ public class DoorMenuSelectionButton : LevelSelectionButton
     {
         if (!locked)
         {
-            LevelMaster.Instance.spawnPointId = checkpointToLoadIndex;
+            DataSerializer.Save("CHECKPOINTIDTOLOAD", checkpointToLoadIndex);
             GetComponentInParent<LevelDoor>().EnterDoor();
         }
     }
