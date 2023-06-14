@@ -13,6 +13,7 @@ internal class PlayerIdleState : State
     public override void Enter()
     {
         base.Enter();
+        player.animator.SetBool("Moving", false);
         //player.isFalling = false;
     }
 

@@ -55,7 +55,7 @@ public class Damageable : MonoBehaviour
 
     public void Die()
     {
-        GameManager.Instance.levelMaster.Respawn();
+        LevelManager.instance.Respawn();
         //gameObject.SetActive(false);
     }
 }

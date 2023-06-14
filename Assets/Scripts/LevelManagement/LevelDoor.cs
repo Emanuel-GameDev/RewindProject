@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ToolBox.Serialization;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,13 +14,18 @@ public class LevelDoor : MonoBehaviour
     List<LevelLight> lights;
     public List<bool> checkpointTaken;
 
+    private void OnEnable()
+    {
+        if (DataSerializer.HasKey(levelToLoad.name + "TAKENCHECKPOINTS"))
+            checkpointTaken = DataSerializer.Load<List<bool>>(levelToLoad.name + "TAKENCHECKPOINTS");
+            
+    }
 
     private void Start()
     {
         buttons = new List<DoorMenuSelectionButton>(GetComponentsInChildren<DoorMenuSelectionButton>());
-        lights = new List<LevelLight>(GetComponentsInChildren<LevelLight>());
+        lights = new List<LevelLight>(GetComponentsInChildren<LevelLight>(true));
 
-        GetTakenCheckpoints();
         KindleLights();
 
         levelSelectionMenu.SetActive(false);
@@ -45,19 +51,14 @@ public class LevelDoor : MonoBehaviour
         PlayerController.instance.inputs.Player.Interaction.performed -= Interact;
     }
 
-    private void GetTakenCheckpoints()
-    {
-        if (!LevelMaster.Instance.levels.ContainsKey(levelToLoad.name))
+    private void KindleLights()
+    {  
+        if (checkpointTaken.Count < 1)
             return;
 
-        if (LevelMaster.Instance.levels[levelToLoad.name].Count > 0)
-            checkpointTaken = LevelMaster.Instance.levels[levelToLoad.name];
-    }
-
-    private void KindleLights()
-    {
         for (int i = 0; i < lights.Count; i++)
         {
+            
             if (checkpointTaken[i] == true)
             {
                 lights[i].Light();

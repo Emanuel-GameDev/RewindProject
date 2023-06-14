@@ -19,23 +19,18 @@ public class MenuManager : MonoBehaviour
         inputs.Menu.CloseMenu.performed += CloseMenuInput;
 
         submenus = GetComponentsInChildren<Menu>(true);
-    }
 
+    }
 
     private void Start()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-
-        DontDestroyOnLoad(gameObject);
+        Instance = this;
     }
 
     public void OpenMenu(Menu menu)
     {
         inputs.Menu.Enable();
-        
+
         menu.gameObject.SetActive(true);
     }
 

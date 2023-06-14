@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -8,8 +9,8 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] List<Checkpoint> checkpoints;
+    public static LevelManager instance;
 
-    [HideInInspector]
     public List<bool> checkpointsTaken;
 
     Scene level;
@@ -20,12 +21,13 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
+        instance = this;
         inputs = new PlayerInputs();
         inputs.Player.Enable();
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
-        inputs.Player.Respawn.performed += OnRespawn;
         SceneManager.sceneLoaded += OnLevelLoaded;
+        inputs.Player.Respawn.performed += OnRespawn;
 
     }
 
@@ -36,11 +38,7 @@ public class LevelManager : MonoBehaviour
             checkpointsTaken[i] = checkpoints[i].taken;
         }
 
-        Checkpoint taken = (Checkpoint) obj;
-
-        GameManager.Instance.levelMaster.spawnPoint = taken.transform;
-
-        LevelMaster.Instance.levels[level.name] = checkpointsTaken;
+        DataSerializer.Save(level.name + "TAKENCHECKPOINTS", checkpointsTaken);
     }
 
     private void OnDisable()
@@ -55,13 +53,13 @@ public class LevelManager : MonoBehaviour
     {
         level = SceneManager.GetActiveScene();
 
-        GetTakenCheckpoint();
+        //GetTakenCheckpoint();
 
         GetSpawnPoint();
 
         SetCheckpoint();
 
-        GameManager.Instance.levelMaster.Respawn();
+        Respawn();
     }
 
     private void SetCheckpoint()
@@ -69,44 +67,69 @@ public class LevelManager : MonoBehaviour
         if (checkpoints.Count < 1)
             return;
 
+        if (DataSerializer.HasKey(level.name + "TAKENCHECKPOINTS"))
+            checkpointsTaken = DataSerializer.Load<List<bool>>(level.name + "TAKENCHECKPOINTS");
+        else
+            checkpointsTaken = new List<bool>() { true,false,false };
+
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
             checkpoints[i].taken = checkpointsTaken[i];
         }
 
-        checkpoints[0].taken = true;
     }
 
     private void GetSpawnPoint()
     {
-        if (checkpoints.Count <1)
-            GameManager.Instance.levelMaster.spawnPoint = transform;
-        else if (LevelMaster.Instance.spawnPointId <= 0)
-            GameManager.Instance.levelMaster.spawnPoint = checkpoints[0].transform;
+        DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad);
+        DataSerializer.DeleteKey("CHECKPOINTIDTOLOAD");
+
+        if (checkpoints.Count < 1)
+            DataSerializer.Save("SPAWNPOINT", transform.position);
+        else if (idToLoad <= 0)
+            DataSerializer.Save("SPAWNPOINT", checkpoints[0].transform.position);
         else
-            GameManager.Instance.levelMaster.spawnPoint = checkpoints[LevelMaster.Instance.spawnPointId].transform;
+            DataSerializer.Save("SPAWNPOINT", checkpoints[idToLoad].transform.position);
     }
 
-    private void GetTakenCheckpoint()
-    {
-        if (!LevelMaster.Instance.levels.ContainsKey(level.name))
-        {
-            foreach (Checkpoint check in checkpoints)
-            {
-                checkpointsTaken.Add(false);
-            }
 
-            LevelMaster.Instance.levels.Add(level.name, checkpointsTaken);
-        }
-        else
-            checkpointsTaken = LevelMaster.Instance.levels[level.name];
-    }
+
+    //private void GetTakenCheckpoint()
+    //{
+    //    if (!DataSerializer.TryLoad(level.name,out checkpoints)/*LevelMaster.Instance.levels.ContainsKey(level.name)*/)
+    //    {
+    //        foreach (Checkpoint check in checkpoints)
+    //        {
+    //            checkpointsTaken.Add(false);
+    //        }
+
+    //        LevelMaster.Instance.levels.Add(level.name, checkpointsTaken);
+    //    }
+    //    else
+    //        checkpointsTaken = LevelMaster.Instance.levels[level.name];
+    //}
 
     private void OnRespawn(InputAction.CallbackContext obj)
     {
-        GameManager.Instance.levelMaster.Respawn();
+        Respawn();
+    }
+    public void Respawn()
+    {
+
+        if(DataSerializer.TryLoad("SPAWNPOINT", out Vector3 spawnPoint))
+        Teleport(PlayerController.instance.gameObject, spawnPoint);
+
+        PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }
 
-    
+    public void FastRespawn()
+    {
+        Teleport(PlayerController.instance.gameObject, PlayerController.instance.fastSpawnPoint);
+    }
+
+    public void Teleport(GameObject objectToTeleport, Vector3 teleportPosition)
+    {
+        objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0);
+    }
 
 }
