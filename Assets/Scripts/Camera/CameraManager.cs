@@ -17,9 +17,6 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float zoomSpeed;
 
     private float currentZoom;
-    private float currentOffsetY;
-    private float currentDeadZoneX;
-    private float currentDeadZoneY;
 
     // Start is called before the first frame update
     void Start()
@@ -45,11 +42,13 @@ public class CameraManager : MonoBehaviour
         float offsetAmountY = newValues[1];
         float deadZoneXAmount = newValues[2];
         float deadZoneYAmount = newValues[3];
+        float screenY = newValues[4];
 
         CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
         transposer.m_TrackedObjectOffset.y = offsetAmountY;
         transposer.m_DeadZoneWidth = deadZoneXAmount;
         transposer.m_DeadZoneHeight = deadZoneYAmount;
+        transposer.m_ScreenY = screenY;
 
         float zoomAmount = newValues[0];
         if (zoomAmount >= 0 || zoomAmount != currentZoom)
