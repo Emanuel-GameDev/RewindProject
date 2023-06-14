@@ -10,6 +10,7 @@ public class CameraTrigger : MonoBehaviour
 
     [Tooltip("New value for offset in the Lens Body inside Cinemachine")]
     [SerializeField] private float offsetY;
+    [SerializeField] private float offsetDashMultiplier;
 
     [Tooltip("New value for deadZoneWidth in the Body menù inside Cinemachine")]
     [Range(0f, 2f)]
@@ -26,7 +27,7 @@ public class CameraTrigger : MonoBehaviour
 
     private void Start()
     {
-        newValues = new List<float>() { zoomAmount, offsetY, deadZoneX, deadZoneY, screenY};
+        newValues = new List<float>() { zoomAmount, offsetY, offsetDashMultiplier, deadZoneX, deadZoneY, screenY};
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
