@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Damageable : MonoBehaviour
 {
@@ -27,6 +28,11 @@ public class Damageable : MonoBehaviour
         }
     }
 
+
+    [SerializeField] UnityEvent OnDie;
+    [SerializeField] UnityEvent OnHit;
+
+
     private void Start()
     {
         SetMaxHealth();
@@ -51,11 +57,11 @@ public class Damageable : MonoBehaviour
     public void TakeDamage(int healthToRemove)
     {
         ChangeHealth(-healthToRemove);
+        OnHit?.Invoke();
     }
 
     public void Die()
     {
-        GameManager.Instance.levelMaster.Respawn();
-        //gameObject.SetActive(false);
+        OnDie?.Invoke();
     }
 }

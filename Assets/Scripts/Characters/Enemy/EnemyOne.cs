@@ -23,7 +23,7 @@ public class EnemyOne : BaseEnemy
     [Tooltip("Imposta il tempo che intercorre tra un attacco e il successivo")]
     [SerializeField] float timeBetweenAttacks = 0.5f;
 
-    Animator animator;
+    
     GameObject attack;
     protected NavMeshAgent navMeshAgent;
 
@@ -36,6 +36,11 @@ public class EnemyOne : BaseEnemy
     private const string STOP_DISTANCE = "Stop Distance";
     private const string TIME_BETWEEN_ATTACKS = "Time Between Attacks";
 
+    //Nomi delle variabili nel Animator
+    private const string SPEED = "Speed";
+    private const string ATTACK = "Attack";
+
+
     void Start()
     {
         NavmeshSetup();
@@ -43,6 +48,12 @@ public class EnemyOne : BaseEnemy
     private void Update()
     {
         FlipCharacter();
+        ManageAnimation();
+    }
+
+    private void ManageAnimation()
+    {
+        animator.SetFloat(SPEED, navMeshAgent.velocity.magnitude);
     }
 
     private void FlipCharacter()
@@ -68,7 +79,7 @@ public class EnemyOne : BaseEnemy
     public void Attack()
     {
         attack.SetActive(true);
-        animator.SetTrigger("Attack");
+        animator.SetTrigger(ATTACK);
     }
 
     public void EndAttack()
@@ -87,7 +98,6 @@ public class EnemyOne : BaseEnemy
         tree.SetVariableValue(STOP_DISTANCE, stopDistance);
         tree.SetVariableValue(TIME_BETWEEN_ATTACKS, timeBetweenAttacks);
 
-        animator = GetComponent<Animator>();
         attack = GetComponentInChildren<Damager>().gameObject;
         EndAttack();
     }
@@ -98,6 +108,5 @@ public class EnemyOne : BaseEnemy
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
     }
-
-
+    
 }
