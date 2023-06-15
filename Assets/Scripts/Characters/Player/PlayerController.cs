@@ -53,7 +53,7 @@ public class PlayerController : Character
     Vector2 jumpStartPoint;
     [HideInInspector] public Vector3 fastSpawnPoint;
     [HideInInspector] public bool isJumping = false;
-    [HideInInspector] public bool isFalling = false;
+    /*[HideInInspector]*/ public bool isFalling = false;
     [HideInInspector] public bool isMooving = false;
     [HideInInspector] public bool isRunning = true;
     [HideInInspector] public bool grounded = false;
@@ -244,7 +244,7 @@ public class PlayerController : Character
     {
         if (IsGravityDownward())
         {
-            if (rBody.velocity.y < -1 && !grounded)
+            if (rBody.velocity.y < -0.1 && !grounded)
             {
                 rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, -maxFallSpeed, -minFallSpeed));
                 isFalling = true;
@@ -252,7 +252,7 @@ public class PlayerController : Character
         }
         else
         {
-            if (rBody.velocity.y > 1 && !grounded)
+            if (rBody.velocity.y > 0.1 && !grounded)
             {
                 rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, minFallSpeed, maxFallSpeed));
                 isFalling = true;
