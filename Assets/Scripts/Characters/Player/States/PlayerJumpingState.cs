@@ -15,6 +15,7 @@ public class PlayerJumpingState : State
     {
         base.Enter();
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        player.animator.SetTrigger("Jump");
     }
 
     public override void Update()

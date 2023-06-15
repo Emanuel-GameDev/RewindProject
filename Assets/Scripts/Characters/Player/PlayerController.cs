@@ -55,7 +55,7 @@ public class PlayerController : Character
     public bool isJumping = false;
     public bool isFalling = false;
     public bool isMooving = false;
-    public bool isRunning = false;
+    public bool isRunning = true;
     [HideInInspector] public bool grounded = false;
 
     internal Rigidbody2D rBody;
@@ -94,6 +94,8 @@ public class PlayerController : Character
         instance = this;
         animator = GetComponent<Animator>();
         bodySprite = GetComponentInChildren<SpriteRenderer>();
+
+        animator.SetBool("Running", isRunning);
     }
 
     private void Start()
@@ -184,7 +186,7 @@ public class PlayerController : Character
 
     private void RunInput(InputAction.CallbackContext obj)
     {
-        isRunning = obj.performed;
+        isRunning = !obj.performed;
         animator.SetBool("Running", isRunning);
     }
 
@@ -425,7 +427,7 @@ public class PlayerController : Character
     public void GroundCheck()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
-
+        animator.SetBool("Grounded", grounded);
 
         if (!isJumping && grounded)
         {
