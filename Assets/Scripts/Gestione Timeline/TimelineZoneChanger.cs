@@ -5,7 +5,7 @@ public class TimelineZoneChanger : MonoBehaviour
     [SerializeField] eZone zone;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<TestBasicMovement>())
+        if (collision.GetComponent<PlayerController>())
         {
             TimelineManager.Instance.ChangeTimeline(zone);
         }

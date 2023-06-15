@@ -44,7 +44,7 @@ public class TimelineManager : MonoBehaviour
     }
 
     private bool timelineIsAtStart => timelineDirector.time <= 0;
-    private bool timelineIsAtEnd => timelineDirector.time >= timelineDuration;
+    private bool timelineIsAtEnd => timelineDirector.time >= (timelineDuration - 0.001);
     private float elapsedTime = 0;
 
     private bool isForwarding = false;
@@ -135,10 +135,11 @@ public class TimelineManager : MonoBehaviour
     {
         if (isPlaying)
         {
-            if (timelineDirector.time >= timelineDuration)
+            if (timelineIsAtEnd)
             {
                 PauseTimeline();
             }
+            Debug.Log("Check: " + timelineIsAtEnd + Time.time);
         }
     }
 
