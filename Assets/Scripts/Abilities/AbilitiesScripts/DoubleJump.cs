@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DoubleJump : Ability
 {
-    public override void Activate(GameObject parent)
+    public override void Activate1(GameObject parent)
     {
-        base.Activate(parent);
+        base.Activate1(parent);
     }
 
     public override void Pick(Character picker)
