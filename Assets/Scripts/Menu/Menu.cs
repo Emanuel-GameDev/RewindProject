@@ -5,14 +5,20 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
-    public bool notificationInThisMenu=false;
+    public bool startUnlocked = false;
 
-    public bool unlocked = false;
+    [HideInInspector] public bool notificationInThisMenu=false;
+    [HideInInspector] public bool unlocked = false;
 
     private void OnEnable()
     {
-        DataSerializer.TryLoad("PAUSEMENULOCK" + gameObject.name,out unlocked);
-        DataSerializer.TryLoad("PAUSEMENUNOT" + gameObject.name,out notificationInThisMenu);
+        if (startUnlocked)
+            UnlockMenu();
+    }
+    private void Awake()
+    {
+        DataSerializer.TryLoad("PAUSEMENULOCK" + gameObject.name, out unlocked);
+        DataSerializer.TryLoad("PAUSEMENUNOT" + gameObject.name, out notificationInThisMenu);
     }
 
     private void Start()
@@ -28,7 +34,6 @@ public class Menu : MonoBehaviour
         unlocked = true;
         notificationInThisMenu = true;
 
-        Debug.Log(unlocked.ToString());
 
         DataSerializer.Save("PAUSEMENULOCK" + gameObject.name, unlocked);
         DataSerializer.Save("PAUSEMENUNOT" + gameObject.name, notificationInThisMenu);

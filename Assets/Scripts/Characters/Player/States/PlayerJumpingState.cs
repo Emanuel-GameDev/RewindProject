@@ -28,6 +28,8 @@ public class PlayerJumpingState : State
         if (player.isFalling)
             player.stateMachine.SetState(PlayerState.PlayerFalling);
 
+        if(player.grounded && player.rBody.velocity.y>-0.1f && player.rBody.velocity.y < 0.1f)
+            player.stateMachine.SetState(PlayerState.PlayerIdle);
     }
 
     public override void Exit()

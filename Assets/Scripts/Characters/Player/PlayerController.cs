@@ -58,7 +58,7 @@ public class PlayerController : Character
     public bool isRunning = false;
     [HideInInspector] public bool grounded = false;
 
-    Rigidbody2D rBody;
+    internal Rigidbody2D rBody;
     [HideInInspector] public Animator animator;
     SpriteRenderer bodySprite;
 
@@ -94,7 +94,6 @@ public class PlayerController : Character
         instance = this;
         animator = GetComponent<Animator>();
         bodySprite = GetComponentInChildren<SpriteRenderer>();
-        animator.SetFloat("WalkSpeed", walkSpeed);
     }
 
     private void Start()
@@ -186,6 +185,7 @@ public class PlayerController : Character
     private void RunInput(InputAction.CallbackContext obj)
     {
         isRunning = obj.performed;
+        animator.SetBool("Running", isRunning);
     }
 
     private void OpenMenuInput(InputAction.CallbackContext obj)
@@ -390,7 +390,7 @@ public class PlayerController : Character
     #endregion
 
     #region Functions
-    public float debug;
+
     public bool CheckMaxFallDistanceReached()
     {
         if (IsGravityDownward())

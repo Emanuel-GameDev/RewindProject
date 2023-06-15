@@ -37,5 +37,6 @@ public class PlayerMoovingState : State
     public override void Exit()
     {
         base.Exit();
+        player.animator.SetBool("Moving", false);
     }
 }
