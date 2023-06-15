@@ -12,29 +12,50 @@ public class CameraManager : MonoBehaviour
     [Tooltip("Start value for orthografic size in the Lens menù inside Cinemachine")]
     public float StartZoomAmount = 7f;
 
-    [Tooltip("Speed of the zoom action\n " +
+    [Tooltip("Speed of the transition\n " +
         "N.B. the action is an interpolation so it scales over time")]
     [SerializeField] private float zoomSpeed;
 
     private float currentZoom;
+    private float currentOffsetY;
+    private float currentDeadZoneX;
+    private float currentDeadZoneY;
 
     // Start is called before the first frame update
     void Start()
     {
-        PubSub.Instance.RegisterFunction(EMessageType.CameraSwitch, TriggerZoom);
-        mainCam.m_Lens.OrthographicSize = StartZoomAmount;
-        currentZoom = StartZoomAmount;
+        PubSub.Instance.RegisterFunction(EMessageType.CameraSwitch, UpdateCamera);
         mainCam.gameObject.SetActive(true);
+
+        Initilize();
     }
 
-    private void TriggerZoom(object obj)
+    private void Initilize()
     {
-        if (obj is not float) return;
-        float zoomAmount = (float)obj;
+        mainCam.m_Lens.OrthographicSize = StartZoomAmount;
+        currentZoom = StartZoomAmount;
 
-        if (zoomAmount <= 0 || zoomAmount == currentZoom) return; 
+    }    
 
-        StartCoroutine(Zoom(zoomAmount));
+    private void UpdateCamera(object obj)
+    {
+        if (obj is not List<float>) return;
+        List<float> newValues = (List<float>)obj;
+
+        float offsetAmountY = newValues[1];
+        float deadZoneXAmount = newValues[2];
+        float deadZoneYAmount = newValues[3];
+
+        CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
+        transposer.m_TrackedObjectOffset.y = offsetAmountY;
+        transposer.m_DeadZoneWidth = deadZoneXAmount;
+        transposer.m_DeadZoneHeight = deadZoneYAmount;
+
+        float zoomAmount = newValues[0];
+        if (zoomAmount >= 0 || zoomAmount != currentZoom)
+        {
+            StartCoroutine(Zoom(zoomAmount));
+        }
     }
 
     private IEnumerator Zoom(float targetZoom)
