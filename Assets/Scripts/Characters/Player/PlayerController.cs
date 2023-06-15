@@ -52,10 +52,10 @@ public class PlayerController : Character
     [HideInInspector] public float fastRespawnTimer = 0;
     Vector2 jumpStartPoint;
     [HideInInspector] public Vector3 fastSpawnPoint;
-    public bool isJumping = false;
-    public bool isFalling = false;
-    public bool isMooving = false;
-    public bool isRunning = true;
+    [HideInInspector] public bool isJumping = false;
+    [HideInInspector] public bool isFalling = false;
+    [HideInInspector] public bool isMooving = false;
+    [HideInInspector] public bool isRunning = true;
     [HideInInspector] public bool grounded = false;
 
     internal Rigidbody2D rBody;
