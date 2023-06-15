@@ -94,7 +94,6 @@ public class PlayerController : Character
         instance = this;
         animator = GetComponent<Animator>();
         bodySprite = GetComponentInChildren<SpriteRenderer>();
-        animator.SetFloat("WalkSpeed", walkSpeed);
     }
 
     private void Start()
@@ -186,6 +185,7 @@ public class PlayerController : Character
     private void RunInput(InputAction.CallbackContext obj)
     {
         isRunning = obj.performed;
+        animator.SetBool("Running", isRunning);
     }
 
     private void OpenMenuInput(InputAction.CallbackContext obj)
