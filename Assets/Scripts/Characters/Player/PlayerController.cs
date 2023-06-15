@@ -53,7 +53,7 @@ public class PlayerController : Character
     Vector2 jumpStartPoint;
     [HideInInspector] public Vector3 fastSpawnPoint;
     [HideInInspector] public bool isJumping = false;
-    /*[HideInInspector]*/ public bool isFalling = false;
+    [HideInInspector] public bool isFalling = false;
     [HideInInspector] public bool isMooving = false;
     [HideInInspector] public bool isRunning = true;
     [HideInInspector] public bool grounded = false;

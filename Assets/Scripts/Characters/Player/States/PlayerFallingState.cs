@@ -13,6 +13,7 @@ public class PlayerFallingState : State
         player.fallStartPoint = player.transform.position.y;
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
         player.animator.SetTrigger("Fall");
+        player.animator.SetBool("Falling",player.isFalling);
     }
 
     public override void Update()
@@ -48,6 +49,7 @@ public class PlayerFallingState : State
     public override void Exit()
     {
         base.Exit();
+        player.animator.SetBool("Falling", player.isFalling);
         player.fallStartPoint = 0;
     }
 }
