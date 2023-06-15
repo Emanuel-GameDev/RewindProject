@@ -14,9 +14,12 @@ public class CameraManager : MonoBehaviour
 
     [Tooltip("Speed of the transition\n " +
         "N.B. the action is an interpolation so it scales over time")]
-    [SerializeField] private float zoomSpeed;
+    [SerializeField] private float transitionSpeed;
 
     private float currentZoom;
+    private Vector3 currentOffset;
+    private Vector2 currentDamping;
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,65 +35,49 @@ public class CameraManager : MonoBehaviour
         mainCam.m_Lens.OrthographicSize = StartZoomAmount;
         currentZoom = StartZoomAmount;
 
-    }    
+        currentOffset = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+        currentDamping.x = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping;
+        currentDamping.y = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping;
+    }
 
     private void UpdateCamera(object obj)
     {
-        if (obj is not List<float>) return;
-        List<float> newValues = (List<float>)obj;
+        if (obj is not CameraData) return;
+        CameraData cameraData = (CameraData)obj;
 
-        float zoomAmount = newValues[0];
-        if (zoomAmount >= 0 || zoomAmount != currentZoom)
+        if (cameraData.zoomAmount >= 0 && cameraData.zoomAmount != currentZoom)
         {
-            StartCoroutine(Zoom(newValues));
+            StartCoroutine(AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping));
         }
-
-        //float offsetAmountY = newValues[1];
-        //float offsetDashMultiplier = newValues[2];
-        //float deadZoneXAmount = newValues[3];
-        //float deadZoneYAmount = newValues[4];
-        //float screenY = newValues[4];
-
-        //CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
-        //transposer.m_DeadZoneWidth = deadZoneXAmount;
-        //transposer.m_DeadZoneHeight = deadZoneYAmount;
-        //transposer.m_ScreenY = screenY;
-
-        //OffsetUpdate(offsetAmountY, offsetDashMultiplier);
-
     }
 
-    private void OffsetUpdate(float offsetAmountY, float offsetDash)
+    private IEnumerator AdjustCamera(float targetZoom, Vector3 targetOffset, Vector2 targetDamping)
     {
-        CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
-        transposer.m_TrackedObjectOffset.y = offsetAmountY * offsetDash;
-        transposer.m_TrackedObjectOffset.y = offsetAmountY;
-    }
-
-    private IEnumerator Zoom(List<float> newValues)
-    {
-        while (Mathf.Abs(currentZoom - newValues[0]) > 0.01f)
+        while (Mathf.Abs(currentZoom - targetZoom) > 0.01f)
         {
-            currentZoom = Mathf.Lerp(currentZoom, newValues[0], zoomSpeed * Time.deltaTime);
+            currentZoom = Mathf.Lerp(currentZoom, targetZoom, transitionSpeed * Time.deltaTime);
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (currentOffset[i] != targetOffset[i])
+                {
+                    currentOffset[i] = Mathf.Lerp(currentOffset[i], targetOffset[i], transitionSpeed * Time.deltaTime);
+                }
+                if (currentDamping[i] != targetDamping[i] && i < 3)
+                {
+                    currentDamping[i] = Mathf.Lerp(currentDamping[i], targetDamping[i], transitionSpeed * Time.deltaTime);
+                }
+            }
+
+            mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = currentDamping.x;
+            mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = currentDamping.y;
+            mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = currentOffset;
             mainCam.m_Lens.OrthographicSize = currentZoom;
+            yield return null;
+
         }
-
-        float offsetAmountY = newValues[1];
-        float offsetDashMultiplier = newValues[2];
-        OffsetUpdate(offsetAmountY, offsetDashMultiplier);
-
-        float deadZoneXAmount = newValues[3];
-        float deadZoneYAmount = newValues[4];
-        float screenY = newValues[4];
-
-        CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
-        transposer.m_DeadZoneWidth = deadZoneXAmount;
-        transposer.m_DeadZoneHeight = deadZoneYAmount;
-        transposer.m_ScreenY = screenY;
-
-
-        yield return null;
     }
+
 
 
 }
