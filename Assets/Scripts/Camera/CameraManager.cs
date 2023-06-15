@@ -57,17 +57,8 @@ public class CameraManager : MonoBehaviour
         {
             currentZoom = Mathf.Lerp(currentZoom, targetZoom, transitionSpeed * Time.deltaTime);
 
-            for (int i = 0; i < 3; i++)
-            {
-                if (currentOffset[i] != targetOffset[i])
-                {
-                    currentOffset[i] = Mathf.Lerp(currentOffset[i], targetOffset[i], transitionSpeed * Time.deltaTime);
-                }
-                if (currentDamping[i] != targetDamping[i] && i < 3)
-                {
-                    currentDamping[i] = Mathf.Lerp(currentDamping[i], targetDamping[i], transitionSpeed * Time.deltaTime);
-                }
-            }
+            currentOffset = PerformLerp(currentOffset, targetOffset);
+            currentDamping = PerformLerp(currentDamping, targetDamping);
 
             mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = currentDamping.x;
             mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = currentDamping.y;
@@ -78,6 +69,18 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    private Vector3 PerformLerp(Vector3 current, Vector3 target)
+    {
+        if (current.x != target.x)
+        {
+            current.x = Mathf.Lerp(current.x, target.x, transitionSpeed * Time.deltaTime);
+        }
+        if (current.y != target.y)
+        {
+            current.y = Mathf.Lerp(current.y, target.y, transitionSpeed * Time.deltaTime);
+        }
 
+        return current;
+    }
 
 }
