@@ -32,9 +32,10 @@ public class PlayerFallingState : State
             {
                 if (player.GetComponent<Damageable>() != null)
                 {
-                    player.GetComponent<Damageable>().TakeDamage(1);
-                    GameManager.Instance.levelMaster.FastRespawn();
+                    if (player.GetComponent<Damageable>().Health > 1)
+                        LevelManager.instance.FastRespawn();
 
+                    player.GetComponent<Damageable>().TakeDamage(1);
                 }
             }
 
@@ -46,5 +47,6 @@ public class PlayerFallingState : State
     public override void Exit()
     {
         base.Exit();
+        player.fallStartPoint = 0;
     }
 }

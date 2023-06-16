@@ -7,7 +7,7 @@ public enum EMessageType
     CameraSwitch,
     CheckpointVisited,
     ActiveAbilityChanged,
-    AbilityPicked
+    AbilityPicked,
 }
 
 public enum EAbilityState
@@ -17,10 +17,4 @@ public enum EAbilityState
     cooldown
 }
 
-public enum EAbility
-{
-    doubleJump,
-    gravity,
-    tower
-}
 

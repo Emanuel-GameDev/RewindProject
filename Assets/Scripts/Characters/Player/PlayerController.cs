@@ -1,3 +1,4 @@
+using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -48,16 +49,18 @@ public class PlayerController : Character
     [SerializeField] PhysicsMaterial2D fullFriction;
 
     [HideInInspector] public float fallStartPoint;
-
+    [HideInInspector] public float fastRespawnTimer = 0;
     Vector2 jumpStartPoint;
-
-    public bool isJumping = false;
-    public bool isFalling = false;
-    public bool isMooving = false;
-    public bool isRunning = false;
+    [HideInInspector] public Vector3 fastSpawnPoint;
+    [HideInInspector] public bool isJumping = false;
+    [HideInInspector] public bool isFalling = false;
+    [HideInInspector] public bool isMooving = false;
+    [HideInInspector] public bool isRunning = true;
     [HideInInspector] public bool grounded = false;
 
-    Rigidbody2D rBody;
+    internal Rigidbody2D rBody;
+    [HideInInspector] public Animator animator;
+    SpriteRenderer bodySprite;
 
     float horizontalInput = 0;
     float horizontalMovement = 0;
@@ -89,6 +92,10 @@ public class PlayerController : Character
     private void Awake()
     {
         instance = this;
+        animator = GetComponent<Animator>();
+        bodySprite = GetComponentInChildren<SpriteRenderer>();
+
+        animator.SetBool("Running", isRunning);
     }
 
     private void Start()
@@ -107,27 +114,31 @@ public class PlayerController : Character
 
         stateMachine.StateUpdate();
 
+        if (Input.GetKeyDown(KeyCode.CapsLock))
+        {
+            DataSerializer.DeleteAll();
+            Debug.Log("Saving deleted");
+        }
     }
 
     public void FixedUpdate()
     {
         GroundCheck();
-        if (GameManager.Instance.levelMaster != null)
-        {
-            if (grounded)
-            {
-                if (GameManager.Instance.levelMaster.fastRespawnTimer < fastRespawnRefreshTimer)
-                    GameManager.Instance.levelMaster.fastRespawnTimer += Time.deltaTime;
-                else
-                {
-                    GameManager.Instance.levelMaster.fastSpawnPoint = transform.position;
-                    GameManager.Instance.levelMaster.fastRespawnTimer = 0;
-                }
-            }
-            else
-                GameManager.Instance.levelMaster.fastRespawnTimer = 0;
 
+        if (grounded)
+        {
+            if (fastRespawnTimer < fastRespawnRefreshTimer)
+                fastRespawnTimer += Time.deltaTime;
+            else
+            {
+                fastSpawnPoint = transform.position;
+                fastRespawnTimer = 0;
+            }
         }
+        else
+            fastRespawnTimer = 0;
+
+
     }
 
     public void OnDrawGizmos()
@@ -175,7 +186,8 @@ public class PlayerController : Character
 
     private void RunInput(InputAction.CallbackContext obj)
     {
-        isRunning = obj.performed;
+        isRunning = !obj.performed;
+        animator.SetBool("Running", isRunning);
     }
 
     private void OpenMenuInput(InputAction.CallbackContext obj)
@@ -218,6 +230,12 @@ public class PlayerController : Character
             isMooving = true;
 
         Vector2 relativMovement = Quaternion.Euler(0, 0, -groundAngle) * new Vector3(horizontalMovement, 0, 0);
+
+        if (horizontalMovement > 0.1)
+            bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
+        else if(horizontalMovement < -0.1)
+            bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+
 
         rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
@@ -333,15 +351,15 @@ public class PlayerController : Character
         int h;
 
         if (IsGravityDownward())
-            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.down, hits, 1.5f);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 1.5f);
         else
-            h = Physics2D.RaycastNonAlloc(groundCheck.position, Vector2.up, hits, 1.5f);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.up, hits, 1.5f);
 
         if (h > 1)
         {
             groundAngle = Mathf.Atan2(hits[1].normal.x, hits[1].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
 
-            if(!IsGravityDownward())
+            if (!IsGravityDownward())
             {
                 if (groundAngle >= 0)
                     groundAngle -= 180;
@@ -350,6 +368,7 @@ public class PlayerController : Character
             }
 
             transform.rotation = Quaternion.Euler(0, 0, -groundAngle / rotationRatioOnSlopes);
+
         }
 
         CheckFriction();
@@ -378,12 +397,12 @@ public class PlayerController : Character
     {
         if (IsGravityDownward())
         {
-            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) - transform.position.y))
-                return true;
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(fallStartPoint - transform.position.y))
+                    return true;
         }
         else
         {
-            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(Mathf.Abs(fallStartPoint) + transform.position.y))
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(fallStartPoint + transform.position.y))
                 return true;
         }
 
@@ -408,7 +427,7 @@ public class PlayerController : Character
     public void GroundCheck()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
-
+        animator.SetBool("Grounded", grounded);
 
         if (!isJumping && grounded)
         {

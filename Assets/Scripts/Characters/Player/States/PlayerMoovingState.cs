@@ -13,6 +13,7 @@ public class PlayerMoovingState : State
     public override void Enter()
     {
         base.Enter();
+        player.animator.SetBool("Moving", true);
     }
 
     public override void Update()
@@ -36,5 +37,6 @@ public class PlayerMoovingState : State
     public override void Exit()
     {
         base.Exit();
+        player.animator.SetBool("Moving", false);
     }
 }

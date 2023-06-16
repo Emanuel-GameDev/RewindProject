@@ -5,14 +5,29 @@ using UnityEngine;
 
 public class CameraTrigger : MonoBehaviour
 {
-    [SerializeField] private CinemachineVirtualCamera cam;
+    [Tooltip("New value for orthografic size in the Lens menù inside Cinemachine")]
+    [SerializeField] private float zoomAmount;
 
+    [Tooltip("New value for offset in the Body menù inside Cinemachine")]
+    [SerializeField] private Vector3 followOffset;
+
+    [Tooltip("New value for damping in the Body menù inside Cinemachine")]
+    [SerializeField] private Vector2 damping;
+
+    CameraData cameraData;
+    private bool triggered = false;
+
+    private void Start()
+    {
+        cameraData = new CameraData(zoomAmount, followOffset, damping);
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // COntrollare che collision sia player
-        if (collision.gameObject.tag == "Player")
+        // Check player collision
+        if (collision.gameObject.GetComponent<Character>() != null && !triggered)
         {
-            PubSub.Instance.Notify(EMessageType.CameraSwitch, cam);
+            PubSub.Instance.Notify(EMessageType.CameraSwitch, cameraData);
+            triggered = true;
         }
     }
 }

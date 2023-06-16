@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ToolBox.Serialization;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,7 +16,8 @@ public class Checkpoint : MonoBehaviour
 
     private void Start()
     {
-        menu.SetActive(false);
+        if (menu != null)
+            menu.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -27,7 +29,8 @@ public class Checkpoint : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        menu.SetActive(false);
+        if (menu != null)
+            menu.SetActive(false);
 
         if (collision.gameObject.GetComponent<PlayerController>())
             collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed -= Interact;
@@ -42,11 +45,17 @@ public class Checkpoint : MonoBehaviour
     {
         taken = true;
         SetCheckpoint();
+
+        Debug.Log("CheckpointTaken");
+
         HandleMenu();
     }
 
     private void HandleMenu()
     {
+        if (menu == null)
+            return;
+
         if (!menu.activeSelf)
             menu.SetActive(true);
         else
@@ -60,7 +69,7 @@ public class Checkpoint : MonoBehaviour
 
     public void SetCheckpoint()
     {
-        LevelMaster.Instance.spawnPoint = transform;
+        DataSerializer.Save("SPAWNPOINT", transform.position);
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
         PubSub.Instance.Notify(EMessageType.CheckpointVisited, this);
     }
