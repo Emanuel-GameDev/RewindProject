@@ -47,7 +47,11 @@ public class BaseEnemy : Character
 
         tree.SetVariableValue(IS_DEAD, isDead);
 
-        animator = GetComponent<Animator>();
+        
+        if (GetComponent<Animator>() != null)
+            animator = GetComponent<Animator>();
+        else 
+            animator = GetComponentInChildren<Animator>();
     }
 
     public BehaviorTree GetTree()

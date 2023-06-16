@@ -38,7 +38,7 @@ public class EnemyOne : BaseEnemy
 
     //Nomi delle variabili nel Animator
     private const string SPEED = "Speed";
-    private const string ATTACK = "Attack";
+    private const string ATTACK = "Attacking";
 
 
     void Start()
@@ -79,7 +79,7 @@ public class EnemyOne : BaseEnemy
     public void Attack()
     {
         attack.SetActive(true);
-        animator.SetTrigger(ATTACK);
+        animator.SetBool(ATTACK, true);
     }
 
     public void EndAttack()
