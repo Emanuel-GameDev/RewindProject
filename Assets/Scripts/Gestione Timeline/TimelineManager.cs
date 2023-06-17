@@ -32,12 +32,11 @@ public class TimelineManager : MonoBehaviour
             if (value)
             {
                 PlayerController.instance.inputs.Player.Disable();
-                Debug.Log("Disable " + Time.time);
+                PubSub.Instance.Notify(EMessageType.TimeRewindStart, this);
             }
             else
             {
                 PlayerController.instance.inputs.Player.Enable();
-                Debug.Log("Enable " + Time.time);
             }
             _rewindIsActive = value;
         }
@@ -189,6 +188,7 @@ public class TimelineManager : MonoBehaviour
         timelineDirector.Play();
         isPlaying = true;
         isLocked = false;
+        PubSub.Instance.Notify(EMessageType.TimeRewindStop, this);
     }
 
     public void LockInTime()
@@ -196,6 +196,7 @@ public class TimelineManager : MonoBehaviour
         if (timelineIsAtStart || timelineIsAtEnd)
         {
             RewindIsactive = false;
+            PubSub.Instance.Notify(EMessageType.TimeRewindStop, this);
         }
         else
         {
