@@ -29,10 +29,8 @@ public class ParallaxEffect : MonoBehaviour
     {
         cam = GameManager.Instance.cameraManager.mainCam;
 
-        startPosX = transform.position.x;
-        startPosY = transform.position.y;
-
-        transform.position = new Vector3(cam.transform.position.x, cam.transform.position.y, 0);
+        startPosX = transform.localPosition.x;
+        startPosY = transform.localPosition.y;
     }
 
     // Update is called once per frame
@@ -55,13 +53,14 @@ public class ParallaxEffect : MonoBehaviour
         // Make background repeat itself
         float temp = (cam.transform.position.x * (1 - hParallaxRatio));
 
-        if (temp >= startPosX + ((length*2) - shiftOffset))
+        if (temp >= startPosX + length)
         {
-            startPosX += (length*2);
+            Debug.Log("ssss" + name);
+            startPosX += length;
         }
-        else if (temp <= startPosX - ((length * 2) - shiftOffset))
+        else if (temp <= startPosX - length)
         {
-            startPosX -= (length*2);
+            startPosX -= length;
         }
     }
 
@@ -70,12 +69,6 @@ public class ParallaxEffect : MonoBehaviour
         // Move background var based
         float dist = (cam.transform.position.y * vParallaxRatio);
 
-        transform.position = new Vector3(transform.position.x, startPosY + dist, transform.position.z);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(startPosX, 0), new Vector3(0, 10f));
+        transform.localPosition = new Vector3(transform.localPosition.x, startPosY + dist, transform.localPosition.z);
     }
 }
