@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CameraData : MonoBehaviour
+public class CameraData
 {
     public float zoomAmount;
     public Vector3 offset;

@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        if (transform.parent != null)
+            transform.parent = null;
+
         DontDestroyOnLoad(gameObject);
     }
 }
