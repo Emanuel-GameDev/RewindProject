@@ -61,14 +61,15 @@ public class Damageable : MonoBehaviour
 
     public void TakeDamage(int healthToRemove)
     {
+        
         ChangeHealth(-healthToRemove);
+        
     }
 
     public void Die()
     {
         OnDie?.Invoke();
     }
-
     public void TakeHit()
     {
         OnHit?.Invoke();
