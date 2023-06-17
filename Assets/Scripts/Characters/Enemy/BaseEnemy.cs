@@ -69,7 +69,7 @@ public class BaseEnemy : Character
     {
         isDead = true;
         animator.SetTrigger(DEAD);
-        tree.SetVariableValue(DEAD, isDead);
+        tree.SetVariableValue(IS_DEAD, isDead);
     }
 
     public virtual void ResetEnemy() 
