@@ -25,6 +25,10 @@ public class Damageable : MonoBehaviour
                 //da rivedere quando ci saranno le animazioni
                 Die();
             }
+            else
+            {
+                TakeHit();
+            }
         }
     }
 
@@ -57,11 +61,15 @@ public class Damageable : MonoBehaviour
     public void TakeDamage(int healthToRemove)
     {
         ChangeHealth(-healthToRemove);
-        OnHit?.Invoke();
     }
 
     public void Die()
     {
         OnDie?.Invoke();
+    }
+
+    public void TakeHit()
+    {
+        OnHit?.Invoke();
     }
 }
