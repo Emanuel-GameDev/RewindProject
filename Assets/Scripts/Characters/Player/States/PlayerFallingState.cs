@@ -12,6 +12,7 @@ public class PlayerFallingState : State
     {
         player.fallStartPoint = player.transform.position.y;
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
+
         player.animator.SetTrigger("Fall");
         player.animator.SetBool("Falling",player.isFalling);
     }
@@ -22,7 +23,7 @@ public class PlayerFallingState : State
         player.AbortJump();
         player.CalculateFallSpeed();
         player.CheckFriction();
-
+        //Debug.Log(this);
         if (player.isJumping)
         {
             player.stateMachine.SetState(PlayerState.PlayerJumping);

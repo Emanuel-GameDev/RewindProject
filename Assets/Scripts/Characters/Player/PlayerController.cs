@@ -138,6 +138,8 @@ public class PlayerController : Character
         else
             fastRespawnTimer = 0;
 
+        timer += Time.deltaTime;
+
 
     }
 
@@ -202,7 +204,7 @@ public class PlayerController : Character
     #endregion
 
     #region Movement
-
+    public float previousHorizontalInput = 0;
     public void CalculateHorizontalMovement()
     {
         if (horizontalInput != 0)
@@ -232,13 +234,37 @@ public class PlayerController : Character
         Vector2 relativMovement = Quaternion.Euler(0, 0, -groundAngle) * new Vector3(horizontalMovement, 0, 0);
 
         if (horizontalMovement > 0.1)
-            bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
-        else if(horizontalMovement < -0.1)
-            bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        {
 
+            if (previousHorizontalInput < -horizontalInput && rBody.velocity.x > walkSpeed&& timer > 0.2)
+            {
+                animator.SetTrigger("DirectionChanged");
+                timer = 0;
+            }
+
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+                bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
+        }
+        else if(horizontalMovement < -0.1)
+        {
+
+            if (previousHorizontalInput > -horizontalInput && rBody.velocity.x > -walkSpeed && timer > 0.2)
+            {
+                animator.SetTrigger("DirectionChanged");
+                timer = 0;
+            }
+
+            if(!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+                bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        previousHorizontalInput = horizontalInput;
 
         rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
+
+    float timer;
+
 
     public void CalculateFallSpeed()
     {
