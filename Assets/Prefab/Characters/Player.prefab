@@ -171,8 +171,8 @@ MonoBehaviour:
   runSpeed: 10
   acceleration: 40
   deAcceleration: 60
-  jumpForce: 10
-  jumpAbortForce: 1.5
+  jumpForce: 20
+  jumpAbortForce: 100
   maxJumpHeight: 5
   groundMask:
     serializedVersion: 2
@@ -196,6 +196,7 @@ MonoBehaviour:
   isRunning: 1
   grounded: 0
   animator: {fileID: 0}
+  horizontalInput: 0
   canDoubleJump: 0
 --- !u!114 &5481834699438083078
 MonoBehaviour:
@@ -240,7 +241,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 1
-  m_GravityScale: 1
+  m_GravityScale: 5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -259,8 +260,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.010382175, y: -0.000008940697}
-  m_Size: {x: 0.6470032, y: 1.992305}
+  m_Offset: {x: -0.010382175, y: -0.011416793}
+  m_Size: {x: 0.61, y: 2.0151207}
   m_Direction: 0
 --- !u!95 &5481834699438083074
 Animator:

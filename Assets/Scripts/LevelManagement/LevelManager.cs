@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ToolBox.Serialization;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -11,11 +12,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] List<Checkpoint> checkpoints;
     public static LevelManager instance;
 
-    public List<bool> checkpointsTaken;
+    [HideInInspector] public List<bool> checkpointsTaken;
 
     Scene level;
 
-
+    public bool deleteSavesOnEditorQuit=false; 
     public PlayerInputs inputs { get; private set; }
     
 
@@ -29,7 +30,11 @@ public class LevelManager : MonoBehaviour
         SceneManager.sceneLoaded += OnLevelLoaded;
         inputs.Player.Respawn.performed += OnRespawn;
 
+        DataSerializer.FileSaving += DeleteSaves;
     }
+
+    
+
 
     private void SaveCheckpoints(object obj)
     {
@@ -47,6 +52,14 @@ public class LevelManager : MonoBehaviour
 
         SceneManager.sceneLoaded -= OnLevelLoaded;
         inputs.Player.Respawn.performed -= OnRespawn;
+
+        DataSerializer.FileSaving -= DeleteSaves;
+    }
+
+    private void DeleteSaves()
+    {
+        if(deleteSavesOnEditorQuit && EditorApplication.isPlaying)
+        DataSerializer.DeleteAll();
     }
 
     private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)

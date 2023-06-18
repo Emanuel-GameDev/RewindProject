@@ -1,3 +1,4 @@
+using System.Collections;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,19 +53,20 @@ public class PlayerController : Character
     [HideInInspector] public float fastRespawnTimer = 0;
     Vector2 jumpStartPoint;
     [HideInInspector] public Vector3 fastSpawnPoint;
-    [HideInInspector] public bool isJumping = false;
-    [HideInInspector] public bool isFalling = false;
-    [HideInInspector] public bool isMooving = false;
-    [HideInInspector] public bool isRunning = true;
-    [HideInInspector] public bool grounded = false;
+     public bool isJumping = false;
+     public bool isFalling = false;
+     public bool isMooving = false;
+     public bool isRunning = true;
+     public bool grounded = false;
 
     internal Rigidbody2D rBody;
     [HideInInspector] public Animator animator;
     SpriteRenderer bodySprite;
 
-    float horizontalInput = 0;
+    public float horizontalInput = 0;
     float horizontalMovement = 0;
     float groundAngle = 0;
+
 
     //da usare per l'abilità
     public bool canDoubleJump;
@@ -111,14 +113,12 @@ public class PlayerController : Character
 
     private void Update()
     {
-
         stateMachine.StateUpdate();
 
-        if (Input.GetKeyDown(KeyCode.CapsLock))
-        {
-            DataSerializer.DeleteAll();
-            Debug.Log("Saving deleted");
-        }
+        if (previousHorizontalInputs.Count >= 3)
+            previousHorizontalInputs.Dequeue();
+        else
+            previousHorizontalInputs.Enqueue(horizontalInput);
     }
 
     public void FixedUpdate()
@@ -137,7 +137,6 @@ public class PlayerController : Character
         }
         else
             fastRespawnTimer = 0;
-
 
     }
 
@@ -202,7 +201,7 @@ public class PlayerController : Character
     #endregion
 
     #region Movement
-
+    public Queue previousHorizontalInputs=new Queue();
     public void CalculateHorizontalMovement()
     {
         if (horizontalInput != 0)
@@ -232,19 +231,33 @@ public class PlayerController : Character
         Vector2 relativMovement = Quaternion.Euler(0, 0, -groundAngle) * new Vector3(horizontalMovement, 0, 0);
 
         if (horizontalMovement > 0.1)
-            bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+                bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
+        }
         else if(horizontalMovement < -0.1)
-            bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        {
+            if(!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+                bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        if (horizontalInput != 0 && previousHorizontalInputs.Contains(-horizontalInput) && isRunning && !animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+        {
+            animator.SetTrigger("DirectionChanged");
+            previousHorizontalInputs.Clear();
+        }
 
 
         rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
 
+
+
     public void CalculateFallSpeed()
     {
         if (IsGravityDownward())
         {
-            if (rBody.velocity.y < -1 && !grounded)
+            if (rBody.velocity.y < -0.1 && !grounded)
             {
                 rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, -maxFallSpeed, -minFallSpeed));
                 isFalling = true;
@@ -252,7 +265,7 @@ public class PlayerController : Character
         }
         else
         {
-            if (rBody.velocity.y > 1 && !grounded)
+            if (rBody.velocity.y > 0.1 && !grounded)
             {
                 rBody.velocity = new Vector2(rBody.velocity.x, Mathf.Clamp(rBody.velocity.y, minFallSpeed, maxFallSpeed));
                 isFalling = true;
@@ -428,6 +441,8 @@ public class PlayerController : Character
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
         animator.SetBool("Grounded", grounded);
+        if (!grounded)
+            previousHorizontalInputs.Clear();
 
         if (!isJumping && grounded)
         {

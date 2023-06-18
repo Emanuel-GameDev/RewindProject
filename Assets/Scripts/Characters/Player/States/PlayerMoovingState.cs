@@ -13,6 +13,7 @@ public class PlayerMoovingState : State
     public override void Enter()
     {
         base.Enter();
+
         player.animator.SetBool("Moving", true);
     }
 
@@ -22,7 +23,7 @@ public class PlayerMoovingState : State
         player.CalculateFallSpeed();
         player.CheckRotation();
 
-
+        
         if (!player.isMooving)
             player.stateMachine.SetState(PlayerState.PlayerIdle);
 
