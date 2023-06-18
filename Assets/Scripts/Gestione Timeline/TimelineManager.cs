@@ -23,7 +23,7 @@ public class TimelineManager : MonoBehaviour
     private eZone actualZone;
     private bool isPlaying = false;
     private bool isLocked = false;
-    private bool _rewindIsActive;
+    private bool _rewindIsActive = false;
     private bool RewindIsactive
     {
         get { return _rewindIsActive; }
@@ -37,6 +37,7 @@ public class TimelineManager : MonoBehaviour
             else
             {
                 PlayerController.instance.inputs.Player.Enable();
+                PubSub.Instance.Notify(EMessageType.TimeRewindStop, this);
             }
             _rewindIsActive = value;
         }
@@ -48,6 +49,7 @@ public class TimelineManager : MonoBehaviour
 
     private bool isForwarding = false;
     private bool isRewinding = false;
+    private bool canUseRewind = false;
 
 
     //Instance
@@ -100,7 +102,7 @@ public class TimelineManager : MonoBehaviour
 
         timelineDirector.playOnAwake = false;
         timelineDirector.extrapolationMode = DirectorWrapMode.Hold;
-        RewindIsactive = false;
+        //RewindIsactive = false;
     }
 
     private void CalculateDuration()
@@ -138,21 +140,21 @@ public class TimelineManager : MonoBehaviour
             {
                 PauseTimeline();
             }
-            Debug.Log("Check: " + timelineIsAtEnd + Time.time);
         }
     }
 
-    private bool CheckStatus()
+    private bool CanRewind()
     {
-        if (isLocked) return true;
-        if (isPlaying) return true;
+        if (isLocked) return false;
+        if (isPlaying) return false;
+        if (!canUseRewind) return false;
 
         if (!RewindIsactive)
         {
             StartStopControlTimeline();
         }
 
-        return false;
+        return true;
     }
 
     #endregion
@@ -188,7 +190,6 @@ public class TimelineManager : MonoBehaviour
         timelineDirector.Play();
         isPlaying = true;
         isLocked = false;
-        PubSub.Instance.Notify(EMessageType.TimeRewindStop, this);
     }
 
     public void LockInTime()
@@ -196,7 +197,6 @@ public class TimelineManager : MonoBehaviour
         if (timelineIsAtStart || timelineIsAtEnd)
         {
             RewindIsactive = false;
-            PubSub.Instance.Notify(EMessageType.TimeRewindStop, this);
         }
         else
         {
@@ -224,7 +224,7 @@ public class TimelineManager : MonoBehaviour
 
     public void ForwardingTimeline()
     {
-        if (CheckStatus()) return;
+        if (!CanRewind()) return;
 
         if (!timelineIsAtEnd)
         {
@@ -235,7 +235,7 @@ public class TimelineManager : MonoBehaviour
 
     public void StartStopControlTimeline()
     {
-        if (isLocked || isPlaying)
+        if (isLocked || isPlaying || !canUseRewind)
             return;
         
         if (!RewindIsactive)
@@ -246,13 +246,13 @@ public class TimelineManager : MonoBehaviour
 
     public void StartForwarding()
     {
-        if (CheckStatus()) return;
+        if (!CanRewind()) return;
         isForwarding = true;
     }
 
     public void StartRewinding()
     {
-        if (CheckStatus()) return;
+        if (!CanRewind()) return;
         isRewinding = true;
     }
 
@@ -264,6 +264,11 @@ public class TimelineManager : MonoBehaviour
     public void StopRewinding()
     {
         isRewinding = false;
+    }
+
+    public void SetCanUseRewind(bool v)
+    {
+        canUseRewind = v;
     }
 
     #endregion
