@@ -1,3 +1,4 @@
+using System.Collections;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -52,19 +53,20 @@ public class PlayerController : Character
     [HideInInspector] public float fastRespawnTimer = 0;
     Vector2 jumpStartPoint;
     [HideInInspector] public Vector3 fastSpawnPoint;
-    [HideInInspector] public bool isJumping = false;
-    [HideInInspector] public bool isFalling = false;
-    [HideInInspector] public bool isMooving = false;
-    [HideInInspector] public bool isRunning = true;
-    [HideInInspector] public bool grounded = false;
+     public bool isJumping = false;
+     public bool isFalling = false;
+     public bool isMooving = false;
+     public bool isRunning = true;
+     public bool grounded = false;
 
     internal Rigidbody2D rBody;
     [HideInInspector] public Animator animator;
     SpriteRenderer bodySprite;
 
-    float horizontalInput = 0;
+    public float horizontalInput = 0;
     float horizontalMovement = 0;
     float groundAngle = 0;
+
 
     //da usare per l'abilità
     public bool canDoubleJump;
@@ -111,7 +113,6 @@ public class PlayerController : Character
 
     private void Update()
     {
-
         stateMachine.StateUpdate();
 
         if (Input.GetKeyDown(KeyCode.CapsLock))
@@ -119,6 +120,11 @@ public class PlayerController : Character
             DataSerializer.DeleteAll();
             Debug.Log("Saving deleted");
         }
+
+        if (previousHorizontalInputs.Count >= 3)
+            previousHorizontalInputs.Dequeue();
+        else
+            previousHorizontalInputs.Enqueue(horizontalInput);
     }
 
     public void FixedUpdate()
@@ -137,9 +143,6 @@ public class PlayerController : Character
         }
         else
             fastRespawnTimer = 0;
-
-        timer += Time.deltaTime;
-
 
     }
 
@@ -204,7 +207,7 @@ public class PlayerController : Character
     #endregion
 
     #region Movement
-    public float previousHorizontalInput = 0;
+    public Queue previousHorizontalInputs=new Queue();
     public void CalculateHorizontalMovement()
     {
         if (horizontalInput != 0)
@@ -235,35 +238,25 @@ public class PlayerController : Character
 
         if (horizontalMovement > 0.1)
         {
-
-            if (previousHorizontalInput < -horizontalInput && rBody.velocity.x > walkSpeed&& timer > 0.2)
-            {
-                animator.SetTrigger("DirectionChanged");
-                timer = 0;
-            }
-
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
                 bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
         }
         else if(horizontalMovement < -0.1)
         {
-
-            if (previousHorizontalInput > -horizontalInput && rBody.velocity.x > -walkSpeed && timer > 0.2)
-            {
-                animator.SetTrigger("DirectionChanged");
-                timer = 0;
-            }
-
             if(!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
                 bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
         }
 
-        previousHorizontalInput = horizontalInput;
+        if (horizontalInput != 0 && previousHorizontalInputs.Contains(-horizontalInput) && isRunning && !animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+        {
+            animator.SetTrigger("DirectionChanged");
+            previousHorizontalInputs.Clear();
+        }
+
 
         rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
 
-    float timer;
 
 
     public void CalculateFallSpeed()
@@ -454,6 +447,8 @@ public class PlayerController : Character
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
         animator.SetBool("Grounded", grounded);
+        if (!grounded)
+            previousHorizontalInputs.Clear();
 
         if (!isJumping && grounded)
         {

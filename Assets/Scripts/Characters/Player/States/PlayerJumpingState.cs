@@ -16,7 +16,6 @@ public class PlayerJumpingState : State
         base.Enter();
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        player.animator.SetBool("Jumping",player.isJumping);
         player.animator.SetTrigger("Jump");
     }
 
@@ -26,7 +25,8 @@ public class PlayerJumpingState : State
         player.AbortJump();
         player.CalculateFallSpeed();
         player.CheckFriction();
-        //Debug.Log(this);
+
+        player.animator.SetBool("Jumping",player.isJumping);
 
         if (player.isFalling)
             player.stateMachine.SetState(PlayerState.PlayerFalling);

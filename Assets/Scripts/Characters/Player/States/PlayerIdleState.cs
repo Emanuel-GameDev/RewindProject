@@ -14,9 +14,6 @@ internal class PlayerIdleState : State
     {
         base.Enter();
         player.animator.SetBool("Moving", false);
-
-
-        //player.isFalling = false;
     }
 
     public override void Update()
@@ -25,7 +22,7 @@ internal class PlayerIdleState : State
         player.CalculateFallSpeed();
         player.CheckRotation();
 
-        //Debug.Log(this);
+        
         if (player.isJumping)
             player.stateMachine.SetState(PlayerState.PlayerJumping);
 

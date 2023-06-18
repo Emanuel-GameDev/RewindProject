@@ -23,7 +23,7 @@ public class PlayerMoovingState : State
         player.CalculateFallSpeed();
         player.CheckRotation();
 
-        //Debug.Log(this);
+        
         if (!player.isMooving)
             player.stateMachine.SetState(PlayerState.PlayerIdle);
 

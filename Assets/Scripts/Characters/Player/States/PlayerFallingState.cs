@@ -14,7 +14,6 @@ public class PlayerFallingState : State
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         player.animator.SetTrigger("Fall");
-        player.animator.SetBool("Falling",player.isFalling);
     }
 
     public override void Update()
@@ -23,7 +22,17 @@ public class PlayerFallingState : State
         player.AbortJump();
         player.CalculateFallSpeed();
         player.CheckFriction();
-        //Debug.Log(this);
+
+
+        if (player.rBody.velocity.y == 0)
+        {
+            player.isFalling = false;
+            player.grounded = true;
+            player.animator.SetBool("Grounded", player.grounded);
+        }
+
+        player.animator.SetBool("Falling", player.isFalling);
+
         if (player.isJumping)
         {
             player.stateMachine.SetState(PlayerState.PlayerJumping);
