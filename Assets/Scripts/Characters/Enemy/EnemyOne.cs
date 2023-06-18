@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -85,6 +81,7 @@ public class EnemyOne : BaseEnemy
     public void EndAttack()
     {
         attack.SetActive(false);
+        animator.SetBool(ATTACK, false);
     }
 
     protected override void InitialSetup()
