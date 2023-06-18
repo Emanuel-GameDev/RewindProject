@@ -1,9 +1,5 @@
 using BehaviorDesigner.Runtime;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 [RequireComponent(typeof(BehaviorTree))]
 public class BaseEnemy : Character
@@ -19,6 +15,7 @@ public class BaseEnemy : Character
     protected BehaviorTree tree;
     protected Damageable damageable;
     protected Animator animator;
+    protected Collider2D coll;
     protected Vector2 startPosition;
 
     //Nomi delle variabili nel behaviour tree
@@ -40,6 +37,7 @@ public class BaseEnemy : Character
     {
         tree = GetComponentInChildren<BehaviorTree>();
         damageable = GetComponentInChildren<Damageable>();
+        coll = GetComponent<Collider2D>();
         startPosition = transform.position;
         if (damageable != null) damageable.maxHealth = healtPoint;
 
@@ -70,12 +68,14 @@ public class BaseEnemy : Character
         isDead = true;
         animator.SetTrigger(DEAD);
         tree.SetVariableValue(IS_DEAD, isDead);
+        coll.enabled = false;
     }
 
     public virtual void ResetEnemy() 
     { 
         transform.position = startPosition;
         isDead = false;
+        coll.enabled = true;
     }
 
     public virtual void OnHit()
