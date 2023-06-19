@@ -14,11 +14,14 @@ public class CameraManager : MonoBehaviour
 
     [Tooltip("Speed of the transition\n " +
         "N.B. the action is an interpolation so it scales over time")]
-    [SerializeField] private float transitionSpeed;
+    public float transitionSpeed;
 
     private float currentZoom;
     private Vector3 currentOffset;
     private Vector2 currentDamping;
+
+    [HideInInspector]
+    public bool switching = false;
 
 
     // Start is called before the first frame update
@@ -47,14 +50,18 @@ public class CameraManager : MonoBehaviour
 
         if (cameraData.zoomAmount >= 0 && cameraData.zoomAmount != currentZoom)
         {
+            StopAllCoroutines();
             StartCoroutine(AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping));
         }
     }
 
+    // Apply new camera data to the camera
     private IEnumerator AdjustCamera(float targetZoom, Vector3 targetOffset, Vector2 targetDamping)
     {
+        switching = true;
         while (Mathf.Abs(currentZoom - targetZoom) > 0.01f)
         {
+            // Apply zoom
             currentZoom = Mathf.Lerp(currentZoom, targetZoom, transitionSpeed * Time.deltaTime);
 
             currentOffset = PerformLerp(currentOffset, targetOffset);
@@ -67,8 +74,11 @@ public class CameraManager : MonoBehaviour
             yield return null;
 
         }
+
+        switching = false;
     }
 
+    // Used to filter the new camera settings, update settings if they are different from current
     private Vector3 PerformLerp(Vector3 current, Vector3 target)
     {
         if (current.x != target.x)

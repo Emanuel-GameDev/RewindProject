@@ -1,6 +1,4 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraTrigger : MonoBehaviour
@@ -15,19 +13,49 @@ public class CameraTrigger : MonoBehaviour
     [SerializeField] private Vector2 damping;
 
     CameraData cameraData;
+    CameraData prevCameraData;
     private bool triggered = false;
 
     private void Start()
     {
         cameraData = new CameraData(zoomAmount, followOffset, damping);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Check player collision
         if (collision.gameObject.GetComponent<Character>() != null && !triggered)
         {
+            if (cameraData == null) return;
+
+            SaveCameraData();
             PubSub.Instance.Notify(EMessageType.CameraSwitch, cameraData);
             triggered = true;
         }
+        else if (collision.gameObject.GetComponent<Character>() != null && triggered)
+        {
+            if (prevCameraData == null) return;
+
+            PubSub.Instance.Notify(EMessageType.CameraSwitch, prevCameraData);
+
+            triggered = false;
+        }
+    }
+
+    // Used to save camera data on first trigger
+    private void SaveCameraData()
+    {
+        if (prevCameraData != null) return;
+
+        CinemachineVirtualCamera mainCam = GameManager.Instance.cameraManager.mainCam;
+        float prevZoom = mainCam.m_Lens.OrthographicSize;
+
+        CinemachineTransposer transposer = mainCam.GetCinemachineComponent<CinemachineTransposer>();
+        Vector3 prevFollowOffset = transposer.m_FollowOffset;
+        Vector3 prevDamping = new Vector3();
+        prevDamping.x = transposer.m_XDamping;
+        prevDamping.y = transposer.m_YDamping;
+
+        prevCameraData = new CameraData(prevZoom, prevFollowOffset, prevDamping);
     }
 }
