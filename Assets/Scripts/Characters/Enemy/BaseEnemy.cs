@@ -20,7 +20,7 @@ public class BaseEnemy : Character
 
     //Nomi delle variabili nel behaviour tree
     private const string TARGET = "Target";
-    private const string IS_DEAD = "Is Dead";
+    protected const string IS_DEAD = "Is Dead";
 
     //Nomi delle variabili nel Animator
     private const string DEAD = "Dead";

@@ -128,7 +128,7 @@ MonoBehaviour:
   logTaskChanges: 0
   group: 0
   resetValuesOnRestart: 0
-  externalBehavior: {fileID: 0}
+  externalBehavior: {fileID: 11400000, guid: b9a8d6d16b7e6254598ffbe7c4ca3ac8, type: 2}
   mBehaviorSource:
     behaviorName: EnemyOneTree
     behaviorDescription: 
@@ -176,13 +176,14 @@ MonoBehaviour:
         Distance","IsShared":true,"SinglemValue":3},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Time
         Between Attacks","IsShared":true,"SinglemValue":0.5},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Have
         See Target","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Is
-        Dead","IsShared":true,"BooleanmValue":false}]}'
+        Dead","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Self","IsShared":true,"GameObjectmValue":1}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
         startIndex: 
         dataPosition: 
         unityObjects:
+        - {fileID: 1088861260380951068}
         - {fileID: 1088861260380951068}
         byteData: 
         byteDataArray: 
@@ -223,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b1922aaed6abae4d970825987818412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healtPoint: 2
+  healtPoint: 3
   target: {fileID: 0}
   viewRotation: 90
   fieldOfView: 90
@@ -232,6 +233,7 @@ MonoBehaviour:
   runSpeed: 5
   stopDistance: 3
   timeBetweenAttacks: 1
+  pauseDurationAfterHit: 5
 --- !u!114 &1088861260380951062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +427,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c547da76123dbe41a229e87d824c621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1088861261306170314
 MonoBehaviour:
   m_ObjectHideFlags: 0
