@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,24 +8,23 @@ public abstract class Ability : MonoBehaviour
 {
     public new string name;
     public Sprite icon;
-    public float activeTime;
     public float cooldownTime;
 
-    public virtual void Activate(GameObject parent)
-    {
-        
-    }
+    public virtual void Activate1(GameObject parent) { }
+    public virtual void Activate2(GameObject parent) { }
+    public virtual void Activate3(GameObject parent) { }
 
-    public virtual void Start()
-    {
-        // Per testing, alla fine bisognerà assegnare lo sprite della carta direttamente da editor
-        // poiché ci sarà la luce come oggetto raccoglibile
-        //icon = GetComponent<SpriteRenderer>().sprite;  
-    }
+    public virtual void Disactivate1(GameObject gameObject) { }
+    public virtual void Disactivate2(GameObject gameObject) { }
+    public virtual void Disactivate3(GameObject gameObject) { }
+
+    public virtual void Start() { }
+
 
     public virtual void Pick(Character picker)
     {
         PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
         gameObject.SetActive(false);
     }
+
 }

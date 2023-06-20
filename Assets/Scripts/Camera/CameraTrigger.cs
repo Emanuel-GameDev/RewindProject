@@ -1,34 +1,61 @@
 using Cinemachine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraTrigger : MonoBehaviour
 {
     [Tooltip("New value for orthografic size in the Lens menù inside Cinemachine")]
     [SerializeField] private float zoomAmount;
-    [Tooltip("New value for offset in the Lens menù inside Cinemachine")]
-    [SerializeField] private float offsetY;
 
-    [Tooltip("New value for deadZoneWidth in the Lens menù inside Cinemachine")]
-    [Range(0f, 2f)]
-    [SerializeField] private float deadZoneX;
-    [Tooltip("New value for deadZoneHeight in the Lens menù inside Cinemachine")]
-    [Range(0f, 2f)]
-    [SerializeField] private float deadZoneY;
+    [Tooltip("New value for offset in the Body menù inside Cinemachine")]
+    [SerializeField] private Vector3 followOffset;
 
-    private List<float> newValues;
+    [Tooltip("New value for damping in the Body menù inside Cinemachine")]
+    [SerializeField] private Vector2 damping;
+
+    CameraData cameraData;
+    CameraData prevCameraData;
+    private bool triggered = false;
 
     private void Start()
     {
-        newValues = new List<float>() { zoomAmount, offsetY, deadZoneX, deadZoneY};
+        cameraData = new CameraData(zoomAmount, followOffset, damping);
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Controllare che collision sia player
-        if (collision.gameObject.GetComponent<Character>() != null)
+        // Check player collision
+        if (collision.gameObject.GetComponent<Character>() != null && !triggered)
         {
-            PubSub.Instance.Notify(EMessageType.CameraSwitch, newValues);
+            if (cameraData == null) return;
+
+            SaveCameraData();
+            PubSub.Instance.Notify(EMessageType.CameraSwitch, cameraData);
+            triggered = true;
         }
+        else if (collision.gameObject.GetComponent<Character>() != null && triggered)
+        {
+            if (prevCameraData == null) return;
+
+            PubSub.Instance.Notify(EMessageType.CameraSwitch, prevCameraData);
+
+            triggered = false;
+        }
+    }
+
+    // Used to save camera data on first trigger
+    private void SaveCameraData()
+    {
+        if (prevCameraData != null) return;
+
+        CinemachineVirtualCamera mainCam = GameManager.Instance.cameraManager.mainCam;
+        float prevZoom = mainCam.m_Lens.OrthographicSize;
+
+        CinemachineTransposer transposer = mainCam.GetCinemachineComponent<CinemachineTransposer>();
+        Vector3 prevFollowOffset = transposer.m_FollowOffset;
+        Vector3 prevDamping = new Vector3();
+        prevDamping.x = transposer.m_XDamping;
+        prevDamping.y = transposer.m_YDamping;
+
+        prevCameraData = new CameraData(prevZoom, prevFollowOffset, prevDamping);
     }
 }

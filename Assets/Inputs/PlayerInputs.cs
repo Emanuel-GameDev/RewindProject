@@ -754,11 +754,11 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             ]
         },
         {
-            ""name"": ""TimelineController"",
+            ""name"": ""AbilityController"",
             ""id"": ""a4c80122-3e83-48ff-9b07-6679faa44dff"",
             ""actions"": [
                 {
-                    ""name"": ""RewindTime"",
+                    ""name"": ""Activate1"",
                     ""type"": ""Button"",
                     ""id"": ""f5aafb32-73b3-447c-8105-3ee3bbf59aea"",
                     ""expectedControlType"": ""Button"",
@@ -767,7 +767,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ForwardingTime"",
+                    ""name"": ""Activate2"",
                     ""type"": ""Button"",
                     ""id"": ""e52d2203-e5ee-46ea-a782-3388a81c7826"",
                     ""expectedControlType"": ""Button"",
@@ -776,7 +776,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SpeedUpTime"",
+                    ""name"": ""Activate3"",
                     ""type"": ""Button"",
                     ""id"": ""790c1800-600c-4ae0-a7f7-8fca6112b10c"",
                     ""expectedControlType"": ""Button"",
@@ -793,7 +793,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""RewindTime"",
+                    ""action"": ""Activate1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -804,18 +804,18 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ForwardingTime"",
+                    ""action"": ""Activate2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""9b3d7da6-3978-48f6-bf4a-53e78eeefef6"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SpeedUpTime"",
+                    ""action"": ""Activate3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -962,11 +962,11 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
-        // TimelineController
-        m_TimelineController = asset.FindActionMap("TimelineController", throwIfNotFound: true);
-        m_TimelineController_RewindTime = m_TimelineController.FindAction("RewindTime", throwIfNotFound: true);
-        m_TimelineController_ForwardingTime = m_TimelineController.FindAction("ForwardingTime", throwIfNotFound: true);
-        m_TimelineController_SpeedUpTime = m_TimelineController.FindAction("SpeedUpTime", throwIfNotFound: true);
+        // AbilityController
+        m_AbilityController = asset.FindActionMap("AbilityController", throwIfNotFound: true);
+        m_AbilityController_Activate1 = m_AbilityController.FindAction("Activate1", throwIfNotFound: true);
+        m_AbilityController_Activate2 = m_AbilityController.FindAction("Activate2", throwIfNotFound: true);
+        m_AbilityController_Activate3 = m_AbilityController.FindAction("Activate3", throwIfNotFound: true);
         // Menu
         m_Menu = asset.FindActionMap("Menu", throwIfNotFound: true);
         m_Menu_CloseMenu = m_Menu.FindAction("CloseMenu", throwIfNotFound: true);
@@ -1243,67 +1243,67 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     }
     public UIActions @UI => new UIActions(this);
 
-    // TimelineController
-    private readonly InputActionMap m_TimelineController;
-    private List<ITimelineControllerActions> m_TimelineControllerActionsCallbackInterfaces = new List<ITimelineControllerActions>();
-    private readonly InputAction m_TimelineController_RewindTime;
-    private readonly InputAction m_TimelineController_ForwardingTime;
-    private readonly InputAction m_TimelineController_SpeedUpTime;
-    public struct TimelineControllerActions
+    // AbilityController
+    private readonly InputActionMap m_AbilityController;
+    private List<IAbilityControllerActions> m_AbilityControllerActionsCallbackInterfaces = new List<IAbilityControllerActions>();
+    private readonly InputAction m_AbilityController_Activate1;
+    private readonly InputAction m_AbilityController_Activate2;
+    private readonly InputAction m_AbilityController_Activate3;
+    public struct AbilityControllerActions
     {
         private @PlayerInputs m_Wrapper;
-        public TimelineControllerActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @RewindTime => m_Wrapper.m_TimelineController_RewindTime;
-        public InputAction @ForwardingTime => m_Wrapper.m_TimelineController_ForwardingTime;
-        public InputAction @SpeedUpTime => m_Wrapper.m_TimelineController_SpeedUpTime;
-        public InputActionMap Get() { return m_Wrapper.m_TimelineController; }
+        public AbilityControllerActions(@PlayerInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Activate1 => m_Wrapper.m_AbilityController_Activate1;
+        public InputAction @Activate2 => m_Wrapper.m_AbilityController_Activate2;
+        public InputAction @Activate3 => m_Wrapper.m_AbilityController_Activate3;
+        public InputActionMap Get() { return m_Wrapper.m_AbilityController; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(TimelineControllerActions set) { return set.Get(); }
-        public void AddCallbacks(ITimelineControllerActions instance)
+        public static implicit operator InputActionMap(AbilityControllerActions set) { return set.Get(); }
+        public void AddCallbacks(IAbilityControllerActions instance)
         {
-            if (instance == null || m_Wrapper.m_TimelineControllerActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_TimelineControllerActionsCallbackInterfaces.Add(instance);
-            @RewindTime.started += instance.OnRewindTime;
-            @RewindTime.performed += instance.OnRewindTime;
-            @RewindTime.canceled += instance.OnRewindTime;
-            @ForwardingTime.started += instance.OnForwardingTime;
-            @ForwardingTime.performed += instance.OnForwardingTime;
-            @ForwardingTime.canceled += instance.OnForwardingTime;
-            @SpeedUpTime.started += instance.OnSpeedUpTime;
-            @SpeedUpTime.performed += instance.OnSpeedUpTime;
-            @SpeedUpTime.canceled += instance.OnSpeedUpTime;
+            if (instance == null || m_Wrapper.m_AbilityControllerActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_AbilityControllerActionsCallbackInterfaces.Add(instance);
+            @Activate1.started += instance.OnActivate1;
+            @Activate1.performed += instance.OnActivate1;
+            @Activate1.canceled += instance.OnActivate1;
+            @Activate2.started += instance.OnActivate2;
+            @Activate2.performed += instance.OnActivate2;
+            @Activate2.canceled += instance.OnActivate2;
+            @Activate3.started += instance.OnActivate3;
+            @Activate3.performed += instance.OnActivate3;
+            @Activate3.canceled += instance.OnActivate3;
         }
 
-        private void UnregisterCallbacks(ITimelineControllerActions instance)
+        private void UnregisterCallbacks(IAbilityControllerActions instance)
         {
-            @RewindTime.started -= instance.OnRewindTime;
-            @RewindTime.performed -= instance.OnRewindTime;
-            @RewindTime.canceled -= instance.OnRewindTime;
-            @ForwardingTime.started -= instance.OnForwardingTime;
-            @ForwardingTime.performed -= instance.OnForwardingTime;
-            @ForwardingTime.canceled -= instance.OnForwardingTime;
-            @SpeedUpTime.started -= instance.OnSpeedUpTime;
-            @SpeedUpTime.performed -= instance.OnSpeedUpTime;
-            @SpeedUpTime.canceled -= instance.OnSpeedUpTime;
+            @Activate1.started -= instance.OnActivate1;
+            @Activate1.performed -= instance.OnActivate1;
+            @Activate1.canceled -= instance.OnActivate1;
+            @Activate2.started -= instance.OnActivate2;
+            @Activate2.performed -= instance.OnActivate2;
+            @Activate2.canceled -= instance.OnActivate2;
+            @Activate3.started -= instance.OnActivate3;
+            @Activate3.performed -= instance.OnActivate3;
+            @Activate3.canceled -= instance.OnActivate3;
         }
 
-        public void RemoveCallbacks(ITimelineControllerActions instance)
+        public void RemoveCallbacks(IAbilityControllerActions instance)
         {
-            if (m_Wrapper.m_TimelineControllerActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_AbilityControllerActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ITimelineControllerActions instance)
+        public void SetCallbacks(IAbilityControllerActions instance)
         {
-            foreach (var item in m_Wrapper.m_TimelineControllerActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_AbilityControllerActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_TimelineControllerActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_AbilityControllerActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public TimelineControllerActions @TimelineController => new TimelineControllerActions(this);
+    public AbilityControllerActions @AbilityController => new AbilityControllerActions(this);
 
     // Menu
     private readonly InputActionMap m_Menu;
@@ -1464,11 +1464,11 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
     }
-    public interface ITimelineControllerActions
+    public interface IAbilityControllerActions
     {
-        void OnRewindTime(InputAction.CallbackContext context);
-        void OnForwardingTime(InputAction.CallbackContext context);
-        void OnSpeedUpTime(InputAction.CallbackContext context);
+        void OnActivate1(InputAction.CallbackContext context);
+        void OnActivate2(InputAction.CallbackContext context);
+        void OnActivate3(InputAction.CallbackContext context);
     }
     public interface IMenuActions
     {

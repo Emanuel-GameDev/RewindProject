@@ -14,12 +14,15 @@ public class CameraManager : MonoBehaviour
 
     [Tooltip("Speed of the transition\n " +
         "N.B. the action is an interpolation so it scales over time")]
-    [SerializeField] private float zoomSpeed;
+    public float transitionSpeed;
 
     private float currentZoom;
-    private float currentOffsetY;
-    private float currentDeadZoneX;
-    private float currentDeadZoneY;
+    private Vector3 currentOffset;
+    private Vector2 currentDamping;
+
+    [HideInInspector]
+    public bool switching = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -35,38 +38,59 @@ public class CameraManager : MonoBehaviour
         mainCam.m_Lens.OrthographicSize = StartZoomAmount;
         currentZoom = StartZoomAmount;
 
-    }    
+        currentOffset = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+        currentDamping.x = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping;
+        currentDamping.y = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping;
+    }
 
     private void UpdateCamera(object obj)
     {
-        if (obj is not List<float>) return;
-        List<float> newValues = (List<float>)obj;
+        if (obj is not CameraData) return;
+        CameraData cameraData = (CameraData)obj;
 
-        float offsetAmountY = newValues[1];
-        float deadZoneXAmount = newValues[2];
-        float deadZoneYAmount = newValues[3];
-
-        CinemachineFramingTransposer transposer = mainCam.GetCinemachineComponent<CinemachineFramingTransposer>();
-        transposer.m_TrackedObjectOffset.y = offsetAmountY;
-        transposer.m_DeadZoneWidth = deadZoneXAmount;
-        transposer.m_DeadZoneHeight = deadZoneYAmount;
-
-        float zoomAmount = newValues[0];
-        if (zoomAmount >= 0 || zoomAmount != currentZoom)
+        if (cameraData.zoomAmount >= 0 && cameraData.zoomAmount != currentZoom)
         {
-            StartCoroutine(Zoom(zoomAmount));
+            StopAllCoroutines();
+            StartCoroutine(AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping));
         }
     }
 
-    private IEnumerator Zoom(float targetZoom)
+    // Apply new camera data to the camera
+    private IEnumerator AdjustCamera(float targetZoom, Vector3 targetOffset, Vector2 targetDamping)
     {
+        switching = true;
         while (Mathf.Abs(currentZoom - targetZoom) > 0.01f)
         {
-            currentZoom = Mathf.Lerp(currentZoom, targetZoom, zoomSpeed * Time.deltaTime);
+            // Apply zoom
+            currentZoom = Mathf.Lerp(currentZoom, targetZoom, transitionSpeed * Time.deltaTime);
+
+            currentOffset = PerformLerp(currentOffset, targetOffset);
+            currentDamping = PerformLerp(currentDamping, targetDamping);
+
+            mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = currentDamping.x;
+            mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = currentDamping.y;
+            mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = currentOffset;
             mainCam.m_Lens.OrthographicSize = currentZoom;
             yield return null;
+
         }
+
+        switching = false;
     }
 
+    // Used to filter the new camera settings, update settings if they are different from current
+    private Vector3 PerformLerp(Vector3 current, Vector3 target)
+    {
+        if (current.x != target.x)
+        {
+            current.x = Mathf.Lerp(current.x, target.x, transitionSpeed * Time.deltaTime);
+        }
+        if (current.y != target.y)
+        {
+            current.y = Mathf.Lerp(current.y, target.y, transitionSpeed * Time.deltaTime);
+        }
+
+        return current;
+    }
 
 }
