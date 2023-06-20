@@ -58,6 +58,7 @@ public class PlayerController : Character
      public bool isMooving = false;
      public bool isRunning = true;
      public bool grounded = false;
+    [HideInInspector] public Queue previousHorizontalInputs=new Queue();
 
     internal Rigidbody2D rBody;
     [HideInInspector] public Animator animator;
@@ -115,7 +116,7 @@ public class PlayerController : Character
     {
         stateMachine.StateUpdate();
 
-        if (previousHorizontalInputs.Count >= 3)
+        if (previousHorizontalInputs.Count >= 5)
             previousHorizontalInputs.Dequeue();
         else
             previousHorizontalInputs.Enqueue(horizontalInput);
@@ -201,7 +202,6 @@ public class PlayerController : Character
     #endregion
 
     #region Movement
-    public Queue previousHorizontalInputs=new Queue();
     public void CalculateHorizontalMovement()
     {
         if (horizontalInput != 0)
