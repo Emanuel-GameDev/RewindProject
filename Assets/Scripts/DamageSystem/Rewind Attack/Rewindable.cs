@@ -30,6 +30,8 @@ public class Rewindable : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerController = GetComponent<PlayerController>();  
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if(spriteRenderer == null)
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
     }
 
