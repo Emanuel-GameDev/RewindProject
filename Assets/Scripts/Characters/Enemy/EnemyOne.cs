@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,10 +19,14 @@ public class EnemyOne : BaseEnemy
     [SerializeField] float stopDistance = 3;
     [Tooltip("Imposta il tempo che intercorre tra un attacco e il successivo")]
     [SerializeField] float timeBetweenAttacks = 0.5f;
+    [Tooltip("Imposta il tempo che rimane fermo dopo aver colpito con un attacco")]
+    [SerializeField] float pauseDurationAfterHit = 5f;
 
-    
+
     GameObject attack;
     protected NavMeshAgent navMeshAgent;
+    private bool hitPause = false;
+    private float elapsedTime = 0;
 
     //Nomi delle variabili nel behaviour tree
     private const string VIEW_ROTATION = "View Rotation";
@@ -45,6 +50,25 @@ public class EnemyOne : BaseEnemy
     {
         FlipCharacter();
         ManageAnimation();
+        HitPauseManager();
+    }
+
+    private void HitPauseManager()
+    {
+        if (hitPause)
+        {
+            if(elapsedTime > pauseDurationAfterHit)
+            {
+                hitPause = false;
+                elapsedTime = 0;
+                tree.SetVariableValue(IS_DEAD, false);
+            }
+            else
+            {
+                elapsedTime += Time.deltaTime;
+                tree.SetVariableValue(IS_DEAD, true);
+            }
+        }  
     }
 
     private void ManageAnimation()
@@ -76,6 +100,7 @@ public class EnemyOne : BaseEnemy
     {
         attack.SetActive(true);
         animator.SetBool(ATTACK, true);
+        tree.SetVariableValue(IS_DEAD, true);
     }
 
     public void EndAttack()
@@ -96,6 +121,7 @@ public class EnemyOne : BaseEnemy
         tree.SetVariableValue(TIME_BETWEEN_ATTACKS, timeBetweenAttacks);
 
         attack = GetComponentInChildren<Damager>().gameObject;
+        hitPause = false;
         EndAttack();
     }
 
@@ -106,4 +132,16 @@ public class EnemyOne : BaseEnemy
         navMeshAgent.updateUpAxis = false;
     }
     
+    public void EndAnimationAttack()
+    {
+        tree.SetVariableValue(IS_DEAD, false);
+    }
+
+
+    public void SetPauseAfterHit()
+    {
+        hitPause = true;
+        EndAttack();
+    }
+
 }
