@@ -215,11 +215,13 @@ public class PlayerController : Character
             else
                 horizontalMovement = Mathf.Clamp(horizontalMovement, -runSpeed, runSpeed);
 
+            animator.SetFloat("Speed", 1);
         }
         else
         {
             //decellerazione se non c'è input
             horizontalMovement = Mathf.MoveTowards(horizontalMovement, 0, deAcceleration * Time.deltaTime);
+            animator.SetFloat("Speed", 0);
         }
 
 
