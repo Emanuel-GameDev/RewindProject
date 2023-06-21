@@ -2,8 +2,6 @@ using System;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine.Rendering.Universal;
 using System.Collections.Generic;
 
 public class Pickable : MonoBehaviour
@@ -39,18 +37,20 @@ public class Pickable : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Character>() != null)
         {
-            character = collision.gameObject.GetComponent<Character>(); 
+            character = collision.gameObject.GetComponent<Character>();
 
             if (ability != null)
             {
-                List<object> pickData = new List<object> { character, ability};
+                List<object> pickData = new List<object> { character, ability };
 
                 PubSub.Instance.Notify(EMessageType.AbilityAnimStart, pickData);
                 DataSerializer.Save(ability.name, pickedUp);
                 gameObject.SetActive(false);
             }
-
-            OnPickup.Invoke();
+            else
+            {
+                OnPickup.Invoke();
+            }
         }
     }
 }

@@ -11,7 +11,6 @@ public class DoubleJump : Ability
 
     public override void Pick(Character picker)
     {
-        Debug.Log("hfiuhaf");
         PlayerController controller = picker.GetComponent<PlayerController>();
 
         if (controller == null) return;
