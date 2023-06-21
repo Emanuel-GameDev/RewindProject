@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,6 +22,8 @@ public class EnemyOne : BaseEnemy
     [SerializeField] float timeBetweenAttacks = 0.5f;
     [Tooltip("Imposta il tempo che rimane fermo dopo aver colpito con un attacco")]
     [SerializeField] float pauseDurationAfterHit = 5f;
+    [Tooltip("Imposta i punti della ronda del nemico")]
+    [SerializeField] GameObject[] pathPoints;
 
 
     GameObject attack;
@@ -36,6 +39,7 @@ public class EnemyOne : BaseEnemy
     private const string RUN_SPEED = "Run Speed";
     private const string STOP_DISTANCE = "Stop Distance";
     private const string TIME_BETWEEN_ATTACKS = "Time Between Attacks";
+    private const string PATH = "Path";
 
     //Nomi delle variabili nel Animator
     private const string SPEED = "Speed";
@@ -119,6 +123,7 @@ public class EnemyOne : BaseEnemy
         tree.SetVariableValue(RUN_SPEED, runSpeed);
         tree.SetVariableValue(STOP_DISTANCE, stopDistance);
         tree.SetVariableValue(TIME_BETWEEN_ATTACKS, timeBetweenAttacks);
+        tree.SetVariableValue(PATH, pathPoints.ToList<GameObject>());
 
         attack = GetComponentInChildren<Damager>().gameObject;
         hitPause = false;

@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotateToTarget : MonoBehaviour
+public class RotateAndMoveToTarget : MonoBehaviour
 {
     [SerializeField] float rotationSpeed = 25f;
+    [SerializeField] float moveSpeed = 10f;
     [SerializeField] Transform target;
     private Vector2 direction;
 
@@ -18,5 +19,8 @@ public class RotateToTarget : MonoBehaviour
             Quaternion toRotation = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
+
+        Vector2 currentPos = target.position;
+        transform.position = Vector2.MoveTowards(transform.position, currentPos, moveSpeed * Time.deltaTime);
     }
 }

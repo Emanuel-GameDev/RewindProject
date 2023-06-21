@@ -19,6 +19,7 @@ public class Rewindable : MonoBehaviour
     private List<RewindData> rewindData = new List<RewindData>();
     private int maxDataCount => (int)(maxRecordedTime * (1f / Time.fixedDeltaTime));
     private Rigidbody2D rb;
+    private Collider2D col;
     public PlayerController playerController;
     private SpriteRenderer spriteRenderer;
 
@@ -28,8 +29,11 @@ public class Rewindable : MonoBehaviour
             rewindTimeWhenHitted = maxRecordedTime;
 
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
         playerController = GetComponent<PlayerController>();  
         spriteRenderer = GetComponent<SpriteRenderer>();
+        if(spriteRenderer == null)
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
     }
 
@@ -94,6 +98,7 @@ public class Rewindable : MonoBehaviour
             isRewinding = true;
             rewindElapsedTime = 0;
             rb.isKinematic = true;
+            col.enabled = false;
             if(playerController != null )
             {
                 playerController.inputs.Disable();
@@ -105,6 +110,7 @@ public class Rewindable : MonoBehaviour
     {
         isRewinding = false;
         rb.isKinematic = false;
+        col.enabled = true;
         EnableImmunity();
         if (playerController != null)
         {
