@@ -6,7 +6,7 @@ public class SummonTower : Ability
 {
     [SerializeField] GameObject towerPrefab;
 
-    public override void Activate(GameObject parent)
+    public override void Activate1(GameObject parent)
     {
         PlayerController player = parent.GetComponent<PlayerController>();
 

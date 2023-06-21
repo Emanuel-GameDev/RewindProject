@@ -732,11 +732,11 @@
             ]
         },
         {
-            "name": "TimelineController",
+            "name": "AbilityController",
             "id": "a4c80122-3e83-48ff-9b07-6679faa44dff",
             "actions": [
                 {
-                    "name": "RewindTime",
+                    "name": "Activate1",
                     "type": "Button",
                     "id": "f5aafb32-73b3-447c-8105-3ee3bbf59aea",
                     "expectedControlType": "Button",
@@ -745,7 +745,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ForwardingTime",
+                    "name": "Activate2",
                     "type": "Button",
                     "id": "e52d2203-e5ee-46ea-a782-3388a81c7826",
                     "expectedControlType": "Button",
@@ -754,7 +754,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SpeedUpTime",
+                    "name": "Activate3",
                     "type": "Button",
                     "id": "790c1800-600c-4ae0-a7f7-8fca6112b10c",
                     "expectedControlType": "Button",
@@ -771,7 +771,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "RewindTime",
+                    "action": "Activate1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -782,18 +782,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "ForwardingTime",
+                    "action": "Activate2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "9b3d7da6-3978-48f6-bf4a-53e78eeefef6",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SpeedUpTime",
+                    "action": "Activate3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

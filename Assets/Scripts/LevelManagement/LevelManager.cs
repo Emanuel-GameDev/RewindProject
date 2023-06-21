@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ToolBox.Serialization;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -11,11 +12,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] List<Checkpoint> checkpoints;
     public static LevelManager instance;
 
-    public List<bool> checkpointsTaken;
+    [HideInInspector] public List<bool> checkpointsTaken;
 
     Scene level;
 
-
+    public bool deleteSavesOnEditorQuit=false; 
     public PlayerInputs inputs { get; private set; }
     
 
@@ -29,7 +30,11 @@ public class LevelManager : MonoBehaviour
         SceneManager.sceneLoaded += OnLevelLoaded;
         inputs.Player.Respawn.performed += OnRespawn;
 
+        DataSerializer.FileSaving += DeleteSaves;
     }
+
+    
+
 
     private void SaveCheckpoints(object obj)
     {
@@ -47,13 +52,20 @@ public class LevelManager : MonoBehaviour
 
         SceneManager.sceneLoaded -= OnLevelLoaded;
         inputs.Player.Respawn.performed -= OnRespawn;
+
+        DataSerializer.FileSaving -= DeleteSaves;
+    }
+
+    private void DeleteSaves()
+    {
+        if(deleteSavesOnEditorQuit && EditorApplication.isPlaying)
+        DataSerializer.DeleteAll();
     }
 
     private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)
     {
         level = SceneManager.GetActiveScene();
 
-        //GetTakenCheckpoint();
 
         GetSpawnPoint();
 
@@ -81,8 +93,12 @@ public class LevelManager : MonoBehaviour
 
     private void GetSpawnPoint()
     {
-        DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad);
+        if (!DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad))
+            return;
+
         DataSerializer.DeleteKey("CHECKPOINTIDTOLOAD");
+
+
 
         if (checkpoints.Count < 1)
             DataSerializer.Save("SPAWNPOINT", transform.position);
@@ -94,30 +110,17 @@ public class LevelManager : MonoBehaviour
 
 
 
-    //private void GetTakenCheckpoint()
-    //{
-    //    if (!DataSerializer.TryLoad(level.name,out checkpoints)/*LevelMaster.Instance.levels.ContainsKey(level.name)*/)
-    //    {
-    //        foreach (Checkpoint check in checkpoints)
-    //        {
-    //            checkpointsTaken.Add(false);
-    //        }
-
-    //        LevelMaster.Instance.levels.Add(level.name, checkpointsTaken);
-    //    }
-    //    else
-    //        checkpointsTaken = LevelMaster.Instance.levels[level.name];
-    //}
-
     private void OnRespawn(InputAction.CallbackContext obj)
     {
         Respawn();
     }
+
     public void Respawn()
     {
-
         if(DataSerializer.TryLoad("SPAWNPOINT", out Vector3 spawnPoint))
-        Teleport(PlayerController.instance.gameObject, spawnPoint);
+            Teleport(PlayerController.instance.gameObject, spawnPoint);
+        else
+            Teleport(PlayerController.instance.gameObject, checkpoints[0].transform.position);
 
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }

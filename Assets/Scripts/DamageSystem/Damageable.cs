@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Damageable : MonoBehaviour
 {
@@ -21,11 +22,21 @@ public class Damageable : MonoBehaviour
 
             if (_health == 0)
             {
+
                 //da rivedere quando ci saranno le animazioni
                 Die();
             }
+            else
+            {
+                TakeHit();
+            }
         }
     }
+
+
+    [SerializeField] UnityEvent OnDie;
+    [SerializeField] UnityEvent OnHit;
+
 
     private void Start()
     {
@@ -50,12 +61,18 @@ public class Damageable : MonoBehaviour
 
     public void TakeDamage(int healthToRemove)
     {
+        
         ChangeHealth(-healthToRemove);
+        
     }
 
     public void Die()
     {
-        LevelManager.instance.Respawn();
-        //gameObject.SetActive(false);
+        OnDie?.Invoke();
     }
+    public void TakeHit()
+    {
+        OnHit?.Invoke();
+    }
+
 }
