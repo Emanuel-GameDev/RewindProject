@@ -59,7 +59,7 @@ public class PlayerController : Character
      public bool grounded = false;
      public bool isJumping = false;
      public bool isFalling = false;
-     public bool isMooving = false;
+     public bool isMoving = false;
      public bool isRunning = true;
 
     internal Rigidbody2D rBody;
@@ -227,9 +227,9 @@ public class PlayerController : Character
 
 
         if (horizontalMovement == 0)
-            isMooving = false;
+            isMoving = false;
         else
-            isMooving = true;
+            isMoving = true;
 
         Vector2 relativMovement = Quaternion.Euler(0, 0, -groundAngle) * new Vector3(horizontalMovement, 0, 0);
 
@@ -393,7 +393,7 @@ public class PlayerController : Character
 
     public void CheckFriction()
     {//modifica la frizione in base a l'inclinazione del terreno
-        if (!isMooving)
+        if (!isMoving)
         {
             if (Mathf.Abs(groundAngle) < maxSlope)
                 rBody.sharedMaterial = fullFriction;
