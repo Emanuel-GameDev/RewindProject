@@ -20,6 +20,10 @@ public class UIManager : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         PubSub.Instance.RegisterFunction(EMessageType.AbilityAnimStart, StartShowAnimation);
+
+        cardImage.gameObject.SetActive(false);
+        cardName.gameObject.SetActive(false);
+        cardDescription.gameObject.SetActive(false);
     }
 
     private void StartShowAnimation(object obj)
@@ -34,36 +38,22 @@ public class UIManager : MonoBehaviour
 
         character.GetComponent<PlayerController>().inputs.Player.Disable();
 
-        if (cardToShow == null) return;
+        if (cardToShow == null)
+        {
+            Debug.LogError("cardToShow = null");
+            return;
+        }
 
-        TriggerCard(true);
+        cardImage.sprite = cardToShow.icon;
+        cardName.text = cardToShow.name;
+        cardDescription.text = cardToShow.description;
 
         animator.SetTrigger("hasToShowCard");
     }
 
-    private void TriggerCard(bool v)
-    {
-        cardImage.sprite = cardToShow.icon;
-        cardImage.gameObject.SetActive(v);
-
-        cardName.text = cardToShow.name;
-        cardName.gameObject.SetActive(v);
-
-        cardDescription.text = cardToShow.description;
-        cardDescription.gameObject.SetActive(v);
-    }
-
     public void ShowCompleted()
     {
-        if (cardToShow == null)
-        {
-            Debug.LogError("CardToShow = null");
-            return;
-        }
-
         character.GetComponent<PlayerController>().inputs.Player.Enable();
-
-        TriggerCard(false);
 
         cardToShow.Pick(character);
         cardToShow = null;
