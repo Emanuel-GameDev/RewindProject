@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public abstract class Ability : MonoBehaviour
 {
     public new string name;
+    public string description;  
     public Sprite icon;
     public float cooldownTime;
 
