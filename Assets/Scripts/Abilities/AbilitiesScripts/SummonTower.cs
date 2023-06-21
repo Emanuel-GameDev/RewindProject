@@ -14,9 +14,4 @@ public class SummonTower : Ability
         if (player.grounded && player != null)
             Instantiate(towerPrefab, player.gameObject.transform.position, player.gameObject.transform.rotation);
     }
-
-    public override void Start()
-    {
-        base.Start();
-    }
 }

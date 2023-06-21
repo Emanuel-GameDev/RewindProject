@@ -22,9 +22,4 @@ public class InvertGravity : Ability
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
         }
     }
-
-    public override void Start()
-    {
-        base.Start();
-    }
 }
