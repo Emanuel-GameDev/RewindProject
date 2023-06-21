@@ -20,6 +20,7 @@ public class AbilityManager : MonoBehaviour
 
     private void AddToAbilities(object obj)
     {
+        Debug.Log(obj.GetType().ToString());
         if (obj is not Ability) return;
         Ability newAbility = (Ability)obj;
 
