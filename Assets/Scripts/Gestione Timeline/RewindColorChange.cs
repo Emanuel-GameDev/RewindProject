@@ -11,6 +11,9 @@ public class RewindColorChange : MonoBehaviour
     [SerializeField] Color rewindColor2;
     [SerializeField] Image image;
 
+    [SerializeField] Sprite sprite1;
+    [SerializeField] Sprite sprite2;
+
     [SerializeField] float fadeDuration = 0.5f;
     [SerializeField] float loopDuration = 1.5f;
 
@@ -104,6 +107,10 @@ public class RewindColorChange : MonoBehaviour
 
     private void TimeRewindStart(object obj)
     {
+        if (obj is Rewindable)
+            image.sprite = sprite1;
+        else
+            image.sprite = sprite2;
         FadeInOn(true);
     }
 

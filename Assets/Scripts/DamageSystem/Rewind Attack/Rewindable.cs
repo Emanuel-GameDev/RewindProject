@@ -103,6 +103,7 @@ public class Rewindable : MonoBehaviour
             {
                 playerController.inputs.Disable();
             }
+            PubSub.Instance.Notify(EMessageType.TimeRewindStart, this);
         }
     }
 
@@ -116,6 +117,7 @@ public class Rewindable : MonoBehaviour
         {
             playerController.inputs.Enable();
         }
+        PubSub.Instance.Notify(EMessageType.TimeRewindStop, this);
     }
 
     private void EnableImmunity()
