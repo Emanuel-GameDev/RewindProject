@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TentacleTwo : MonoBehaviour
+public class TentacleThree : MonoBehaviour
 {
     [Header("General Data")]
     [SerializeField] int length;
@@ -45,13 +45,14 @@ public class TentacleTwo : MonoBehaviour
         for (int i = 1; i < segmentPoses.Length; i++)
         {
             Vector3 targetPos = segmentPoses[i - 1] + (segmentPoses[i] - segmentPoses[i - 1]).normalized * targetDist;
-            segmentPoses[i] = Vector3.SmoothDamp(segmentPoses[i], targetPos, ref segmentV[i], smoothSpeed);
-            if(bodyParts.Count<Transform>() > 0)
+            Vector3 targetPosition = Vector3.SmoothDamp(segmentPoses[i], targetPos, ref segmentV[i], smoothSpeed);
+            segmentPoses[i] = new Vector3(targetPosition.x, targetPosition.y, segmentPoses[i].z);
+            if (bodyParts.Count<Transform>() >= i )
                 bodyParts[i - 1].transform.position = segmentPoses[i];
         }
         lineRenderer.SetPositions(segmentPoses);
 
-        if(tailEnd != null)
+        if (tailEnd != null)
             tailEnd.position = segmentPoses[segmentPoses.Length - 1];
     }
 

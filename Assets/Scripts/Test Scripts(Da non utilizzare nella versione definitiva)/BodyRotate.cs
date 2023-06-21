@@ -5,7 +5,6 @@ using UnityEngine;
 public class BodyRotate : MonoBehaviour
 {
     [SerializeField] float rotationSpeed = 25f;
-
     [SerializeField] Transform target;
     private Vector2 direction;
 
