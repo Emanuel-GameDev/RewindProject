@@ -1,15 +1,11 @@
-using System;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine.Rendering.Universal;
-using System.Collections.Generic;
 
 public class Pickable : MonoBehaviour
 {
-    private Character character;
     private Ability ability;
+    // pagina
     private Animator animator;
 
     public UnityEvent OnPickup;
@@ -29,26 +25,22 @@ public class Pickable : MonoBehaviour
 
             animator.SetTrigger("ability");
         }
-        else
-        {
-            animator.SetTrigger("diary");
-        }
-    }
 
+        // Tryget componet per la pagina
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Character>() != null)
         {
-            character = collision.gameObject.GetComponent<Character>(); 
+            Character character = collision.gameObject.GetComponent<Character>();
 
             if (ability != null)
             {
-                List<object> pickData = new List<object> { character, ability};
-
-                PubSub.Instance.Notify(EMessageType.AbilityAnimStart, pickData);
+                ability.Pick(character);
                 DataSerializer.Save(ability.name, pickedUp);
-                gameObject.SetActive(false);
             }
+
+            // Aggiungere raccolta della pagina con else if
 
             OnPickup.Invoke();
         }

@@ -12,6 +12,7 @@ public class ParallaxEffect : MonoBehaviour
     private CinemachineVirtualCamera cam;
 
     [SerializeField] private float length = 30f;
+    [SerializeField] private float shiftOffset = 5;
 
     [Tooltip("Speed of the horizontal parallax effect\n" +
         "(1 = not moving and 0 = same speed of player)")]
@@ -54,6 +55,7 @@ public class ParallaxEffect : MonoBehaviour
 
         if (temp >= startPosX + length)
         {
+            Debug.Log("ssss" + name);
             startPosX += length;
         }
         else if (temp <= startPosX - length)
