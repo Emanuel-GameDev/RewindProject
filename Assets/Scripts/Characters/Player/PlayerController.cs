@@ -249,6 +249,7 @@ public class PlayerController : Character
             previousHorizontalInputs.Clear();
         }
 
+        
 
         rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }

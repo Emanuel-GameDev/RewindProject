@@ -23,7 +23,11 @@ public class Checkpoint : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<PlayerController>())
-            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
+        {
+            taken = true;
+            SetCheckpoint();
+            //collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
+        }
     }
 
 
