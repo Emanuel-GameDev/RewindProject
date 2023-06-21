@@ -22,6 +22,7 @@ public class Rewindable : MonoBehaviour
     private Collider2D col;
     public PlayerController playerController;
     private SpriteRenderer spriteRenderer;
+    private Animator animator;
 
     private void Start()
     {
@@ -30,6 +31,7 @@ public class Rewindable : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();  
         spriteRenderer = GetComponent<SpriteRenderer>();
         if(spriteRenderer == null)
@@ -99,6 +101,7 @@ public class Rewindable : MonoBehaviour
             rewindElapsedTime = 0;
             rb.isKinematic = true;
             col.enabled = false;
+            animator.enabled = false;
             if(playerController != null )
             {
                 playerController.inputs.Disable();
@@ -112,6 +115,7 @@ public class Rewindable : MonoBehaviour
         isRewinding = false;
         rb.isKinematic = false;
         col.enabled = true;
+        animator.enabled = true;
         EnableImmunity();
         if (playerController != null)
         {
