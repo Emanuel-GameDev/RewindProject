@@ -65,7 +65,7 @@ public class PlayerController : Character
     internal Rigidbody2D rBody;
     SpriteRenderer bodySprite;
 
-    float horizontalMovement = 0;
+   public float horizontalMovement = 0;
     float groundAngle = 0;
 
     Vector2 jumpStartPoint;
@@ -205,7 +205,7 @@ public class PlayerController : Character
     #region Movement
     public void CalculateHorizontalMovement()
     {
-        if (horizontalInput != 0)
+        if (horizontalInput != 0 )
         {
             //calcolo movimento
             horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
@@ -237,11 +237,15 @@ public class PlayerController : Character
         {
             if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
                 bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
+            else
+                previousHorizontalInputs.Clear();
         }
         else if(horizontalMovement < -0.1)
         {
             if(!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
                 bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+            else
+                previousHorizontalInputs.Clear();
         }
 
         if (horizontalInput != 0 && previousHorizontalInputs.Contains(-horizontalInput) && isRunning && !animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
