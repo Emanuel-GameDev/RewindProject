@@ -35,6 +35,7 @@ public class EnemyThree : BaseEnemy
         if(core != null) tree.SetVariableValue(CORE, core);
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, SpawnCheck);
         hidener = GetComponentInChildren<SpriteLineHidener>();
+        hidener.Hide();
     }
 
     private void SpawnCheck(object obj)
