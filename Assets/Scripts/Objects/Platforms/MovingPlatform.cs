@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoovingPlatform : MonoBehaviour
+public class MovingPlatform : MonoBehaviour
 {
     private void OnCollisionEnter2D(Collision2D collision)
     {
