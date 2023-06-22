@@ -14,6 +14,7 @@ public class EnemyThree : BaseEnemy
     [Header("Other Data")]
     [SerializeField] GameObject core;
     private SpriteLineHidener hidener;
+    private eZone movingArea;
 
     //Nomi delle variabili nel behaviour tree
     private const string CORE = "Core";
@@ -32,30 +33,33 @@ public class EnemyThree : BaseEnemy
         tree.SetVariableValue(VIEW_DISTANCE, viewDistance);
         tree.SetVariableValue(SPEED, speed);
         if(core != null) tree.SetVariableValue(CORE, core);
-        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, Spawn);
+        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, SpawnCheck);
         hidener = GetComponentInChildren<SpriteLineHidener>();
-    }
-
-    private void Spawn(object obj)
-    {
-        if(Vector2.Distance(target.transform.position, startPosition) < viewDistance) 
-        {
-            core.SetActive(true);
-            animator.SetTrigger(SPAWN);
-            StartHiddenBody();
-        }
-    }
-
-    private void StartHiddenBody()
-    {
         hidener.Hide();
     }
 
+    private void SpawnCheck(object obj)
+    {
+        if(obj is TimelineManager)
+        {
+            TimelineManager timelineManager = (TimelineManager)obj;
+            if (Enum.Equals(timelineManager.actualZone, movingArea))
+            {
+                Spawn();
+            }
+        }
+    }
+
+    private void Spawn()
+    {
+        core.SetActive(true);
+        animator.SetTrigger(SPAWN);
+        hidener.Hide();
+    }
     public void StartChase()
     {
         tree.SetVariableValue(MOVE, true);
         hidener.Show();
-
     }
 
     //Test
@@ -63,9 +67,41 @@ public class EnemyThree : BaseEnemy
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Spawn(this);
+            Spawn();
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Despawn();
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        TimeZone zone = collision.GetComponent<TimeZone>();
+        if(zone != null)
+        {
+            movingArea = zone.zone;
+        }
+    }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        TimeZone zone = collision.GetComponent<TimeZone>();
+        if (zone != null)
+        {
+            if (Enum.Equals(zone.zone, movingArea))
+                Despawn();
+        }
+    }
+
+    private void Despawn()
+    {
+        StopChase();
+        hidener.Hide();
+    }
+
+    private void StopChase()
+    {
+        tree.SetVariableValue(MOVE, false);
+    }
 }
