@@ -62,23 +62,24 @@ public class EnemyThree : BaseEnemy
         hidener.Show();
     }
 
-    //Test
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            Spawn();
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Despawn();
-        }
-    }
+    ////Test
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.O))
+    //    {
+    //        Spawn();
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.P))
+    //    {
+    //        Despawn();
+    //    }
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         TimeZone zone = collision.GetComponent<TimeZone>();
-        movingArea = zone.zone;
+        if (zone != null)
+            movingArea = zone.zone;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -101,4 +102,5 @@ public class EnemyThree : BaseEnemy
     {
         tree.SetVariableValue(MOVE, false);
     }
+
 }

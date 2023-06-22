@@ -17,7 +17,6 @@ public class AudioManager : MonoBehaviour
     private float elapsedTime;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -28,12 +27,12 @@ public class AudioManager : MonoBehaviour
 
     private void StopRewindClip(object obj)
     {
-        throw new NotImplementedException();
+        StartCoroutine(FadeOut(themeClip));
     }
 
     private void StartRewindClip(object obj)
     {
-        throw new NotImplementedException();
+        StartCoroutine(FadeOut(rewindClip));
     }
 
     private void PlayTrack(AudioClip clip)
@@ -44,15 +43,36 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
     }
 
-    // Update is called once per frame
-    void Update()
+    private System.Collections.IEnumerator FadeOut(AudioClip clip)
     {
-        
+        float startVolume = audioSource.volume;
+        float timer = 0.0f;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(startVolume, 0.0f, timer / fadeDuration);
+            yield return null;
+        }
+
+        audioSource.Stop();
+        PlayTrack(clip);
     }
 
-    private void FadeOut()
-    {
+    ////Test
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.O))
+    //    {
+    //        StartRewindClip(this);
+    //        Debug.Log("Start");
+    //    }
+    //    if (Input.GetKeyDown(KeyCode.P))
+    //    {
+    //        StopRewindClip(this);
+    //        Debug.Log("Stop");
+    //    }
+    //}
 
-    }
 
 }
