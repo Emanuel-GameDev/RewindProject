@@ -23,6 +23,8 @@ public class ParallaxEffect : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] float vParallaxRatio;
 
+    [SerializeField] bool doubleShift = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,11 +56,17 @@ public class ParallaxEffect : MonoBehaviour
 
         if (temp >= startPosX + length)
         {
-            startPosX += length;
+            if (doubleShift)
+                startPosX += length * 2;
+            else
+                startPosX += length;
         }
         else if (temp <= startPosX - length)
         {
-            startPosX -= length;
+            if (doubleShift)
+                startPosX -= length * 2;
+            else
+                startPosX -= length;
         }
     }
 
