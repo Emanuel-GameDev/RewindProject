@@ -8,6 +8,7 @@ public enum EMessageType
     CheckpointVisited,
     ActiveAbilityChanged,
     AbilityPicked,
+    AbilityAnimStart,
     TimeRewindStart,
     TimeRewindStop
 }

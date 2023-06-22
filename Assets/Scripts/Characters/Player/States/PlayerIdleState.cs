@@ -26,7 +26,7 @@ internal class PlayerIdleState : State
         if (player.isJumping)
             player.stateMachine.SetState(PlayerState.PlayerJumping);
 
-        if(player.isMooving)
+        if(player.isMoving)
             player.stateMachine.SetState(PlayerState.PlayerMooving);
 
         if (player.isFalling)

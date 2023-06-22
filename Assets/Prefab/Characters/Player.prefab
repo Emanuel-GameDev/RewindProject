@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 5481834699438083080}
   - component: {fileID: 5481834699438083081}
   - component: {fileID: 5481834699438083074}
-  - component: {fileID: 5833850551489061900}
+  - component: {fileID: 21933585599174570}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -212,6 +212,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   healthBar: {fileID: 0}
+  OnDie:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: Respawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5481834699438083079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +243,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeAbility: {fileID: 0}
-  interactKey: 101
 --- !u!50 &5481834699438083080
 Rigidbody2D:
   serializedVersion: 4
@@ -284,7 +301,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5833850551489061900
+--- !u!114 &21933585599174570
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,6 +310,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5481834699438083082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0bc61176cc55243b9d5686d7582073, type: 3}
+  m_Script: {fileID: 11500000, guid: 70411331c1d709545b1782901de5bd16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footStepSounds:
+  - {fileID: 8300000, guid: 75197d2f560f16d4c915dce04bbc8038, type: 3}
+  - {fileID: 8300000, guid: 6b1c9b9a802faf3459023d647fa32405, type: 3}
+  - {fileID: 8300000, guid: 6429782e0a1464d478c9e90a3ccab17c, type: 3}
+  - {fileID: 8300000, guid: 09858256d91e5b94e900f7ca934789a5, type: 3}
+  - {fileID: 8300000, guid: 0989bc59ea1e22846a866869baeedd98, type: 3}
+  - {fileID: 8300000, guid: 4f42194e2f50bc94b9fb1a19162ff8fb, type: 3}
+  - {fileID: 8300000, guid: 20c4f23f5cab9fc4fbb0a08105bf4457, type: 3}

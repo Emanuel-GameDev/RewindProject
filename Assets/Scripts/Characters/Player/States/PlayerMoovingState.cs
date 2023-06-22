@@ -24,7 +24,7 @@ public class PlayerMoovingState : State
         player.CheckRotation();
 
         
-        if (!player.isMooving)
+        if (!player.isMoving)
             player.stateMachine.SetState(PlayerState.PlayerIdle);
 
         if (player.isJumping)

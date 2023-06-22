@@ -37,7 +37,7 @@ public class TestAnimatorManager : MonoBehaviour
     {
         isJumping = playerController.isJumping;
         isFalling = playerController.isFalling;
-        isMooving = playerController.isMooving;
+        isMooving = playerController.isMoving;
         isRunning = playerController.isRunning;
         isRewinding = rewindable.GetIsRewinding();
 
