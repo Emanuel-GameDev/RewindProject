@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MoovingPlatform : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Character>() != null)
         {
@@ -14,7 +14,7 @@ public class MoovingPlatform : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Character>() != null)
         {
