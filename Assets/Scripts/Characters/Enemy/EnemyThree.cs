@@ -14,7 +14,7 @@ public class EnemyThree : BaseEnemy
     [Header("Other Data")]
     [SerializeField] GameObject core;
     private SpriteLineHidener hidener;
-    private eZone movingArea;
+    [SerializeField] eZone movingArea;
 
     //Nomi delle variabili nel behaviour tree
     private const string CORE = "Core";
@@ -78,10 +78,7 @@ public class EnemyThree : BaseEnemy
     private void OnTriggerEnter2D(Collider2D collision)
     {
         TimeZone zone = collision.GetComponent<TimeZone>();
-        if(zone != null)
-        {
-            movingArea = zone.zone;
-        }
+        movingArea = zone.zone;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
