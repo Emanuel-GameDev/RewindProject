@@ -38,7 +38,11 @@ public class UIManager : MonoBehaviour
 
         character.GetComponent<PlayerController>().inputs.Player.Disable();
 
-        if (cardToShow == null) return;
+        if (cardToShow == null)
+        {
+            Debug.LogError("cardToShow = null");
+            return;
+        }
 
         cardImage.sprite = cardToShow.icon;
         cardName.text = cardToShow.name;
