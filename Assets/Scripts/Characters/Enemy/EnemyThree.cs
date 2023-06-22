@@ -15,6 +15,7 @@ public class EnemyThree : BaseEnemy
     [SerializeField] GameObject core;
     private SpriteLineHidener hidener;
     [SerializeField] eZone movingArea;
+    [SerializeField] float despawnDistance = 50f;
 
     //Nomi delle variabili nel behaviour tree
     private const string CORE = "Core";
@@ -62,18 +63,24 @@ public class EnemyThree : BaseEnemy
         hidener.Show();
     }
 
-    ////Test
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.O))
-    //    {
-    //        Spawn();
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.P))
-    //    {
-    //        Despawn();
-    //    }
-    //}
+    //Test
+    private void Update()
+    {
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    Spawn();
+        //}
+        //if (Input.GetKeyDown(KeyCode.P))
+        //{
+        //    Despawn();
+        //}
+
+        if(Vector2.Distance(startPosition,transform.position) > despawnDistance)
+        {
+            Despawn();
+        }
+
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
