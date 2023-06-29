@@ -49,7 +49,7 @@ public class PlayerController : Character
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] PhysicsMaterial2D fullFriction;
 
-    [HideInInspector] public float fallStartPoint;
+     public float fallStartPoint;
     [HideInInspector] public float fastRespawnTimer = 0;
     [HideInInspector] public float horizontalInput = 0;
     [HideInInspector] public Vector3 fastSpawnPoint;
@@ -423,14 +423,14 @@ public class PlayerController : Character
         }
         else
         {
-            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(fallStartPoint + transform.position.y))
+            if (maxFallDistanceWithoutTakingDamage > Mathf.Abs(fallStartPoint + transform.position.y))
                 return true;
         }
 
         return false;
     }
 
-    bool IsGravityDownward()
+    public bool IsGravityDownward()
     {
         if (rBody.gravityScale >= 0)
             return true;

@@ -16,7 +16,11 @@ public class InvertGravity : Ability
             return;
         
         RaycastHit2D hit;
-        Vector3 rayDirection = Vector3.up; // Direzione verso l'alto
+        Vector3 rayDirection;
+        if (PlayerController.instance.IsGravityDownward())
+            rayDirection = Vector3.up; // Direzione verso l'alto
+        else
+            rayDirection = Vector3.down; // Direzione verso il basso
 
         hit = Physics2D.Raycast(parent.transform.position, rayDirection, Mathf.Infinity, targetMask);
 
