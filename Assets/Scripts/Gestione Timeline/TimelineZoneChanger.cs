@@ -10,6 +10,10 @@ public class TimelineZoneChanger : MonoBehaviour
             TimelineManager.Instance.ChangeTimeline(zone);
             TimelineManager.Instance.SetCanUseRewind(true);
         }
+        else if (collision.GetComponent<EnemyThree>()) 
+        {
+            collision.GetComponent<EnemyThree>().SetMoovingZone(zone);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -17,6 +21,10 @@ public class TimelineZoneChanger : MonoBehaviour
         if (collision.GetComponent<PlayerController>())
         {
             TimelineManager.Instance.SetCanUseRewind(false);
+        }
+        else if (collision.GetComponent<EnemyThree>())
+        {
+            collision.GetComponent<EnemyThree>().Despawn(zone);
         }
     }
 
