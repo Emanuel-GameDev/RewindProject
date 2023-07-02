@@ -16,6 +16,8 @@ public class EnemyThree : BaseEnemy
     private SpriteLineHidener hidener;
     [SerializeField] eZone movingArea;
     [SerializeField] float despawnDistance = 50f;
+    [SerializeField] Transform rotationTarget;
+    [SerializeField] BodyRotate bodyRotate;
 
     //Nomi delle variabili nel behaviour tree
     private const string CORE = "Core";
@@ -25,6 +27,7 @@ public class EnemyThree : BaseEnemy
 
     //Nomi delle variabili nell'animator
     private const string SPAWN = "Spawn";
+    private const string DESPAWN = "Despawn";
 
 
 
@@ -56,58 +59,56 @@ public class EnemyThree : BaseEnemy
         core.SetActive(true);
         animator.SetTrigger(SPAWN);
         hidener.Hide();
+        bodyRotate.SetTarget(rotationTarget);
     }
     public void StartChase()
     {
         tree.SetVariableValue(MOVE, true);
         hidener.Show();
+        bodyRotate.SetTarget(target.transform);
     }
 
     //Test
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.O))
-        //{
-        //    Spawn();
-        //}
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    Despawn();
-        //}
-
         if(Vector2.Distance(startPosition,transform.position) > despawnDistance)
         {
-            Despawn();
+            Despawn(movingArea);
         }
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void SetMoovingZone(eZone zone)
     {
-        TimeZone zone = collision.GetComponent<TimeZone>();
-        if (zone != null)
-            movingArea = zone.zone;
+        if (!Enum.Equals(zone, movingArea))
+            movingArea = zone;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    public void Despawn(eZone zone)
     {
-        TimeZone zone = collision.GetComponent<TimeZone>();
-        if (zone != null)
+        if (Enum.Equals(zone, movingArea))
         {
-            if (Enum.Equals(zone.zone, movingArea))
-                Despawn();
+            StopChase();
         }
-    }
-
-    private void Despawn()
-    {
-        StopChase();
-        hidener.Hide();
     }
 
     private void StopChase()
     {
         tree.SetVariableValue(MOVE, false);
+        bodyRotate.SetTarget(rotationTarget);
+        animator.SetTrigger(DESPAWN);
     }
+
+    public void HideBody()
+    {
+        hidener.Hide();
+    }
+
+    public void CompleteDespawn()
+    {
+        core.SetActive(false);
+        transform.position = startPosition;
+    }
+
 
 }
