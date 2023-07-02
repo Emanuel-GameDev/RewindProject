@@ -47,7 +47,7 @@ public class EnemyThree : BaseEnemy
         if(obj is TimelineManager)
         {
             TimelineManager timelineManager = (TimelineManager)obj;
-            if (Enum.Equals(timelineManager.actualZone, movingArea))
+            if (Enum.Equals(timelineManager.actualZone, movingArea) && !isDead)
             {
                 Spawn();
             }
@@ -108,6 +108,12 @@ public class EnemyThree : BaseEnemy
     {
         core.SetActive(false);
         transform.position = startPosition;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, despawnDistance);
     }
 
 

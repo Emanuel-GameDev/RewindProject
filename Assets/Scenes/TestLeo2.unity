@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 18929298}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RotationTarget
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 137975477}
   - component: {fileID: 137975479}
   - component: {fileID: 137975478}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArmJoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1130,7 +1130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 297609358}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WiggleDirArm
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -1196,7 +1196,7 @@ GameObject:
   - component: {fileID: 402734910}
   - component: {fileID: 402734908}
   - component: {fileID: 402734909}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FullBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1284,7 +1284,7 @@ GameObject:
   - component: {fileID: 484480411}
   - component: {fileID: 484480413}
   - component: {fileID: 484480412}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1747,7 +1747,8 @@ GameObject:
   - component: {fileID: 577965592}
   - component: {fileID: 577965594}
   - component: {fileID: 577965593}
-  m_Layer: 0
+  - component: {fileID: 577965595}
+  m_Layer: 7
   m_Name: Wings
   m_TagString: Untagged
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
@@ -1839,6 +1840,26 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &577965595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577965590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 108b0c96c0127aa44abcd61a45bf9965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  healthBar: {fileID: 0}
+  OnDie:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &625274577
 GameObject:
   m_ObjectHideFlags: 0
@@ -2234,7 +2255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 768856512}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WiggleDirTail
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -2512,7 +2533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 835828403}
   - component: {fileID: 835828404}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WingSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2673,7 +2694,7 @@ GameObject:
   m_Component:
   - component: {fileID: 864762921}
   - component: {fileID: 864762922}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ArmSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3247,7 +3268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1044141410}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
@@ -3364,7 +3385,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1069162477}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TargetDirWing
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -3520,7 +3541,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1115284324}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TargetDirTail
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -3658,7 +3679,8 @@ GameObject:
   - component: {fileID: 1250733240}
   - component: {fileID: 1250733243}
   - component: {fileID: 1250733244}
-  m_Layer: 0
+  - component: {fileID: 1250733245}
+  m_Layer: 7
   m_Name: Nemico3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3717,9 +3739,9 @@ MonoBehaviour:
       JSONSerialization: '{"EntryTask":{"Type":"BehaviorDesigner.Runtime.Tasks.EntryTask","NodeData":{"Offset":"(252.5,0)"},"ID":0,"Name":"Entry","Instant":true},"RootTask":{"Type":"BehaviorDesigner.Runtime.Tasks.Selector","NodeData":{"Offset":"(2.500001,164.117661)"},"ID":1,"Name":"Selector","Instant":true,"AbortTypeabortType":"None","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(-199.204971,152.683334)"},"ID":2,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables.CompareSharedBool","NodeData":{"Offset":"(-250,148.620911)"},"ID":3,"Name":"
         Must Move","Instant":true,"SharedBoolvariable":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Move","IsShared":true,"BooleanmValue":false},"SharedBoolcompareTo":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":true}},{"Type":"BehaviorDesigner.Runtime.Tasks.Movement.WithinDistance","NodeData":{"Offset":"(-104.222977,145.769363)"},"ID":4,"Name":"Within
         Distance","Instant":true,"BooleanusePhysics2D":true,"SharedGameObjecttargetObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"GameObjectmValue":0},"SharedStringtargetTag":{"Type":"BehaviorDesigner.Runtime.SharedString","Name":null,"StringmValue":""},"LayerMaskobjectLayerMask":64,"Int32maxCollisionCount":200,"SharedFloatmagnitude":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"View
-        Distance","IsShared":true,"SinglemValue":100},"SharedBoollineOfSight":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"LayerMaskignoreLayerMask":4,"SharedVector3offset":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"},"SharedVector3targetOffset":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"},"SharedBooldrawDebugRay":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedGameObjectreturnedObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null}},{"Type":"BehaviorDesigner.Runtime.Tasks.Movement.MoveTowards","NodeData":{"Offset":"(102.224167,153.12265)"},"ID":5,"Name":"Move
-        Towards","Instant":true,"SharedFloatspeed":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Speed","IsShared":true,"SinglemValue":0},"SharedFloatarriveDistance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.1},"SharedBoollookAtTarget":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatmaxLookAtRotationDelta":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedGameObjecttarget":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"GameObjectmValue":1},"SharedVector3targetPosition":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(345.592651,145.834152)"},"ID":6,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables.CompareSharedBool","NodeData":{"Offset":"(-96.35264,154.03389)"},"ID":7,"Name":"Must
-        Stop","Instant":true,"SharedBoolvariable":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Move","IsShared":true,"BooleanmValue":false},"SharedBoolcompareTo":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}},{"Type":"BehaviorDesigner.Runtime.Tasks.Idle","NodeData":{"Offset":"(148.9516,153.055618)"},"ID":8,"Name":"Idle","Instant":true}]}]},"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Move","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"GameObjectmValue":2},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"View
+        Distance","IsShared":true,"SinglemValue":100},"SharedBoollineOfSight":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"LayerMaskignoreLayerMask":4,"SharedVector3offset":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"},"SharedVector3targetOffset":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"},"SharedBooldrawDebugRay":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedGameObjectreturnedObject":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":null}},{"Type":"BehaviorDesigner.Runtime.Tasks.Movement.MoveTowards","NodeData":{"Offset":"(54.5319138,153.12265)"},"ID":5,"Name":"Move
+        Towards","Instant":true,"SharedFloatspeed":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Speed","IsShared":true,"SinglemValue":0},"SharedFloatarriveDistance":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0.1},"SharedBoollookAtTarget":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false},"SharedFloatmaxLookAtRotationDelta":{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":null,"SinglemValue":0},"SharedGameObjecttarget":{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"GameObjectmValue":1},"SharedVector3targetPosition":{"Type":"BehaviorDesigner.Runtime.SharedVector3","Name":null,"Vector3mValue":"(0,0,0)"}}]},{"Type":"BehaviorDesigner.Runtime.Tasks.Sequence","NodeData":{"Offset":"(147.6762,145.834152)"},"ID":6,"Name":"Sequence","Instant":true,"AbortTypeabortType":"Both","Children":[{"Type":"BehaviorDesigner.Runtime.Tasks.Unity.SharedVariables.CompareSharedBool","NodeData":{"Offset":"(-96.35264,154.03389)"},"ID":7,"Name":"Must
+        Stop","Instant":true,"SharedBoolvariable":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Move","IsShared":true,"BooleanmValue":false},"SharedBoolcompareTo":{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":null,"BooleanmValue":false}},{"Type":"BehaviorDesigner.Runtime.Tasks.Idle","NodeData":{"Offset":"(98.9516,153.055618)"},"ID":8,"Name":"Idle","Instant":true}]}]},"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Move","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Target","IsShared":true,"GameObjectmValue":2},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"View
         Distance","IsShared":true,"SinglemValue":100},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Speed","IsShared":true,"SinglemValue":0},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Core","IsShared":true,"GameObjectmValue":3},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Is
         Dead","IsShared":true,"BooleanmValue":false}]}'
       fieldSerializationData:
@@ -3790,6 +3812,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1250733245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250733239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6746ddf7440f93f42a2af6584f4db9b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  healthBar: {fileID: 0}
+  OnDie:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1258291990
 GameObject:
   m_ObjectHideFlags: 0
@@ -3799,7 +3841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1258291991}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WiggleDir
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -4201,7 +4243,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1398014890}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TargetDir
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -4279,7 +4321,7 @@ GameObject:
   - component: {fileID: 1520405132}
   - component: {fileID: 1520405133}
   - component: {fileID: 1520405134}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4657,7 +4699,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1711403331}
   - component: {fileID: 1711403332}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BodySprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5141,6 +5183,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zone: 1
+  playOnEnter: 0
+  startAtEnd: 0
 --- !u!4 &1872489041
 Transform:
   m_ObjectHideFlags: 0
@@ -5249,7 +5293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1910632414}
   - component: {fileID: 1910632415}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HeadSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5574,7 +5618,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1947775821}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WiggleDirWing
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
@@ -5609,7 +5653,8 @@ GameObject:
   - component: {fileID: 1971518633}
   - component: {fileID: 1971518635}
   - component: {fileID: 1971518634}
-  m_Layer: 0
+  - component: {fileID: 1971518636}
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
@@ -5697,6 +5742,26 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &1971518636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1971518629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 108b0c96c0127aa44abcd61a45bf9965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  healthBar: {fileID: 0}
+  OnDie:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2020440973
 GameObject:
   m_ObjectHideFlags: 0
@@ -5710,7 +5775,8 @@ GameObject:
   - component: {fileID: 2020440975}
   - component: {fileID: 2020440979}
   - component: {fileID: 2020440978}
-  m_Layer: 0
+  - component: {fileID: 2020440980}
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5904,6 +5970,26 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+--- !u!114 &2020440980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020440973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 108b0c96c0127aa44abcd61a45bf9965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  healthBar: {fileID: 0}
+  OnDie:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2067610862
 GameObject:
   m_ObjectHideFlags: 0
@@ -5913,7 +5999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2067610863}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TargetDirArm
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
@@ -5946,7 +6032,7 @@ GameObject:
   - component: {fileID: 2068477217}
   - component: {fileID: 2068477219}
   - component: {fileID: 2068477218}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WingJoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6149,7 +6235,7 @@ GameObject:
   - component: {fileID: 2121476620}
   - component: {fileID: 2121476622}
   - component: {fileID: 2121476621}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
