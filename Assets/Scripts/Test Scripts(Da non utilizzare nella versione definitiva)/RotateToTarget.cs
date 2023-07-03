@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BodyRotate : MonoBehaviour
+public class RotateToTarget : MonoBehaviour
 {
     [SerializeField] float rotationSpeed = 25f;
     [SerializeField] Transform target;
@@ -18,10 +18,5 @@ public class BodyRotate : MonoBehaviour
             Quaternion toRotation = Quaternion.AngleAxis(angle, Vector3.forward);
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
-    }
-
-    public void SetTarget(Transform target)
-    {
-        this.target = target;
     }
 }

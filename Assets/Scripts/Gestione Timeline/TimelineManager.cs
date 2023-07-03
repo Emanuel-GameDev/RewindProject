@@ -271,14 +271,5 @@ public class TimelineManager : MonoBehaviour
         canUseRewind = v;
     }
 
-    public void SetAtEnd(eZone zone)
-    {
-        eZone actualZone = this.actualZone;
-        ChangeTimeline(zone);
-        SetTime(timelineDuration);
-        timelineDirector.Evaluate();
-        ChangeTimeline(actualZone);
-    }
-
     #endregion
 }
