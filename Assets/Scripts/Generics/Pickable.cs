@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class Pickable : MonoBehaviour
 {
-    private Ability ability;
+    [SerializeField] Ability ability;
     // pagina
     private Animator animator;
 
@@ -15,7 +15,7 @@ public class Pickable : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        if (TryGetComponent(out ability))
+        if (ability != null)
         {
             if (DataSerializer.TryLoad(ability.name, out pickedUp))
             {
@@ -43,6 +43,7 @@ public class Pickable : MonoBehaviour
             // Aggiungere raccolta della pagina con else if
 
             OnPickup.Invoke();
+            gameObject.SetActive(false);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using System.Drawing;
 
 public class Dialogue : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class Dialogue : MonoBehaviour
     {
         inputs = new PlayerInputs();
         inputs.Dialogue.Enable();
+        
         inputs.Dialogue.NextLyne.performed += NextLyne_performed;
         PlayerController.instance.inputs.Player.Disable();
     }

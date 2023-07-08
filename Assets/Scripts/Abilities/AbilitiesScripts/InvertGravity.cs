@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Ability/InvertGravity")]
 public class InvertGravity : Ability
 {
     [SerializeField] LayerMask targetMask;
     private float elapsedTime = 0;
-    private EAbilityState state;
+    private EAbilityState state = EAbilityState.ready;
  
 
     public override void Activate1(GameObject parent)
@@ -17,6 +18,7 @@ public class InvertGravity : Ability
         
         RaycastHit2D hit;
         Vector3 rayDirection;
+
         if (PlayerController.instance.IsGravityDownward())
             rayDirection = Vector3.up; // Direzione verso l'alto
         else
@@ -31,16 +33,13 @@ public class InvertGravity : Ability
 
             rBody.gravityScale = -rBody.gravityScale;
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-            state = EAbilityState.cooldown;
+            //state = EAbilityState.cooldown;
         }
+
+
     }
 
-    public override void Start()
-    {
-        base.Start();
-        elapsedTime = 0;
-        state = EAbilityState.ready;
-    }
+
 
     private void Update()
     {

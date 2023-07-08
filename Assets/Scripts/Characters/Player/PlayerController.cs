@@ -53,7 +53,7 @@ public class PlayerController : Character
     [HideInInspector] public float fastRespawnTimer = 0;
     [HideInInspector] public float horizontalInput = 0;
     [HideInInspector] public Vector3 fastSpawnPoint;
-    [HideInInspector] public Queue previousHorizontalInputs=new Queue();
+    [HideInInspector] public Queue previousHorizontalInputs = new Queue();
     [HideInInspector] public Animator animator;
 
      public bool grounded = false;
@@ -65,13 +65,13 @@ public class PlayerController : Character
     internal Rigidbody2D rBody;
     SpriteRenderer bodySprite;
 
-   public float horizontalMovement = 0;
+    public float horizontalMovement = 0;
     float groundAngle = 0;
 
     Vector2 jumpStartPoint;
 
     //da usare per l'abilità
-    [HideInInspector] public bool canDoubleJump;
+    /*[HideInInspector] */public bool canDoubleJump;
     bool doubleJump = false;
 
     #region UnityFunctions
@@ -100,6 +100,7 @@ public class PlayerController : Character
         bodySprite = GetComponentInChildren<SpriteRenderer>();
 
         animator.SetBool("Running", isRunning);
+        DataSerializer.TryLoad("CANDOUBLEJUMP", out canDoubleJump);
     }
 
     private void Start()

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Ability/SummonTower")]
 public class SummonTower : Ability
 {
     [SerializeField] GameObject towerPrefab;
@@ -15,8 +16,5 @@ public class SummonTower : Ability
             Instantiate(towerPrefab, player.gameObject.transform.position, player.gameObject.transform.rotation);
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
+    
 }

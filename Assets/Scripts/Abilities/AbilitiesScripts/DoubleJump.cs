@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using ToolBox.Serialization;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Ability/DoubleJump")]
 public class DoubleJump : Ability
 {
     public override void Activate1(GameObject parent)
@@ -16,11 +18,8 @@ public class DoubleJump : Ability
         if (controller == null) return;
 
         controller.canDoubleJump = true;
-        gameObject.SetActive(false);
+        DataSerializer.Save("CANDOUBLEJUMP", true);
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
+    
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Ability/RewindTime")]
 public class RewindTimeAbility : Ability
 {
     public override void Activate1(GameObject parent)
