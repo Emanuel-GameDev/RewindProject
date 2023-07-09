@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Ability : MonoBehaviour
+[Serializable]
+public abstract class Ability : ScriptableObject
 {
     public new string name;
     public string description;  
@@ -25,7 +26,6 @@ public abstract class Ability : MonoBehaviour
     public virtual void Pick(Character picker)
     {
         PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
-        gameObject.SetActive(false);
     }
 
 }

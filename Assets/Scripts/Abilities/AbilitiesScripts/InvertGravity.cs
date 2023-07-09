@@ -3,20 +3,26 @@ using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Ability/InvertGravity")]
 public class InvertGravity : Ability
 {
     [SerializeField] LayerMask targetMask;
-    private float elapsedTime = 0;
-    private EAbilityState state;
- 
+    //private float elapsedTime = 0;
+    //private EAbilityState state = EAbilityState.ready;
+    bool readyToUse = true;
 
     public override void Activate1(GameObject parent)
     {
-        if (state != EAbilityState.ready)
+        if (!readyToUse)
             return;
         
         RaycastHit2D hit;
-        Vector3 rayDirection = Vector3.up; // Direzione verso l'alto
+        Vector3 rayDirection;
+
+        if (PlayerController.instance.IsGravityDownward())
+            rayDirection = Vector3.up; // Direzione verso l'alto
+        else
+            rayDirection = Vector3.down; // Direzione verso il basso
 
         hit = Physics2D.Raycast(parent.transform.position, rayDirection, Mathf.Infinity, targetMask);
 
@@ -27,28 +33,35 @@ public class InvertGravity : Ability
 
             rBody.gravityScale = -rBody.gravityScale;
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-            state = EAbilityState.cooldown;
+            readyToUse = false;
+            LevelManager.instance.StartCoroutine(Cooldown());
         }
+
+
     }
 
-    public override void Start()
+    private void OnEnable()
     {
-        base.Start();
-        elapsedTime = 0;
-        state = EAbilityState.ready;
+        readyToUse = true;
     }
 
-    private void Update()
+    IEnumerator Cooldown()
     {
-        if(state == EAbilityState.cooldown)
-        {
-            elapsedTime += Time.deltaTime;
-
-            if (elapsedTime > cooldownTime) 
-            {
-                state = EAbilityState.ready;
-            }
-        }
+        yield return new WaitForSeconds(cooldownTime);
+        readyToUse = true;
     }
+
+    //private void Update()
+    //{
+    //    if(state == EAbilityState.cooldown)
+    //    {
+    //        elapsedTime += Time.deltaTime;
+
+    //        if (elapsedTime > cooldownTime) 
+    //        {
+    //            state = EAbilityState.ready;
+    //        }
+    //    }
+    //}
 
 }
