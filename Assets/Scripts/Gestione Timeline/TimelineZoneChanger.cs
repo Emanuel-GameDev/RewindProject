@@ -55,7 +55,7 @@ public class TimelineZoneChanger : MonoBehaviour
     {
         if (startAtEnd)
         {
-            //TimelineManager.Instance.SetAtEnd(zone);
+            TimelineManager.Instance.SetAtEnd(zone);
         }
     }
 
