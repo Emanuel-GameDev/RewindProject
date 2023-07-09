@@ -7,7 +7,7 @@ using System.Collections.Generic;
 public class Pickable : MonoBehaviour
 {
     private Character character;
-    private Ability ability;
+    [SerializeField] Ability ability;
     private Animator animator;
 
     public UnityEvent OnPickup;
@@ -17,7 +17,7 @@ public class Pickable : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        if (TryGetComponent(out ability))
+         if (ability != null)
         {
             if (DataSerializer.TryLoad(ability.name, out pickedUp))
             {
@@ -45,12 +45,12 @@ public class Pickable : MonoBehaviour
 
                 PubSub.Instance.Notify(EMessageType.AbilityAnimStart, pickData);
                 DataSerializer.Save(ability.name, pickedUp);
-                gameObject.SetActive(false);
             }
             else
             {
-                OnPickup.Invoke();
             }
+                OnPickup.Invoke();
+                gameObject.SetActive(false);
         }
     }
 }
