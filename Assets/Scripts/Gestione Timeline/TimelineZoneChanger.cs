@@ -9,7 +9,6 @@ public class TimelineZoneChanger : MonoBehaviour
     [Tooltip("Se spuntato la Timeline viene impostata per partire già alla fine")]
     [SerializeField] bool startAtEnd;
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<PlayerController>())
