@@ -18,7 +18,6 @@ public class TimelineManager : MonoBehaviour
     [Tooltip("Usato per collegare le timeline con le Zone corrispondenti")]
     [SerializeField] List<TimeZone> timeZones;
 
-
     private float timelineDuration;
     public eZone actualZone { get; private set; }
     private bool isPlaying = false;
