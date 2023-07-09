@@ -7,21 +7,21 @@ using UnityEngine.Events;
 
 public class AnimationEvent : MonoBehaviour
 {
-    EnemyOne enemy;
-    [SerializeField] UnityEvent events;
-    private void Start()
+    [SerializeField] UnityEvent event1;
+    [SerializeField] UnityEvent event2;
+    [SerializeField] UnityEvent event3;
+    public void CallEvent1()
     {
-        enemy = GetComponentInParent<EnemyOne>();
+        event1?.Invoke();
     }
 
-    public void EndAnimationAttack()
+    public void CallEvent2()
     {
-        enemy.EndAnimationAttack();
+        event2?.Invoke();
     }
 
-    public void CallEvent()
+    public void CallEvent3()
     {
-        events?.Invoke();
+        event3?.Invoke();
     }
-
 }
