@@ -1,11 +1,13 @@
+using System;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class Pickable : MonoBehaviour
 {
-    [SerializeField] Ability ability;
-    // pagina
+    private Character character;
+    private Ability ability;
     private Animator animator;
 
     public UnityEvent OnPickup;
@@ -15,7 +17,7 @@ public class Pickable : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        if (ability != null)
+        if (TryGetComponent(out ability))
         {
             if (DataSerializer.TryLoad(ability.name, out pickedUp))
             {
@@ -25,25 +27,30 @@ public class Pickable : MonoBehaviour
 
             animator.SetTrigger("ability");
         }
-
-        // Tryget componet per la pagina
+        else
+        {
+            animator.SetTrigger("diary");
+        }
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<Character>() != null)
         {
-            Character character = collision.gameObject.GetComponent<Character>();
+            character = collision.gameObject.GetComponent<Character>();
 
             if (ability != null)
             {
-                ability.Pick(character);
+                List<object> pickData = new List<object> { character, ability };
+
+                PubSub.Instance.Notify(EMessageType.AbilityAnimStart, pickData);
                 DataSerializer.Save(ability.name, pickedUp);
+                gameObject.SetActive(false);
             }
-
-            // Aggiungere raccolta della pagina con else if
-
-            OnPickup.Invoke();
-            gameObject.SetActive(false);
+            else
+            {
+                OnPickup.Invoke();
+            }
         }
     }
 }

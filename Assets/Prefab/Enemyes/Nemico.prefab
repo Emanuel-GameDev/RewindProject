@@ -128,7 +128,7 @@ MonoBehaviour:
   logTaskChanges: 0
   group: 0
   resetValuesOnRestart: 0
-  externalBehavior: {fileID: 0}
+  externalBehavior: {fileID: 11400000, guid: b9a8d6d16b7e6254598ffbe7c4ca3ac8, type: 2}
   mBehaviorSource:
     behaviorName: EnemyOneTree
     behaviorDescription: 
@@ -176,13 +176,14 @@ MonoBehaviour:
         Distance","IsShared":true,"SinglemValue":3},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Time
         Between Attacks","IsShared":true,"SinglemValue":0.5},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Have
         See Target","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Is
-        Dead","IsShared":true,"BooleanmValue":false}]}'
+        Dead","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Self","IsShared":true,"GameObjectmValue":1}]}'
       fieldSerializationData:
         typeName: []
         fieldNameHash: 
         startIndex: 
         dataPosition: 
         unityObjects:
+        - {fileID: 1088861260380951068}
         - {fileID: 1088861260380951068}
         byteData: 
         byteDataArray: 
@@ -223,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b1922aaed6abae4d970825987818412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healtPoint: 2
+  healtPoint: 3
   target: {fileID: 0}
   viewRotation: 90
   fieldOfView: 90
@@ -232,6 +233,8 @@ MonoBehaviour:
   runSpeed: 5
   stopDistance: 3
   timeBetweenAttacks: 1
+  pauseDurationAfterHit: 5
+  pathPoints: []
 --- !u!114 &1088861260380951062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,6 +428,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c547da76123dbe41a229e87d824c621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onHit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1088861260380951063}
+        m_TargetAssemblyTypeName: EnemyOne, Assembly-CSharp
+        m_MethodName: SetPauseAfterHit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1088861261306170314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -478,6 +496,7 @@ GameObject:
   - component: {fileID: 1088861261969409432}
   - component: {fileID: 1088861261969409434}
   - component: {fileID: 1088861261969409435}
+  - component: {fileID: 8931381696462526800}
   m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
@@ -574,3 +593,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8931381696462526800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088861261969409433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 506f17c61a8adc7479cbf39e56153f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
