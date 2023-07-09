@@ -7,13 +7,13 @@ using UnityEngine;
 public class InvertGravity : Ability
 {
     [SerializeField] LayerMask targetMask;
-    private float elapsedTime = 0;
-    private EAbilityState state = EAbilityState.ready;
- 
+    //private float elapsedTime = 0;
+    //private EAbilityState state = EAbilityState.ready;
+    bool readyToUse = true;
 
     public override void Activate1(GameObject parent)
     {
-        if (state != EAbilityState.ready)
+        if (!readyToUse)
             return;
         
         RaycastHit2D hit;
@@ -33,25 +33,35 @@ public class InvertGravity : Ability
 
             rBody.gravityScale = -rBody.gravityScale;
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-            //state = EAbilityState.cooldown;
+            readyToUse = false;
+            LevelManager.instance.StartCoroutine(Cooldown());
         }
 
 
     }
 
-
-
-    private void Update()
+    private void OnEnable()
     {
-        if(state == EAbilityState.cooldown)
-        {
-            elapsedTime += Time.deltaTime;
-
-            if (elapsedTime > cooldownTime) 
-            {
-                state = EAbilityState.ready;
-            }
-        }
+        readyToUse = true;
     }
+
+    IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        readyToUse = true;
+    }
+
+    //private void Update()
+    //{
+    //    if(state == EAbilityState.cooldown)
+    //    {
+    //        elapsedTime += Time.deltaTime;
+
+    //        if (elapsedTime > cooldownTime) 
+    //        {
+    //            state = EAbilityState.ready;
+    //        }
+    //    }
+    //}
 
 }
