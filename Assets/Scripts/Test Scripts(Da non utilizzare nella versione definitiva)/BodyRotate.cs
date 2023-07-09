@@ -19,4 +19,8 @@ public class BodyRotate : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
     }
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
+    }
 }
