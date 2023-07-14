@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class OneWayPlatform : MonoBehaviour
 {
-    private BoxCollider2D playerCollider;
+    private Collider2D playerCollider;
     private bool coroutineRunning = false;
 
     [SerializeField] private bool playerCanGoDown = true;
@@ -34,6 +34,7 @@ public class OneWayPlatform : MonoBehaviour
         if (playerCanGoDown && !coroutineRunning && playerCollider != null && 
             !playerCollider.gameObject.GetComponent<PlayerController>().isJumping)
         {
+            Debug.Log("lkawjsf");
             StartCoroutine(DisablePlatform());
         }
     }
@@ -44,7 +45,7 @@ public class OneWayPlatform : MonoBehaviour
             && !coroutineRunning)
         {
             Character character = collision.gameObject.GetComponent<Character>();
-            playerCollider = character.gameObject.GetComponent<BoxCollider2D>();
+            playerCollider = character.gameObject.GetComponent<Collider2D>();
         }
     }
 

@@ -36,7 +36,6 @@ public class CameraManager : MonoBehaviour
     private float startLD;
     private float currentLD;
 
-
     // Start is called before the first frame update
     void Start()
     {
