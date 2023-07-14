@@ -29,6 +29,7 @@ public class CameraTrigger : MonoBehaviour
             if (cameraData == null) return;
 
             SaveCameraData();
+
             PubSub.Instance.Notify(EMessageType.CameraSwitch, cameraData);
             triggered = true;
         }

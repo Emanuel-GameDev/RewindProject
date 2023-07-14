@@ -36,8 +36,6 @@ public class CameraManager : MonoBehaviour
     private float startLD;
     private float currentLD;
 
-    [HideInInspector]
-    public bool switching = false;
 
     // Start is called before the first frame update
     void Start()
@@ -175,20 +173,28 @@ public class CameraManager : MonoBehaviour
 
         if (cameraData.zoomAmount >= 0 && cameraData.zoomAmount != currentZoom)
         {
-            if (cinemachineCoroutine != null)
-                StopCoroutine(cinemachineCoroutine);
-            else
-            {
-                cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
-                StartCoroutine(cinemachineCoroutine);
-            }
+            Debug.Log(cameraData.zoomAmount);
+
+            //if (cinemachineCoroutine != null)
+            //{
+            //    StopCoroutine(cinemachineCoroutine);
+            //    StartCoroutine(cinemachineCoroutine);
+            //}
+            //else
+            //{
+            //    cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
+            //    StartCoroutine(cinemachineCoroutine);
+            //}
+
+            cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
+            StartCoroutine(cinemachineCoroutine);
+
         }
     }
 
     // Apply new camera data to the camera
     private IEnumerator AdjustCamera(float targetZoom, Vector3 targetOffset, Vector2 targetDamping)
     {
-        switching = true;
         while (Mathf.Abs(currentZoom - targetZoom) > 0.01f)
         {
             // Apply zoom
@@ -205,7 +211,7 @@ public class CameraManager : MonoBehaviour
 
         }
 
-        switching = false;
+        cinemachineCoroutine = null;
     }
 
     // Used to filter the new camera settings, update settings if they are different from current
