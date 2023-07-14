@@ -174,16 +174,11 @@ public class CameraManager : MonoBehaviour
         {
             Debug.Log(cameraData.zoomAmount);
 
-            //if (cinemachineCoroutine != null)
-            //{
-            //    StopCoroutine(cinemachineCoroutine);
-            //    StartCoroutine(cinemachineCoroutine);
-            //}
-            //else
-            //{
-            //    cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
-            //    StartCoroutine(cinemachineCoroutine);
-            //}
+            if (cinemachineCoroutine != null)
+            {
+                StopCoroutine(cinemachineCoroutine);
+                cinemachineCoroutine = null;
+            }
 
             cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
             StartCoroutine(cinemachineCoroutine);
