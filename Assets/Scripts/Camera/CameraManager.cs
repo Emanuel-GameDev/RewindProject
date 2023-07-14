@@ -172,8 +172,6 @@ public class CameraManager : MonoBehaviour
 
         if (cameraData.zoomAmount >= 0 && cameraData.zoomAmount != currentZoom)
         {
-            Debug.Log(cameraData.zoomAmount);
-
             if (cinemachineCoroutine != null)
             {
                 StopCoroutine(cinemachineCoroutine);
