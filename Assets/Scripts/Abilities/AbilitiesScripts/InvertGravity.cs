@@ -6,15 +6,15 @@ using UnityEngine;
 public class InvertGravity : Ability
 {
     [SerializeField] LayerMask targetMask;
-    private float elapsedTime = 0;
-    private EAbilityState state;
- 
+    [SerializeField] private float cooldown;
 
+    private bool canActivate = true;
+    private float elapsedTime = 0;
+ 
     public override void Activate1(GameObject parent)
     {
-        if (state != EAbilityState.ready)
-            return;
-        
+        if (!canActivate) return;
+
         RaycastHit2D hit;
         Vector3 rayDirection = Vector3.up; // Direzione verso l'alto
 
@@ -27,28 +27,25 @@ public class InvertGravity : Ability
 
             rBody.gravityScale = -rBody.gravityScale;
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-            state = EAbilityState.cooldown;
         }
+
+        StartCoroutine(Cooldown());
     }
+
+    private IEnumerator Cooldown()
+    {
+        canActivate = false;
+
+        yield return new WaitForSeconds(cooldown);
+
+        canActivate = true;
+    }
+
 
     public override void Start()
     {
         base.Start();
         elapsedTime = 0;
-        state = EAbilityState.ready;
-    }
-
-    private void Update()
-    {
-        if(state == EAbilityState.cooldown)
-        {
-            elapsedTime += Time.deltaTime;
-
-            if (elapsedTime > cooldownTime) 
-            {
-                state = EAbilityState.ready;
-            }
-        }
     }
 
 }

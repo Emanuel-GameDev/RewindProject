@@ -1,12 +1,23 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class TimelineZoneChanger : MonoBehaviour
 {
     [SerializeField] eZone zone;
+
+    private Volume volume;
+
+    private void Start()
+    {
+        if (transform.GetChild(0) != null)
+            volume = transform.GetChild(0).GetComponent<Volume>();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<PlayerController>())
         {
+            PubSub.Instance.Notify(EMessageType.RewindZoneEntered, volume);
+
             TimelineManager.Instance.ChangeTimeline(zone);
             TimelineManager.Instance.SetCanUseRewind(true);
         }

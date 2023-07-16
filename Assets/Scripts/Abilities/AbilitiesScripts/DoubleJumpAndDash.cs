@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class DoubleJump : Ability
-{
+public class DoubleJumpAndDash : Ability
+{   
+
+    private PlayerController character;
+
     public override void Activate1(GameObject parent)
     {
         base.Activate1(parent);
@@ -11,11 +16,12 @@ public class DoubleJump : Ability
 
     public override void Pick(Character picker)
     {
-        PlayerController controller = picker.GetComponent<PlayerController>();
+        character = picker.GetComponent<PlayerController>();
 
-        if (controller == null) return;
+        if (character == null) return;
 
-        controller.canDoubleJump = true;
+        character.canDoubleJump = true;
+      
         gameObject.SetActive(false);
     }
 
@@ -23,4 +29,6 @@ public class DoubleJump : Ability
     {
         base.Start();
     }
+
+
 }
