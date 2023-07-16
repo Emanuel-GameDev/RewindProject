@@ -286,8 +286,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.15
-      minScalar: 0.16
+      scalar: 0.4
+      minScalar: 0.4
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1307,21 +1307,21 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 0}
-        key1: {r: 0.9150943, g: 0.7600348, b: 0.47912958, a: 1}
-        key2: {r: 0.9811321, g: 0.7918749, b: 0.61552155, a: 1}
-        key3: {r: 1, g: 0.83123535, b: 0.514151, a: 0}
-        key4: {r: 0.9811321, g: 0.67209184, b: 0.38412246, a: 0}
-        key5: {r: 1, g: 0.78331965, b: 0.3254717, a: 0}
-        key6: {r: 1, g: 0.9607843, b: 0, a: 0}
-        key7: {r: 1, g: 1, b: 1, a: 0}
+        key1: {r: 1, g: 0.9606022, b: 0, a: 1}
+        key2: {r: 1, g: 0.48073393, b: 0, a: 1}
+        key3: {r: 1, g: 0.10057102, b: 0, a: 0}
+        key4: {r: 1, g: 0.48235294, b: 0, a: 0}
+        key5: {r: 1, g: 0.9607843, b: 0, a: 0}
+        key6: {r: 1, g: 1, b: 1, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
         ctime1: 10023
         ctime2: 20046
         ctime3: 32768
         ctime4: 45875
-        ctime5: 54934
-        ctime6: 56090
-        ctime7: 65535
+        ctime5: 56090
+        ctime6: 65535
+        ctime7: 0
         atime0: 0
         atime1: 8288
         atime2: 56669
@@ -1331,7 +1331,7 @@ ParticleSystem:
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_NumColorKeys: 8
+        m_NumColorKeys: 7
         m_NumAlphaKeys: 4
       minGradient:
         serializedVersion: 2
@@ -4780,8 +4780,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1953429257
-  m_SortingLayer: 3
+  m_SortingLayerID: -593885877
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_RenderMode: 0
   m_MeshDistribution: 0
@@ -4826,5 +4826,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 7138647377196052547, guid: 4bba16a2235bced4daef2b6d7770d86e, type: 3}
-  objNumDivider: 1
-  fadeTime: 1
+  objNumDivider: 5
+  fadeTime: 5

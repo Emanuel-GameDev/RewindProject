@@ -10,7 +10,6 @@ public abstract class Ability : ScriptableObject
     public new string name;
     public string description;  
     public Sprite icon;
-    public float cooldownTime;
 
     public virtual void Activate1(GameObject parent) { }
     public virtual void Activate2(GameObject parent) { }
