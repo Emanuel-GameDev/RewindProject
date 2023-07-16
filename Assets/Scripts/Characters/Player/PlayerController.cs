@@ -63,10 +63,10 @@ public class PlayerController : Character
      public bool isRunning = true;
 
     internal Rigidbody2D rBody;
-    SpriteRenderer bodySprite;
+    [HideInInspector] public SpriteRenderer bodySprite;
 
     public float horizontalMovement = 0;
-    float groundAngle = 0;
+    [HideInInspector] public float groundAngle = 0;
 
     Vector2 jumpStartPoint;
 
@@ -373,13 +373,13 @@ public class PlayerController : Character
         int h;
 
         if (IsGravityDownward())
-            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 1.5f);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 1.5f, groundMask);
         else
-            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.up, hits, 1.5f);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.up, hits, 1.5f,groundMask);
 
-        if (h > 1)
+        if (h >= 1)
         {
-            groundAngle = Mathf.Atan2(hits[1].normal.x, hits[1].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
+            groundAngle = Mathf.Atan2(hits[0].normal.x, hits[0].normal.y) * Mathf.Rad2Deg; //calcola l'inclinazione del terreno
 
             if (!IsGravityDownward())
             {
@@ -390,11 +390,11 @@ public class PlayerController : Character
             }
 
             transform.rotation = Quaternion.Euler(0, 0, -groundAngle / rotationRatioOnSlopes);
-
         }
 
         CheckFriction();
     }
+
 
     public void CheckFriction()
     {//modifica la frizione in base a l'inclinazione del terreno
