@@ -44,7 +44,6 @@ public class InvertGravity : Ability
     public override void Start()
     {
         base.Start();
-        elapsedTime = 0;
     }
 
 }
