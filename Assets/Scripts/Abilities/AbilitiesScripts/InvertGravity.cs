@@ -9,7 +9,6 @@ public class InvertGravity : Ability
     [SerializeField] private float cooldown;
 
     private bool canActivate = true;
-    private float elapsedTime = 0;
  
     public override void Activate1(GameObject parent)
     {
