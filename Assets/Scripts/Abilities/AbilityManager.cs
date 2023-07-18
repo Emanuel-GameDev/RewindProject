@@ -9,19 +9,22 @@ public class AbilityManager : MonoBehaviour
 {
     private List<Ability> _abilities = new List<Ability>();
     private GameObject abilityBin;
-    
+
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
     [SerializeField] private AbilityWheel _wheel;
+
+    private void OnValidate()
+    {
+        if (!Application.isPlaying && abilityBin == null)
+        {
+            abilityBin = new GameObject("AbilityBin");
+        }
+    }
 
     private void Awake()
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
-    }
-
-    private void Start()
-    {
-        abilityBin = GameObject.Find("AbilityBin");
     }
 
     private void AddToAbilities(object obj)
