@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class Ability : MonoBehaviour
+[Serializable]
+public abstract class Ability : ScriptableObject
 {
     public new string name;
     public string description;  
@@ -20,24 +21,10 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void Start() { }
 
-    public virtual void CopyValuesTo(Ability newAbility)
-    {
-        if (newAbility.GetType() != GetType())
-        {
-            Debug.LogError("Error: types of abilityPicked and abilityCopy doesn't match");
-            return;
-        }
-
-        newAbility.name = name;
-        newAbility.description = description;
-        newAbility.icon = icon;
-    }
 
     public virtual void Pick(Character picker)
     {
-        Ability ab = GetComponent<Ability>();
-
-        PubSub.Instance.Notify(EMessageType.AbilityPicked, ab);
-        gameObject.SetActive(false);
+        PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
     }
+
 }
