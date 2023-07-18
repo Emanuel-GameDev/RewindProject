@@ -20,11 +20,24 @@ public abstract class Ability : MonoBehaviour
 
     public virtual void Start() { }
 
+    public virtual void CopyValuesTo(Ability newAbility)
+    {
+        if (newAbility.GetType() != GetType())
+        {
+            Debug.LogError("Error: types of abilityPicked and abilityCopy doesn't match");
+            return;
+        }
+
+        newAbility.name = name;
+        newAbility.description = description;
+        newAbility.icon = icon;
+    }
 
     public virtual void Pick(Character picker)
     {
-        PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
+        Ability ab = GetComponent<Ability>();
+
+        PubSub.Instance.Notify(EMessageType.AbilityPicked, ab);
         gameObject.SetActive(false);
     }
-
 }
