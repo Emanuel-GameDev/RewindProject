@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class InvertGravity : Ability
 {
+    [Tooltip("The layer that makes the ray stop and triggers the ability")]
     [SerializeField] LayerMask targetMask;
     [SerializeField] private float cooldown;
 
@@ -29,6 +30,17 @@ public class InvertGravity : Ability
         }
 
         StartCoroutine(Cooldown());
+    }
+
+    public override void CopyValuesTo(Ability newAbility)
+    {
+        base.CopyValuesTo(newAbility);
+
+        InvertGravity newInvertGravity = newAbility as InvertGravity;
+
+        newInvertGravity.targetMask = targetMask;
+        newInvertGravity.cooldown = cooldown;
+
     }
 
     private IEnumerator Cooldown()
