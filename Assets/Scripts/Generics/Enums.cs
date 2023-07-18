@@ -10,8 +10,14 @@ public enum EMessageType
     AbilityPicked,
     AbilityAnimStart,
     TimeRewindStart,
-    TimeRewindStop,
-    RewindZoneEntered
+    TimeRewindStop
+}
+
+public enum EAbilityState
+{
+    ready,
+    active,
+    cooldown
 }
 
 

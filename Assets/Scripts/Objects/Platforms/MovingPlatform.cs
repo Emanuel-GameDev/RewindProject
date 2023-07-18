@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    #region Variables
-
-    [Tooltip("This reference is optional, add it if platform needs to follow a path")]
     [SerializeField] Transform waypointPath;
-
     [SerializeField] private float speed;
 
     private List<Transform> waypoints = new List<Transform>();
@@ -20,8 +16,6 @@ public class MovingPlatform : MonoBehaviour
 
     private float timeToWaypoint;
     private float elapsedTime;
-
-    #endregion
 
     private void Start()
     {
