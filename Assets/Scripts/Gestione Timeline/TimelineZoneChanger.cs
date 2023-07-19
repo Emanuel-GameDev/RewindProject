@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class TimelineZoneChanger : MonoBehaviour
 {
@@ -15,6 +16,11 @@ public class TimelineZoneChanger : MonoBehaviour
     {
         if (transform.childCount > 0 && transform.GetChild(0) != null)
             volume = transform.GetChild(0).GetComponent<Volume>();
+
+        if (startAtEnd)
+        {
+            TimelineManager.Instance.SetAtEnd(zone);
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -57,13 +63,4 @@ public class TimelineZoneChanger : MonoBehaviour
     {
         gameObject.name = "Zone #" + zone;
     }
-
-    private void Start()
-    {
-        if (startAtEnd)
-        {
-            TimelineManager.Instance.SetAtEnd(zone);
-        }
-    }
-
 }
