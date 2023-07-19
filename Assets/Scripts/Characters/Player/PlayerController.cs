@@ -74,6 +74,9 @@ public class PlayerController : Character
     /*[HideInInspector] */public bool canDoubleJump;
     bool doubleJump = false;
 
+    // Aggiunto da Manu
+    [SerializeField] private LayerMask[] ignoreCollision;
+
     #region UnityFunctions
 
     private void OnEnable()
@@ -140,6 +143,25 @@ public class PlayerController : Character
         }
         else
             fastRespawnTimer = 0;
+
+    }
+
+    // Aggiunto da Manu
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        foreach (LayerMask mask in ignoreCollision)
+        {
+            // Mathf.RoundToInt per arrotondare i numeri float
+            // Mathf.Log(x, 2f) logaritmo base 2 
+            if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+            {
+                Rigidbody2D rigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
+                if (rigidbody2D != null)
+                {
+                    rigidbody2D.bodyType = RigidbodyType2D.Static;
+                }
+            }
+        }
 
     }
 
