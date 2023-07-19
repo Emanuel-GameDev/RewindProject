@@ -9,7 +9,7 @@ public class TimelineZoneChanger : MonoBehaviour
 
     private void Start()
     {
-        if (transform.GetChild(0) != null)
+        if (transform.childCount > 0 && transform.GetChild(0) != null)
             volume = transform.GetChild(0).GetComponent<Volume>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
