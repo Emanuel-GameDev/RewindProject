@@ -18,9 +18,8 @@ public class TimelineManager : MonoBehaviour
     [Tooltip("Usato per collegare le timeline con le Zone corrispondenti")]
     [SerializeField] List<TimeZone> timeZones;
 
-
     private float timelineDuration;
-    private eZone actualZone;
+    public eZone actualZone { get; private set; }
     private bool isPlaying = false;
     private bool isLocked = false;
     private bool _rewindIsActive = false;
@@ -269,6 +268,15 @@ public class TimelineManager : MonoBehaviour
     public void SetCanUseRewind(bool v)
     {
         canUseRewind = v;
+    }
+
+    public void SetAtEnd(eZone zone)
+    {
+        eZone actualZone = this.actualZone;
+        ChangeTimeline(zone);
+        SetTime(timelineDuration);
+        timelineDirector.Evaluate();
+        ChangeTimeline(actualZone);
     }
 
     #endregion

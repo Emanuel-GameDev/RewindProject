@@ -3,20 +3,26 @@ using System.Collections.Generic;
 using System.Timers;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Ability/InvertGravity")]
 public class InvertGravity : Ability
 {
-    [Tooltip("The layer that makes the ray stop and triggers the ability")]
     [SerializeField] LayerMask targetMask;
-    [SerializeField] private float cooldown;
+    //private float elapsedTime = 0;
+    //private EAbilityState state = EAbilityState.ready;
+    bool readyToUse = true;
 
-    private bool canActivate = true;
- 
     public override void Activate1(GameObject parent)
     {
-        if (!canActivate) return;
-
+        if (!readyToUse)
+            return;
+        
         RaycastHit2D hit;
-        Vector3 rayDirection = Vector3.up; // Direzione verso l'alto
+        Vector3 rayDirection;
+
+        if (PlayerController.instance.IsGravityDownward())
+            rayDirection = Vector3.up; // Direzione verso l'alto
+        else
+            rayDirection = Vector3.down; // Direzione verso il basso
 
         hit = Physics2D.Raycast(parent.transform.position, rayDirection, Mathf.Infinity, targetMask);
 
@@ -27,35 +33,35 @@ public class InvertGravity : Ability
 
             rBody.gravityScale = -rBody.gravityScale;
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
+            readyToUse = false;
+            LevelManager.instance.StartCoroutine(Cooldown());
         }
 
-        StartCoroutine(Cooldown());
+
     }
 
-    public override void CopyValuesTo(Ability newAbility)
+    private void OnEnable()
     {
-        base.CopyValuesTo(newAbility);
-
-        InvertGravity newInvertGravity = newAbility as InvertGravity;
-
-        newInvertGravity.targetMask = targetMask;
-        newInvertGravity.cooldown = cooldown;
-
+        readyToUse = true;
     }
 
-    private IEnumerator Cooldown()
+    IEnumerator Cooldown()
     {
-        canActivate = false;
-
-        yield return new WaitForSeconds(cooldown);
-
-        canActivate = true;
+        yield return new WaitForSeconds(cooldownTime);
+        readyToUse = true;
     }
 
+    //private void Update()
+    //{
+    //    if(state == EAbilityState.cooldown)
+    //    {
+    //        elapsedTime += Time.deltaTime;
 
-    public override void Start()
-    {
-        base.Start();
-    }
+    //        if (elapsedTime > cooldownTime) 
+    //        {
+    //            state = EAbilityState.ready;
+    //        }
+    //    }
+    //}
 
 }

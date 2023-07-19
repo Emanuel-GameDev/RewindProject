@@ -1,9 +1,13 @@
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class TimelineZoneChanger : MonoBehaviour
 {
+    [Tooltip("Imposta la zona di riferimento")]
     [SerializeField] eZone zone;
+    [Tooltip("Se spuntato riproduce la Timeline nel momento in cui il player entra nella zona solo la prima volta")]
+    [SerializeField] bool playOnEnter;
+    [Tooltip("Se spuntato la Timeline viene impostata per partire gi� alla fine")]
+    [SerializeField] bool startAtEnd;
 
     private Volume volume;
 
@@ -16,10 +20,19 @@ public class TimelineZoneChanger : MonoBehaviour
     {
         if (collision.GetComponent<PlayerController>())
         {
-            PubSub.Instance.Notify(EMessageType.RewindZoneEntered, volume);
-
             TimelineManager.Instance.ChangeTimeline(zone);
+
+            if (playOnEnter)
+            {
+                TimelineManager.Instance.PlayCurrentTimeline();
+                playOnEnter = false;
+            }
+
             TimelineManager.Instance.SetCanUseRewind(true);
+        }
+        else if (collision.GetComponent<EnemyThree>()) 
+        {
+            collision.GetComponent<EnemyThree>().SetMoovingZone(zone);
         }
     }
 
@@ -28,6 +41,10 @@ public class TimelineZoneChanger : MonoBehaviour
         if (collision.GetComponent<PlayerController>())
         {
             TimelineManager.Instance.SetCanUseRewind(false);
+        }
+        else if (collision.GetComponent<EnemyThree>())
+        {
+            collision.GetComponent<EnemyThree>().Despawn(zone);
         }
     }
 
@@ -39,6 +56,14 @@ public class TimelineZoneChanger : MonoBehaviour
     private void OnDrawGizmos()
     {
         gameObject.name = "Zone #" + zone;
+    }
+
+    private void Start()
+    {
+        if (startAtEnd)
+        {
+            TimelineManager.Instance.SetAtEnd(zone);
+        }
     }
 
 }

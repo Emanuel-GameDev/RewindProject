@@ -44,13 +44,17 @@ public class AbilityWheel : MonoBehaviour
     #endregion
 
     #region General
-
-    private void Start()
+    private void Awake()
     {
+        images = new List<RectTransform>();
         SetUpLists();
     }
 
-    private void SetUpLists()
+    private void Start()
+    {
+    }
+
+    public void SetUpLists()
     {
         for (int i = 0; i < rotPoint.childCount; i++)
         {
@@ -61,7 +65,6 @@ public class AbilityWheel : MonoBehaviour
     public void AddToWheel(Ability ability)
     {
         if (ability == null) return;
-
         SetupCard(ability);
         numCards++;
 

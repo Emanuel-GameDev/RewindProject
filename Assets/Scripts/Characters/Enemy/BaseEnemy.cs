@@ -26,7 +26,7 @@ public class BaseEnemy : Character
     private const string DEAD = "Dead";
     private const string HITTED = "Hitted";
 
-    private bool isDead = false;
+    protected bool isDead = false;
 
     protected virtual void Awake()
     {
