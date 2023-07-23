@@ -47,19 +47,7 @@ public class AbilityManager : MonoBehaviour
     {
         // Filter
         if (obj is not Ability) return;
-        Ability abilityToCopy = (Ability)obj;
-
-        // Creation of copy GO, otherwise ability won't be activated
-        GameObject abilityGO = new GameObject();
-        abilityGO.AddComponent(abilityToCopy.GetType());
-
-        // Parenting the new GO to keep organized
-        abilityGO.transform.parent = abilityBin.transform;
-
-        // Copying variables between scripts
-        Ability newAbility = abilityGO.GetComponent<Ability>();
-        abilityToCopy.CopyValuesTo(newAbility);
-        abilityGO.name = newAbility.name;
+        Ability newAbility = obj as Ability;
 
         // Add to unlocked abilities
         _abilities.Add(newAbility);

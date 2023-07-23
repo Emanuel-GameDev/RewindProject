@@ -8,6 +8,7 @@ public class ProjectileAbility : Ability
 {
     [SerializeField] GameObject prefabProjectile;
     bool readyToUse = true;
+    private float cooldown;
 
     public override void Activate1(GameObject parent)
     {
@@ -25,7 +26,7 @@ public class ProjectileAbility : Ability
 
     IEnumerator Cooldown()
     {
-        yield return new WaitForSeconds(cooldownTime);
+        yield return new WaitForSeconds(cooldown);
         readyToUse = true;
     }
 }

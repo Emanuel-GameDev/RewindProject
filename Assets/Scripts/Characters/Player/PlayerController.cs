@@ -156,13 +156,30 @@ public class PlayerController : Character
             if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
             {
                 Rigidbody2D rigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
-                if (rigidbody2D != null)
+                if (rigidbody2D != null && rigidbody2D.velocity == new Vector2(0f, 0f))
                 {
                     rigidbody2D.bodyType = RigidbodyType2D.Static;
                 }
             }
         }
+    }
 
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        foreach (LayerMask mask in ignoreCollision)
+        {
+            // Mathf.RoundToInt per arrotondare i numeri float
+            // Mathf.Log(x, 2f) logaritmo base 2 
+            if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+            {
+                Rigidbody2D rigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
+                if (rigidbody2D != null)
+                {
+                    rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
+                }
+            }
+        }
     }
 
     public void OnDrawGizmos()

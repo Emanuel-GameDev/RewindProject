@@ -40,6 +40,7 @@ public class CameraManager : MonoBehaviour
     void Start()
     {
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, UpdateRewindPostProcess);
+        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, UpdateRewindPostProcess);
 
         PubSub.Instance.RegisterFunction(EMessageType.CameraSwitch, UpdateCamera);
         mainCam.gameObject.SetActive(true);
