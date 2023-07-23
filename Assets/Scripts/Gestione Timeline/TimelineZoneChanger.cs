@@ -14,6 +14,7 @@ public class TimelineZoneChanger : MonoBehaviour
 
     private void Start()
     {
+        // Aggiunto da Manu
         if (transform.childCount > 0 && transform.GetChild(0) != null)
             volume = transform.GetChild(0).GetComponent<Volume>();
 
@@ -26,6 +27,9 @@ public class TimelineZoneChanger : MonoBehaviour
     {
         if (collision.GetComponent<PlayerController>())
         {
+            // Aggiunto da Manu
+            PubSub.Instance.Notify(EMessageType.RewindZoneEntered, volume);
+
             TimelineManager.Instance.ChangeTimeline(zone);
 
             if (playOnEnter)

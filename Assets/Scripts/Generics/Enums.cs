@@ -10,7 +10,8 @@ public enum EMessageType
     AbilityPicked,
     AbilityAnimStart,
     TimeRewindStart,
-    TimeRewindStop
+    TimeRewindStop,
+    RewindZoneEntered
 }
 
 public enum EAbilityState
