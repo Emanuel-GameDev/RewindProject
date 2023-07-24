@@ -9,6 +9,8 @@ public class TimelineZoneChanger : MonoBehaviour
     [SerializeField] bool playOnEnter;
     [Tooltip("Se spuntato la Timeline viene impostata per partire gi� alla fine")]
     [SerializeField] bool startAtEnd;
+    [Tooltip("Se spuntato la Timeline viene impostata per essere riprodotta se è all'inizio e viene bloccata dal giocatore")]
+    [SerializeField] bool dontLockAtStart;
 
     private Volume volume;
 
@@ -30,7 +32,7 @@ public class TimelineZoneChanger : MonoBehaviour
             // Aggiunto da Manu
             PubSub.Instance.Notify(EMessageType.RewindZoneEntered, volume);
 
-            TimelineManager.Instance.ChangeTimeline(zone);
+            TimelineManager.Instance.ChangeTimeline(zone, dontLockAtStart);
 
             if (playOnEnter)
             {
