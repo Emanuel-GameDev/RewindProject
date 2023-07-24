@@ -156,7 +156,7 @@ public class PlayerController : Character
             if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
             {
                 Rigidbody2D rigidbody2D = collision.gameObject.GetComponent<Rigidbody2D>();
-                if (rigidbody2D != null && rigidbody2D.velocity == new Vector2(0f, 0f))
+                if (rigidbody2D != null)
                 {
                     rigidbody2D.bodyType = RigidbodyType2D.Static;
                 }
