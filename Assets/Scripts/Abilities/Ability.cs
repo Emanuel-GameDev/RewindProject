@@ -25,5 +25,6 @@ public abstract class Ability : ScriptableObject
     {
         PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
     }
+    
 
 }

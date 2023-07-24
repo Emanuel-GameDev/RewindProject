@@ -28,11 +28,11 @@ public class Projectile : MonoBehaviour
         elapsedTime += Time.deltaTime;
     }
 
-    public void Dismiss()
+    public virtual void Dismiss()
     {
         ProjectilePool.Instance.DismissProjectile(this);
     }
-    private void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
         Dismiss();
     }
