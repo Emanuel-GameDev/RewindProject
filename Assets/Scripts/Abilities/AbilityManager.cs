@@ -16,8 +16,13 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
     [SerializeField] private AbilityWheel _wheel;
 
+    private GameObject abilityBin;
+
     private void Awake()
     {
+        abilityBin = new GameObject("AbilityBin");
+        DontDestroyOnLoad(abilityBin);
+
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
         
@@ -40,14 +45,17 @@ public class AbilityManager : MonoBehaviour
 
     private void AddToAbilities(object obj)
     {
+        // Filter
         if (obj is not Ability) return;
-        Ability newAbility = (Ability)obj;
+        Ability newAbility = obj as Ability;
 
+        // Add to unlocked abilities
         _abilities.Add(newAbility);
 
+        // Add to wheel
         _wheel.AddToWheel(newAbility);
 
-        if(!abilityNameToSave.Contains(newAbility.name))
+        if (!abilityNameToSave.Contains(newAbility.name))
             abilityNameToSave.Add(newAbility.name);
 
         DataSerializer.Save<List<string>>("ABILITIES", abilityNameToSave);
