@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using ToolBox.Serialization;
 using UnityEngine;
@@ -56,11 +57,17 @@ public class PlayerController : Character
     [HideInInspector] public Queue previousHorizontalInputs = new Queue();
     [HideInInspector] public Animator animator;
 
-     public bool grounded = false;
-     public bool isJumping = false;
-     public bool isFalling = false;
-     public bool isMoving = false;
-     public bool isRunning = true;
+    private bool isDashing = false;
+    public float dashPower = 50;
+    public float dashTime = 0.1f;
+
+    public bool grounded = false;
+    public bool isJumping = false;
+    public bool isFalling = false;
+    public bool isMoving = false;
+    public bool isRunning = true;
+
+    TrailRenderer trail;
 
     internal Rigidbody2D rBody;
     [HideInInspector] public SpriteRenderer bodySprite;
@@ -71,7 +78,8 @@ public class PlayerController : Character
     Vector2 jumpStartPoint;
 
     //da usare per l'abilità
-    /*[HideInInspector] */public bool canDoubleJump;
+    [HideInInspector] public bool canDoubleJump;
+    [HideInInspector] public bool canDash;
     bool doubleJump = false;
 
     #region UnityFunctions
@@ -90,6 +98,8 @@ public class PlayerController : Character
         inputs.Player.OpenMenu.performed += OpenMenuInput;
 
         inputs.Player.Jump.performed += JumpInput;
+
+        inputs.Player.Dash.performed += TryDash;
     }
 
 
@@ -98,9 +108,11 @@ public class PlayerController : Character
         instance = this;
         animator = GetComponent<Animator>();
         bodySprite = GetComponentInChildren<SpriteRenderer>();
-
+        trail = GetComponent<TrailRenderer>();
         animator.SetBool("Running", isRunning);
-        DataSerializer.TryLoad("CANDOUBLEJUMP", out canDoubleJump);
+
+        DataSerializer.TryLoad("TemperanceAbility", out canDoubleJump);
+        DataSerializer.TryLoad("TemperanceAbility", out canDash);
     }
 
     private void Start()
@@ -168,6 +180,8 @@ public class PlayerController : Character
         inputs.Player.Jump.performed -= JumpInput;
 
         inputs.Player.OpenMenu.performed -= OpenMenuInput;
+
+        inputs.Player.Dash.performed -= TryDash;
 
         inputs.Player.Disable();
     }
@@ -256,7 +270,7 @@ public class PlayerController : Character
         }
 
         
-
+        if(!isDashing)
         rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
     }
 
@@ -396,8 +410,46 @@ public class PlayerController : Character
     }
 
 
+    private void TryDash(InputAction.CallbackContext obj)
+    {
+        if (!canDash || isDashing || !grounded)
+            return;
+
+        Dash();
+
+    }
+
+    private void Dash()
+    {
+        isDashing = true;
+        Vector2 dashDir = new Vector2(bodySprite.transform.localScale.x, 0f);
+
+        trail.emitting = true;
+
+        rBody.sharedMaterial = noFriction;
+        rBody.velocity = dashDir.normalized * dashPower;
+
+        animator.SetBool("Dashing", true);
+
+        StartCoroutine(StopDash());
+
+    }
+
+
+    private IEnumerator StopDash()
+    {
+        yield return new WaitForSeconds(dashTime);
+        trail.emitting = false;
+        isDashing = false;
+        animator.SetBool("Dashing", false);
+        rBody.sharedMaterial = fullFriction;
+    }
+
     public void CheckFriction()
     {//modifica la frizione in base a l'inclinazione del terreno
+        if (isDashing)
+            return;
+
         if (!isMoving)
         {
             if (Mathf.Abs(groundAngle) < maxSlope)

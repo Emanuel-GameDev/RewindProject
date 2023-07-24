@@ -9,6 +9,7 @@ public class PlayerProjectile : Projectile
 
     public override void OnTriggerEnter(Collider other)
     {
+            Debug.Log("E");
         if(IsInLayerMask(other.gameObject.layer, hittable))
         {
             Dismiss();
