@@ -35,7 +35,6 @@ public class LevelManager : MonoBehaviour
 
     
 
-
     private void SaveCheckpoints(object obj)
     {
         for (int i = 0; i < checkpointsTaken.Count; i++)
