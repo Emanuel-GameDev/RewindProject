@@ -469,8 +469,19 @@ public class PlayerController : Character
 
     public bool CheckMaxFallDistanceReached()
     {
-        if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(fallStartPoint - transform.position.y))
-            return true;
+        if (IsGravityDownward())
+        {
+            if (transform.position.y >= fallStartPoint)
+                return false;
+        }
+        else
+        {
+            if (transform.position.y <= fallStartPoint)
+                return false;
+
+        }
+            if (maxFallDistanceWithoutTakingDamage < Mathf.Abs(fallStartPoint - transform.position.y))
+                return true;
        
         return false;
     }
