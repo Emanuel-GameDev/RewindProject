@@ -11,7 +11,7 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private float speed;
 
     [Tooltip("set to true if platform needs to move only when something is standing on it")]
-    public bool waitForStand = false;
+    [SerializeField] bool waitForStand = false;
     [Tooltip("Time needed for the platform to trigger the movement")]
     [SerializeField] private float triggerOffset;
     [SerializeField] private LayerMask platformTrigger;
