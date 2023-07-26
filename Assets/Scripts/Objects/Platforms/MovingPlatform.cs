@@ -6,14 +6,12 @@ using UnityEditor;
 
 public class MovingPlatform : MonoBehaviour
 {
-    [Header("GENERAL")]
     [Tooltip("Add reference to this if you want the platform to move following a path")]
     [SerializeField] Transform waypointPath;
     [SerializeField] private float speed;
 
-    [Header("WAIT FOR STAND DATA")]
     [Tooltip("set to true if platform needs to move only when something is standing on it")]
-    [SerializeField] private bool waitForStand = false;
+    public bool waitForStand = false;
     [Tooltip("Time needed for the platform to trigger the movement")]
     [SerializeField] private float triggerOffset;
     [SerializeField] private LayerMask platformTrigger;
