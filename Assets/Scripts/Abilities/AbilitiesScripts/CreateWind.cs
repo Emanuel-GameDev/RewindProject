@@ -35,8 +35,10 @@ public class CreateWind : Ability
             InitializeWindZone();
         }
 
-        if (facingRight) SetWindZoneRotation(0f, 0f);
-        else SetWindZoneRotation(180f, 180f);
+        // Otteniamo la direzione in base a facingRight
+        Vector3 windZoneDirection = facingRight ? Vector3.right : Vector3.left;
+        // Ruotiamo la Wind Zone per farla puntare nella direzione corretta
+        windZoneObj.transform.right = windZoneDirection;
 
         windZoneObj.SetActive(true);
 
@@ -106,14 +108,6 @@ public class CreateWind : Ability
 
         inputs.Player.Walk.performed += CheckHorizontalFacing;
         inputs.Player.Run.performed += CheckHorizontalFacing;
-    }
-
-    private void SetWindZoneRotation(float angleX, float angleZ)
-    {
-        if (windZoneObj == null) return;
-
-        Vector3 currentRotation = windZoneObj.transform.localEulerAngles;
-        windZoneObj.transform.localEulerAngles = new Vector3(currentRotation.x, currentRotation.y, angleZ);
     }
 
     private void OnDisable()
