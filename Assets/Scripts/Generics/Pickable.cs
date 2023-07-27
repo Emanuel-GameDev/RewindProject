@@ -1,8 +1,7 @@
-using System;
+using System.Collections.Generic;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
 
 public class Pickable : MonoBehaviour
 {
@@ -17,7 +16,7 @@ public class Pickable : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-         if (ability != null)
+        if (ability != null)
         {
             if (DataSerializer.TryLoad(ability.name, out pickedUp))
             {
@@ -29,7 +28,7 @@ public class Pickable : MonoBehaviour
         }
         else
         {
-            animator.SetTrigger("diary");
+            //animator.SetTrigger("diary");
         }
     }
 
@@ -49,8 +48,8 @@ public class Pickable : MonoBehaviour
             else
             {
             }
-                OnPickup.Invoke();
-                gameObject.SetActive(false);
+            OnPickup.Invoke();
+            gameObject.SetActive(false);
         }
     }
 }
