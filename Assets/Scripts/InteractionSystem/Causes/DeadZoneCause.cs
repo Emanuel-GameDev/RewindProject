@@ -32,6 +32,18 @@ public class DeadZoneCause : Cause
         objToRespawn.transform.position = _respawnPos;
     }
 
+    public void ResetVelocity()
+    {
+
+        if (objToRespawn.GetComponent<Rigidbody2D>() != null)
+        {
+            if (objToRespawn.GetComponent<Rigidbody2D>().velocity != Vector2.zero)
+            {
+                objToRespawn.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            }
+        }
+    }
+
     private void OnValidate()
     {
         if (!GetComponent<PolygonCollider2D>().isTrigger)
