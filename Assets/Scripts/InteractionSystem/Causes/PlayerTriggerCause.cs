@@ -34,7 +34,7 @@ public class PlayerTriggerCause : Cause
         inputs.Player.Interaction.performed += Interaction;
     }
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
         if (!GetComponent<CircleCollider2D>().isTrigger)
             GetComponent<CircleCollider2D>().isTrigger = true;

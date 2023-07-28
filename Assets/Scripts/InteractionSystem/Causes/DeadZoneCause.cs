@@ -6,6 +6,7 @@ using UnityEngine;
 public class DeadZoneCause : Cause
 {
     [SerializeField] private LayerMask targetLayer;
+    [Tooltip("You can even add a movable GameObject to this field, the start position of it will be used")]
     [SerializeField] private Transform respawnPos;
 
     private Vector2 _respawnPos;
@@ -34,7 +35,6 @@ public class DeadZoneCause : Cause
 
     public void ResetVelocity()
     {
-
         if (objToRespawn.GetComponent<Rigidbody2D>() != null)
         {
             if (objToRespawn.GetComponent<Rigidbody2D>().velocity != Vector2.zero)
@@ -44,7 +44,7 @@ public class DeadZoneCause : Cause
         }
     }
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
         if (!GetComponent<PolygonCollider2D>().isTrigger)
             GetComponent<PolygonCollider2D>().isTrigger = true;
@@ -55,6 +55,9 @@ public class DeadZoneCause : Cause
         base.Start();
 
         _respawnPos = new Vector2(respawnPos.position.x, respawnPos.position.y);
+
+        effect.AddListener(Respawn);
+        effect.AddListener(ResetVelocity);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
