@@ -18,7 +18,8 @@ public class LevelManager : MonoBehaviour
 
     public bool deleteSavesOnEditorQuit=false; 
     public PlayerInputs inputs { get; private set; }
-    
+
+    LineRenderer lineRenderer;
 
     private void OnEnable()
     {
@@ -26,6 +27,8 @@ public class LevelManager : MonoBehaviour
         inputs = new PlayerInputs();
         inputs.Player.Enable();
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
+
+        lineRenderer = GetComponent<LineRenderer>();
 
         SceneManager.sceneLoaded += OnLevelLoaded;
         inputs.Player.Respawn.performed += OnRespawn;
