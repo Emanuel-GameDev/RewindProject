@@ -15,6 +15,7 @@ public class AbilityWheel : MonoBehaviour
 
     private Image selectionImage;
     private List<RectTransform> images = new List<RectTransform>();
+    private List<Ability> availableAbilities = new List<Ability>();
     private int cardId = 0;
     private int numCards = 0;
 
@@ -50,10 +51,6 @@ public class AbilityWheel : MonoBehaviour
         SetUpLists();
     }
 
-    private void Start()
-    {
-    }
-
     public void SetUpLists()
     {
         for (int i = 0; i < rotPoint.childCount; i++)
@@ -65,6 +62,9 @@ public class AbilityWheel : MonoBehaviour
     public void AddToWheel(Ability ability)
     {
         if (ability == null) return;
+
+        availableAbilities.Add(ability);
+
         SetupCard(ability);
         numCards++;
 
@@ -80,32 +80,59 @@ public class AbilityWheel : MonoBehaviour
                 images[3].GetComponent<Image>().sprite = ability.icon;
                 images[3].gameObject.SetActive(true);
 
-                images[1].GetComponent<Image>().sprite = ability.icon;
-                images[1].gameObject.SetActive(true);
                 images[5].GetComponent<Image>().sprite = ability.icon;
                 images[5].gameObject.SetActive(true);
+                images[1].GetComponent<Image>().sprite = ability.icon;
+                images[1].gameObject.SetActive(true);
 
                 break;
 
             // caso in cui ho preso la seconda carta
             case 1:
-                images[4].GetComponent<Image>().sprite = ability.icon;
+                images[4].GetComponent<Image>().sprite = availableAbilities[0].icon;
                 images[4].gameObject.SetActive(true);
 
                 images[2].GetComponent<Image>().sprite = ability.icon;
                 images[2].gameObject.SetActive(true);
 
+                images[5].GetComponent<Image>().sprite = ability.icon;
+                images[5].gameObject.SetActive(true);
+
                 images[0].GetComponent<Image>().sprite = ability.icon;
                 images[0].gameObject.SetActive(true);
 
-                images[6].GetComponent<Image>().sprite = ability.icon;
+                images[6].GetComponent<Image>().sprite = availableAbilities[0].icon;
                 images[6].gameObject.SetActive(true);
 
                 break;
 
+            // Caso in cui prendo la terza carta
             case 2:
-                images[0].GetComponent<Image>().sprite = ability.icon;
+
+                images[0].GetComponent<Image>().sprite = availableAbilities[0].icon;
+                images[1].GetComponent<Image>().sprite = ability.icon;
+                images[2].GetComponent<Image>().sprite = availableAbilities[1].icon;
+                images[3].GetComponent<Image>().sprite = availableAbilities[0].icon;
                 images[4].GetComponent<Image>().sprite = ability.icon;
+                images[5].GetComponent<Image>().sprite = availableAbilities[1].icon;
+                images[6].GetComponent<Image>().sprite = ability.icon;
+
+                images[7].GetComponent<Image>().sprite = availableAbilities[1].icon;
+                images[7].gameObject.SetActive(true);
+
+                break;
+
+                // Caso in cui prendo la quarta carta
+            case 3:
+
+                images[0].GetComponent<Image>().sprite = availableAbilities[2].icon;
+                images[1].GetComponent<Image>().sprite = ability.icon;
+                images[2].GetComponent<Image>().sprite = availableAbilities[1].icon;
+                images[3].GetComponent<Image>().sprite = availableAbilities[0].icon;
+                images[4].GetComponent<Image>().sprite = availableAbilities[2].icon;
+                images[5].GetComponent<Image>().sprite = ability.icon;
+                images[6].GetComponent<Image>().sprite = availableAbilities[1].icon;
+                images[7].GetComponent<Image>().sprite = availableAbilities[0].icon;
 
                 break;
         }
@@ -148,10 +175,10 @@ public class AbilityWheel : MonoBehaviour
     {
         isRotating = true;
 
-        // Loop finché l'angolo tra le due rotazioni non è vicino a 0
+        // Loop while the angle between two rotations is close to 0
         while (Quaternion.Angle(rotPoint.localRotation, newRotation) > 0.01f)
         {
-            // Applico rotazione z
+            // Apply rotation on Z xis
             rotPoint.localRotation = Quaternion.Lerp(rotPoint.localRotation, newRotation, rotationSpeed * Time.deltaTime);
 
             yield return null;
@@ -160,10 +187,13 @@ public class AbilityWheel : MonoBehaviour
         isRotating = false;
         rotPoint.localRotation = newRotation;
 
-        // Controllo in base al tipo di rotazione se aumentare o diminuire l'indice della carta
+        // Check on increasing or decreasing card id based on rotation type
         cardId = clockwise ? cardId + 1 : cardId - 1;
 
-        UpdateCards(clockwise);
+        if (numCards <= 2)
+            UpdateCards(clockwise);
+        else
+            UpdateSelectedAbility();
     }
 
     private void UpdateCards(bool clockwise)
