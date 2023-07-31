@@ -195,7 +195,7 @@ public class TimelineManager : MonoBehaviour
 
     public void LockInTime()
     {
-        if ((timelineIsAtStart && dontLockAtStart) || timelineIsAtEnd)
+        if ((timelineIsAtStart && !dontLockAtStart) || timelineIsAtEnd)
         {
             RewindIsactive = false;
         }
