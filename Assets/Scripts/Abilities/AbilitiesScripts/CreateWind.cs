@@ -23,6 +23,7 @@ public class CreateWind : Ability
     private PlayerInputs inputs;
     private bool facingRight = true;
     private float lastActivationTime = 0f;
+    private GameObject currentHolder;
 
     public override void Activate1(GameObject parent)
     {
@@ -35,10 +36,12 @@ public class CreateWind : Ability
             InitializeWindZone();
         }
 
-        // Otteniamo la direzione in base a facingRight
-        Vector3 windZoneDirection = facingRight ? Vector3.right : Vector3.left;
-        // Ruotiamo la Wind Zone per farla puntare nella direzione corretta
-        windZoneObj.transform.right = windZoneDirection;
+        if (facingRight) SetWindZoneRotation(0f);
+        else SetWindZoneRotation(180f);
+
+        if (currentHolder == parent)
+            //currentHolder.GetComponent<PlayerController>().enabled = false;
+            currentHolder.GetComponent<PlayerController>().inputs.Disable();
 
         windZoneObj.SetActive(true);
 
@@ -59,6 +62,7 @@ public class CreateWind : Ability
         else if (!canActivate && Time.time >= lastActivationTime + activeTime && windZoneObj.activeSelf)
         {
             windZoneObj.SetActive(false);
+            currentHolder.GetComponent<PlayerController>().inputs.Enable();
         }
 
     }
@@ -67,6 +71,7 @@ public class CreateWind : Ability
     {
         base.Pick(picker);
 
+        currentHolder = picker.gameObject;
         canActivate = true;
     }
 
@@ -97,6 +102,11 @@ public class CreateWind : Ability
         {
             facingRight = true;
         }
+    }
+
+    private void SetWindZoneRotation(float angleZ)
+    {
+        windZoneObj.transform.rotation = Quaternion.Euler(windZoneObj.transform.rotation.x, windZoneObj.transform.rotation.y, angleZ);
     }
 
     private void OnEnable()

@@ -16,4 +16,6 @@ public abstract class Cause : MonoBehaviour
         onStart?.Invoke();
     }
 
+    protected virtual void OnValidate() { }
+
 }

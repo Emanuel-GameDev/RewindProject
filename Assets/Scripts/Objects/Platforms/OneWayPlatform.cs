@@ -25,7 +25,8 @@ public class OneWayPlatform : MonoBehaviour
 
     private void OnDisable()
     {
-
+        if (inputs == null)
+            Debug.Log("osf");
         inputs.Player.Down.performed -= StartPlatformDisabling;
     }
 
@@ -34,7 +35,6 @@ public class OneWayPlatform : MonoBehaviour
         if (playerCanGoDown && !coroutineRunning && playerCollider != null && 
             !playerCollider.gameObject.GetComponent<PlayerController>().isJumping)
         {
-            Debug.Log("lkawjsf");
             StartCoroutine(DisablePlatform());
         }
     }
