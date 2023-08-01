@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class MovingPlatform : MonoBehaviour
 {
@@ -16,6 +14,7 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private float triggerOffset;
     [SerializeField] private LayerMask platformTrigger;
     [SerializeField] private bool stopAtEnd = false;
+    [SerializeField] private bool stopAtBothEnds = false;
 
     [Tooltip("Check this bool if you want the platform to go through every waypoint in both directions")]
     [SerializeField] private bool loopPath = false;
@@ -44,13 +43,18 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
+    private void OnValidate()
+    {
+        if (!waitForStand)
+            stopAtEnd = false;
+
+        if (!stopAtEnd)
+            stopAtBothEnds = false;
+    }
+
     private void FixedUpdate()
     {
-        if (waypointPath == null) return;
-
-        if (waitForStand && !canMove) return;
-
-        if (stopAtEnd && platformLeft && transform.position == waypoints[waypoints.Count - 1].position) return;
+        if (!CheckCondition()) return;
 
         elapsedTime += Time.deltaTime;
 
@@ -95,7 +99,11 @@ public class MovingPlatform : MonoBehaviour
         }
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(platformTrigger.value, 2f)))
         {
+            if (activatorCoroutine != null)
+                StopCoroutine(activatorCoroutine);
+
             platformLeft = true;
+
         }
     }
 
@@ -132,6 +140,30 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
+    private bool CheckCondition()
+    {
+        if (waypointPath == null) return false;
+
+        if (waitForStand && !canMove) return false;
+
+        if (stopAtEnd && platformLeft)
+        {
+            if (stopAtBothEnds)
+            {
+                if (transform.position == waypoints[waypoints.Count - 1].position || transform.position == waypoints[0].position)
+                    return false;
+
+            }
+            else
+            {
+                if (transform.position == waypoints[waypoints.Count - 1].position)
+                    return false;
+            }
+
+        }
+
+        return true;
+    }
 
     private int GetNextWaypointId(int currId)
     {
@@ -161,7 +193,7 @@ public class MovingPlatform : MonoBehaviour
         prevId = currId;
 
         return nextId;
-    }  
+    }
 
     private void TargetNextWaypoint()
     {
@@ -173,7 +205,7 @@ public class MovingPlatform : MonoBehaviour
         targetWaypoint = waypoints[targetWaypointId];
 
         elapsedTime = 0;
-        
+
         float distToWaypoint = Vector2.Distance(prevWaypoint.position, targetWaypoint.position);
         // Calculate time needed to get to the next waypoint
         timeToWaypoint = distToWaypoint / speed;
