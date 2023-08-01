@@ -7,6 +7,7 @@ public class MovingPlatformEditor : Editor
     private SerializedProperty waitForStand;
     private SerializedProperty triggerOffset;
     private SerializedProperty platformTrigger;
+    private SerializedProperty stopAtEnd;
 
     private bool showWaitForStandData = true;
 
@@ -15,6 +16,7 @@ public class MovingPlatformEditor : Editor
         waitForStand = serializedObject.FindProperty("waitForStand");
         triggerOffset = serializedObject.FindProperty("triggerOffset");
         platformTrigger = serializedObject.FindProperty("platformTrigger");
+        stopAtEnd = serializedObject.FindProperty("stopAtEnd");
     }
 
     public override void OnInspectorGUI()
@@ -30,6 +32,7 @@ public class MovingPlatformEditor : Editor
             {
                 EditorGUILayout.PropertyField(triggerOffset);
                 EditorGUILayout.PropertyField(platformTrigger);
+                EditorGUILayout.PropertyField(stopAtEnd);
             }
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
