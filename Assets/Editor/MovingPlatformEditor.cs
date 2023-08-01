@@ -34,7 +34,14 @@ public class MovingPlatformEditor : Editor
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
 
-        // Mostra le altre variabili sotto "GENERAL" indipendentemente dal valore di waitForStand
+        // Mostra le altre variabili
+
+        // LOOP
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("LOOP");
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("loopPath"));
+
+        // GENERAL
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("GENERAL");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waypointPath"));

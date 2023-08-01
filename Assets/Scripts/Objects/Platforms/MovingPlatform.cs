@@ -16,6 +16,9 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private float triggerOffset;
     [SerializeField] private LayerMask platformTrigger;
 
+    [Tooltip("Check this bool if you want the platform to go through every waypoint in both directions")]
+    [SerializeField] private bool loopPath = false;
+
     private List<Transform> waypoints = new List<Transform>();
 
     private int targetWaypointId;
@@ -23,6 +26,7 @@ public class MovingPlatform : MonoBehaviour
     private Transform prevWaypoint;
     private bool canMove = false;
     private IEnumerator activatorCoroutine;
+    private int prevId = -1;
 
     private float timeToWaypoint;
     private float elapsedTime;
@@ -47,13 +51,34 @@ public class MovingPlatform : MonoBehaviour
 
     private int GetNextWaypointId(int currId)
     {
-        int nextId = currId + 1;
-        
-        if (nextId == waypoints.Count)
-            nextId = 0;
+        int nextId;
 
+        if (loopPath)
+        {
+            nextId = currId + 1;
+
+            if (nextId == waypoints.Count)
+                nextId = 0;
+        }
+        else
+        {
+            int direction = currId - prevId;
+            nextId = currId + direction;
+
+            if (nextId < 0 || nextId >= waypoints.Count)
+            {
+                // Inverte la direzione quando raggiunge i bordi della lista
+                direction *= -1;
+                nextId = currId + direction;
+            }
+
+        }
+
+        prevId = currId;
+
+        Debug.Log(prevId + "  " + currId + "  " + nextId);
         return nextId;
-    } 
+    }  
 
     private void TargetNextWaypoint()
     {
@@ -69,6 +94,30 @@ public class MovingPlatform : MonoBehaviour
         float distToWaypoint = Vector2.Distance(prevWaypoint.position, targetWaypoint.position);
         // Calculate time needed to get to the next waypoint
         timeToWaypoint = distToWaypoint / speed;
+
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (waypointPath == null) return;
+
+        Gizmos.color = Color.green;
+
+        for (int i = 0; i < waypoints.Count; i++)
+        {
+            Gizmos.DrawWireSphere(waypoints[i].position, 0.5f);
+        }
+
+
+        for (int i = 0;i < waypoints.Count - 1;i++)
+        {
+            Gizmos.DrawLine(waypoints[i].position, waypoints[i+1].position);
+        }
+        if (loopPath)
+        {
+            Gizmos.DrawLine(waypoints[waypoints.Count - 1].position, waypoints[0].position);
+        }
+
 
     }
 
