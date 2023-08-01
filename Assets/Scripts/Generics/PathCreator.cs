@@ -22,7 +22,7 @@ public class PathCreator : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isDrawing)
         {

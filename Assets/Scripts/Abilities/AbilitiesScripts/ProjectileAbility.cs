@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.InteropServices;
-
 [CreateAssetMenu(menuName = "Ability/Projectile")]
 
 public class ProjectileAbility : Ability
@@ -19,7 +18,8 @@ public class ProjectileAbility : Ability
     bool readyToUse = true;
     PathCreator instantietedPathCreator;
 
-
+    [DllImport("user32.dll")]
+    static extern bool SetCursorPos(int X, int Y);
 
     public override void Activate1(GameObject parent)
     {
@@ -43,6 +43,10 @@ public class ProjectileAbility : Ability
     {
         if (!readyToUse)
             return;
+
+        Vector3 pos = Camera.main.WorldToScreenPoint(new Vector3(PlayerController.instance.projectileSpawn.position.x, PlayerController.instance.projectileSpawn.position.y));
+        float cam = Camera.main.scaledPixelHeight - pos.y;
+        SetCursorPos((int)pos.x, (int)cam);
 
         PlayerController.instance.inputs.Player.Disable();
 
@@ -88,7 +92,6 @@ public class ProjectileAbility : Ability
         readyToUse = true;
     }
 
-    
 
     IEnumerator Cooldown()
     {
