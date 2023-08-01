@@ -1691,12 +1691,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCam: {fileID: 1232407135}
-  StartZoomAmount: 6
-  transitionSpeed: 0.3
-  rewindVolume: {fileID: 0}
-  rewindDeformSpeed: 0
+  cameraTDuration: 0
+  deformTDuration: 0
   targetLDIntensity: 0
-  targetCASaturation: 0
+  targetSaturation: 0
 --- !u!1 &177692171
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,96 +2297,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201496773}
   m_CullTransparentMesh: 1
---- !u!1001 &214412591
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5714774218678363575, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_Name
-      value: Eremita
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363578, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: ability
-      value: 
-      objectReference: {fileID: 11400000, guid: 9d8babfc7e359a34d9294f486db66d9d, type: 2}
-    - target: {fileID: 5714774218678363579, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_PointLightInnerAngle
-      value: 181.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363579, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_PointLightOuterAngle
-      value: 181.23
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_RootOrder
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 28.67
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -11.14
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.30313584
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5714774218678363580, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
---- !u!1 &214412592 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5714774218678363575, guid: 077bd43bcb62afd489472136b9a74df4, type: 3}
-  m_PrefabInstance: {fileID: 214412591}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &214412593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 214412592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c2a51c497a3ab94c8d677eff98cd533, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: IX - L'Eremita
-  description: Sottometti il tempo
-  icon: {fileID: 21300000, guid: e809c9023e80af8428aa21d8feef7b16, type: 3}
-  cooldownTime: 0
 --- !u!1 &217373968
 GameObject:
   m_ObjectHideFlags: 0
@@ -2795,7 +2703,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &285604305
 GameObject:
@@ -2845,6 +2753,7 @@ MonoBehaviour:
   zone: 0
   playOnEnter: 0
   startAtEnd: 1
+  dontLockAtStart: 0
 --- !u!61 &285604308
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11591,7 +11500,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1590975394
 GameObject:
