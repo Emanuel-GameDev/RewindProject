@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using UnityEngine.InputSystem;
 
-public class AbilityWheel : MonoBehaviour
+public class PreviousAbilityWheel : MonoBehaviour
 {
     //  ====== GENERAL ======
     [SerializeField] RectTransform rotPoint;

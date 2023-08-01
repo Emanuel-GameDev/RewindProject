@@ -14,8 +14,7 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] List<string> abilityNameToSave = new List<string>();
     
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
-    [SerializeField] private AbilityWheel _wheel;
-
+    [SerializeField] private AbilityWheel wheel;
     private void Awake()
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
@@ -48,7 +47,7 @@ public class AbilityManager : MonoBehaviour
         _abilities.Add(newAbility);
 
         // Add to wheel
-        _wheel.AddToWheel(newAbility);
+        wheel.AddToWheel(newAbility);
 
         if (!abilityNameToSave.Contains(newAbility.name))
             abilityNameToSave.Add(newAbility.name);
@@ -58,9 +57,9 @@ public class AbilityManager : MonoBehaviour
 
     public void GiveAbility(object obj)
     {
-        if (obj is not Image) return;
+        if (obj is not Sprite) return;
 
-        Image abilityIcon = (Image)obj;
+        Sprite abilityIcon = (Sprite)obj;
         Ability newActiveAbility = GetAbilityFrom(abilityIcon);
 
         foreach (AbilityHolder holder in _holders)
@@ -69,8 +68,8 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private Ability GetAbilityFrom(Image abilityIcon)
+    private Ability GetAbilityFrom(Sprite abilityIcon)
     {
-        return _abilities.Where(ability => ability.icon == abilityIcon.sprite)?.First();
+        return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
     }
 }
