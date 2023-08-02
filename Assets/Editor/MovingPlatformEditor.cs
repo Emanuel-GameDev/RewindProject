@@ -52,6 +52,7 @@ public class MovingPlatformEditor : Editor
         EditorGUILayout.LabelField("GENERAL");
         EditorGUILayout.PropertyField(serializedObject.FindProperty("waypointPath"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("speed"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("affectedLayers"));
 
         serializedObject.ApplyModifiedProperties();
     }

@@ -7,6 +7,9 @@ public class MovingPlatform : MonoBehaviour
     [Tooltip("Add reference to this if you want the platform to move following a path")]
     [SerializeField] Transform waypointPath;
     [SerializeField] private float speed;
+    [Tooltip("Layers that will be affected by the platform movement\n" +
+    "(P.N. this is about parenting with the platform not about triggering movement)")]
+    [SerializeField] private LayerMask[] affectedLayers;
 
     [Tooltip("set to true if platform needs to move only when something is standing on it")]
     [SerializeField] bool waitForStand = false;
@@ -73,12 +76,14 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Character>() != null)
+        // Check collision for parenting
+        foreach (LayerMask mask in affectedLayers)
         {
-            Character character = collision.gameObject.GetComponent<Character>();
-
-            character.gameObject.transform.parent = transform;
+            if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+                collision.gameObject.transform.parent = transform;
         }
+
+        // Check collsion for triggering movement
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(platformTrigger.value, 2f)))
         {
             if (activatorCoroutine != null)
@@ -91,12 +96,14 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Character>() != null)
+        // Check collision for parenting
+        foreach (LayerMask mask in affectedLayers)
         {
-            Character character = collision.gameObject.GetComponent<Character>();
-
-            character.gameObject.transform.parent = null;
+            if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+                collision.gameObject.transform.parent = null;
         }
+
+        // Check collsion for triggering movement
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(platformTrigger.value, 2f)))
         {
             if (activatorCoroutine != null)

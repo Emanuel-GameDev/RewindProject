@@ -8175,11 +8175,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: stopAtEnd
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: waitForStand
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: waypointPath
@@ -8191,11 +8191,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: stopAtBothEnds
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: platformTrigger.m_Bits
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
+      propertyPath: affectedLayers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
+      propertyPath: affectedLayers.Array.data[0].m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
+      propertyPath: affectedLayers.Array.data[1].m_Bits
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 3628558738201513414, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: m_RootOrder
@@ -8635,6 +8647,7 @@ MonoBehaviour:
   _holders:
   - {fileID: 1201295954}
   wheel: {fileID: 394676695}
+  debug: 0
 --- !u!4 &1533999506
 Transform:
   m_ObjectHideFlags: 0
@@ -10447,6 +10460,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4073340552805990690, guid: 35e0474a844937547831e24398a10826, type: 3}
+      propertyPath: debugAbilities.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4073340552805990690, guid: 35e0474a844937547831e24398a10826, type: 3}
+      propertyPath: debugAbilities.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: f47777a6dd5c3b34181d8d764bde5719, type: 2}
+    - target: {fileID: 4073340552805990690, guid: 35e0474a844937547831e24398a10826, type: 3}
+      propertyPath: debugAbilities.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: c62b0fcc3df77e84eb4dbce39c5a509f, type: 2}
+    - target: {fileID: 4073340552805990690, guid: 35e0474a844937547831e24398a10826, type: 3}
+      propertyPath: debugAbilities.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d8babfc7e359a34d9294f486db66d9d, type: 2}
+    - target: {fileID: 4073340552805990690, guid: 35e0474a844937547831e24398a10826, type: 3}
+      propertyPath: debugAbilities.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 08a77af2f464817458709e94a8c5a9c9, type: 2}
     - target: {fileID: 4073340552805990691, guid: 35e0474a844937547831e24398a10826, type: 3}
       propertyPath: m_Pivot.x
       value: 1

@@ -19,7 +19,13 @@ public class AbilityWheel : MonoBehaviour
     private List<WheelSlot> slots = new List<WheelSlot>();
     private int centralSlotIndex;
 
-    public bool canSwitch = true;
+    [HideInInspector] public bool canSwitch = true;
+
+    // DEBUG
+
+    [Header("DEBUG")]
+    [SerializeField] private Character character;
+    [SerializeField] private List<Ability> debugAbilities = new List<Ability>();
 
     #region Inputs
     private void OnEnable()
@@ -65,6 +71,8 @@ public class AbilityWheel : MonoBehaviour
         }
 
         slots[centralSlotIndex].gameObject.transform.SetAsLastSibling();
+
+        DebugSetup();
 
     }
 
@@ -301,11 +309,28 @@ public class AbilityWheel : MonoBehaviour
     #region Others
     private bool CheckCondition()
     {
-        if (slots[centralSlotIndex].GetAttachedAbility().isActive) return false;
+        if (slots[centralSlotIndex].GetAttachedAbility() != null)
+        {
+            if (slots[centralSlotIndex].GetAttachedAbility().isActive) return false;
+        }
 
         if (!canSwitch) return false;
 
         return true;
+    }
+
+    private void DebugSetup()
+    {
+        if (debugAbilities.Count <= 0) return;
+
+        GameManager.Instance.abilityManager.debug = true;
+
+        foreach (Ability ability in debugAbilities)
+        {
+            GameManager.Instance.abilityManager.DebugAbilities.Add(ability);
+            AddToWheel(ability);
+            ability.Pick(character);
+        }
     }
 
     #endregion
