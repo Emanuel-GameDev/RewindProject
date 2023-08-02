@@ -10,7 +10,8 @@ public abstract class Ability : ScriptableObject
     public new string name;
     public string description;  
     public Sprite icon;
-    
+    public float cooldownTime;
+
     // Different from canActivate cause that bool include the cooldown, this one only checks the activation time
     public bool isActive = false;
 
