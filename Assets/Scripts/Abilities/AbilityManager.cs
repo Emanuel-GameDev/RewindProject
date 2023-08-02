@@ -17,6 +17,14 @@ public class AbilityManager : MonoBehaviour
 
     public AbilityWheel wheel;
 
+    // Debug
+    [HideInInspector] public bool debug = false;
+    [HideInInspector]
+    public List<Ability> DebugAbilities
+    {
+        get { return _abilities; }
+    }
+
     private void Awake()
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
@@ -72,6 +80,9 @@ public class AbilityManager : MonoBehaviour
 
     private Ability GetAbilityFrom(Sprite abilityIcon)
     {
+        if (debug)
+            return DebugAbilities.Where(ability => ability.icon == abilityIcon)?.First();
+
         return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
     }
 }
