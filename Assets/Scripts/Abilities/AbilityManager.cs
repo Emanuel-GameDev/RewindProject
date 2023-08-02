@@ -14,7 +14,9 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] List<string> abilityNameToSave = new List<string>();
     
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
-    [SerializeField] private AbilityWheel wheel;
+
+    public AbilityWheel wheel;
+
     private void Awake()
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
