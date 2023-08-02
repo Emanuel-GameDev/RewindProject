@@ -29,6 +29,8 @@ public class CreateWind : Ability
     {
         if (!canActivate) return;
 
+        isActive = true;
+
         if (windZoneObj == null)
         {
             windZoneObj = Instantiate(windZonePrefab, parent.transform, false);
@@ -61,6 +63,7 @@ public class CreateWind : Ability
         }
         else if (!canActivate && Time.time >= lastActivationTime + activeTime && windZoneObj.activeSelf)
         {
+            isActive = false;
             windZoneObj.SetActive(false);
             currentHolder.GetComponent<PlayerController>().inputs.Enable();
         }

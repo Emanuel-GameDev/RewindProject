@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,9 +17,9 @@ public class AbilityWheel : MonoBehaviour
     private PlayerInputs inputs;
 
     private List<WheelSlot> slots = new List<WheelSlot>();
-    private int currentPlacingIndex = 0;
     private int centralSlotIndex;
-    private bool canSwitch = true;
+
+    public bool canSwitch = true;
 
     #region Inputs
     private void OnEnable()
@@ -65,9 +66,6 @@ public class AbilityWheel : MonoBehaviour
 
         slots[centralSlotIndex].gameObject.transform.SetAsLastSibling();
 
-        // Placing currentIndex in the middle of slots
-        currentPlacingIndex = centralSlotIndex;
-
     }
 
     #endregion
@@ -76,7 +74,7 @@ public class AbilityWheel : MonoBehaviour
 
     private void ScrollInput(InputAction.CallbackContext scroll)
     {
-        float scrollValue = scroll.ReadValue<Vector2>().y;
+        if (!CheckCondition()) return;
 
         // Shifting only in between active slots
         List<WheelSlot> activeSlots = new List<WheelSlot>();
@@ -87,7 +85,8 @@ public class AbilityWheel : MonoBehaviour
                 activeSlots.Add(slot);
         }
 
-        if (!canSwitch) return;
+        // Check scroll direction
+        float scrollValue = scroll.ReadValue<Vector2>().y;
 
         if (scrollValue > 0f)
         {
@@ -180,6 +179,7 @@ public class AbilityWheel : MonoBehaviour
 
     #endregion
 
+    #region Shift & Switch
     // Shift is possible only if at least 3 abilities were collected
     private int ShiftPossible(List<WheelSlot> shiftables)
     {
@@ -233,10 +233,13 @@ public class AbilityWheel : MonoBehaviour
         slot2.AttachAbility(ability1);
     }
 
+    #endregion
 
 
     #endregion
 
+
+    #region Wheel Management
     public void AddToWheel(Ability ability)
     {
         if (ability == null) return;
@@ -292,5 +295,19 @@ public class AbilityWheel : MonoBehaviour
     {
         PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, slots[centralSlotIndex].GetAttachedAbility().icon);
     }
+
+    #endregion
+
+    #region Others
+    private bool CheckCondition()
+    {
+        if (slots[centralSlotIndex].GetAttachedAbility().isActive) return false;
+
+        if (!canSwitch) return false;
+
+        return true;
+    }
+
+    #endregion
 
 }
