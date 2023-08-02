@@ -8175,11 +8175,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: stopAtEnd
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: waitForStand
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: waypointPath
@@ -8191,11 +8191,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: stopAtBothEnds
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: platformTrigger.m_Bits
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
+      propertyPath: affectedLayers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
+      propertyPath: affectedLayers.Array.data[0].m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 1425949883, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
+      propertyPath: affectedLayers.Array.data[1].m_Bits
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 3628558738201513414, guid: f1106b9225be97849a2d4b9334fe78fa, type: 3}
       propertyPath: m_RootOrder
