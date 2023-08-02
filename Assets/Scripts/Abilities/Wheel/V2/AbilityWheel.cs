@@ -301,7 +301,10 @@ public class AbilityWheel : MonoBehaviour
     #region Others
     private bool CheckCondition()
     {
-        if (slots[centralSlotIndex].GetAttachedAbility().isActive) return false;
+        if (slots[centralSlotIndex].GetAttachedAbility() != null)
+        {
+            if (slots[centralSlotIndex].GetAttachedAbility().isActive) return false;
+        }
 
         if (!canSwitch) return false;
 
