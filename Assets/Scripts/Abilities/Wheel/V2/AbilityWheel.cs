@@ -14,14 +14,18 @@ public class AbilityWheel : MonoBehaviour
     [Tooltip("These values will be added to the image position in order to obtain the animation start point")]
     [SerializeField] private Vector2 animPosAddition = new Vector2(-15f, +20f);
 
-    [SerializeField] private List<Ability> debugAbilities = new List<Ability>();    
-
     private PlayerInputs inputs;
 
     private List<WheelSlot> slots = new List<WheelSlot>();
     private int centralSlotIndex;
 
     [HideInInspector] public bool canSwitch = true;
+
+    // DEBUG
+
+    [Header("DEBUG")]
+    [SerializeField] private Character character;
+    [SerializeField] private List<Ability> debugAbilities = new List<Ability>();
 
     #region Inputs
     private void OnEnable()
@@ -325,6 +329,7 @@ public class AbilityWheel : MonoBehaviour
         {
             GameManager.Instance.abilityManager.DebugAbilities.Add(ability);
             AddToWheel(ability);
+            ability.Pick(character);
         }
     }
 
