@@ -19,16 +19,12 @@ public class RewindTimeAbility : Ability
 
     public override void Activate3(GameObject parent)
     {
-        isActive = true;
-
         TimelineManager.Instance.StartStopControlTimeline();
     }
 
     public override void Disactivate1(GameObject gameObject)
     {
         TimelineManager.Instance.StopForwarding();
-
-        isActive = false;
     }
 
     public override void Disactivate2(GameObject gameObject)
