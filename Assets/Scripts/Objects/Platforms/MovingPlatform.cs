@@ -164,11 +164,7 @@ public class MovingPlatform : MonoBehaviour
     {
         if (waypointPath == null) return false;
 
-        if (waitForStand && !canMove)
-        { 
-            Debug.Log(waitForStand + "   " + canMove);
-            return false; 
-        }
+        if (waitForStand && !canMove) return false;
 
         if (stopWithTargetStanding)
         {
