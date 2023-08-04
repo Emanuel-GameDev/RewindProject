@@ -122,6 +122,9 @@ public class MovingPlatform : MonoBehaviour
 
             platformLeft = true;
 
+            if (canMove)
+                canMove = false;
+
         }
     }
 
@@ -149,7 +152,6 @@ public class MovingPlatform : MonoBehaviour
 
     #endregion
 
-
     private void InitializeWaypoints()
     {
         foreach (Transform waypointChild in waypointPath)
@@ -162,7 +164,11 @@ public class MovingPlatform : MonoBehaviour
     {
         if (waypointPath == null) return false;
 
-        if (waitForStand && !canMove) return false;
+        if (waitForStand && !canMove)
+        { 
+            Debug.Log(waitForStand + "   " + canMove);
+            return false; 
+        }
 
         if (stopWithTargetStanding)
         {
