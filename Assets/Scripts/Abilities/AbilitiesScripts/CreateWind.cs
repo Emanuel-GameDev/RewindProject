@@ -9,21 +9,26 @@ public class CreateWind : Ability
 {
     [Header("WIND DATA")]
     [SerializeField] GameObject windZonePrefab;
-    [SerializeField] private float activeTime;
     [SerializeField] private float cooldown;
+    [Tooltip("with this bool checked the cooldown will scale based on the time the ability is used, start cooldown is 0")]
+    [SerializeField] private bool scalingCooldown;
+    [Tooltip("The divider applied to the scale. the operation is seconds / this var")]
+    [SerializeField] private float cooldownDivider = 1f;
     [Tooltip("The magnitude of the force to be applied to the wind")]
     [SerializeField] private float forceMagnitude = 10f;
+    [Tooltip("The multiplier applied to the magnitude while pressing. the operation is seconds * this var")]
+    [SerializeField] private float forceMultiplier = 1f;    
     [Tooltip("The angle in worldSpace of the force to be applied to the wind")]
     [SerializeField] private float forceAngle = 0f;
     [Tooltip("The layers that are affected by the wind")]
     [SerializeField] private LayerMask[] colliderMask;
 
     private GameObject windZoneObj;
-    private bool canActivate = true;
     private PlayerInputs inputs;
     private bool facingRight = true;
-    private float lastActivationTime = 0f;
     private GameObject currentHolder;
+    private bool canActivate = true;
+    private float lastActivationTime;
 
     public override void Activate1(GameObject parent)
     {
@@ -33,41 +38,49 @@ public class CreateWind : Ability
 
         if (windZoneObj == null)
         {
-            windZoneObj = Instantiate(windZonePrefab, parent.transform, false);
+            windZoneObj = Instantiate(windZonePrefab, currentHolder.transform, false);
             windZoneObj.SetActive(false);
             InitializeWindZone();
         }
 
+        if (scalingCooldown)
+            cooldown = 0f;
+
         if (facingRight) SetWindZoneRotation(0f);
         else SetWindZoneRotation(180f);
 
-        if (currentHolder == parent)
-            //currentHolder.GetComponent<PlayerController>().enabled = false;
-            currentHolder.GetComponent<PlayerController>().inputs.Disable();
-
+        currentHolder.GetComponent<PlayerController>().inputs.Disable();
         windZoneObj.SetActive(true);
+    }
+
+    public override void Disactivate1(GameObject gameObject)
+    {
+        isActive = false;
+
+        windZoneObj.GetComponent<AreaEffector2D>().forceMagnitude = forceMagnitude;
+        windZoneObj.SetActive(false);
+        currentHolder.GetComponent<PlayerController>().inputs.Enable();
 
         canActivate = false;
         lastActivationTime = Time.time;
+        
     }
 
     public override void UpdateAbility()
     {
         base.UpdateAbility();
 
-        if (windZoneObj == null) return;
+        if (isActive)
+        {
+            windZoneObj.GetComponent<AreaEffector2D>().forceMagnitude += (Time.deltaTime * forceMultiplier);
 
-        if (!canActivate && Time.time >= (lastActivationTime + activeTime) + cooldown)
+            if (scalingCooldown)
+                cooldown += (Time.deltaTime / cooldownDivider);
+        }
+        if (!canActivate && Time.time >= (lastActivationTime + cooldown))
         {
             canActivate = true;
         }
-        else if (!canActivate && Time.time >= lastActivationTime + activeTime && windZoneObj.activeSelf)
-        {
-            isActive = false;
-            windZoneObj.SetActive(false);
-            currentHolder.GetComponent<PlayerController>().inputs.Enable();
-        }
-
     }
 
     public override void Pick(Character picker)
@@ -75,7 +88,7 @@ public class CreateWind : Ability
         base.Pick(picker);
 
         currentHolder = picker.gameObject;
-        canActivate = true;
+
     }
 
     private void InitializeWindZone()
@@ -121,6 +134,7 @@ public class CreateWind : Ability
 
         inputs.Player.Walk.performed += CheckHorizontalFacing;
         inputs.Player.Run.performed += CheckHorizontalFacing;
+
     }
 
     private void OnDisable()
@@ -128,4 +142,6 @@ public class CreateWind : Ability
         inputs.Player.Walk.performed -= CheckHorizontalFacing;
         inputs.Player.Run.performed -= CheckHorizontalFacing;
     }
+
+    
 }
