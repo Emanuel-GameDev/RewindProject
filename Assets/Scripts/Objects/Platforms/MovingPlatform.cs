@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
+    #region Variables
+
     [Tooltip("Add reference to this if you want the platform to move following a path")]
     [SerializeField] Transform waypointPath;
     [SerializeField] private float speed;
@@ -16,8 +18,12 @@ public class MovingPlatform : MonoBehaviour
     [Tooltip("Time needed for the platform to trigger the movement")]
     [SerializeField] private float triggerOffset;
     [SerializeField] private LayerMask platformTrigger;
+    [Tooltip("Platform will stop at path's end when target not standing")]
     [SerializeField] private bool stopAtEnd = false;
+    [Tooltip("Platform will stop at the first path's end when target not standing")]
     [SerializeField] private bool stopAtBothEnds = false;
+    [Tooltip("Platform will perform the stop booleans with target standing")]
+    [SerializeField] private bool stopWithTargetStanding = false;
 
     [Tooltip("Check this bool if you want the platform to go through every waypoint in both directions")]
     [SerializeField] private bool loopPath = false;
@@ -34,6 +40,8 @@ public class MovingPlatform : MonoBehaviour
 
     private float timeToWaypoint;
     private float elapsedTime;
+
+    #endregion
 
     #region UnityFunctions
 
@@ -52,7 +60,10 @@ public class MovingPlatform : MonoBehaviour
             stopAtEnd = false;
 
         if (!stopAtEnd)
+        {
             stopAtBothEnds = false;
+            stopWithTargetStanding = false;
+        }            
     }
 
     private void FixedUpdate()
@@ -153,20 +164,41 @@ public class MovingPlatform : MonoBehaviour
 
         if (waitForStand && !canMove) return false;
 
-        if (stopAtEnd && platformLeft)
+        if (stopWithTargetStanding)
         {
-            if (stopAtBothEnds)
+            if (stopAtEnd)
             {
-                if (transform.position == waypoints[waypoints.Count - 1].position || transform.position == waypoints[0].position)
-                    return false;
+                if (stopAtBothEnds)
+                {
+                    if (transform.position == waypoints[waypoints.Count - 1].position || transform.position == waypoints[0].position)
+                        return false;
+
+                }
+                else
+                {
+                    if (transform.position == waypoints[waypoints.Count - 1].position)
+                        return false;
+                }
 
             }
-            else
+        }
+        else
+        {
+            if (stopAtEnd && platformLeft)
             {
-                if (transform.position == waypoints[waypoints.Count - 1].position)
-                    return false;
-            }
+                if (stopAtBothEnds)
+                {
+                    if (transform.position == waypoints[waypoints.Count - 1].position || transform.position == waypoints[0].position)
+                        return false;
 
+                }
+                else
+                {
+                    if (transform.position == waypoints[waypoints.Count - 1].position)
+                        return false;
+                }
+
+            }
         }
 
         return true;
@@ -190,7 +222,7 @@ public class MovingPlatform : MonoBehaviour
 
             if (nextId < 0 || nextId >= waypoints.Count)
             {
-                // Inverte la direzione quando raggiunge i bordi della lista
+                // Invert direction when list borders are reached
                 direction *= -1;
                 nextId = currId + direction;
             }
