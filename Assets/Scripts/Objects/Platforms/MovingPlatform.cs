@@ -22,8 +22,6 @@ public class MovingPlatform : MonoBehaviour
     [SerializeField] private bool stopAtEnd = false;
     [Tooltip("Platform will stop at the first path's end when target not standing")]
     [SerializeField] private bool stopAtBothEnds = false;
-    [Tooltip("Platform will perform the stop booleans with target standing")]
-    [SerializeField] private bool stopWithTargetStanding = false;
 
     [Tooltip("Check this bool if you want the platform to go through every waypoint in both directions")]
     [SerializeField] private bool loopPath = false;
@@ -33,8 +31,8 @@ public class MovingPlatform : MonoBehaviour
     private int targetWaypointId;
     private Transform targetWaypoint;
     private Transform prevWaypoint;
-    private bool canMove = false;
-    private bool platformLeft = false;
+    private bool movementTriggered = false;
+    private bool platformNowJoined = false;
     private IEnumerator activatorCoroutine;
     private int prevId = -1;
 
@@ -60,10 +58,7 @@ public class MovingPlatform : MonoBehaviour
             stopAtEnd = false;
 
         if (!stopAtEnd)
-        {
             stopAtBothEnds = false;
-            stopWithTargetStanding = false;
-        }            
     }
 
     private void FixedUpdate()
@@ -100,6 +95,8 @@ public class MovingPlatform : MonoBehaviour
             if (activatorCoroutine != null)
                 StopCoroutine(activatorCoroutine);
 
+            platformNowJoined = true;
+
             activatorCoroutine = ActivateMovement(true);
             StartCoroutine(activatorCoroutine);
         }
@@ -117,13 +114,6 @@ public class MovingPlatform : MonoBehaviour
         // Check collsion for triggering movement
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(platformTrigger.value, 2f)))
         {
-            if (activatorCoroutine != null)
-                StopCoroutine(activatorCoroutine);
-
-            platformLeft = true;
-
-            if (canMove)
-                canMove = false;
 
         }
     }
@@ -164,44 +154,26 @@ public class MovingPlatform : MonoBehaviour
     {
         if (waypointPath == null) return false;
 
-        if (waitForStand && !canMove) return false;
+        if (waitForStand && !movementTriggered) return false;
 
-        if (stopWithTargetStanding)
+        if (stopAtEnd)
         {
-            if (stopAtEnd)
+            if (stopAtBothEnds)
             {
-                if (stopAtBothEnds)
+                if (transform.position == waypoints[waypoints.Count - 1].position && !platformNowJoined ||
+                    transform.position == waypoints[0].position && !platformNowJoined)
                 {
-                    if (transform.position == waypoints[waypoints.Count - 1].position || transform.position == waypoints[0].position)
-                        return false;
-
-                }
-                else
-                {
-                    if (transform.position == waypoints[waypoints.Count - 1].position)
-                        return false;
+                    return false;
                 }
 
             }
-        }
-        else
-        {
-            if (stopAtEnd && platformLeft)
+            else
             {
-                if (stopAtBothEnds)
-                {
-                    if (transform.position == waypoints[waypoints.Count - 1].position || transform.position == waypoints[0].position)
-                        return false;
-
-                }
-                else
-                {
-                    if (transform.position == waypoints[waypoints.Count - 1].position)
-                        return false;
-                }
-
+                if (transform.position == waypoints[waypoints.Count - 1].position)
+                    return false;
             }
         }
+
 
         return true;
     }
@@ -257,8 +229,8 @@ public class MovingPlatform : MonoBehaviour
     {
         yield return new WaitForSeconds(triggerOffset);
 
-        platformLeft = false;
-        canMove = mode;
+        platformNowJoined = false;
+        movementTriggered = mode;
         activatorCoroutine = null;
     }
 }
