@@ -1,5 +1,7 @@
 using Cinemachine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -10,6 +12,7 @@ public class CameraManager : MonoBehaviour
 
     [Header("Cinemachine")]
     public CinemachineVirtualCamera mainCam;
+    private List<Camera> overlays = new List<Camera>();
 
     [Tooltip("Duration of the transition")]
     [SerializeField] float cameraTDuration;
@@ -49,6 +52,25 @@ public class CameraManager : MonoBehaviour
         mainCam.gameObject.SetActive(true);
 
         InitilizeCinemachine();
+        InitializeOverlayCameras();
+    }
+
+    private void InitializeOverlayCameras()
+    {
+        Camera mainCamNoVirtual = Camera.main;
+        if (mainCamNoVirtual.transform.childCount > 0)
+        {
+            for (int i = 0; i < mainCamNoVirtual.transform.childCount; i++)
+            {
+                if (mainCamNoVirtual.transform.GetChild(i).GetComponents<Camera>() != null)
+                    overlays.Add(mainCamNoVirtual.transform.GetChild(i).GetComponent<Camera>());
+            }
+        }
+
+        foreach (Camera camera in overlays)
+        {
+            camera.orthographicSize = mainCam.m_Lens.OrthographicSize;
+        }
     }
 
     private void GiveVolume(object obj)
@@ -196,7 +218,6 @@ public class CameraManager : MonoBehaviour
 
             cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
             StartCoroutine(cinemachineCoroutine);
-
         }
     }
 
@@ -219,6 +240,12 @@ public class CameraManager : MonoBehaviour
             mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = currentDamping.y;
             mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = currentOffset;
             mainCam.m_Lens.OrthographicSize = currentZoom;
+
+            foreach (Camera camera in overlays)
+            {
+                camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, targetZoom, t);
+            }
+
             yield return null;
         }
 
