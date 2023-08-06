@@ -36,7 +36,7 @@ public class InvertGravity : Ability
         {
             if (hit[i].collider != null)
             {
-                if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask, 2f)))
+                if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
                 {
                     // First obj hit was in the target layer
                     Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
