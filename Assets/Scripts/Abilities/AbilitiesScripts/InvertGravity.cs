@@ -31,11 +31,15 @@ public class InvertGravity : Ability
         else
             hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, Mathf.Infinity);
 
+        Debug.Log(rayDistance);
+
         // Starting from 1 in order to skip the ability holder
         for (int i = 1; i < hit.Length; i++)
         {
+            Debug.Log(hit[i]);
             if (hit[i].collider != null)
             {
+                Debug.Log("collider no null");
                 if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
                 {
                     // First obj hit was in the target layer
