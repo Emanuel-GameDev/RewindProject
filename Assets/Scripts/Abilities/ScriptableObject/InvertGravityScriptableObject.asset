@@ -13,8 +13,14 @@ MonoBehaviour:
   m_Name: InvertGravityScriptableObject
   m_EditorClassIdentifier: 
   name: appesso
+  description: 
   icon: {fileID: 21300000, guid: d8d84c7ba757c3e4299902b04ec26317, type: 3}
-  cooldownTime: 1
+  isActive: 0
   targetMask:
     serializedVersion: 2
     m_Bits: 8
+  rayDistance: 0
+  cooldown: 0
+  layerToIgnore:
+    serializedVersion: 2
+    m_Bits: 64
