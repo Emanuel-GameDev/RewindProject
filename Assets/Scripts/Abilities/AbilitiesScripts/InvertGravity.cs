@@ -9,6 +9,8 @@ public class InvertGravity : Ability
     [SerializeField] private float rayDistance;
     [SerializeField] private float cooldown;
 
+    [SerializeField] private LayerMask layerToIgnore;
+
     private float lastActivationTime = 0f;
 
     private bool canActivate = true;
@@ -17,7 +19,7 @@ public class InvertGravity : Ability
     {
         if (!canActivate) return;
 
-        RaycastHit2D[] hit;
+        RaycastHit2D hit;
         Vector3 rayDirection;
         isActive = true;
 
@@ -26,23 +28,30 @@ public class InvertGravity : Ability
         else
             rayDirection = Vector3.down; // Direzione verso il basso
 
-        if (rayDistance > 0)
-            hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, rayDistance);
-        else
-            hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, Mathf.Infinity);
+        int layerMask = Physics2D.AllLayers;
+        layerMask &= ~(1 << layerToIgnore);
 
-        if (hit[hit.Length-1].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
+        if (rayDistance > 0)
+            hit = Physics2D.Raycast(parent.transform.position, rayDirection, rayDistance, ~layerToIgnore);
+        else
+            hit = Physics2D.Raycast(parent.transform.position, rayDirection, Mathf.Infinity, ~layerToIgnore);
+
+
+        if (hit.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
         {
-            Debug.Log(hit[hit.Length-1].collider.gameObject.name);
+            Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
+
+            rBody.gravityScale = -rBody.gravityScale;
+            parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
+
         }
 
+
         // Starting from 1 in order to skip the ability holder
-        //for (int i = 2; i < hit.Length; i++)
+        //for (int i = 1; i < hit.Length; i++)
         //{
-        //    Debug.Log(hit[i].collider.gameObject.name);
         //    if (hit[i].collider != null)
         //    {
-        //        Debug.Log("collider no null");
         //        if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
         //        {
         //            // First obj hit was in the target layer
