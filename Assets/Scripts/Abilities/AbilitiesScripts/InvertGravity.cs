@@ -31,32 +31,35 @@ public class InvertGravity : Ability
         else
             hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, Mathf.Infinity);
 
-        Debug.Log(rayDistance);
+        if (hit[hit.Length-1].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
+        {
+            Debug.Log(hit[hit.Length-1].collider.gameObject.name);
+        }
 
         // Starting from 1 in order to skip the ability holder
-        for (int i = 1; i < hit.Length; i++)
-        {
-            Debug.Log(hit[i]);
-            if (hit[i].collider != null)
-            {
-                Debug.Log("collider no null");
-                if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
-                {
-                    // First obj hit was in the target layer
-                    Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
+        //for (int i = 2; i < hit.Length; i++)
+        //{
+        //    Debug.Log(hit[i].collider.gameObject.name);
+        //    if (hit[i].collider != null)
+        //    {
+        //        Debug.Log("collider no null");
+        //        if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
+        //        {
+        //            // First obj hit was in the target layer
+        //            Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
 
-                    rBody.gravityScale = -rBody.gravityScale;
-                    parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
+        //            rBody.gravityScale = -rBody.gravityScale;
+        //            parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
 
-                    Debug.Log(hit[i].collider.gameObject.name);
+        //            Debug.Log(hit[i].collider.gameObject.name);
 
-                    break;
-                }
+        //            break;
+        //        }
 
-                // First obj hit was not in the target layer
-                break;
-            }
-        }
+        //        // First obj hit was not in the target layer
+        //        break;
+        //    }
+        //}
 
         isActive = false;
         canActivate = false;
