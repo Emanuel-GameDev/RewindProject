@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ability/InvertGravity")]
 public class InvertGravity : Ability
 {
     [Tooltip("The layer that makes the ray stop and triggers the ability")]
-    [SerializeField] LayerMask targetMask;
+    [SerializeField] private LayerMask targetMask;
+    [Tooltip("distance of the ray used to check layer, set this to 0 in order to have an infinite ray")]
+    [SerializeField] private float rayDistance;
     [SerializeField] private float cooldown;
 
     private float lastActivationTime = 0f;
@@ -17,7 +17,7 @@ public class InvertGravity : Ability
     {
         if (!canActivate) return;
 
-        RaycastHit2D hit;
+        RaycastHit2D[] hit;
         Vector3 rayDirection;
         isActive = true;
 
@@ -26,15 +26,30 @@ public class InvertGravity : Ability
         else
             rayDirection = Vector3.down; // Direzione verso il basso
 
-        hit = Physics2D.Raycast(parent.transform.position, rayDirection, Mathf.Infinity, targetMask);
+        if (rayDistance > 0)
+            hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, rayDistance);
+        else
+            hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, Mathf.Infinity);
 
-        if (hit.collider != null)
+        // Starting from 1 in order to skip the ability holder
+        for (int i = 1; i < hit.Length; i++)
         {
-            // Il raycast ha colpito un oggetto nel layer "Ground"
-            Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
+            if (hit[i].collider != null)
+            {
+                if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask, 2f)))
+                {
+                    // First obj hit was in the target layer
+                    Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
 
-            rBody.gravityScale = -rBody.gravityScale;
-            parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
+                    rBody.gravityScale = -rBody.gravityScale;
+                    parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
+
+                    break;
+                }
+
+                // First obj hit was not in the target layer
+                break;
+            }
         }
 
         isActive = false;
