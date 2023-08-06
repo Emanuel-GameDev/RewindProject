@@ -96,7 +96,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""id"": ""1a8e2f03-eabb-43a5-95f2-00e3a9e46f76"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""MultiTap(tapTime=0.2,tapDelay=0.4)"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -246,19 +246,8 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1ddebef3-1696-4e11-9edd-f1f180314473"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5b4ce457-24f2-4ccc-a60a-420d34e0920a"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""id"": ""f9791797-c442-4566-8677-e6c2c4be3f02"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
