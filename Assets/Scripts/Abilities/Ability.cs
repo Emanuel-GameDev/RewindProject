@@ -12,7 +12,7 @@ public abstract class Ability : ScriptableObject
     public Sprite icon;
     
     // Different from canActivate cause that bool include the cooldown, this one only checks the activation time
-    public bool isActive = false;
+    [HideInInspector] public bool isActive = false;
 
     public virtual void Activate1(GameObject parent) { }
     public virtual void Activate2(GameObject parent) { }

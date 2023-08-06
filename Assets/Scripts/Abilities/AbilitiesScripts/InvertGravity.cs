@@ -44,6 +44,8 @@ public class InvertGravity : Ability
                     rBody.gravityScale = -rBody.gravityScale;
                     parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
 
+                    Debug.Log(hit[i].collider.gameObject.name);
+
                     break;
                 }
 
@@ -64,5 +66,7 @@ public class InvertGravity : Ability
             canActivate = true;
         }
     }
+
+    
 }
 
