@@ -1,20 +1,21 @@
 using Cinemachine;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
 public class CameraManager : MonoBehaviour
 {
+    #region Variables
+
     [Header("Cinemachine")]
     public CinemachineVirtualCamera mainCam;
+    private List<Camera> overlays = new List<Camera>();
 
-    [Tooltip("Start value for orthografic size in the Lens menù inside Cinemachine")]
-    public float StartZoomAmount = 7f;
-
-    [Tooltip("Speed of the transition\n " +
-        "N.B. the action is an interpolation so it scales over time")]
-    public float transitionSpeed;
+    [Tooltip("Duration of the transition")]
+    [SerializeField] float cameraTDuration;
 
     private float currentZoom;
     private Vector3 currentOffset;
@@ -22,55 +23,76 @@ public class CameraManager : MonoBehaviour
     private IEnumerator cinemachineCoroutine;
 
     [Header("PostProcessing")]
-    [SerializeField] Volume rewindVolume;
-    [SerializeField] float rewindDeformSpeed;
+    [Tooltip("Duration of the transition")]
+    [SerializeField] float deformTDuration;
+    [Tooltip("LD = Lens Distortion")]
     [SerializeField] float targetLDIntensity;
-    [SerializeField] float targetCASaturation;
+    [SerializeField] float targetSaturation;
 
+    private Volume rewindVolume;
     private IEnumerator deformCoroutine;
-    private IEnumerator restoreCoroutine;
+    private bool triggered = false;
     private ChromaticAberration chromaticAb;
     private float startAb;
-    private float currentAb;
     private LensDistortion lensDist;
-    private float startLD;
-    private float currentLD;
+    private float startLd;
+    private ColorAdjustments colorAd;
+    private float startSat;
 
-    [HideInInspector]
-    public bool switching = false;
+    #endregion
 
-    // Start is called before the first frame update
     void Start()
     {
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, UpdateRewindPostProcess);
+        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, UpdateRewindPostProcess);
+
+        PubSub.Instance.RegisterFunction(EMessageType.RewindZoneEntered, GiveVolume);
 
         PubSub.Instance.RegisterFunction(EMessageType.CameraSwitch, UpdateCamera);
         mainCam.gameObject.SetActive(true);
 
-        Initilize();
+        InitilizeCinemachine();
+        InitializeOverlayCameras();
+    }
+
+    private void InitializeOverlayCameras()
+    {
+        Camera mainCamNoVirtual = Camera.main;
+        if (mainCamNoVirtual.transform.childCount > 0)
+        {
+            for (int i = 0; i < mainCamNoVirtual.transform.childCount; i++)
+            {
+                if (mainCamNoVirtual.transform.GetChild(i).GetComponents<Camera>() != null)
+                    overlays.Add(mainCamNoVirtual.transform.GetChild(i).GetComponent<Camera>());
+            }
+        }
+
+        foreach (Camera camera in overlays)
+        {
+            camera.orthographicSize = mainCam.m_Lens.OrthographicSize;
+        }
+    }
+
+    private void GiveVolume(object obj)
+    {
+        if (obj is not Volume) return;
+
+        rewindVolume = obj as Volume;
+
+        InitializeVolume();
     }
 
     private void Update()
     {
+        // TEmporaneo, per testing
         if (Input.GetKeyDown(KeyCode.E))
         {
-            UpdateRewindPostProcess(null);
+            UpdateRewindPostProcess(1);
         }
     }
 
-    private void Initilize()
+    private void InitializeVolume()
     {
-        #region Cinemachine
-        mainCam.m_Lens.OrthographicSize = StartZoomAmount;
-        currentZoom = StartZoomAmount;
-
-        currentOffset = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
-        currentDamping.x = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping;
-        currentDamping.y = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping;
-        #endregion
-
-        #region PostProcessing
-
         if (rewindVolume != null)
         {
             // Chromatic Aberration
@@ -80,38 +102,64 @@ public class CameraManager : MonoBehaviour
             // Lens Distorsion
             if (!rewindVolume.profile.TryGet(out lensDist))
                 Debug.LogError("Error TryGet Lens Distortion");
+
+            // Color adjustment
+            if (!rewindVolume.profile.TryGet(out colorAd))
+                Debug.LogWarning("Error TryGet Color Adjustments");
         }
         else
-            Debug.LogError("Error need to Assign rewindProfile");
+            Debug.LogError("Error: no reference to rewindProfile");
+    }
 
-        #endregion
+    private void InitilizeCinemachine()
+    {
+        currentZoom = mainCam.m_Lens.OrthographicSize;
+
+        currentOffset = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset;
+        currentDamping.x = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping;
+        currentDamping.y = mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping;
     }
 
     #region PostProcessing related
 
     private void UpdateRewindPostProcess(object obj)
     {
-        if (deformCoroutine != null)
-        {
-            StopCoroutine(deformCoroutine);
-            deformCoroutine = null;
+        float currentAb = chromaticAb.intensity.value;
+        float currentLD = lensDist.intensity.value;
+        float currentSat = colorAd.saturation.value;
 
-            if (restoreCoroutine == null)
+        if (!triggered)
+        {
+            // Active rewind
+            if (deformCoroutine != null)
             {
-                restoreCoroutine = RestoreCamera();
-                StartCoroutine(restoreCoroutine);
+                StopCoroutine(deformCoroutine);
+                deformCoroutine = null;
             }
+
+            float maxAbIntensity = chromaticAb.intensity.max;
+            startAb = SetupStartSetting(startAb, currentAb);
+            startLd = SetupStartSetting(startLd, currentLD);
+            startSat = SetupStartSetting(startSat, currentSat);
+
+            deformCoroutine = DeformCamera(currentAb, maxAbIntensity, currentLD, targetLDIntensity, currentSat, targetSaturation);
+            StartCoroutine(deformCoroutine);
+
+            triggered = !triggered;
         }
         else
         {
-            if (restoreCoroutine != null)
+            // Stop rewind
+            if (deformCoroutine != null)
             {
-                StopCoroutine(restoreCoroutine);
-                restoreCoroutine = null;
+                StopCoroutine(deformCoroutine);
+                deformCoroutine = null;
             }
 
-            deformCoroutine = DeformCamera();
+            deformCoroutine = DeformCamera(currentAb, startAb, currentLD, startLd, currentSat, startSat);
             StartCoroutine(deformCoroutine);
+
+            triggered = !triggered;
         }
     }
 
@@ -123,40 +171,27 @@ public class CameraManager : MonoBehaviour
         return start;
     }
 
-    private IEnumerator DeformCamera()
+    private IEnumerator DeformCamera(float currentAb, float targetAb, float currentLD, float targetLD, float currentSat, float targetSat)
     {
-        currentAb = chromaticAb.intensity.value;
-        float maxAbIntensity = chromaticAb.intensity.max;
-        startAb = SetupStartSetting(startAb, currentAb);
+        float elapsedTime = 0;
 
-        currentLD = lensDist.intensity.value;
-        startLD = SetupStartSetting(startLD, currentLD);
-
-        while (Mathf.Abs(currentAb - maxAbIntensity) > 0.01f)
+        while (elapsedTime <= deformTDuration)
         {
+            elapsedTime += Time.deltaTime;
+
+            float t = elapsedTime / deformTDuration;
+
             // Change intensity of Chromatic Aberration 
-            currentAb = Mathf.Lerp(currentAb, maxAbIntensity, rewindDeformSpeed * Time.deltaTime);
+            currentAb = Mathf.Lerp(currentAb, targetAb, t);
             chromaticAb.intensity.value = currentAb;
 
             // Change Intensity of Lens Distortion
-            currentLD = Mathf.Lerp(currentLD, targetLDIntensity, rewindDeformSpeed * Time.deltaTime);
+            currentLD = Mathf.Lerp(currentLD, targetLD, t);
             lensDist.intensity.value = currentLD;
 
-            yield return null;
-        }
-    }
-
-    private IEnumerator RestoreCamera()
-    {
-        while (Mathf.Abs(currentAb - startAb) > 0.01f)
-        {
-            // Change intensity of Chromatic Aberration 
-            currentAb = Mathf.Lerp(currentAb, startAb, rewindDeformSpeed * Time.deltaTime);
-            chromaticAb.intensity.value = currentAb;
-
-            // Change Intensity of Lens Distortion
-            currentLD = Mathf.Lerp(currentLD, startLD, rewindDeformSpeed * Time.deltaTime);
-            lensDist.intensity.value = currentLD;
+            // Change Saturation of Color Adjustments
+            currentSat = Mathf.Lerp(currentSat, targetSat, t);
+            colorAd.saturation.value = currentSat;
 
             yield return null;
         }
@@ -176,48 +211,57 @@ public class CameraManager : MonoBehaviour
         if (cameraData.zoomAmount >= 0 && cameraData.zoomAmount != currentZoom)
         {
             if (cinemachineCoroutine != null)
-                StopCoroutine(cinemachineCoroutine);
-            else
             {
-                cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
-                StartCoroutine(cinemachineCoroutine);
+                StopCoroutine(cinemachineCoroutine);
+                cinemachineCoroutine = null;
             }
+
+            cinemachineCoroutine = AdjustCamera(cameraData.zoomAmount, cameraData.offset, cameraData.damping);
+            StartCoroutine(cinemachineCoroutine);
         }
     }
 
     // Apply new camera data to the camera
     private IEnumerator AdjustCamera(float targetZoom, Vector3 targetOffset, Vector2 targetDamping)
     {
-        switching = true;
-        while (Mathf.Abs(currentZoom - targetZoom) > 0.01f)
-        {
-            // Apply zoom
-            currentZoom = Mathf.Lerp(currentZoom, targetZoom, transitionSpeed * Time.deltaTime);
+        float elapsedTime = 0;
 
-            currentOffset = SplitLerp(currentOffset, targetOffset);
-            currentDamping = SplitLerp(currentDamping, targetDamping);
+        while (elapsedTime <= cameraTDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / cameraTDuration;
+
+            currentZoom = Mathf.Lerp(currentZoom, targetZoom, t);
+
+            currentOffset = SplitLerp(currentOffset, targetOffset, t);
+            currentDamping = SplitLerp(currentDamping, targetDamping, t);
 
             mainCam.GetCinemachineComponent<CinemachineTransposer>().m_XDamping = currentDamping.x;
             mainCam.GetCinemachineComponent<CinemachineTransposer>().m_YDamping = currentDamping.y;
             mainCam.GetCinemachineComponent<CinemachineTransposer>().m_FollowOffset = currentOffset;
             mainCam.m_Lens.OrthographicSize = currentZoom;
-            yield return null;
 
+            foreach (Camera camera in overlays)
+            {
+                camera.orthographicSize = Mathf.Lerp(camera.orthographicSize, targetZoom, t);
+            }
+
+            yield return null;
         }
 
-        switching = false;
+        cinemachineCoroutine = null;
     }
 
     // Used to filter the new camera settings, update settings if they are different from current
-    private Vector3 SplitLerp(Vector3 current, Vector3 target)
+    private Vector3 SplitLerp(Vector3 current, Vector3 target, float t)
     {
         if (current.x != target.x)
         {
-            current.x = Mathf.Lerp(current.x, target.x, transitionSpeed * Time.deltaTime);
+            current.x = Mathf.Lerp(current.x, target.x, t);
         }
         if (current.y != target.y)
         {
-            current.y = Mathf.Lerp(current.y, target.y, transitionSpeed * Time.deltaTime);
+            current.y = Mathf.Lerp(current.y, target.y, t);
         }
 
         return current;
@@ -226,3 +270,4 @@ public class CameraManager : MonoBehaviour
     #endregion
 
 }
+

@@ -28,6 +28,12 @@ public class AbilityHolder : Character
         playerInputs.Enable();
     }
 
+    private void Update()
+    {
+        if (activeAbility != null)
+            activeAbility.UpdateAbility();
+    }
+
     private void Disactivate3(InputAction.CallbackContext obj)
     {
         if (activeAbility == null) return;

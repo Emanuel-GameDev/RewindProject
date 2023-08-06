@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddd26e1288715247ac124a0297cae71, type: 3}
+  m_Name: CreateWind
+  m_EditorClassIdentifier: 
+  name: CreateWind
+  description: crei un cono di vento
+  icon: {fileID: 21300000, guid: 9b0e7c18b76781644841ed6e186e58f0, type: 3}
+  cooldownTime: 0
+  isActive: 0
+  windZonePrefab: {fileID: 5198929173573209287, guid: b7bf3314f5a237c40aa451dec2abb8c8, type: 3}
+  cooldown: 0.5
+  scalingCooldown: 0
+  cooldownDivider: 0
+  forceMagnitude: 7
+  forceMultiplier: 1
+  forceAngle: 0
+  colliderMask:
+  - serializedVersion: 2
+    m_Bits: 128
+  - serializedVersion: 2
+    m_Bits: 256

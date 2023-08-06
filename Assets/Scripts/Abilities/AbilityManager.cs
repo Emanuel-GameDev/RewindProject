@@ -14,7 +14,16 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] List<string> abilityNameToSave = new List<string>();
     
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
-    [SerializeField] private AbilityWheel _wheel;
+
+    public AbilityWheel wheel;
+
+    // Debug
+    [HideInInspector] public bool debug = false;
+    [HideInInspector]
+    public List<Ability> DebugAbilities
+    {
+        get { return _abilities; }
+    }
 
     private void Awake()
     {
@@ -40,14 +49,17 @@ public class AbilityManager : MonoBehaviour
 
     private void AddToAbilities(object obj)
     {
+        // Filter
         if (obj is not Ability) return;
-        Ability newAbility = (Ability)obj;
+        Ability newAbility = obj as Ability;
 
+        // Add to unlocked abilities
         _abilities.Add(newAbility);
 
-        _wheel.AddToWheel(newAbility);
+        // Add to wheel
+        wheel.AddToWheel(newAbility);
 
-        if(!abilityNameToSave.Contains(newAbility.name))
+        if (!abilityNameToSave.Contains(newAbility.name))
             abilityNameToSave.Add(newAbility.name);
 
         DataSerializer.Save<List<string>>("ABILITIES", abilityNameToSave);
@@ -55,9 +67,9 @@ public class AbilityManager : MonoBehaviour
 
     public void GiveAbility(object obj)
     {
-        if (obj is not Image) return;
+        if (obj is not Sprite) return;
 
-        Image abilityIcon = (Image)obj;
+        Sprite abilityIcon = (Sprite)obj;
         Ability newActiveAbility = GetAbilityFrom(abilityIcon);
 
         foreach (AbilityHolder holder in _holders)
@@ -66,8 +78,11 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private Ability GetAbilityFrom(Image abilityIcon)
+    private Ability GetAbilityFrom(Sprite abilityIcon)
     {
-        return _abilities.Where(ability => ability.icon == abilityIcon.sprite)?.First();
+        if (debug)
+            return DebugAbilities.Where(ability => ability.icon == abilityIcon)?.First();
+
+        return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
     }
 }

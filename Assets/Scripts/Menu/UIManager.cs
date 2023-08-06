@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
         }
 
         character.GetComponent<PlayerController>().inputs.Player.Disable();
+        GameManager.Instance.abilityManager.wheel.canSwitch = false;
 
         if (cardToShow == null)
         {
@@ -56,6 +57,8 @@ public class UIManager : MonoBehaviour
         character.GetComponent<PlayerController>().inputs.Player.Enable();
 
         cardToShow.Pick(character);
+
+        GameManager.Instance.abilityManager.wheel.canSwitch = true;
         cardToShow = null;
         character = null;
     }
