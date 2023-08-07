@@ -1,15 +1,16 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ability/InvertGravity")]
 public class InvertGravity : Ability
 {
-    [Tooltip("The layer that makes the ray stop and triggers the ability")]
-    [SerializeField] private LayerMask targetMask;
+    [Tooltip("The layers that the ray has to ignore")]
+    [SerializeField] private List<LayerMask> layerToIgnore;
     [Tooltip("distance of the ray used to check layer, set this to 0 in order to have an infinite ray")]
-    [SerializeField] private float rayDistance;
+    [SerializeField, Min(0f)] private float rayDistance;
     [SerializeField] private float cooldown;
 
-    [SerializeField] private LayerMask layerToIgnore;
+
 
     private float lastActivationTime = 0f;
 
@@ -19,32 +20,54 @@ public class InvertGravity : Ability
     {
         if (!canActivate) return;
 
-        RaycastHit2D hit;
+        RaycastHit2D[] hit;
         Vector3 rayDirection;
         isActive = true;
+        bool ignoreHit = false;
 
         if (PlayerController.instance.IsGravityDownward())
             rayDirection = Vector3.up; // Direzione verso l'alto
         else
             rayDirection = Vector3.down; // Direzione verso il basso
 
-        int layerMask = Physics2D.AllLayers;
-        layerMask &= ~(1 << layerToIgnore);
-
         if (rayDistance > 0)
-            hit = Physics2D.Raycast(parent.transform.position, rayDirection, rayDistance, ~layerToIgnore);
+            hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, rayDistance);
         else
-            hit = Physics2D.Raycast(parent.transform.position, rayDirection, Mathf.Infinity, ~layerToIgnore);
+            hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, Mathf.Infinity);
 
-
-        if (hit.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
+        for (int i = 0; i < hit.Length; i++)
         {
+            if (hit[i].collider == null) continue;
+
+            foreach (LayerMask mask in layerToIgnore)
+            {
+                if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+                {
+                    ignoreHit = true;
+                    break;
+                }
+            }
+
+            if (ignoreHit)
+            {
+                ignoreHit = false;
+                continue;
+            }
+
+            // Obj valid to activate ability
             Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
 
             rBody.gravityScale = -rBody.gravityScale;
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-
         }
+        //if (hit.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
+        //{
+        //    Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
+
+        //    rBody.gravityScale = -rBody.gravityScale;
+        //    parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
+
+        //}
 
 
         // Starting from 1 in order to skip the ability holder
@@ -83,6 +106,6 @@ public class InvertGravity : Ability
         }
     }
 
-    
+
 }
 
