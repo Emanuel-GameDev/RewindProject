@@ -86,7 +86,20 @@ public class MovingPlatform : MonoBehaviour
         foreach (LayerMask mask in affectedLayers)
         {
             if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
-                collision.gameObject.transform.parent = transform;
+            {
+                RaycastHit2D[] hit;
+
+                hit = Physics2D.RaycastAll(collision.gameObject.transform.position, Vector2.down);
+
+                for (int i = 0; i < hit.Length; i++)
+                {
+                    if (hit[i].collider != null && hit[i].collider.gameObject.GetComponent<MovingPlatform>())
+                    {
+                        collision.gameObject.transform.parent = transform;
+                    }
+                }
+
+            }
         }
 
         // Check collsion for triggering movement
@@ -132,7 +145,7 @@ public class MovingPlatform : MonoBehaviour
 
         for (int i = 0; i < waypointPath.childCount - 1; i++)
         {
-            Gizmos.DrawLine(waypointPath.GetChild(i).position, waypointPath.GetChild(i+1).position);
+            Gizmos.DrawLine(waypointPath.GetChild(i).position, waypointPath.GetChild(i + 1).position);
         }
         if (loopPath)
         {
