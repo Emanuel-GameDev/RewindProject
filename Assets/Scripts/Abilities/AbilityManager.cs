@@ -18,6 +18,7 @@ public class AbilityManager : MonoBehaviour
     public AbilityWheel wheel;
 
     // Debug
+    [Tooltip("Enable only for debugging, this bool set to true on a serious test will make this script not work")]
     [HideInInspector] public bool debug = false;
     [HideInInspector]
     public List<Ability> DebugAbilities
@@ -54,7 +55,10 @@ public class AbilityManager : MonoBehaviour
         Ability newAbility = obj as Ability;
 
         // Add to unlocked abilities
-        _abilities.Add(newAbility);
+        if (debug)
+            DebugAbilities.Add(newAbility);
+        else
+            _abilities.Add(newAbility);
 
         // Add to wheel
         wheel.AddToWheel(newAbility);
