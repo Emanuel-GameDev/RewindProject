@@ -1,31 +1,47 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class MovingPlatform : MonoBehaviour
 {
+    #region Variables
+
     [Tooltip("Add reference to this if you want the platform to move following a path")]
     [SerializeField] Transform waypointPath;
     [SerializeField] private float speed;
+    [Tooltip("Layers that will be affected by the platform movement\n" +
+    "(P.N. this is about parenting with the platform not about triggering movement)")]
+    [SerializeField] private LayerMask[] affectedLayers;
 
     [Tooltip("set to true if platform needs to move only when something is standing on it")]
     [SerializeField] bool waitForStand = false;
     [Tooltip("Time needed for the platform to trigger the movement")]
     [SerializeField] private float triggerOffset;
     [SerializeField] private LayerMask platformTrigger;
+    [Tooltip("Platform will stop at path's end when target not standing")]
+    [SerializeField] private bool stopAtEnd = false;
+    [Tooltip("Platform will stop at the first path's end when target not standing")]
+    [SerializeField] private bool stopAtBothEnds = false;
+
+    [Tooltip("Check this bool if you want the platform to go through every waypoint in both directions")]
+    [SerializeField] private bool loopPath = false;
 
     private List<Transform> waypoints = new List<Transform>();
 
     private int targetWaypointId;
     private Transform targetWaypoint;
     private Transform prevWaypoint;
-    private bool canMove = false;
+    private bool movementTriggered = false;
+    private bool platformNowJoined = false;
     private IEnumerator activatorCoroutine;
+    private int prevId = -1;
 
     private float timeToWaypoint;
     private float elapsedTime;
+
+    #endregion
+
+    #region UnityFunctions
 
     private void Start()
     {
@@ -36,47 +52,18 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    private void InitializeWaypoints()
+    private void OnValidate()
     {
-        foreach (Transform waypointChild in waypointPath)
-        {
-            waypoints.Add(waypointChild);
-        }
-    }
+        if (!waitForStand)
+            stopAtEnd = false;
 
-
-    private int GetNextWaypointId(int currId)
-    {
-        int nextId = currId + 1;
-        
-        if (nextId == waypoints.Count)
-            nextId = 0;
-
-        return nextId;
-    } 
-
-    private void TargetNextWaypoint()
-    {
-        // Ref to prev waypoint
-        prevWaypoint = waypoints[targetWaypointId];
-        // Update waypoint id
-        targetWaypointId = GetNextWaypointId(targetWaypointId);
-        //Ref to next waypoint
-        targetWaypoint = waypoints[targetWaypointId];
-
-        elapsedTime = 0;
-        
-        float distToWaypoint = Vector2.Distance(prevWaypoint.position, targetWaypoint.position);
-        // Calculate time needed to get to the next waypoint
-        timeToWaypoint = distToWaypoint / speed;
-
+        if (!stopAtEnd)
+            stopAtBothEnds = false;
     }
 
     private void FixedUpdate()
     {
-        if (waypointPath == null) return;
-
-        if (waitForStand && !canMove) return;
+        if (!CheckCondition()) return;
 
         elapsedTime += Time.deltaTime;
 
@@ -90,50 +77,160 @@ public class MovingPlatform : MonoBehaviour
         if (elapsedPercentage >= 1)
         {
             TargetNextWaypoint();
-        }    
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.GetComponent<Character>() != null)
+        // Check collision for parenting
+        foreach (LayerMask mask in affectedLayers)
         {
-            Character character = collision.gameObject.GetComponent<Character>();
-
-            character.gameObject.transform.parent = transform;
+            if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+                collision.gameObject.transform.parent = transform;
         }
+
+        // Check collsion for triggering movement
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(platformTrigger.value, 2f)))
         {
             if (activatorCoroutine != null)
                 StopCoroutine(activatorCoroutine);
+
+            platformNowJoined = true;
 
             activatorCoroutine = ActivateMovement(true);
             StartCoroutine(activatorCoroutine);
         }
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // Check collision for parenting
+        foreach (LayerMask mask in affectedLayers)
+        {
+            if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+                collision.gameObject.transform.parent = null;
+        }
+
+        // Check collsion for triggering movement
+        if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(platformTrigger.value, 2f)))
+        {
+
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (waypointPath == null) return;
+
+        Gizmos.color = Color.green;
+
+        for (int i = 0; i < waypoints.Count; i++)
+        {
+            Gizmos.DrawWireSphere(waypoints[i].position, 0.5f);
+        }
+
+
+        for (int i = 0; i < waypoints.Count - 1; i++)
+        {
+            Gizmos.DrawLine(waypoints[i].position, waypoints[i + 1].position);
+        }
+        if (loopPath)
+        {
+            Gizmos.DrawLine(waypoints[waypoints.Count - 1].position, waypoints[0].position);
+        }
+    }
+
+    #endregion
+
+    private void InitializeWaypoints()
+    {
+        foreach (Transform waypointChild in waypointPath)
+        {
+            waypoints.Add(waypointChild);
+        }
+    }
+
+    private bool CheckCondition()
+    {
+        if (waypointPath == null) return false;
+
+        if (waitForStand && !movementTriggered) return false;
+
+        if (stopAtEnd)
+        {
+            if (stopAtBothEnds)
+            {
+                if (transform.position == waypoints[waypoints.Count - 1].position && !platformNowJoined ||
+                    transform.position == waypoints[0].position && !platformNowJoined)
+                {
+                    return false;
+                }
+
+            }
+            else
+            {
+                if (transform.position == waypoints[waypoints.Count - 1].position)
+                    return false;
+            }
+        }
+
+
+        return true;
+    }
+
+    private int GetNextWaypointId(int currId)
+    {
+        int nextId;
+
+        if (loopPath)
+        {
+            nextId = currId + 1;
+
+            if (nextId == waypoints.Count)
+                nextId = 0;
+        }
+        else
+        {
+            int direction = currId - prevId;
+            nextId = currId + direction;
+
+            if (nextId < 0 || nextId >= waypoints.Count)
+            {
+                // Invert direction when list borders are reached
+                direction *= -1;
+                nextId = currId + direction;
+            }
+
+        }
+
+        prevId = currId;
+
+        return nextId;
+    }
+
+    private void TargetNextWaypoint()
+    {
+        // Ref to prev waypoint
+        prevWaypoint = waypoints[targetWaypointId];
+        // Update waypoint id
+        targetWaypointId = GetNextWaypointId(targetWaypointId);
+        //Ref to next waypoint
+        targetWaypoint = waypoints[targetWaypointId];
+
+        elapsedTime = 0;
+
+        float distToWaypoint = Vector2.Distance(prevWaypoint.position, targetWaypoint.position);
+        // Calculate time needed to get to the next waypoint
+        timeToWaypoint = distToWaypoint / speed;
+
+    }
+
     private IEnumerator ActivateMovement(bool mode)
     {
         yield return new WaitForSeconds(triggerOffset);
 
-        canMove = mode;
+        platformNowJoined = false;
+        movementTriggered = mode;
         activatorCoroutine = null;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.GetComponent<Character>() != null)
-        {
-            Character character = collision.gameObject.GetComponent<Character>();
-
-            character.gameObject.transform.parent = null;
-        }
-        if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(platformTrigger.value, 2f)))
-        {
-            if (activatorCoroutine != null)
-                StopCoroutine(activatorCoroutine);
-
-            activatorCoroutine = ActivateMovement(false);
-            StartCoroutine(activatorCoroutine);
-        }
     }
 }

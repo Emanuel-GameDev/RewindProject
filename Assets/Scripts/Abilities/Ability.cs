@@ -12,6 +12,9 @@ public abstract class Ability : ScriptableObject
     public Sprite icon;
     public float cooldownTime;
 
+    // Different from canActivate cause that bool include the cooldown, this one only checks the activation time
+    [HideInInspector] public bool isActive = false;
+
     public virtual void Activate1(GameObject parent) { }
     public virtual void Activate2(GameObject parent) { }
     public virtual void Activate3(GameObject parent) { }
@@ -26,6 +29,5 @@ public abstract class Ability : ScriptableObject
     {
         PubSub.Instance.Notify(EMessageType.AbilityPicked, this);
     }
-    
 
 }
