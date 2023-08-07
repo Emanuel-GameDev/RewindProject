@@ -29,8 +29,8 @@ public class Moving : State
         List<BossPosition> positions = new();
         foreach(BossPosition p in bossBheaviour.GetPositions())
         {
-            if(!Vector3.Equals(p.transform, bossBheaviour.GetCurrentPosition().transform))
-                if (Enum.Equals(p.GetPosition(), bossBheaviour.GetCurrentPosition().GetPosition()))
+            if(!Enum.Equals(p.GetHorizontalPosition(), bossBheaviour.GetCurrentPosition().GetHorizontalPosition()))
+                if (Enum.Equals(p.GetVerticalPosition(), bossBheaviour.GetCurrentPosition().GetVerticalPosition()))
                 {
                     positions.Add(p);
                 }
@@ -46,7 +46,7 @@ public class Moving : State
 
     public override void Update()
     {
-        float moveTime = bossBheaviour.GetMoveDuration();
+        float moveTime = bossBheaviour.GetHorizontalMoveDuration();
 
         elapsedTime += Time.deltaTime;
 
@@ -58,7 +58,7 @@ public class Moving : State
         else
         {
             bossBheaviour.SetCurrentPosition(targetPosition);
-            bossBheaviour.ChangeState(eBossState.Start);
+            bossBheaviour.ChangeState(eBossState.Moving);
         }
     }
 
