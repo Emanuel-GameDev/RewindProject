@@ -39,6 +39,8 @@ public class InvertGravity : Ability
         {
             if (hit[i].collider == null) continue;
 
+            Debug.Log(hit[i].collider.gameObject.name);
+
             foreach (LayerMask mask in layerToIgnore)
             {
                 if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
@@ -53,6 +55,8 @@ public class InvertGravity : Ability
                 ignoreHit = false;
                 continue;
             }
+
+            if (i > 2) continue;
 
             // Obj valid to activate ability
             Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
