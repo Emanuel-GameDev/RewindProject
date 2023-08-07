@@ -327,8 +327,7 @@ public class AbilityWheel : MonoBehaviour
 
         foreach (Ability ability in debugAbilities)
         {
-            GameManager.Instance.abilityManager.DebugAbilities.Add(ability);
-            AddToWheel(ability);
+            ability.Pick(character);
         }
     }
 
