@@ -329,7 +329,6 @@ public class AbilityWheel : MonoBehaviour
         {
             GameManager.Instance.abilityManager.DebugAbilities.Add(ability);
             AddToWheel(ability);
-            ability.Pick(character);
         }
     }
 
