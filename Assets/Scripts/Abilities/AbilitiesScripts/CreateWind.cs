@@ -55,6 +55,8 @@ public class CreateWind : Ability
 
     public override void Disactivate1(GameObject gameObject)
     {
+        if (!isActive) return;
+
         isActive = false;
 
         windZoneObj.GetComponent<AreaEffector2D>().forceMagnitude = forceMagnitude;
@@ -63,7 +65,6 @@ public class CreateWind : Ability
 
         canActivate = false;
         lastActivationTime = Time.time;
-        
     }
 
     public override void UpdateAbility()
@@ -88,6 +89,13 @@ public class CreateWind : Ability
         base.Pick(picker);
 
         currentHolder = picker.gameObject;
+
+        windZoneObj = Instantiate(windZonePrefab, currentHolder.transform, false);
+        windZoneObj.SetActive(false);
+        InitializeWindZone();
+
+        if (!canActivate)
+            canActivate = true;
 
     }
 
