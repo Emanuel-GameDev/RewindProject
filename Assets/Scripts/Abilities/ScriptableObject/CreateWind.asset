@@ -12,22 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ddd26e1288715247ac124a0297cae71, type: 3}
   m_Name: CreateWind
   m_EditorClassIdentifier: 
-  name: VII - Il Carro
-  description: Il vento del cambiamento
+  name: CreateWind
+  description: crei un cono di vento
   icon: {fileID: 21300000, guid: 9b0e7c18b76781644841ed6e186e58f0, type: 3}
-  cooldownTime: 0
   isActive: 0
   windZonePrefab: {fileID: 5198929173573209287, guid: b7bf3314f5a237c40aa451dec2abb8c8, type: 3}
-  cooldown: 0.5
+  cooldown: 3
   scalingCooldown: 0
-  cooldownDivider: 0
-  forceMagnitude: 1500
-  forceMultiplier: 1
+  cooldownDivider: 1
+  forceMagnitude: 100
+  forceMultiplier: 4
   forceAngle: 0
   colliderMask:
   - serializedVersion: 2
     m_Bits: 128
   - serializedVersion: 2
     m_Bits: 256
-  - serializedVersion: 2
-    m_Bits: 1280
