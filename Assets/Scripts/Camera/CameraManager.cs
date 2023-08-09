@@ -26,8 +26,9 @@ public class CameraManager : MonoBehaviour
     [Tooltip("Duration of the transition")]
     [SerializeField] float deformTDuration;
     [Tooltip("LD = Lens Distortion")]
-    [SerializeField] float targetLDIntensity;
-    [SerializeField] float targetSaturation;
+    [SerializeField, Range(-1f, +1f)] float targetLDIntensity;
+    [SerializeField, Range(-100f, +100f)] float targetSaturation;
+    [SerializeField, Range(-180f, +180f)] float targetHueShift; 
 
     private Volume rewindVolume;
     private IEnumerator deformCoroutine;
@@ -38,6 +39,7 @@ public class CameraManager : MonoBehaviour
     private float startLd;
     private ColorAdjustments colorAd;
     private float startSat;
+    private float startHue;
 
     #endregion
 
@@ -127,6 +129,7 @@ public class CameraManager : MonoBehaviour
         float currentAb = chromaticAb.intensity.value;
         float currentLD = lensDist.intensity.value;
         float currentSat = colorAd.saturation.value;
+        float currentHue = colorAd.hueShift.value;
 
         if (!triggered)
         {
@@ -141,8 +144,9 @@ public class CameraManager : MonoBehaviour
             startAb = SetupStartSetting(startAb, currentAb);
             startLd = SetupStartSetting(startLd, currentLD);
             startSat = SetupStartSetting(startSat, currentSat);
+            startHue = SetupStartSetting(startHue, currentHue);
 
-            deformCoroutine = DeformCamera(currentAb, maxAbIntensity, currentLD, targetLDIntensity, currentSat, targetSaturation);
+            deformCoroutine = DeformCamera(currentAb, maxAbIntensity, currentLD, targetLDIntensity, currentSat, targetSaturation, startHue, targetHueShift);
             StartCoroutine(deformCoroutine);
 
             triggered = !triggered;
@@ -156,7 +160,7 @@ public class CameraManager : MonoBehaviour
                 deformCoroutine = null;
             }
 
-            deformCoroutine = DeformCamera(currentAb, startAb, currentLD, startLd, currentSat, startSat);
+            deformCoroutine = DeformCamera(currentAb, startAb, currentLD, startLd, currentSat, startSat, currentHue, startHue);
             StartCoroutine(deformCoroutine);
 
             triggered = !triggered;
@@ -171,7 +175,7 @@ public class CameraManager : MonoBehaviour
         return start;
     }
 
-    private IEnumerator DeformCamera(float currentAb, float targetAb, float currentLD, float targetLD, float currentSat, float targetSat)
+    private IEnumerator DeformCamera(float currentAb, float targetAb, float currentLD, float targetLD, float currentSat, float targetSat, float currentHue, float targetHue)
     {
         float elapsedTime = 0;
 
@@ -192,6 +196,10 @@ public class CameraManager : MonoBehaviour
             // Change Saturation of Color Adjustments
             currentSat = Mathf.Lerp(currentSat, targetSat, t);
             colorAd.saturation.value = currentSat;
+
+            // Change HueShift of Color Adjustments
+            currentHue = Mathf.Lerp(currentHue, targetHue, t);
+            colorAd.hueShift.value = currentHue;
 
             yield return null;
         }
