@@ -89,7 +89,7 @@ public class MovingPlatform : MonoBehaviour
             {
                 RaycastHit2D[] hit;
 
-                if (collision.gameObject.GetComponent<PlayerController>().IsGravityDownward())
+                if (!collision.gameObject.GetComponent<PlayerController>().IsGravityDownward())
                     hit = Physics2D.RaycastAll(collision.gameObject.transform.position, Vector2.up);
                 else
                     hit = Physics2D.RaycastAll(collision.gameObject.transform.position, Vector2.down);
@@ -98,6 +98,7 @@ public class MovingPlatform : MonoBehaviour
                 {
                     if (hit[i].collider != null && hit[i].collider.gameObject.GetComponent<MovingPlatform>())
                     {
+                        Debug.Log(hit[i].collider.gameObject.name);
                         collision.gameObject.transform.parent = transform;
                     }
                 }
