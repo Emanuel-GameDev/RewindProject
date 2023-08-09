@@ -20,6 +20,8 @@ public class InvertGravity : Ability
     {
         if (!canActivate) return;
 
+        // TODO: Riguardare questo codice perché non è ottimale al massimo
+
         RaycastHit2D[] hit;
         Vector3 rayDirection;
         isActive = true;
@@ -30,16 +32,16 @@ public class InvertGravity : Ability
         else
             rayDirection = Vector3.down; // Direzione verso il basso
 
+        // Apply ray distance if needed
         if (rayDistance > 0)
             hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, rayDistance);
         else
             hit = Physics2D.RaycastAll(parent.transform.position, rayDirection, Mathf.Infinity);
 
+        // Looping through objs hit to avoid objs in ignore layers
         for (int i = 0; i < hit.Length; i++)
         {
             if (hit[i].collider == null) continue;
-
-            Debug.Log(hit[i].collider.gameObject.name);
 
             foreach (LayerMask mask in layerToIgnore)
             {
@@ -56,6 +58,7 @@ public class InvertGravity : Ability
                 continue;
             }
 
+            // Make sure to trigger abilty only with the first obj hit by skipping first two layer hit
             if (i > 2) continue;
 
             // Obj valid to activate ability
@@ -64,38 +67,6 @@ public class InvertGravity : Ability
             rBody.gravityScale = -rBody.gravityScale;
             parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
         }
-        //if (hit.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
-        //{
-        //    Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
-
-        //    rBody.gravityScale = -rBody.gravityScale;
-        //    parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-
-        //}
-
-
-        // Starting from 1 in order to skip the ability holder
-        //for (int i = 1; i < hit.Length; i++)
-        //{
-        //    if (hit[i].collider != null)
-        //    {
-        //        if (hit[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetMask.value, 2f)))
-        //        {
-        //            // First obj hit was in the target layer
-        //            Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
-
-        //            rBody.gravityScale = -rBody.gravityScale;
-        //            parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-
-        //            Debug.Log(hit[i].collider.gameObject.name);
-
-        //            break;
-        //        }
-
-        //        // First obj hit was not in the target layer
-        //        break;
-        //    }
-        //}
 
         isActive = false;
         canActivate = false;
