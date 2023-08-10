@@ -38,7 +38,7 @@ public class PlayerFallingState : State
             player.stateMachine.SetState(PlayerState.PlayerJumping);
         }
 
-        if (!player.isFalling)
+        if (!player.isFalling && player.grounded)
         {
             if (player.CheckMaxFallDistanceReached())
             {

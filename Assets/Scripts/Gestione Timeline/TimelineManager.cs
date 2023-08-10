@@ -49,6 +49,7 @@ public class TimelineManager : MonoBehaviour
     private bool isForwarding = false;
     private bool isRewinding = false;
     private bool canUseRewind = false;
+    private bool dontLockAtStart = false;
 
 
     //Instance
@@ -161,7 +162,7 @@ public class TimelineManager : MonoBehaviour
     //FUNZIONI PUBBLICHE
     //==========================================================================================================
     #region Funzioni Pubbliche
-    public void ChangeTimeline(eZone zone)
+    public void ChangeTimeline(eZone zone, bool dontLockAtStart)
     {
         if(zone == actualZone) 
             return;
@@ -182,6 +183,7 @@ public class TimelineManager : MonoBehaviour
         SetTime(timezone.actualTime);
 
         actualZone = zone;
+        this.dontLockAtStart = dontLockAtStart;
     }
 
     public void PlayCurrentTimeline()
@@ -193,7 +195,7 @@ public class TimelineManager : MonoBehaviour
 
     public void LockInTime()
     {
-        if (timelineIsAtStart || timelineIsAtEnd)
+        if ((timelineIsAtStart && !dontLockAtStart) || timelineIsAtEnd)
         {
             RewindIsactive = false;
         }
@@ -273,10 +275,10 @@ public class TimelineManager : MonoBehaviour
     public void SetAtEnd(eZone zone)
     {
         eZone actualZone = this.actualZone;
-        ChangeTimeline(zone);
+        ChangeTimeline(zone, dontLockAtStart);
         SetTime(timelineDuration);
         timelineDirector.Evaluate();
-        ChangeTimeline(actualZone);
+        ChangeTimeline(actualZone, dontLockAtStart);
     }
 
     #endregion

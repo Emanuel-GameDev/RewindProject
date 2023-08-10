@@ -12,7 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce339c4cc1c8bf4695456aa0c2a693d, type: 3}
   m_Name: ProjectileScriptableObject
   m_EditorClassIdentifier: 
-  name: Projectile
-  icon: {fileID: 21300000, guid: bfd9af6a1ca2a2b46b9d55d5c33067e0, type: 3}
+  name: I - Il Bagatto
+  description: La Magia come arma e alleata
+  icon: {fileID: 21300000, guid: b46576860924c634b89ffe077f01c376, type: 3}
   cooldownTime: 1
-  prefabProjectile: {fileID: 1565419668965771719, guid: f4ba2c1112629e8499a4059bafb9d21f, type: 3}
+  isActive: 0
+  prefabPathCreator: {fileID: 3161796256643017668, guid: c3f71930be3a7f44a910a29565a74af9, type: 3}
+  prefabProjectile: {fileID: 1565419668965771719, guid: d9409036672a154418ea429a89efb94c, type: 3}
+  normalProjectileLifeTime: 5
+  normalProjectileSpeed: 30
+  guidedProjectileSpeed: 30
+  timeToDraw: 2

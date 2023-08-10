@@ -18,7 +18,8 @@ public class DoubleJump : Ability
         if (controller == null) return;
 
         controller.canDoubleJump = true;
-        DataSerializer.Save("CANDOUBLEJUMP", true);
+        controller.canDash = true;
+        DataSerializer.Save("TemperanceAbility", true);
     }
 
     

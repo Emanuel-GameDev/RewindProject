@@ -28,6 +28,7 @@ public class EnemyThree : BaseEnemy
     //Nomi delle variabili nell'animator
     private const string SPAWN = "Spawn";
     private const string DESPAWN = "Despawn";
+    private const string DEAD = "Dead";
 
 
 
@@ -40,6 +41,21 @@ public class EnemyThree : BaseEnemy
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, SpawnCheck);
         hidener = GetComponentInChildren<SpriteLineHidener>();
         hidener.Hide();
+    }
+
+    public override void OnDie()
+    {
+        isDead = true;
+        animator.SetBool(DEAD, true);
+        tree.SetVariableValue(IS_DEAD, isDead);
+        coll.enabled = false;
+        StopChase();
+    }
+
+    public override void ResetEnemy()
+    {
+        base.ResetEnemy();
+        tree.RestartWhenComplete = true;
     }
 
     private void SpawnCheck(object obj)
@@ -116,5 +132,9 @@ public class EnemyThree : BaseEnemy
         Gizmos.DrawWireSphere(transform.position, despawnDistance);
     }
 
+    public GameObject GetTarget()
+    {
+        return target;
+    }
 
 }
