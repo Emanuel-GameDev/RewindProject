@@ -54,6 +54,8 @@ public class AbilityWheel : MonoBehaviour
 
     private void Start()
     {
+        Show();
+
         // Filling slots
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -304,6 +306,16 @@ public class AbilityWheel : MonoBehaviour
         PubSub.Instance.Notify(EMessageType.ActiveAbilityChanged, slots[centralSlotIndex].GetAttachedAbility().icon);
     }
 
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
     #endregion
 
     #region Others
@@ -321,9 +333,10 @@ public class AbilityWheel : MonoBehaviour
 
     private void DebugSetup()
     {
-        if (debugAbilities.Count <= 0) return;
+        if (debugAbilities.Count <= 0 ||
+            !GameManager.Instance.debug) return;
 
-        GameManager.Instance.abilityManager.debug = true;
+        GameManager.Instance.debug = true;
 
         foreach (Ability ability in debugAbilities)
         {
