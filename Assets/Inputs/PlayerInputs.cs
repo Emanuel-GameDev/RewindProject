@@ -98,6 +98,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""7758c3fc-712b-43d1-a505-3ea48be1e3ad"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -263,6 +272,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ScrollWheelClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""285a5a2e-f4d0-44bb-a0ee-569021452168"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": ""MultiTap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9917748f-3bf9-4b5e-adf1-6f566d870e0c"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": ""MultiTap"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -982,6 +1013,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Player_OpenMenu = m_Player.FindAction("OpenMenu", throwIfNotFound: true);
         m_Player_Down = m_Player.FindAction("Down", throwIfNotFound: true);
         m_Player_ScrollWheelClick = m_Player.FindAction("ScrollWheelClick", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1074,6 +1106,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_OpenMenu;
     private readonly InputAction m_Player_Down;
     private readonly InputAction m_Player_ScrollWheelClick;
+    private readonly InputAction m_Player_Dash;
     public struct PlayerActions
     {
         private @PlayerInputs m_Wrapper;
@@ -1086,6 +1119,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @OpenMenu => m_Wrapper.m_Player_OpenMenu;
         public InputAction @Down => m_Wrapper.m_Player_Down;
         public InputAction @ScrollWheelClick => m_Wrapper.m_Player_ScrollWheelClick;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1119,6 +1153,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @ScrollWheelClick.started += instance.OnScrollWheelClick;
             @ScrollWheelClick.performed += instance.OnScrollWheelClick;
             @ScrollWheelClick.canceled += instance.OnScrollWheelClick;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1147,6 +1184,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @ScrollWheelClick.started -= instance.OnScrollWheelClick;
             @ScrollWheelClick.performed -= instance.OnScrollWheelClick;
             @ScrollWheelClick.canceled -= instance.OnScrollWheelClick;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1491,6 +1531,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnOpenMenu(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
         void OnScrollWheelClick(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
