@@ -248,7 +248,6 @@ public class AbilityWheel : MonoBehaviour
 
     #endregion
 
-
     #region Wheel Management
     public void AddToWheel(Ability ability)
     {
@@ -335,8 +334,6 @@ public class AbilityWheel : MonoBehaviour
     {
         if (debugAbilities.Count <= 0 ||
             !GameManager.Instance.debug) return;
-
-        GameManager.Instance.debug = true;
 
         foreach (Ability ability in debugAbilities)
         {

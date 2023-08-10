@@ -19,10 +19,7 @@ public class AbilityManager : MonoBehaviour
 
     #region Debug Variables
     [HideInInspector]
-    public List<Ability> DebugAbilities
-    {
-        get { return _abilities; }
-    }
+    public List<Ability> DebugAbilities = new List<Ability>();
 
     #endregion
 
