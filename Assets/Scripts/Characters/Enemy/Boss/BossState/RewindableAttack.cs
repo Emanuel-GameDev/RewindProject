@@ -2,17 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RewindableAttack : MonoBehaviour
+public class RewindableAttack : State
 {
-    // Start is called before the first frame update
-    void Start()
+    private float elapsed;
+    private BossBheaviour bossBheaviour;
+
+    public RewindableAttack(BossBheaviour bossBheaviour)
     {
-        
+        this.bossBheaviour = bossBheaviour;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        Debug.Log(this.GetType().Name);
+        elapsed = 0;
+    }
+
+    public override void Update()
+    {
+        elapsed += Time.deltaTime;
+
+        if (elapsed > 2)
+        {
+            bossBheaviour.ChangeState();
+        }
+
     }
 }

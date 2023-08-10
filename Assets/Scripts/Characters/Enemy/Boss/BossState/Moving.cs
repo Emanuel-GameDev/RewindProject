@@ -58,7 +58,7 @@ public class Moving : State
         else
         {
             bossBheaviour.SetCurrentPosition(targetPosition);
-            bossBheaviour.ChangeState(eBossState.Moving);
+            bossBheaviour.ChangeState();
         }
     }
 

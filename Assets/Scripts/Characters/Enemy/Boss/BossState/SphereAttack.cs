@@ -2,14 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UroboroAttack : State
+public class SphereAttack : State
 {
-
 
     private float elapsed;
     private BossBheaviour bossBheaviour;
 
-    public UroboroAttack(BossBheaviour bossBheaviour)
+    public SphereAttack(BossBheaviour bossBheaviour)
     {
         this.bossBheaviour = bossBheaviour;
     }
@@ -23,7 +22,7 @@ public class UroboroAttack : State
     public override void Update()
     {
         elapsed += Time.deltaTime;
-
+        
         if (elapsed > 2)
         {
             bossBheaviour.ChangeState();

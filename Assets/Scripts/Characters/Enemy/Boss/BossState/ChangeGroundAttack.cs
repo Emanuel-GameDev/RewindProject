@@ -51,7 +51,8 @@ public class ChangeGroundAttack : State
         }
         else
         {
-            bossBheaviour.ChangeState(eBossState.Start);
+            bossBheaviour.ResetChangeGroundCountdown();
+            bossBheaviour.ChangeState();
         }
     }
 

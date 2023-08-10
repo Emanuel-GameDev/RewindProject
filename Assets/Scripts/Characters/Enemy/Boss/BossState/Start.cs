@@ -19,7 +19,7 @@ public class Start : State
         elapsed += Time.deltaTime;
         if(elapsed > timeToWait)
         {
-            bossBheaviour.ChangeState(eBossState.Moving);
+            bossBheaviour.ChangeState();
         }
     }
 
