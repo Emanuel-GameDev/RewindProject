@@ -20,7 +20,7 @@ public class DialogueTrigger : MonoBehaviour
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player"))
             return;
 
-        if (!dialogueTriggered)
+        if (!dialogueTriggered || GetComponentInChildren<Dialogue>(true).repeatable)
         {
             dialogueTriggered = true;
             DataSerializer.Save(SceneManager.GetActiveScene().name + name, dialogueTriggered);

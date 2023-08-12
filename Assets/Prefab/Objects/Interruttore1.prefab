@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5949748267913351416}
   - component: {fileID: 5949748267913351417}
   - component: {fileID: 5949748267913351418}
+  - component: {fileID: 2065405208855940309}
   m_Layer: 7
   m_Name: Interruttore1
   m_TagString: Untagged
@@ -120,21 +121,9 @@ MonoBehaviour:
   effect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FadeEffect, Assembly-CSharp
-        m_MethodName: StartFade
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5949748267913351419}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
+      - m_Target: {fileID: 2065405208855940309}
+        m_TargetAssemblyTypeName: SaveObjState, Assembly-CSharp
+        m_MethodName: ChangeObjectState
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -147,4 +136,17 @@ MonoBehaviour:
   buttonInteraction: 0
   targetLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1024
+--- !u!114 &2065405208855940309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5949748267913351419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4902f37b9d49ddd4dad2d66a78f406f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingStateActive: 1

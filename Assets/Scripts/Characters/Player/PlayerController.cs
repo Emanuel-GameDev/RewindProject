@@ -462,7 +462,11 @@ public class PlayerController : Character
     private void Dash()
     {
         isDashing = true;
-        Vector2 dashDir = new Vector2(bodySprite.transform.localScale.x, 0f);
+        Vector2 dashDir = new Vector2(horizontalInput, 0f);
+        if(horizontalInput>=0)
+            bodySprite.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        else
+            bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
         trail.emitting = true;
 

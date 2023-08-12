@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Drawing;
+using UnityEngine.Events;
 
 public class Dialogue : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Dialogue : MonoBehaviour
     [Header ("Boxes")]
     [SerializeField] TextMeshProUGUI speakerTextBox;
     [SerializeField] TextMeshProUGUI dialogueTextBox;
+
+    public bool repeatable = false;
+    public UnityEvent OnDialogueEnd;
 
     [System.Serializable]
     struct Line
@@ -65,8 +69,6 @@ public class Dialogue : MonoBehaviour
         StartDialogue();
     }
 
-
-
     void StartDialogue()
     {
         index = 0;
@@ -94,6 +96,8 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
+            index = 0;
+            OnDialogueEnd?.Invoke();
             gameObject.SetActive(false);
         }
     }

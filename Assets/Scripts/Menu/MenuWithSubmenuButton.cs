@@ -15,14 +15,14 @@ public class MenuWithSubmenuButton : MenuButton
 
         notificationDot = GetComponentInChildren<NotificationDot>(true);
 
-        if (!submenuToOpen.unlocked)
-        {
-            buttonTextUI.color = Color.gray;
-        }
-        else
-        {
-            buttonTextUI.color = baseColor;
-        }
+        //if (!submenuToOpen.unlocked)
+        //{
+        //    buttonTextUI.color = Color.gray;
+        //}
+        //else
+        //{
+        //    buttonTextUI.color = baseColor;
+        //}
     }
 
     private void Update()

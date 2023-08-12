@@ -10,7 +10,7 @@ public class Menu : MonoBehaviour
     [HideInInspector] public bool notificationInThisMenu=false;
     [HideInInspector] public bool unlocked = false;
 
-    private void OnEnable()
+    public virtual void OnEnable()
     {
         if (startUnlocked)
             UnlockMenu();
