@@ -68,8 +68,6 @@ public class AbilityMenu : MonoBehaviour
 
     private void SetupNewCardLoaded(List<Ability> activeAbilities, int i, GameObject newCard)
     {
-        WheelSlot centralWheelSlot = GameManager.Instance.abilityManager.wheel.GetCentralSlot();
-
         // Setup slot size
         newCard.GetComponent<RectTransform>().sizeDelta = slotSize;
 
@@ -86,14 +84,11 @@ public class AbilityMenu : MonoBehaviour
         cardImage.AddComponent<Image>();
         cardImage.GetComponent<Image>().sprite = activeAbilities[i].icon;
 
-        // Check if ability loaded is central one 
-        if (activeAbilities[i] == centralWheelSlot.GetAttachedAbility())
-        {
-            // Setup Outline
-            cardImage.AddComponent<Outline>();
-            cardImage.GetComponent<Outline>().effectDistance = outlineSize;
-            cardImage.GetComponent<Outline>().effectColor = new Color(outlineColor.r, outlineColor.g, outlineColor.b, 1);
-        }
+        // Setup Outline
+        cardImage.AddComponent<Outline>();
+        cardImage.GetComponent<Outline>().effectDistance = outlineSize;
+        cardImage.GetComponent<Outline>().effectColor = outlineColor;
+        cardImage.GetComponent<Outline>().enabled = false;
     }
 
     private void SetupSlotReferences(AbilityMenuSlot abilityMenuSlot, Ability ability)

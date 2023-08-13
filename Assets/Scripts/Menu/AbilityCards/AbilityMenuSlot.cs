@@ -47,6 +47,9 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
             // Set Texts
             abMenu.textName.text = textName;
             abMenu.textDescription.text = textDescription;
+
+            // Set Outline
+            childGO.GetComponent<Outline>().enabled = true;
         }
         else
         {
@@ -57,15 +60,20 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
             abMenu.textName.text = "";
             abMenu.textDescription.text = "";
+
+            childGO.GetComponent<Outline>().enabled = false;
         }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (childGO != transform.GetChild(0))
+        if (transform.GetChild(0) != null)
         {
-            childGO = transform.GetChild(0).gameObject;
-            startSize = childGO.transform.localScale;
+            if (childGO != transform.GetChild(0))
+            {
+                childGO = transform.GetChild(0).gameObject;
+                startSize = childGO.transform.localScale;
+            }
         }
 
         TriggerCardOvered(true);
@@ -116,7 +124,16 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnDrag(PointerEventData eventData)
     {
-        childGO.GetComponent<RectTransform>().position = Input.mousePosition;
+        Vector3 mousePos = Input.mousePosition;
+        childGO.GetComponent<RectTransform>().position = mousePos;
+
+        //bool isPointerOutOfScreen = mousePos.x < 0 || mousePos.x > Screen.width ||
+        //                    mousePos.y < 0 || mousePos.y > Screen.height;
+
+        //if (isPointerOutOfScreen)
+        //    return;
+        //else
+        //    childGO.GetComponent<RectTransform>().position = mousePos;
     }
 
     public void OnEndDrag(PointerEventData eventData)
