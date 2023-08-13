@@ -23,6 +23,8 @@ public class AbilityMenu : MonoBehaviour
     [Header("GENERAL DATA")]
     [Tooltip("The value for the Game-Time while menu open. 1 = Default")]
     [SerializeField, Range(0.1f, 2f)] private float timeDividerOnMenuOpen = 1f;
+    [Tooltip("Time needed for the card to be set to new size and pos if overed")]
+    [SerializeField] private float animDuration;
 
     [HideInInspector] public TextMeshProUGUI textName;
     [HideInInspector] public TextMeshProUGUI textDescription;
@@ -101,6 +103,7 @@ public class AbilityMenu : MonoBehaviour
         abilityMenuSlot.textName = ability.name;
         abilityMenuSlot.textDescription = ability.description;
         abilityMenuSlot.textTutorial = ability.tutorial;
+        abilityMenuSlot.animDuration = animDuration;
     }
 
     public bool CanBeOpened()

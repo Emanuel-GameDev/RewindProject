@@ -14,6 +14,7 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [HideInInspector] public string textDescription;
     [HideInInspector] public string textTutorial;
     [HideInInspector] public AbilityMenu abMenu;
+    [HideInInspector] public float animDuration;
 
     private GameObject childGO;
     private Vector2 startSize;
@@ -37,14 +38,6 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (mode)
         {
-            // Set Pos
-            startPos = childGO.GetComponent<RectTransform>().localPosition;
-            childGO.GetComponent<RectTransform>().localPosition = new Vector2(childGO.GetComponent<RectTransform>().localPosition.x + posOveredAddition.x,
-                                                                         childGO.GetComponent<RectTransform>().localPosition.y + posOveredAddition.y);
-            
-            // Set Size
-            childGO.transform.localScale = startSize * enlargmentFactor;
-
             // Set Texts
             abMenu.textName.text = textName;
             abMenu.textDescription.text = textDescription;
@@ -55,17 +48,14 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
         else
         {
-            // Reset all
-            childGO.GetComponent<RectTransform>().localPosition = startPos;
-
-            childGO.transform.localScale = startSize;
-
             abMenu.textName.text = "";
             abMenu.textDescription.text = "";
             abMenu.textTutorial.text = "";
 
             childGO.GetComponent<Outline>().enabled = false;
         }
+
+        StartCoroutine(Animation(mode));
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -79,7 +69,48 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
 
         TriggerCardOvered(true);
+    }
 
+    private IEnumerator Animation(bool mode)
+    {
+        if (mode)
+        {
+            // Setup target pos
+            startPos = childGO.GetComponent<RectTransform>().localPosition;
+            Vector3 targetPos = new Vector2(startPos.x + posOveredAddition.x, startPos.y + posOveredAddition.y);
+
+            Vector3 startSize = childGO.GetComponent<RectTransform>().localScale;
+
+            float elapsedTime = 0f;
+            while (elapsedTime < animDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / animDuration;
+
+                childGO.GetComponent<RectTransform>().localPosition = Vector2.Lerp(startPos, targetPos, t);
+                childGO.GetComponent<RectTransform>().localScale = Vector2.Lerp(startSize, (startSize * enlargmentFactor), t);
+
+                yield return null;
+            }
+
+        }
+        else
+        {
+            Vector3 currPos = childGO.GetComponent<RectTransform>().localPosition;
+            Vector3 currSize = childGO.GetComponent<RectTransform>().localScale;
+
+            float elapsedTime = 0f;
+            while (elapsedTime < animDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / animDuration;
+
+                childGO.GetComponent<RectTransform>().localPosition = Vector2.Lerp(currPos, startPos, t);
+                childGO.GetComponent<RectTransform>().localScale = Vector2.Lerp(currSize, startSize, t);
+
+                yield return null;
+            }
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
