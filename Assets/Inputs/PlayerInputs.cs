@@ -91,15 +91,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ScrollWheelClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""cf31439a-8c15-483f-b6a4-d1e16edae679"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""7758c3fc-712b-43d1-a505-3ea48be1e3ad"",
@@ -255,28 +246,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1218ea9f-306e-49bf-a539-872a7ed4388b"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ScrollWheelClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f2ce42da-f64a-4fab-91a7-ae4b4883938f"",
-                    ""path"": ""<Keyboard>/c"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ScrollWheelClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""285a5a2e-f4d0-44bb-a0ee-569021452168"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": ""MultiTap"",
@@ -389,6 +358,15 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""type"": ""PassThrough"",
                     ""id"": ""97b5802f-c175-4264-b6bc-29e54479923d"",
                     ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ScrollWheelClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""305e785f-e990-40c4-a8f2-1fe6f5ab1606"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -812,6 +790,28 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfffd3c1-ae14-454f-9301-ab2dff38f97b"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ScrollWheelClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30414769-a25c-4125-b7c2-075ce6468d57"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ScrollWheelClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -1012,7 +1012,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_Player_Respawn = m_Player.FindAction("Respawn", throwIfNotFound: true);
         m_Player_OpenMenu = m_Player.FindAction("OpenMenu", throwIfNotFound: true);
         m_Player_Down = m_Player.FindAction("Down", throwIfNotFound: true);
-        m_Player_ScrollWheelClick = m_Player.FindAction("ScrollWheelClick", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1026,6 +1025,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_UI_ScrollWheelClick = m_UI.FindAction("ScrollWheelClick", throwIfNotFound: true);
         // AbilityController
         m_AbilityController = asset.FindActionMap("AbilityController", throwIfNotFound: true);
         m_AbilityController_Activate1 = m_AbilityController.FindAction("Activate1", throwIfNotFound: true);
@@ -1105,7 +1105,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Respawn;
     private readonly InputAction m_Player_OpenMenu;
     private readonly InputAction m_Player_Down;
-    private readonly InputAction m_Player_ScrollWheelClick;
     private readonly InputAction m_Player_Dash;
     public struct PlayerActions
     {
@@ -1118,7 +1117,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @Respawn => m_Wrapper.m_Player_Respawn;
         public InputAction @OpenMenu => m_Wrapper.m_Player_OpenMenu;
         public InputAction @Down => m_Wrapper.m_Player_Down;
-        public InputAction @ScrollWheelClick => m_Wrapper.m_Player_ScrollWheelClick;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
@@ -1150,9 +1148,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Down.started += instance.OnDown;
             @Down.performed += instance.OnDown;
             @Down.canceled += instance.OnDown;
-            @ScrollWheelClick.started += instance.OnScrollWheelClick;
-            @ScrollWheelClick.performed += instance.OnScrollWheelClick;
-            @ScrollWheelClick.canceled += instance.OnScrollWheelClick;
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
@@ -1181,9 +1176,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @Down.started -= instance.OnDown;
             @Down.performed -= instance.OnDown;
             @Down.canceled -= instance.OnDown;
-            @ScrollWheelClick.started -= instance.OnScrollWheelClick;
-            @ScrollWheelClick.performed -= instance.OnScrollWheelClick;
-            @ScrollWheelClick.canceled -= instance.OnScrollWheelClick;
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
@@ -1218,6 +1210,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_RightClick;
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_UI_ScrollWheelClick;
     public struct UIActions
     {
         private @PlayerInputs m_Wrapper;
@@ -1232,6 +1225,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        public InputAction @ScrollWheelClick => m_Wrapper.m_UI_ScrollWheelClick;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1271,6 +1265,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+            @ScrollWheelClick.started += instance.OnScrollWheelClick;
+            @ScrollWheelClick.performed += instance.OnScrollWheelClick;
+            @ScrollWheelClick.canceled += instance.OnScrollWheelClick;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1305,6 +1302,9 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             @TrackedDeviceOrientation.started -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.performed -= instance.OnTrackedDeviceOrientation;
             @TrackedDeviceOrientation.canceled -= instance.OnTrackedDeviceOrientation;
+            @ScrollWheelClick.started -= instance.OnScrollWheelClick;
+            @ScrollWheelClick.performed -= instance.OnScrollWheelClick;
+            @ScrollWheelClick.canceled -= instance.OnScrollWheelClick;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1530,7 +1530,6 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnRespawn(InputAction.CallbackContext context);
         void OnOpenMenu(InputAction.CallbackContext context);
         void OnDown(InputAction.CallbackContext context);
-        void OnScrollWheelClick(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
     }
     public interface IUIActions
@@ -1545,6 +1544,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        void OnScrollWheelClick(InputAction.CallbackContext context);
     }
     public interface IAbilityControllerActions
     {

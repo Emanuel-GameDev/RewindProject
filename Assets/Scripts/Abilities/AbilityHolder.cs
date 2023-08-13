@@ -36,42 +36,54 @@ public class AbilityHolder : Character
 
     private void Disactivate3(InputAction.CallbackContext obj)
     {
-        if (activeAbility == null) return;
+        AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
+
+        if (activeAbility == null || !wheel.gameObject.activeSelf) return;
 
         activeAbility.Disactivate3(gameObject);
     }
 
     private void Disactivate2(InputAction.CallbackContext obj)
     {
-        if (activeAbility == null) return;
+        AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
+
+        if (activeAbility == null || !wheel.gameObject.activeSelf) return;
 
         activeAbility.Disactivate2(gameObject);
     }
 
     private void Disactivate1(InputAction.CallbackContext obj)
     {
-        if (activeAbility == null) return;
+        AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
+
+        if (activeAbility == null || !wheel.gameObject.activeSelf) return;
 
         activeAbility.Disactivate1(gameObject);
     }
 
     private void Activate3(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (activeAbility == null) return;
+        AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
+
+        if (activeAbility == null || !wheel.gameObject.activeSelf) return;
 
         activeAbility.Activate3(gameObject);
     }
 
     private void Activate2(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (activeAbility == null) return;
+        AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
+
+        if (activeAbility == null || !wheel.gameObject.activeSelf) return;
 
         activeAbility.Activate2(gameObject);
     }
 
     private void Activate1(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (activeAbility == null) return;
+        AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
+
+        if (activeAbility == null || !wheel.gameObject.activeSelf) return;
 
         activeAbility.Activate1(gameObject);
     }

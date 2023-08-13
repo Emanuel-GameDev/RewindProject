@@ -79,7 +79,7 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private Ability GetAbilityFrom(Sprite abilityIcon)
+    public Ability GetAbilityFrom(Sprite abilityIcon)
     {
         if (GameManager.Instance.debug)
             return DebugAbilities.Where(ability => ability.icon == abilityIcon)?.First();
