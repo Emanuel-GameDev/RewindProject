@@ -11,7 +11,8 @@ public enum EMessageType
     AbilityAnimStart,
     TimeRewindStart,
     TimeRewindStop,
-    RewindZoneEntered
+    RewindZoneEntered,
+    CardSelected
 }
 
 public enum EAbilityState

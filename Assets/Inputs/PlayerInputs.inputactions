@@ -69,15 +69,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ScrollWheelClick",
-                    "type": "Button",
-                    "id": "cf31439a-8c15-483f-b6a4-d1e16edae679",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Dash",
                     "type": "Button",
                     "id": "7758c3fc-712b-43d1-a505-3ea48be1e3ad",
@@ -233,28 +224,6 @@
                 },
                 {
                     "name": "",
-                    "id": "1218ea9f-306e-49bf-a539-872a7ed4388b",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ScrollWheelClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f2ce42da-f64a-4fab-91a7-ae4b4883938f",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ScrollWheelClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "285a5a2e-f4d0-44bb-a0ee-569021452168",
                     "path": "<Keyboard>/d",
                     "interactions": "MultiTap",
@@ -367,6 +336,15 @@
                     "type": "PassThrough",
                     "id": "97b5802f-c175-4264-b6bc-29e54479923d",
                     "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ScrollWheelClick",
+                    "type": "Button",
+                    "id": "305e785f-e990-40c4-a8f2-1fe6f5ab1606",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -788,6 +766,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cfffd3c1-ae14-454f-9301-ab2dff38f97b",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ScrollWheelClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "30414769-a25c-4125-b7c2-075ce6468d57",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ScrollWheelClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

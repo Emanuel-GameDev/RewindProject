@@ -27,15 +27,15 @@ public class UIManager : MonoBehaviour
     {
         inputs = new PlayerInputs();
 
-        if (!inputs.Player.enabled)
-            inputs.Player.Enable();
+        if (!inputs.UI.enabled)
+            inputs.UI.Enable();
 
-        inputs.Player.ScrollWheelClick.performed += OpenAbilityMenu;
+        inputs.UI.ScrollWheelClick.performed += OpenAbilityMenu;
     }
 
     private void OnDisable()
     {
-        inputs.Player.ScrollWheelClick.performed -= OpenAbilityMenu;
+        inputs.UI.ScrollWheelClick.performed -= OpenAbilityMenu;
     }
 
     private void OpenAbilityMenu(InputAction.CallbackContext obj)
@@ -46,12 +46,28 @@ public class UIManager : MonoBehaviour
             return;
         }
 
+        if (GameManager.Instance.debug)
+            canShowMenu = true;
+
         if (!abilityMenu.gameObject.activeSelf && abilityMenu.CanBeOpened() && canShowMenu)
+        {
+            TriggerAbilityMenu(true);
+
+        }
+        else if (abilityMenu.gameObject.activeSelf)
+        {
+            TriggerAbilityMenu(false);
+        }
+    }
+
+    public void TriggerAbilityMenu(bool mode)
+    {
+        if (mode)
         {
             abilityWheel.Hide();
             abilityMenu.Open();
         }
-        else if (abilityMenu.gameObject.activeSelf)
+        else
         {
             abilityWheel.Show();
             abilityMenu.Close();
@@ -108,6 +124,22 @@ public class UIManager : MonoBehaviour
         cardDescription.text = cardToShow.description;
 
         animator.SetTrigger("hasToShowCard");
+    }
+
+    internal void UpdateWheel()
+    {
+        AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
+        List<WheelSlot> activeWheelSlots = wheel.GetActiveWheelSlots();
+        List<AbilityMenuSlot> loadedSlots = abilityMenu.GetLoadedSlots();
+
+        for (int i = 0; i < loadedSlots.Count; i++)
+        {
+            Image abIcon = loadedSlots[i].transform.GetChild(0).GetComponent<Image>();
+            Ability ability = GameManager.Instance.abilityManager.GetAbilityFrom(abIcon.sprite);
+            activeWheelSlots[i].AttachAbility(ability);
+        }
+
+        wheel.UpdateSlotsGraphic(activeWheelSlots);
     }
 
     public void ShowCompleted()

@@ -54,6 +54,8 @@ public class AbilityWheel : MonoBehaviour
 
     private void Start()
     {
+        PubSub.Instance.RegisterFunction(EMessageType.CardSelected, SelectCard);
+
         Show();
 
         // Filling slots
@@ -87,13 +89,7 @@ public class AbilityWheel : MonoBehaviour
         if (!CheckCondition()) return;
 
         // Shifting only in between active slots
-        List<WheelSlot> activeSlots = new List<WheelSlot>();
-
-        foreach (WheelSlot slot in slots)
-        {
-            if (slot.GetAttachedAbility() != null)
-                activeSlots.Add(slot);
-        }
+        List<WheelSlot> activeSlots = GetActiveWheelSlots();
 
         // Check scroll direction
         float scrollValue = scroll.ReadValue<Vector2>().y;
@@ -287,7 +283,7 @@ public class AbilityWheel : MonoBehaviour
 
     }
 
-    private void UpdateSlotsGraphic(List<WheelSlot> shiftables)
+    public void UpdateSlotsGraphic(List<WheelSlot> shiftables)
     {
         foreach (WheelSlot slot in shiftables)
         {
@@ -313,6 +309,66 @@ public class AbilityWheel : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    public void SetInTheMiddle(List<WheelSlot> activeSlots, Ability ability)
+    {
+        for (int i = 0; i < activeSlots.Count; i++)
+        {
+            if (activeSlots[centralSlotIndex].GetAttachedAbility() == ability)
+                break;
+
+            switch (ShiftPossible(activeSlots))
+            {
+                case 1:
+                    break;
+                case 2:
+                    SingleSwitch(activeSlots);
+
+                    UpdateSlotsGraphic(activeSlots);
+                    UpdateActiveAbility();
+
+                    break;
+                case > 2:
+                    ShiftAbilitiesLeft(activeSlots);
+
+                    UpdateSlotsGraphic(activeSlots);
+                    UpdateActiveAbility();
+
+                    break;
+            }
+        }
+    }
+
+    public List<WheelSlot> GetActiveWheelSlots()
+    {
+        List<WheelSlot> activeSlots = new List<WheelSlot>();
+
+        foreach (WheelSlot slot in slots)
+        {
+            if (slot.GetAttachedAbility() != null)
+                activeSlots.Add(slot);
+        }
+
+        return activeSlots;
+    }
+
+    public WheelSlot GetCentralSlot()
+    {
+        return slots[centralSlotIndex];
+    }
+
+    private void SelectCard(object obj)
+    {
+        if (obj is not AbilityMenuSlot) return;
+        AbilityMenuSlot slot = obj as AbilityMenuSlot;
+
+        List<WheelSlot> activelSlots = GetActiveWheelSlots();
+
+        Image abilityIcon = slot.transform.GetChild(0).GetComponent<Image>();
+        Ability ability = GameManager.Instance.abilityManager.GetAbilityFrom(abilityIcon.sprite);
+
+        SetInTheMiddle(activelSlots, ability);
     }
 
     #endregion
