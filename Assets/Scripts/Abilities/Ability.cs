@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public abstract class Ability : ScriptableObject
 {
     public new string name;
-    public string description;  
+    public string description;
+    public string tutorial;
     public Sprite icon;
     public float cooldownTime;
 

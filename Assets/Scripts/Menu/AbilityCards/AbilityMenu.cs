@@ -26,6 +26,7 @@ public class AbilityMenu : MonoBehaviour
 
     [HideInInspector] public TextMeshProUGUI textName;
     [HideInInspector] public TextMeshProUGUI textDescription;
+    [HideInInspector] public TextMeshProUGUI textTutorial;
 
     private List<AbilityMenuSlot> loadedSlots;
     private float originalTimeScale;
@@ -34,6 +35,7 @@ public class AbilityMenu : MonoBehaviour
     {
         textName = infoPanel.GetChild(0).GetComponent<TextMeshProUGUI>();
         textDescription = infoPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
+        textTutorial = infoPanel.GetChild(2).GetComponent<TextMeshProUGUI>();
     }
 
     private void LoadCards()
@@ -98,6 +100,7 @@ public class AbilityMenu : MonoBehaviour
         abilityMenuSlot.posOveredAddition = cardPosOveredAddition;
         abilityMenuSlot.textName = ability.name;
         abilityMenuSlot.textDescription = ability.description;
+        abilityMenuSlot.textTutorial = ability.tutorial;
     }
 
     public bool CanBeOpened()

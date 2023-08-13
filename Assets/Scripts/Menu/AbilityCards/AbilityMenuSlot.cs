@@ -12,6 +12,7 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [HideInInspector] public float enlargmentFactor = 1.1f;
     [HideInInspector] public string textName;
     [HideInInspector] public string textDescription;
+    [HideInInspector] public string textTutorial;
     [HideInInspector] public AbilityMenu abMenu;
 
     private GameObject childGO;
@@ -47,6 +48,7 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
             // Set Texts
             abMenu.textName.text = textName;
             abMenu.textDescription.text = textDescription;
+            abMenu.textTutorial.text = textTutorial;
 
             // Set Outline
             childGO.GetComponent<Outline>().enabled = true;
@@ -60,6 +62,7 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
             abMenu.textName.text = "";
             abMenu.textDescription.text = "";
+            abMenu.textTutorial.text = "";
 
             childGO.GetComponent<Outline>().enabled = false;
         }
@@ -67,13 +70,12 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (transform.GetChild(0) != null)
+        if (isDragging) return;
+
+        if (childGO != transform.GetChild(0))
         {
-            if (childGO != transform.GetChild(0))
-            {
-                childGO = transform.GetChild(0).gameObject;
-                startSize = childGO.transform.localScale;
-            }
+            childGO = transform.GetChild(0).gameObject;
+            startSize = childGO.transform.localScale;
         }
 
         TriggerCardOvered(true);
