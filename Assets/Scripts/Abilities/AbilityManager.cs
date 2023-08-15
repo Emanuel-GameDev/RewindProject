@@ -17,13 +17,11 @@ public class AbilityManager : MonoBehaviour
 
     public AbilityWheel wheel;
 
-    // Debug
-    [HideInInspector] public bool debug = false;
+    #region Debug Variables
     [HideInInspector]
-    public List<Ability> DebugAbilities
-    {
-        get { return _abilities; }
-    }
+    public List<Ability> DebugAbilities = new List<Ability>();
+
+    #endregion
 
     private void Awake()
     {
@@ -54,7 +52,10 @@ public class AbilityManager : MonoBehaviour
         Ability newAbility = obj as Ability;
 
         // Add to unlocked abilities
-        _abilities.Add(newAbility);
+        if (GameManager.Instance.debug)
+            DebugAbilities.Add(newAbility);
+        else
+            _abilities.Add(newAbility);
 
         // Add to wheel
         wheel.AddToWheel(newAbility);
@@ -78,11 +79,19 @@ public class AbilityManager : MonoBehaviour
         }
     }
 
-    private Ability GetAbilityFrom(Sprite abilityIcon)
+    public Ability GetAbilityFrom(Sprite abilityIcon)
     {
-        if (debug)
+        if (GameManager.Instance.debug)
             return DebugAbilities.Where(ability => ability.icon == abilityIcon)?.First();
 
         return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
+    }
+
+    public List<Ability> GetUnlockedAbilities()
+    {
+        if (GameManager.Instance.debug)
+            return DebugAbilities;
+        else
+            return _abilities;
     }
 }

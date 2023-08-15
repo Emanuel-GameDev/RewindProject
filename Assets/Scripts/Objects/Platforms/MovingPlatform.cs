@@ -86,7 +86,25 @@ public class MovingPlatform : MonoBehaviour
         foreach (LayerMask mask in affectedLayers)
         {
             if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
-                collision.gameObject.transform.parent = transform;
+            {
+                RaycastHit2D[] hit;
+
+                // Inverted Gravity
+                if (collision.gameObject.GetComponent<Rigidbody2D>().gravityScale < 0)
+                    hit = Physics2D.RaycastAll(collision.gameObject.transform.position, Vector2.up);
+                // Normal Gravity
+                else
+                    hit = Physics2D.RaycastAll(collision.gameObject.transform.position, Vector2.down);
+
+                for (int i = 0; i < hit.Length; i++)
+                {
+                    if (hit[i].collider != null && hit[i].collider.gameObject.GetComponent<MovingPlatform>())
+                    {
+                        collision.gameObject.transform.parent = transform;
+                    }
+                }
+
+            }
         }
 
         // Check collsion for triggering movement
@@ -124,19 +142,19 @@ public class MovingPlatform : MonoBehaviour
 
         Gizmos.color = Color.green;
 
-        for (int i = 0; i < waypoints.Count; i++)
+        for (int i = 0; i < waypointPath.childCount; i++)
         {
-            Gizmos.DrawWireSphere(waypoints[i].position, 0.5f);
+            Gizmos.DrawWireSphere(waypointPath.GetChild(i).position, 0.5f);
         }
 
 
-        for (int i = 0; i < waypoints.Count - 1; i++)
+        for (int i = 0; i < waypointPath.childCount - 1; i++)
         {
-            Gizmos.DrawLine(waypoints[i].position, waypoints[i + 1].position);
+            Gizmos.DrawLine(waypointPath.GetChild(i).position, waypointPath.GetChild(i + 1).position);
         }
         if (loopPath)
         {
-            Gizmos.DrawLine(waypoints[waypoints.Count - 1].position, waypoints[0].position);
+            Gizmos.DrawLine(waypointPath.GetChild(waypointPath.transform.childCount - 1).position, waypointPath.GetChild(0).position);
         }
     }
 
