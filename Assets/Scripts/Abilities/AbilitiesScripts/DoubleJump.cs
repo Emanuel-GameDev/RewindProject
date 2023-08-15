@@ -13,13 +13,16 @@ public class DoubleJump : Ability
 
     public override void Pick(Character picker)
     {
+        base.Pick(picker);
+
         PlayerController controller = picker.GetComponent<PlayerController>();
 
         if (controller == null) return;
 
         controller.canDoubleJump = true;
         controller.canDash = true;
-        DataSerializer.Save("TemperanceAbility", true);
+
+        //DataSerializer.Save("TemperanceAbility", true);
     }
 
     

@@ -46,6 +46,8 @@ public class UIManager : MonoBehaviour
             return;
         }
 
+        if (!abilityWheel.canSwitch) return;
+
         if (GameManager.Instance.debug)
             canShowMenu = true;
 
@@ -66,11 +68,15 @@ public class UIManager : MonoBehaviour
         {
             abilityWheel.Hide();
             abilityMenu.Open();
+
+            PlayerController.instance.inputs.Player.Disable();
         }
         else
         {
             abilityWheel.Show();
             abilityMenu.Close();
+
+            PlayerController.instance.inputs.Player.Enable();
         }
     }
 
@@ -84,6 +90,9 @@ public class UIManager : MonoBehaviour
         cardDescription.gameObject.SetActive(false);
 
         SetupReferences();
+
+        abilityMenu.gameObject.SetActive(false);
+
     }
 
     private void SetupReferences()
