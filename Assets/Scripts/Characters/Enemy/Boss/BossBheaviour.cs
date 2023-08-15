@@ -23,20 +23,13 @@ public class BossBheaviour : MonoBehaviour
     [Header("Data")]
     [SerializeField] BossPosition startPosition;
     [SerializeField] GameObject bossBody;
-    [SerializeField] GameObject topGround;
-    [SerializeField] GameObject bottomGround;
+    [SerializeField] BossGroundManager groundManager;
 
     [Header("Value")]
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro orizzontalmente")]
     [SerializeField] float horizontalMoveDuration = 5f;
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro verticalmente")]
     [SerializeField] float verticalMoveDuration = 5f;
-    [Tooltip("Imposta in quanto tempo compare il terreno/soffitto durante il ribaltamento")]
-    [SerializeField] float groundFadeInDuration = 5f;
-    [Tooltip("Imposta in quanto tempo scompare il terreno/soffitto durante il ribaltamento")]
-    [SerializeField] float groundFadeOutDuration = 5f;
-    [Tooltip("Imposta per quanto tempo vene scosso il terreno/soffitto prima di iniziare a scomparire")]
-    [SerializeField] float groundShakeDuration = 5f;
     [Tooltip("Imposta dopo quanti colpi il boss inzia a cambiare il terreno/soffitto")]
     [SerializeField] int necessaryHitForChangeGround = 2;
     [Tooltip("Imposta ogni quanto tempo deve ripetersi il cambio terreno/soffitto")]
@@ -173,7 +166,10 @@ public class BossBheaviour : MonoBehaviour
 
     public void ChangeState()
     {
-        nextState = NextStateChooser();
+        if(nextState == currentState)
+        {
+            nextState = NextStateChooser();
+        }
         ChangeState(nextState);
     }
 
@@ -195,6 +191,12 @@ public class BossBheaviour : MonoBehaviour
             changeGroundStarted = true;
         }
     }
+
+    public void SetNextState(eBossState nextState)
+    {
+        this.nextState = nextState;
+    }
+
 
     //FUNZIONI GET
     //====================================================================================================================================
@@ -224,24 +226,14 @@ public class BossBheaviour : MonoBehaviour
         return verticalMoveDuration;
     }
 
-    public float GetGroundFadeInDuration()
-    {
-        return groundFadeInDuration;
-    }
-
-    public float GetGroundFadeOutDuration()
-    {
-        return groundFadeOutDuration;
-    }
-
-    public float GetGroundShakeDuration()
-    {
-        return groundShakeDuration;
-    }
-
     public eBossState GetNextState()
     {
         return nextState;
+    }
+
+    public BossGroundManager GetBossGroundManager()
+    {
+        return groundManager;
     }
 
 

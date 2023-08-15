@@ -6,12 +6,11 @@ using UnityEngine;
 public class ChangeGroundAttack : State
 {
     BossBheaviour bossBheaviour;
+    BossGroundManager groundManager;
+    float elapsedTime;
     Vector3 startPosition;
     Vector3 endPosition;
-    float elapsedTime;
-    GameObject activeGround;
-    GameObject nextGround;
-    bool mustMove;
+    bool moveBoss;
 
     public ChangeGroundAttack(BossBheaviour bossBheaviour)
     {
@@ -20,55 +19,51 @@ public class ChangeGroundAttack : State
 
     public override void Enter()
     {
-        startPosition = bossBheaviour.GetCurrentPosition().transform.position;
-        endPosition = bossBheaviour.GetCurrentPosition().GetOppositePosition().transform.position;
-        elapsedTime = 0f;
         if(bossBheaviour.GetCurrentPosition().GetHorizontalPosition() == eHorizontalPosition.Center)
         {
-            mustMove = true;
+            bossBheaviour.SetNextState(eBossState.ChangeGroundAttack);
+            bossBheaviour.ChangeState(eBossState.Moving);
         }
         else
         {
-            mustMove = false;
+            groundManager = bossBheaviour.GetBossGroundManager();
+            groundManager.StartChangeGround();
+            elapsedTime = 0;
+            startPosition = bossBheaviour.GetCurrentPosition().transform.position;
+            endPosition = bossBheaviour.GetCurrentPosition().GetOppositePosition().position;
+            moveBoss = false;
         }
     }
 
     public override void Update()
     {
-        elapsedTime += Time.deltaTime;
+        bool changeState = groundManager.UpdateState();
 
-        if (elapsedTime <= bossBheaviour.GetGroundFadeInDuration())
+        if (groundManager.IsInFadeOut())
         {
-            GroundFadeIn();
+            moveBoss = true;
         }
-        else if(elapsedTime - bossBheaviour.GetGroundFadeInDuration() <= bossBheaviour.GetGroundShakeDuration())
+
+        if (moveBoss)
         {
-            GroundShake();
+            elapsedTime += Time.deltaTime;
+            if(elapsedTime < bossBheaviour.GetVerticalMoveDuration())
+            {
+                float t = elapsedTime / bossBheaviour.GetVerticalMoveDuration();
+                bossBheaviour.GetBossBody().transform.position = Vector3.Lerp(startPosition, endPosition, t);
+            }
+            else
+            {
+                moveBoss = false;
+                bossBheaviour.SetCurrentPosition(bossBheaviour.GetCurrentPosition().GetOppositePosition().gameObject.GetComponent<BossPosition>());
+            }
+            
         }
-        else if(elapsedTime - bossBheaviour.GetGroundFadeInDuration() - bossBheaviour.GetGroundShakeDuration() <= bossBheaviour.GetGroundFadeOutDuration())
-        {
-            GroundFadeOut();
-        }
-        else
+
+        if (changeState && !moveBoss)
         {
             bossBheaviour.ResetChangeGroundCountdown();
             bossBheaviour.ChangeState();
         }
     }
-
-    private void GroundShake()
-    {
-        Debug.Log("GroundShake");
-    }
-
-    private void GroundFadeIn()
-    {
-        Debug.Log("GroundFadeIn");
-    }
-
-    private void GroundFadeOut()
-    {
-        Debug.Log("GroundFadeOut");
-    }
-
 }

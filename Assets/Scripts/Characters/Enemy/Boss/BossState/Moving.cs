@@ -41,7 +41,6 @@ public class Moving : State
         Vector3 destination = targetPosition.transform.position;
 
         return destination;
-
     }
 
     public override void Update()
