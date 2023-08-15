@@ -57,8 +57,11 @@ public class AbilityManager : MonoBehaviour
         else
             _abilities.Add(newAbility);
 
-        // Add to wheel
-        wheel.AddToWheel(newAbility);
+        if (!newAbility.passive)
+        {
+            // Add to wheel
+            wheel.AddToWheel(newAbility);
+        }
 
         if (!abilityNameToSave.Contains(newAbility.name))
             abilityNameToSave.Add(newAbility.name);
