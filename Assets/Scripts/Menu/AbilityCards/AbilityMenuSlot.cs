@@ -118,27 +118,27 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (mode)
         {
+
+            // Set Texts
+            abMenu.textName.text = textName;
+            abMenu.textDescription.text = textDescription;
+            abMenu.textTutorial.text = textTutorial;
+
+            // Set Outline
             if (!passive)
             {
-                // Set Texts
-                abMenu.textName.text = textName;
-                abMenu.textDescription.text = textDescription;
-                abMenu.textTutorial.text = textTutorial;
-
-                // Set Outline
                 childGO.GetComponent<Outline>().enabled = true;
             }
         }
         else
         {
-            if (!passive)
-            {
-                abMenu.textName.text = "";
-                abMenu.textDescription.text = "";
-                abMenu.textTutorial.text = "";
 
+            abMenu.textName.text = "";
+            abMenu.textDescription.text = "";
+            abMenu.textTutorial.text = "";
+
+            if (!passive)
                 childGO.GetComponent<Outline>().enabled = false;
-            }
         }
 
         if (animationCoroutine != null)
@@ -218,7 +218,7 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void OnEndDrag(PointerEventData eventData)
     {
         if (passive) return;
-        
+
         AbilityMenuSlot slotHit = UIRaycastToSlot(eventData);
 
         if (slotHit != null)
