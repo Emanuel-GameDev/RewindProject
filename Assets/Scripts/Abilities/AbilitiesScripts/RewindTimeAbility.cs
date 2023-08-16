@@ -17,10 +17,11 @@ public class RewindTimeAbility : Ability
 
     public override void Activate3(GameObject parent)
     {
-        TimelineManager.Instance.StartStopControlTimeline();
-
-        if (isActive)
+        if (TimelineManager.Instance.StartStopControlTimeline())
+            isActive = true;
+        else
             isActive = false;
+
     }
 
     public override void Disactivate1(GameObject gameObject)
