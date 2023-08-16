@@ -11,8 +11,6 @@ public class BossPosition : MonoBehaviour
     [SerializeField] eVerticalPosition verticalPosition;
     [SerializeField] eHorizontalPosition horizontalPosition;
 
-    [SerializeField] Transform oppositePosition;
-
     public eVerticalPosition GetVerticalPosition()
     {
         return verticalPosition;
@@ -22,8 +20,4 @@ public class BossPosition : MonoBehaviour
         return horizontalPosition;
     }
 
-    public Transform GetOppositePosition()
-    {
-        return oppositePosition;
-    }
 }

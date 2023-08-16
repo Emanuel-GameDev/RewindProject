@@ -20,20 +20,33 @@ public enum eBossState
 
 public class BossBheaviour : MonoBehaviour
 {
-    [Header("Data")]
+    [Header("General Data")]
     [SerializeField] BossPosition startPosition;
     [SerializeField] GameObject bossBody;
     [SerializeField] BossGroundManager groundManager;
 
-    [Header("Value")]
+    [Header("Movement")]
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro orizzontalmente")]
     [SerializeField] float horizontalMoveDuration = 5f;
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro verticalmente")]
     [SerializeField] float verticalMoveDuration = 5f;
+
+    [Header("Change Ground Settings")]
     [Tooltip("Imposta dopo quanti colpi il boss inzia a cambiare il terreno/soffitto")]
     [SerializeField] int necessaryHitForChangeGround = 2;
     [Tooltip("Imposta ogni quanto tempo deve ripetersi il cambio terreno/soffitto")]
     [SerializeField] float changeGroundTime = 30f;
+
+    [Header("Sphere Attack Settings")]
+    [SerializeField] GameObject projectilePrefab;
+    [SerializeField] int numberOfProjectile = 5;
+    [SerializeField] float distanceBetweenProjectile = 5f;
+    [SerializeField] float waitBeforeSpawn = 2f;
+    [SerializeField] float waitBeforeShot = 2f;
+    [SerializeField] float projectileVerticalOffset = 2f;
+    [SerializeField] float projectileHorizontalOffset = 5f;
+
+    [Header("Other Settings")]
     [Tooltip("Imposta quanto è probabile che esegua nuovamente la stessa mossa di seguito in relazione alle altre (1 stessa probabilità delle altre, 0 nessuna probabilità)")]
     [Range(0f, 1f)]
     [SerializeField] float repeatPercentage = 0.5f;
@@ -63,7 +76,7 @@ public class BossBheaviour : MonoBehaviour
         //Temporaneo per test
         if (Input.GetKeyDown(KeyCode.H))
         {
-            HitCounteurUpdater(1);
+            HitCounterUpdater(1);
         }
     }
 
@@ -183,7 +196,7 @@ public class BossBheaviour : MonoBehaviour
         currentPosition = newPosition;
     }
 
-    public void HitCounteurUpdater(int n)
+    public void HitCounterUpdater(int n)
     {
         hitCounter += n;
         if(hitCounter >= necessaryHitForChangeGround && !changeGroundStarted)
@@ -236,6 +249,51 @@ public class BossBheaviour : MonoBehaviour
         return groundManager;
     }
 
+    public BossPosition GetOppositePosition()
+    {
+        foreach(BossPosition position in positions)
+        {
+            if(position.GetVerticalPosition() != currentPosition.GetVerticalPosition() 
+                && position.GetHorizontalPosition() == currentPosition.GetHorizontalPosition())
+                return position;
+        }
+
+        return null;
+    }
+
+    public GameObject GetProjectilePrefab()
+    {
+        return projectilePrefab;
+    }
+
+    public int GetNumberOfProjectile()
+    {
+        return numberOfProjectile;
+    }
+
+    public float GetDistanceBetweenProjectile()
+    {
+        return distanceBetweenProjectile;
+    }
+    public float GetWaitBeforeSpawn()
+    {
+        return waitBeforeSpawn;
+    }
+
+    public float GetWaitBeforeShot()
+    {
+        return waitBeforeShot;
+    }
+
+    public float GetProjectileVerticalOffset()
+    {
+        return projectileVerticalOffset;
+    }
+
+    public float GetProjectileHorizontalOffset()
+    {
+        return projectileHorizontalOffset;
+    }
 
     #endregion
 
