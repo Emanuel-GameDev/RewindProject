@@ -245,16 +245,20 @@ public class TimelineManager : MonoBehaviour
             LockInTime();
     }
 
-    public void StartForwarding()
+    public bool StartForwarding()
     {
-        if (!CanRewind()) return;
+        if (!CanRewind()) return false;
+
         isForwarding = true;
+        return true;
     }
 
-    public void StartRewinding()
+    public bool StartRewinding()
     {
-        if (!CanRewind()) return;
+        if (!CanRewind()) return false;
+
         isRewinding = true;
+        return true;
     }
 
     public void StopForwarding()

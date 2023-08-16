@@ -69,7 +69,9 @@ public class AbilityMenu : MonoBehaviour
             GameObject newCard = Instantiate(panelSlotPrefab, showCardsPanel, false);
             newCard.name = "PanelSlot_" + i;
 
-            SetupNewCardLoaded(activeAbilities, i, newCard);
+            newCard.GetComponent<AbilityMenuSlot>().passive = false;
+
+            SetupNewCardLoaded(activeAbilities[i], newCard);
 
             SetupSlotReferences(newCard.GetComponent<AbilityMenuSlot>(), activeAbilities[i]);
 
@@ -85,9 +87,11 @@ public class AbilityMenu : MonoBehaviour
                 GameObject newPassiveCard = Instantiate(panelSlotPrefab, passiveCardsPanel, false);
                 newPassiveCard.name = "PassivePanelSlot_" + i;
 
-                SetupPassiveCardLoaded(newPassiveCard, abilitiesUnlocked[i]);
+                newPassiveCard.GetComponent<AbilityMenuSlot>().passive = true;
 
-                SetupPassiveSlotReferences(newPassiveCard.GetComponent<AbilityMenuSlot>(), abilitiesUnlocked[i]);
+                SetupNewCardLoaded(abilitiesUnlocked[i], newPassiveCard);
+
+                SetupSlotReferences(newPassiveCard.GetComponent<AbilityMenuSlot>(), abilitiesUnlocked[i]);
 
                 passiveLoadedSlots.Add(newPassiveCard.GetComponent<AbilityMenuSlot>());
             }    
@@ -96,10 +100,15 @@ public class AbilityMenu : MonoBehaviour
 
     #region Setup Cards
 
-    private void SetupPassiveCardLoaded(GameObject newCard, Ability ability)
+    private void SetupNewCardLoaded(Ability ability, GameObject newCard)
     {
+        AbilityMenuSlot currSlot = newCard.GetComponent<AbilityMenuSlot>();
+
         // Setup slot size
-        newCard.GetComponent<RectTransform>().sizeDelta = slotSizePassive;
+        if (!currSlot.passive)
+            newCard.GetComponent<RectTransform>().sizeDelta = slotSize;
+        else
+            newCard.GetComponent<RectTransform>().sizeDelta = slotSizePassive;
 
         // Setup child Image for graphics
         GameObject cardImage = new GameObject("CardImage");
@@ -108,58 +117,45 @@ public class AbilityMenu : MonoBehaviour
 
         // Setup size = parent size
         cardImage.AddComponent<RectTransform>();
-        cardImage.GetComponent<RectTransform>().sizeDelta = slotSizePassive;
+        if (!currSlot.passive)
+            cardImage.GetComponent<RectTransform>().sizeDelta = slotSize;
+        else
+            cardImage.GetComponent<RectTransform>().sizeDelta = slotSizePassive;
 
         // Setup image icon
         cardImage.AddComponent<Image>();
         cardImage.GetComponent<Image>().sprite = ability.icon;
-    }
 
-    private void SetupNewCardLoaded(List<Ability> activeAbilities, int i, GameObject newCard)
-    {
-        // Setup slot size
-        newCard.GetComponent<RectTransform>().sizeDelta = slotSize;
-
-        // Setup child Image for graphics
-        GameObject cardImage = new GameObject("CardImage");
-        cardImage.transform.SetParent(newCard.transform);
-        cardImage.transform.localPosition = newCard.transform.localPosition;
-
-        // Setup size = parent size
-        cardImage.AddComponent<RectTransform>();
-        cardImage.GetComponent<RectTransform>().sizeDelta = slotSize;
-
-        // Setup image icon
-        cardImage.AddComponent<Image>();
-        cardImage.GetComponent<Image>().sprite = activeAbilities[i].icon;
-
-        // Setup Outline
-        cardImage.AddComponent<Outline>();
-        cardImage.GetComponent<Outline>().effectDistance = outlineSize;
-        cardImage.GetComponent<Outline>().effectColor = outlineColor;
-        cardImage.GetComponent<Outline>().enabled = false;
+        if (!currSlot.passive)
+        {
+            // Setup Outline
+            cardImage.AddComponent<Outline>();
+            cardImage.GetComponent<Outline>().effectDistance = outlineSize;
+            cardImage.GetComponent<Outline>().effectColor = outlineColor;
+            cardImage.GetComponent<Outline>().enabled = false;
+        }
 
     }
 
     private void SetupSlotReferences(AbilityMenuSlot abilityMenuSlot, Ability ability)
     {
         abilityMenuSlot.abMenu = this;
-        abilityMenuSlot.enlargmentFactor = enlargmentFactor;
-        abilityMenuSlot.posOveredAddition = cardPosOveredAddition;
+
+        if (abilityMenuSlot.passive)
+        {
+            abilityMenuSlot.enlargmentFactorPassive = enlargmentFactorPassive;
+            abilityMenuSlot.posOveredAdditionPassive = posOveredAdditionPassive;
+        }
+        else
+        {
+            abilityMenuSlot.enlargmentFactor = enlargmentFactor;
+            abilityMenuSlot.posOveredAddition = cardPosOveredAddition;
+        }
+
         abilityMenuSlot.textName = ability.name;
         abilityMenuSlot.textDescription = ability.description;
         abilityMenuSlot.textTutorial = ability.tutorial;
         abilityMenuSlot.animDuration = animDuration;
-        abilityMenuSlot.passive = false;
-    }
-
-    private void SetupPassiveSlotReferences(AbilityMenuSlot abilityMenuSlot, Ability ability)
-    {
-        abilityMenuSlot.abMenu = this;
-        abilityMenuSlot.enlargmentFactorPassive = enlargmentFactorPassive;
-        abilityMenuSlot.posOveredAdditionPassive = posOveredAdditionPassive;
-        abilityMenuSlot.animDuration = animDuration;
-        abilityMenuSlot.passive = true;
     }
 
     #endregion
