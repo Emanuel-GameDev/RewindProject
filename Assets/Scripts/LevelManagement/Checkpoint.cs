@@ -26,7 +26,7 @@ public class Checkpoint : MonoBehaviour
         {
             taken = true;
             SetCheckpoint();
-            //collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
+            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
         }
     }
 

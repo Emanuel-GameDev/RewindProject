@@ -31,12 +31,17 @@ public class LevelManager : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
 
         SceneManager.sceneLoaded += OnLevelLoaded;
-        inputs.Player.Respawn.performed += OnRespawn;
 
         DataSerializer.FileSaving += DeleteSaves;
     }
 
-    
+    private void Start()
+    {
+        // Locks the cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
 
     private void SaveCheckpoints(object obj)
     {
@@ -53,7 +58,6 @@ public class LevelManager : MonoBehaviour
         inputs.Player.Disable();
 
         SceneManager.sceneLoaded -= OnLevelLoaded;
-        inputs.Player.Respawn.performed -= OnRespawn;
 
         DataSerializer.FileSaving -= DeleteSaves;
     }
@@ -112,10 +116,7 @@ public class LevelManager : MonoBehaviour
 
 
 
-    private void OnRespawn(InputAction.CallbackContext obj)
-    {
-        Respawn();
-    }
+   
 
     public void Respawn()
     {

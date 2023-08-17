@@ -49,8 +49,9 @@ public class PlayerController : Character
     [SerializeField] float fastRespawnRefreshTimer = 0.5f;
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] PhysicsMaterial2D fullFriction;
+    public Transform projectileSpawn; 
 
-     public float fallStartPoint;
+    public float fallStartPoint;
     [HideInInspector] public float fastRespawnTimer = 0;
     [HideInInspector] public float horizontalInput = 0;
     [HideInInspector] public Vector3 fastSpawnPoint;
@@ -212,6 +213,8 @@ public class PlayerController : Character
         {
             MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
             inputs.Player.Disable();
+            inputs.AbilityController.Disable();
+            inputs.UI.Disable();
         }
     }
 
@@ -422,7 +425,11 @@ public class PlayerController : Character
     private void Dash()
     {
         isDashing = true;
-        Vector2 dashDir = new Vector2(bodySprite.transform.localScale.x, 0f);
+        Vector2 dashDir = new Vector2(horizontalInput, 0f);
+        if(horizontalInput>=0)
+            bodySprite.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        else
+            bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
         trail.emitting = true;
 
