@@ -252,6 +252,8 @@ public class PlayerController : Character
         {
             MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
             inputs.Player.Disable();
+            inputs.AbilityController.Disable();
+            inputs.UI.Disable();
         }
     }
 

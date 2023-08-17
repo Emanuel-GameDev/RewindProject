@@ -12,7 +12,7 @@ public class AbilityHolder : Character
 
     private void Awake()
     {
-        playerInputs = new PlayerInputs();
+        playerInputs = PlayerController.instance.inputs;
     }
 
     private void OnEnable()
@@ -25,7 +25,7 @@ public class AbilityHolder : Character
         playerInputs.AbilityController.Activate2.canceled += Disactivate2;
         playerInputs.AbilityController.Activate3.canceled += Disactivate3;
 
-        playerInputs.Enable();
+        playerInputs.AbilityController.Enable();
     }
 
     private void Update()
@@ -86,7 +86,7 @@ public class AbilityHolder : Character
         playerInputs.AbilityController.Activate2.canceled -= Disactivate2;
         playerInputs.AbilityController.Activate3.canceled -= Disactivate3;
 
-        playerInputs.Disable();
+        playerInputs.AbilityController.Disable();
     }
 
 

@@ -88,7 +88,7 @@ public class LevelDoor : MonoBehaviour
                 if (checkpointTaken[i])
                 {
                     buttons[i].locked = false;
-                    buttons[i].buttonText.color = buttons[i].baseColor;
+                    buttons[i].buttonText.color = Color.white;
                 }
                 else
                 {

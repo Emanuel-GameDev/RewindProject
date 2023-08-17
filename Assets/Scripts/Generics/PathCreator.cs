@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 public class PathCreator : MonoBehaviour
 {
-
+    public PlayerInputs inputs { get; private set; }
     LineRenderer lineRenderer;
     public float projectileSpeed = 1;
     List<Vector3> points;
@@ -18,8 +19,17 @@ public class PathCreator : MonoBehaviour
 
     private void Awake()
     {
+        inputs = PlayerController.instance.inputs;
         points = new List<Vector3>();
         lineRenderer = GetComponent<LineRenderer>();
+        inputs.AbilityController.DrawInput.performed += RegisterDrawInput;
+    }
+
+    Vector2 nextPoint;
+
+    private void RegisterDrawInput(InputAction.CallbackContext obj)
+    {
+        nextPoint = obj.ReadValue<Vector2>();
     }
 
     private void FixedUpdate()
@@ -59,7 +69,13 @@ public class PathCreator : MonoBehaviour
 
     private void RegisterPoints()
     {
-        Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 point;
+
+        if(points.Count==0)
+            point = new Vector2 (transform.position.x, transform.position.y);
+        else
+            point = new Vector2(points[points.Count-1].x, points[points.Count -1].y) + nextPoint ;
+
 
         if (points.Count > 1)
         {
@@ -69,7 +85,9 @@ public class PathCreator : MonoBehaviour
             }
         }
         else
+        {
             points.Add(new Vector3(point.x, point.y));
+        }
 
         ReloadLine();
 
@@ -95,7 +113,7 @@ public class PathCreator : MonoBehaviour
     {
         if(points.Count<1)
             return;
-
+        inputs.AbilityController.DrawInput.performed -= RegisterDrawInput;
         instatietedProjectile = Instantiate(projectile, points[0], Quaternion.identity);
         instatietedProjectile.GetComponent<PlayerProjectile>().lifeTime = 100f;
         points.RemoveAt(0);

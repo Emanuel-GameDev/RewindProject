@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,9 +9,10 @@ using UnityEngine.UI;
 public abstract class Ability : ScriptableObject
 {
     public new string name;
-    public string description;  
+    public string description;
     public Sprite icon;
     public float cooldownTime;
+    public string menuDescription;
 
     // Different from canActivate cause that bool include the cooldown, this one only checks the activation time
     public bool isActive = false;

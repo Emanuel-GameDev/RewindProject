@@ -11,26 +11,26 @@ public class LevelSelectionButton : MenuButton
 
     [HideInInspector] public TextMeshPro buttonText;
 
-    public override void OnPointerEnter(PointerEventData eventData)
-    {
-        if(!locked)
-        buttonText.color = selectedColor;
-    }
+    //public override void OnPointerEnter(PointerEventData eventData)
+    //{
+    //    if(!locked)
+    //    buttonText.color = selectedColor;
+    //}
 
-    public override void OnPointerExit(PointerEventData eventData)
-    {
-        if (!locked)
-            buttonText.color = baseColor;
-    }
+    //public override void OnPointerExit(PointerEventData eventData)
+    //{
+    //    if (!locked)
+    //        buttonText.color = baseColor;
+    //}
 
-    public override void OnEnable()
-    {
-        buttonText = GetComponentInChildren<TextMeshPro>();
-        buttonText.color = baseColor;
+    //protected override void OnEnable()
+    //{
+    //    buttonText = GetComponentInChildren<TextMeshPro>();
+    //    buttonText.color = baseColor;
 
-        if (locked)
-            buttonText.color = Color.gray;
-    }
+    //    if (locked)
+    //        buttonText.color = Color.gray;
+    //}
 
 
 

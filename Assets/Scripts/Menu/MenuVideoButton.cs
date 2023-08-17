@@ -6,12 +6,10 @@ using UnityEngine.Video;
 
 public class MenuVideoButton : MenuButton
 {
-    [SerializeField] VideoClip videoTutorial;
-    [SerializeField] string videoDescription;
 
     TutorialMenu videoMenu;
 
-    public override void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
         videoMenu = GetComponentInParent<TutorialMenu>(true);
@@ -25,9 +23,9 @@ public class MenuVideoButton : MenuButton
             videoMenu.videoButton.gameObject.SetActive(true);
         }
 
-        videoMenu.videoPlayer.clip = videoTutorial;
-        videoMenu.descriptionBox.text = videoDescription;
-        videoMenu.fullscreenVideoPlayer.clip = videoTutorial;
+        videoMenu.videoPlayer.clip = GetComponent<VideoMenuData>().videoTutorial;
+        videoMenu.descriptionBox.text = GetComponent<VideoMenuData>().videoDescription;
+        videoMenu.fullscreenVideoPlayer.clip = GetComponent<VideoMenuData>().videoTutorial;
         videoMenu.videoPlayer.Prepare();
         StartCoroutine(Wait());
 

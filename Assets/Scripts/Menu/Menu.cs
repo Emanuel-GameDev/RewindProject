@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using ToolBox.Serialization;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Menu : MonoBehaviour
 {
     public bool startUnlocked = false;
+    [SerializeField] public Menu nextTab;
+    [SerializeField] public Menu previousTab;
+
+    [SerializeField]public MenuButton eventSystemDefaultButton;
 
     [HideInInspector] public bool notificationInThisMenu=false;
     [HideInInspector] public bool unlocked = false;
@@ -14,6 +19,14 @@ public class Menu : MonoBehaviour
     {
         if (startUnlocked)
             UnlockMenu();
+
+        SetEventSystemSelection(eventSystemDefaultButton);
+    }
+
+
+    public void SetEventSystemSelection(MenuButton selection)
+    {
+        EventSystem.current.SetSelectedGameObject(selection.gameObject);
     }
     private void Awake()
     {
