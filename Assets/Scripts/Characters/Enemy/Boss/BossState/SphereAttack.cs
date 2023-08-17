@@ -1,6 +1,8 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityGameObject;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class SphereAttack : State
@@ -74,7 +76,9 @@ public class SphereAttack : State
     {
         for (int i = 0; i < bossBheaviour.GetNumberOfProjectile(); i++)
         {
-
+            Vector2 point = spawnPoint;
+            point.x += bossBheaviour.GetDistanceBetweenProjectile() * i;
+            projectiles.Add(bossBheaviour.GenerateProjectile(point));
         }
     }
 }

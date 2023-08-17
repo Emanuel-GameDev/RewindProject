@@ -210,6 +210,10 @@ public class BossBheaviour : MonoBehaviour
         this.nextState = nextState;
     }
 
+    public GameObject GenerateProjectile(Vector2 point)
+    {
+        return Instantiate(projectilePrefab, point, Quaternion.identity);
+    }
 
     //FUNZIONI GET
     //====================================================================================================================================
@@ -294,6 +298,7 @@ public class BossBheaviour : MonoBehaviour
     {
         return projectileHorizontalOffset;
     }
+
 
     #endregion
 
