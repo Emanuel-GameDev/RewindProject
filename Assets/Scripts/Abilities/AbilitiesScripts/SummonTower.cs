@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -45,7 +43,7 @@ public class SummonTower : Ability
         PlayerController player = parent.GetComponent<PlayerController>();
 
         if (!player.grounded) return;
-
+        
         Vector2 summonPos;
 
         if (facingRight)
@@ -73,6 +71,8 @@ public class SummonTower : Ability
 
         currentTower = Instantiate(towerPrefab).GetComponent<Tower>();
         currentTower.Initialize(hp, collisionMask);
+
+        canActivate = true;
     }
 
     private void CheckHorizontalFacing(InputAction.CallbackContext obj)
