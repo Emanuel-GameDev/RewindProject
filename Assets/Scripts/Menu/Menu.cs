@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
     {
         if (startUnlocked)
             UnlockMenu();
-
+        if(eventSystemDefaultButton!=null)
         SetEventSystemSelection(eventSystemDefaultButton);
     }
 
