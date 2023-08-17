@@ -234,27 +234,37 @@ public class TimelineManager : MonoBehaviour
         }
     }
 
-    public void StartStopControlTimeline()
+    public bool StartStopControlTimeline()
     {
         if (isLocked || isPlaying || !canUseRewind)
-            return;
-        
+            return false;
+
         if (!RewindIsactive)
+        {
             RewindIsactive = true;
+            return true;
+        }
         else
+        {
             LockInTime();
+            return false;
+        }
     }
 
-    public void StartForwarding()
+    public bool StartForwarding()
     {
-        if (!CanRewind()) return;
+        if (!CanRewind()) return false;
+
         isForwarding = true;
+        return true;
     }
 
-    public void StartRewinding()
+    public bool StartRewinding()
     {
-        if (!CanRewind()) return;
+        if (!CanRewind()) return false;
+
         isRewinding = true;
+        return true;
     }
 
     public void StopForwarding()

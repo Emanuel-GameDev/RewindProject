@@ -5,23 +5,23 @@ public class RewindTimeAbility : Ability
 {
     public override void Activate1(GameObject parent)
     {
-        isActive = true;
-
-        TimelineManager.Instance.StartForwarding();
+        if (TimelineManager.Instance.StartForwarding())
+            isActive = true;
     }
 
     public override void Activate2(GameObject parent)
     {
-        isActive = true;
-
-        TimelineManager.Instance.StartRewinding();
+        if (TimelineManager.Instance.StartRewinding())
+            isActive = true;
     }
 
     public override void Activate3(GameObject parent)
     {
-        TimelineManager.Instance.StartStopControlTimeline();
+        if (TimelineManager.Instance.StartStopControlTimeline())
+            isActive = true;
+        else
+            isActive = false;
 
-        isActive = false;
     }
 
     public override void Disactivate1(GameObject gameObject)
