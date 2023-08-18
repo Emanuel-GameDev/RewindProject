@@ -38,11 +38,12 @@ public class Dialogue : MonoBehaviour
 
     private void OnEnable()
     {
-        inputs = new PlayerInputs();
+        inputs = PlayerController.instance.inputs;
         inputs.Dialogue.Enable();
-        
+        inputs.Player.Disable();
+        inputs.AbilityController.Disable();
+
         inputs.Dialogue.NextLyne.performed += NextLyne_performed;
-        PlayerController.instance.inputs.Player.Disable();
     }
 
     private void NextLyne_performed(InputAction.CallbackContext obj)
@@ -59,8 +60,9 @@ public class Dialogue : MonoBehaviour
     private void OnDisable()
     {
         inputs.Dialogue.Disable();
+        inputs.Player.Enable();
+        inputs.AbilityController.Enable();
         inputs.Dialogue.NextLyne.performed -= NextLyne_performed;
-        PlayerController.instance.inputs.Player.Enable();
     }
 
     private void Start()

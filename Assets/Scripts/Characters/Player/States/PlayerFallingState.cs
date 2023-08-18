@@ -12,8 +12,9 @@ public class PlayerFallingState : State
     {
         player.fallStartPoint = player.transform.position.y;
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
-
+        player.canAttack = false;
         player.animator.SetTrigger("Fall");
+        player.animator.SetBool("Attacking", false);
     }
 
     public override void Update()

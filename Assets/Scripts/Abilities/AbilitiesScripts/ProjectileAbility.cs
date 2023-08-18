@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Ability/ProjectileAbility")]
 public class ProjectileAbility : Ability
 {
     [SerializeField] GameObject prefabPathCreator;

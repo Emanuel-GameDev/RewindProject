@@ -22,7 +22,7 @@ public class DoubleJump : Ability
         controller.canDoubleJump = true;
         controller.canDash = true;
 
-        //DataSerializer.Save("TemperanceAbility", true);
+        DataSerializer.Save("TemperanceAbility", true);
     }
 
     
