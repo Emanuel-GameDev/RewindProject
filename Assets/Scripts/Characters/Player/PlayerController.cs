@@ -59,18 +59,24 @@ public class PlayerController : Character
     [HideInInspector] public Queue previousHorizontalInputs = new Queue();
     [HideInInspector] public Animator animator;
 
+    //Dash
+    [HideInInspector] public bool canDash;
     private bool isDashing = false;
     public float dashPower = 50;
     public float dashTime = 0.1f;
 
+    //Debug
     public bool grounded = false;
     public bool isJumping = false;
     public bool isFalling = false;
     public bool isMoving = false;
     public bool isRunning = true;
 
+    //Attack
     public bool isAttacking = false;
     [HideInInspector] public bool canAttack = true;
+    [HideInInspector] public float cooldownMeleeAttack;
+
     TrailRenderer trail;
 
     internal Rigidbody2D rBody;
@@ -79,14 +85,13 @@ public class PlayerController : Character
     public float horizontalMovement = 0;
     [HideInInspector] public float groundAngle = 0;
 
-    Vector2 jumpStartPoint;
 
-    //da usare per l'abilità
+    //Double jump
+    Vector2 jumpStartPoint;
     [HideInInspector] public bool canDoubleJump;
-    [HideInInspector] public bool canDash;
     bool doubleJump = false;
 
-    public delegate void AttacksManager();  
+
     #region UnityFunctions
 
     private void OnEnable()
@@ -353,6 +358,7 @@ public class PlayerController : Character
         if (IsGravityDownward())
         {
             if (transform.position.y >= jumpStartPoint.y + maxJumpHeight)
+    
                 isJumping = false;
         }
         else
@@ -494,6 +500,7 @@ public class PlayerController : Character
     {
         combo = false;
     }
+
     public void EndAttack()
     {
         if(!nextAttack)
@@ -501,24 +508,28 @@ public class PlayerController : Character
         nextAttack = false;
     }
 
+    public void StartAttackCooldown()
+    {
+        StartCoroutine(AttackCooldown(cooldownMeleeAttack));
+    }
+
     public void Attack()
     {
         animator.SetBool("Attacking", true);
         
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_SecondAttack"))
-        {
-            if (combo)
-            {
-                animator.SetTrigger("Hit3");
-                nextAttack = true;
-
-            }
-        }
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_FirstAttack"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_FirstAttack"))
         {
             if (combo)
             {
                 animator.SetTrigger("Hit2");
+                nextAttack = true;
+            }
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_SecondAttack"))
+        {
+            if (combo)
+            {
+                animator.SetTrigger("Hit3");
                 nextAttack = true;
 
             }
@@ -532,6 +543,12 @@ public class PlayerController : Character
             animator.SetTrigger("Hit1");
         }
         
+    }
+    IEnumerator AttackCooldown(float seconds)
+    {
+        canAttack = false;
+        yield return new WaitForSeconds(seconds);
+        canAttack = true;
     }
 
     public bool CheckMaxFallDistanceReached()
