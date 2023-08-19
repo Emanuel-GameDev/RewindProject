@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using System.Drawing;
+using UnityEngine.Events;
 
 public class Dialogue : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class Dialogue : MonoBehaviour
     [Header ("Boxes")]
     [SerializeField] TextMeshProUGUI speakerTextBox;
     [SerializeField] TextMeshProUGUI dialogueTextBox;
+
+    public bool repeatable = false;
+    public UnityEvent OnDialogueEnd;
 
     [System.Serializable]
     struct Line
@@ -34,11 +38,12 @@ public class Dialogue : MonoBehaviour
 
     private void OnEnable()
     {
-        inputs = new PlayerInputs();
+        inputs = PlayerController.instance.inputs;
         inputs.Dialogue.Enable();
-        
+        inputs.Player.Disable();
+        inputs.AbilityController.Disable();
+
         inputs.Dialogue.NextLyne.performed += NextLyne_performed;
-        PlayerController.instance.inputs.Player.Disable();
     }
 
     private void NextLyne_performed(InputAction.CallbackContext obj)
@@ -55,8 +60,9 @@ public class Dialogue : MonoBehaviour
     private void OnDisable()
     {
         inputs.Dialogue.Disable();
+        inputs.Player.Enable();
+        inputs.AbilityController.Enable();
         inputs.Dialogue.NextLyne.performed -= NextLyne_performed;
-        PlayerController.instance.inputs.Player.Enable();
     }
 
     private void Start()
@@ -64,8 +70,6 @@ public class Dialogue : MonoBehaviour
         dialogueTextBox.text = string.Empty;
         StartDialogue();
     }
-
-
 
     void StartDialogue()
     {
@@ -94,6 +98,8 @@ public class Dialogue : MonoBehaviour
         }
         else
         {
+            index = 0;
+            OnDialogueEnd?.Invoke();
             gameObject.SetActive(false);
         }
     }

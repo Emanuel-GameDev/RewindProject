@@ -120,6 +120,7 @@ public class UIManager : MonoBehaviour
         canShowMenu = false;
 
         character.GetComponent<PlayerController>().inputs.Player.Disable();
+        character.GetComponent<PlayerController>().inputs.AbilityController.Disable();
         GameManager.Instance.abilityManager.wheel.canSwitch = false;
 
         if (cardToShow == null)
@@ -154,6 +155,7 @@ public class UIManager : MonoBehaviour
     public void ShowCompleted()
     {
         character.GetComponent<PlayerController>().inputs.Player.Enable();
+        character.GetComponent<PlayerController>().inputs.AbilityController.Enable();
 
         cardToShow.Pick(character);
 

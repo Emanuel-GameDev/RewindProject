@@ -13,7 +13,7 @@ public class PlayerMoovingState : State
     public override void Enter()
     {
         base.Enter();
-
+        player.canAttack = true;
         player.animator.SetBool("Moving", true);
     }
 

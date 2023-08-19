@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using ToolBox.Serialization;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public enum PlayerState
@@ -49,8 +50,9 @@ public class PlayerController : Character
     [SerializeField] float fastRespawnRefreshTimer = 0.5f;
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] PhysicsMaterial2D fullFriction;
+    public Transform projectileSpawn; 
 
-     public float fallStartPoint;
+    public float fallStartPoint;
     [HideInInspector] public float fastRespawnTimer = 0;
     [HideInInspector] public float horizontalInput = 0;
     [HideInInspector] public Vector3 fastSpawnPoint;
@@ -67,6 +69,8 @@ public class PlayerController : Character
     public bool isMoving = false;
     public bool isRunning = true;
 
+    public bool isAttacking = false;
+    [HideInInspector] public bool canAttack = true;
     TrailRenderer trail;
 
     internal Rigidbody2D rBody;
@@ -82,6 +86,7 @@ public class PlayerController : Character
     [HideInInspector] public bool canDash;
     bool doubleJump = false;
 
+    public delegate void AttacksManager();  
     #region UnityFunctions
 
     private void OnEnable()
@@ -212,6 +217,8 @@ public class PlayerController : Character
         {
             MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
             inputs.Player.Disable();
+            inputs.AbilityController.Disable();
+            inputs.UI.Disable();
         }
     }
 
@@ -220,29 +227,33 @@ public class PlayerController : Character
     #region Movement
     public void CalculateHorizontalMovement()
     {
-        if (horizontalInput != 0 )
+       
+        if (horizontalInput != 0 && !animator.GetBool("Attacking"))
         {
-            //calcolo movimento
-            horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
+                //calcolo movimento
+                horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
 
-            //controllo per la corsa
-            if (!isRunning)
-                horizontalMovement = Mathf.Clamp(horizontalMovement, -walkSpeed, walkSpeed);
-            else
-                horizontalMovement = Mathf.Clamp(horizontalMovement, -runSpeed, runSpeed);
+                //controllo per la corsa
+                if (!isRunning)
+                    horizontalMovement = Mathf.Clamp(horizontalMovement, -walkSpeed, walkSpeed);
+                else
+                    horizontalMovement = Mathf.Clamp(horizontalMovement, -runSpeed, runSpeed);
 
-            animator.SetFloat("Speed", 1);
+                animator.SetFloat("Speed", 1);
         }
         else
         {
-            //decellerazione se non c'è input
-            horizontalMovement = Mathf.MoveTowards(horizontalMovement, 0, deAcceleration * Time.deltaTime);
-            animator.SetFloat("Speed", 0);
+                //decellerazione se non c'è input
+                horizontalMovement = Mathf.MoveTowards(horizontalMovement, 0, deAcceleration * Time.deltaTime);
+                animator.SetFloat("Speed", 0);
         }
 
 
-        if (horizontalMovement == 0)
+        if (Mathf.Abs(horizontalMovement) <= 0.05f)
+        {
             isMoving = false;
+            previousHorizontalInputs.Clear();
+        }
         else
             isMoving = true;
 
@@ -263,7 +274,7 @@ public class PlayerController : Character
                 previousHorizontalInputs.Clear();
         }
 
-        if (horizontalInput != 0 && previousHorizontalInputs.Contains(-horizontalInput) && isRunning && !animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+        if (horizontalInput != 0 && previousHorizontalInputs.Contains(-horizontalInput) && isRunning && !animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection") && previousHorizontalInputs.Count>0)
         {
             animator.SetTrigger("DirectionChanged");
             previousHorizontalInputs.Clear();
@@ -422,7 +433,11 @@ public class PlayerController : Character
     private void Dash()
     {
         isDashing = true;
-        Vector2 dashDir = new Vector2(bodySprite.transform.localScale.x, 0f);
+        Vector2 dashDir = new Vector2(horizontalInput, 0f);
+        if(horizontalInput>=0)
+            bodySprite.gameObject.transform.localScale = new Vector3(1, 1, 1);
+        else
+            bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
 
         trail.emitting = true;
 
@@ -466,6 +481,58 @@ public class PlayerController : Character
     #endregion
 
     #region Functions
+
+    bool combo = false;
+    bool nextAttack = false;
+
+    public void StartComboCheck()
+    {
+        combo = true;
+    }
+
+    public void EndComboCheck()
+    {
+        combo = false;
+    }
+    public void EndAttack()
+    {
+        if(!nextAttack)
+        animator.SetBool("Attacking", false);
+        nextAttack = false;
+    }
+
+    public void Attack()
+    {
+        animator.SetBool("Attacking", true);
+        
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_SecondAttack"))
+        {
+            if (combo)
+            {
+                animator.SetTrigger("Hit3");
+                nextAttack = true;
+
+            }
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_FirstAttack"))
+        {
+            if (combo)
+            {
+                animator.SetTrigger("Hit2");
+                nextAttack = true;
+
+            }
+        }
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ThirdAttack"))
+        {
+            
+        }
+        else
+        {
+            animator.SetTrigger("Hit1");
+        }
+        
+    }
 
     public bool CheckMaxFallDistanceReached()
     {

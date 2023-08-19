@@ -56,9 +56,10 @@ public class PlayerTriggerCause : Cause
         {
             areaEntered = true;
 
+            target = collision.gameObject.GetComponent<Character>();
+
             if (buttonInteraction) return;
 
-            target = collision.gameObject.GetComponent<Character>();
             ActivateEffect();
         }
     }
@@ -69,7 +70,6 @@ public class PlayerTriggerCause : Cause
         {
             areaEntered = false;
 
-            if (buttonInteraction) return;
             target = null;
         }
     }

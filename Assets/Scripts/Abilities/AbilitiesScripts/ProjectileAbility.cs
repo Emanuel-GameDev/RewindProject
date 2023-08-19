@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Runtime.InteropServices;
 
-[CreateAssetMenu(menuName = "Ability/Projectile")]
-
+[CreateAssetMenu(menuName = "Ability/ProjectileAbility")]
 public class ProjectileAbility : Ability
 {
     [SerializeField] GameObject prefabPathCreator;
@@ -18,7 +16,6 @@ public class ProjectileAbility : Ability
 
     bool readyToUse = true;
     PathCreator instantietedPathCreator;
-
 
 
     public override void Activate1(GameObject parent)
@@ -44,9 +41,10 @@ public class ProjectileAbility : Ability
         if (!readyToUse)
             return;
 
+
         PlayerController.instance.inputs.Player.Disable();
 
-        GameObject instantietedPathCreatorObj = Instantiate(prefabPathCreator);
+        GameObject instantietedPathCreatorObj = Instantiate(prefabPathCreator,PlayerController.instance.projectileSpawn.position,Quaternion.identity);
         instantietedPathCreator = instantietedPathCreatorObj.GetComponent<PathCreator>();
         instantietedPathCreator.projectileSpeed = guidedProjectileSpeed;
         instantietedPathCreator.isDrawing = true;
@@ -88,7 +86,6 @@ public class ProjectileAbility : Ability
         readyToUse = true;
     }
 
-    
 
     IEnumerator Cooldown()
     {
