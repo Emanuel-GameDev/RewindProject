@@ -13,11 +13,20 @@ public class EnemyThree : BaseEnemy
 
     [Header("Other Data")]
     [SerializeField] GameObject core;
-    private SpriteLineHidener hidener;
     [SerializeField] eZone movingArea;
     [SerializeField] float despawnDistance = 50f;
     [SerializeField] Transform rotationTarget;
     [SerializeField] BodyRotate bodyRotate;
+
+    private SpriteLineHidener hidener;
+    private float elapsedTime;
+    private bool isMoving;
+
+    [Header("Suoni")]
+    [SerializeField] AudioClip spawnSound;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip hitSound;
+    [SerializeField] float timeBetweenWingSound = 1.2f;
 
     //Nomi delle variabili nel behaviour tree
     private const string CORE = "Core";
@@ -32,6 +41,7 @@ public class EnemyThree : BaseEnemy
 
 
 
+
     protected override void InitialSetup()
     {
         base.InitialSetup();
@@ -41,10 +51,12 @@ public class EnemyThree : BaseEnemy
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, SpawnCheck);
         hidener = GetComponentInChildren<SpriteLineHidener>();
         hidener.Hide();
+        elapsedTime = timeBetweenWingSound;
     }
 
     public override void OnDie()
     {
+        GetComponent<AudioSourceGenerator>().PlaySound(deathSound);
         isDead = true;
         animator.SetBool(DEAD, true);
         tree.SetVariableValue(IS_DEAD, isDead);
@@ -72,6 +84,7 @@ public class EnemyThree : BaseEnemy
 
     private void Spawn()
     {
+        GetComponent<AudioSourceGenerator>().PlaySound(spawnSound);
         core.SetActive(true);
         animator.SetTrigger(SPAWN);
         hidener.Hide();
@@ -80,6 +93,7 @@ public class EnemyThree : BaseEnemy
     public void StartChase()
     {
         tree.SetVariableValue(MOVE, true);
+        isMoving = true;
         hidener.Show();
         bodyRotate.SetTarget(target.transform);
     }
@@ -91,7 +105,18 @@ public class EnemyThree : BaseEnemy
         {
             Despawn(movingArea);
         }
-
+        if (isMoving)
+        {
+            if(elapsedTime > timeBetweenWingSound)
+            {
+                GetComponent<MainCharacter_SoundsGenerator>().PlayFootStepSound();
+                elapsedTime = 0;
+            }
+            else
+            {
+                elapsedTime += Time.deltaTime;
+            }
+        }
     }
 
     public void SetMoovingZone(eZone zone)
@@ -110,7 +135,9 @@ public class EnemyThree : BaseEnemy
 
     private void StopChase()
     {
+        GetComponent<AudioSourceGenerator>().PlaySound(deathSound);
         tree.SetVariableValue(MOVE, false);
+        isMoving = false;
         bodyRotate.SetTarget(rotationTarget);
         animator.SetTrigger(DESPAWN);
     }
