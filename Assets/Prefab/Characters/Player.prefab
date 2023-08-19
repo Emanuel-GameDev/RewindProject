@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4332430726460991174}
   - component: {fileID: 5822904588616681573}
   - component: {fileID: 1060591882383374964}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: MeleeDamager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751082696054235474}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -261,6 +261,7 @@ MonoBehaviour:
   horizontalInput: 0
   fastSpawnPoint: {x: 0, y: 0, z: 0}
   animator: {fileID: 0}
+  canDash: 0
   dashPower: 1
   dashTime: 0.1
   grounded: 0
@@ -270,11 +271,11 @@ MonoBehaviour:
   isRunning: 1
   isAttacking: 0
   canAttack: 0
+  cooldownMeleeAttack: 0
   bodySprite: {fileID: 0}
   horizontalMovement: 0
   groundAngle: 0
   canDoubleJump: 0
-  canDash: 0
 --- !u!114 &5481834699438083078
 MonoBehaviour:
   m_ObjectHideFlags: 0
