@@ -130,7 +130,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""id"": ""67868131-8dc4-4ffb-af18-ef7568c9b206"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
-                    ""processors"": ""AxisDeadzone"",
+                    ""processors"": ""AxisDeadzone(min=0.125,max=1)"",
                     ""groups"": """",
                     ""action"": ""Walk"",
                     ""isComposite"": true,
@@ -205,7 +205,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""364004ae-7bc8-4e1d-9589-7beb0c4478c6"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
