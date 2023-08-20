@@ -38,8 +38,8 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         // Locks the cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+       // Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
     }
 
 
