@@ -20,10 +20,9 @@ public class ProjectileAbility : Ability
 
     public override void Activate1(GameObject parent)
     {
-        if (!readyToUse || instantietedPathCreator != null)
+        if (!readyToUse || instantietedPathCreator!=null)
             return;
-        if (instantietedPathCreator.isDrawing)
-            return;
+        
 
         GameObject projectile = Instantiate(prefabProjectile, parent.transform.position, Quaternion.Euler(0, 0, PlayerController.instance.groundAngle));
         
@@ -68,7 +67,7 @@ public class ProjectileAbility : Ability
 
     public override void Disactivate2(GameObject gameObject)
     {
-        if (!readyToUse || instantietedPathCreator.instatietedProjectile || !instantietedPathCreator.isDrawing)
+        if (!readyToUse || instantietedPathCreator==null)
             return;
         LevelManager.instance.StopCoroutine(DrawTimer());
         SpawnGuidedProjectile();
@@ -80,6 +79,7 @@ public class ProjectileAbility : Ability
         LevelManager.instance.StartCoroutine(Cooldown());
         instantietedPathCreator.isDrawing = false;
         instantietedPathCreator.SpawnProjectile(prefabProjectile);
+        instantietedPathCreator = null;
         readyToUse = false;
     }
 
