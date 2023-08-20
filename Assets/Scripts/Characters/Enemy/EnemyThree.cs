@@ -1,14 +1,16 @@
+using BehaviorDesigner.Runtime.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyThree : BaseEnemy
 {
     [Header("Specific Tree Data")]
-    [Tooltip("Imposta la velocità di movimento del nemico")]
+    [UnityEngine.Tooltip("Imposta la velocità di movimento del nemico")]
     [SerializeField] float speed = 2.5f;
-    [Tooltip("Imposta la distanza massima entro cui vede il bersaglio")]
+    [UnityEngine.Tooltip("Imposta la distanza massima entro cui vede il bersaglio")]
     [SerializeField] float viewDistance = 15;
 
     [Header("Other Data")]
@@ -21,12 +23,14 @@ public class EnemyThree : BaseEnemy
     private SpriteLineHidener hidener;
     private float elapsedTime;
     private bool isMoving;
+    private List<Collider2D> colliders;
 
     [Header("Suoni")]
     [SerializeField] AudioClip spawnSound;
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip hitSound;
     [SerializeField] float timeBetweenWingSound = 1.2f;
+    private MainCharacter_SoundsGenerator sourceGenerator;
 
     //Nomi delle variabili nel behaviour tree
     private const string CORE = "Core";
@@ -50,13 +54,15 @@ public class EnemyThree : BaseEnemy
         if(core != null) tree.SetVariableValue(CORE, core);
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, SpawnCheck);
         hidener = GetComponentInChildren<SpriteLineHidener>();
+        sourceGenerator = GetComponent<MainCharacter_SoundsGenerator>();
         hidener.Hide();
-        elapsedTime = timeBetweenWingSound;
+        elapsedTime = 0f;
+        colliders = GetComponentsInChildren<Collider2D>().ToList();
+        DisactivateColliders();
     }
 
     public override void OnDie()
     {
-        GetComponent<AudioSourceGenerator>().PlaySound(deathSound);
         isDead = true;
         animator.SetBool(DEAD, true);
         tree.SetVariableValue(IS_DEAD, isDead);
@@ -84,7 +90,7 @@ public class EnemyThree : BaseEnemy
 
     private void Spawn()
     {
-        GetComponent<AudioSourceGenerator>().PlaySound(spawnSound);
+        sourceGenerator.PlaySound(spawnSound);
         core.SetActive(true);
         animator.SetTrigger(SPAWN);
         hidener.Hide();
@@ -96,6 +102,7 @@ public class EnemyThree : BaseEnemy
         isMoving = true;
         hidener.Show();
         bodyRotate.SetTarget(target.transform);
+        ActivateColliders();
     }
 
     //Test
@@ -109,7 +116,7 @@ public class EnemyThree : BaseEnemy
         {
             if(elapsedTime > timeBetweenWingSound)
             {
-                GetComponent<MainCharacter_SoundsGenerator>().PlayFootStepSound();
+                sourceGenerator.PlayFootStepSound();
                 elapsedTime = 0;
             }
             else
@@ -117,6 +124,10 @@ public class EnemyThree : BaseEnemy
                 elapsedTime += Time.deltaTime;
             }
         }
+
+        //test
+        //if(Input.GetKeyDown(KeyCode.L)) Spawn(); 
+
     }
 
     public void SetMoovingZone(eZone zone)
@@ -135,11 +146,12 @@ public class EnemyThree : BaseEnemy
 
     private void StopChase()
     {
-        GetComponent<AudioSourceGenerator>().PlaySound(deathSound);
+        sourceGenerator.PlaySound(deathSound);
         tree.SetVariableValue(MOVE, false);
         isMoving = false;
         bodyRotate.SetTarget(rotationTarget);
         animator.SetTrigger(DESPAWN);
+        DisactivateColliders();
     }
 
     public void HideBody()
@@ -149,7 +161,6 @@ public class EnemyThree : BaseEnemy
 
     public void CompleteDespawn()
     {
-        core.SetActive(false);
         transform.position = startPosition;
     }
 
@@ -162,6 +173,21 @@ public class EnemyThree : BaseEnemy
     public GameObject GetTarget()
     {
         return target;
+    }
+
+    private void ActivateColliders()
+    {
+        foreach (Collider2D coll in colliders)
+        {
+            coll.enabled = true;
+        }
+    }
+    private void DisactivateColliders()
+    {
+        foreach (Collider2D coll in colliders)
+        {
+            coll.enabled = false;
+        }
     }
 
 }
