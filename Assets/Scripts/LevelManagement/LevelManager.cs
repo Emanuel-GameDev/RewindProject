@@ -21,6 +21,8 @@ public class LevelManager : MonoBehaviour
 
     LineRenderer lineRenderer;
 
+    [SerializeField] bool hideCursor;
+
     private void OnEnable()
     {
         instance = this;
@@ -38,8 +40,11 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         // Locks the cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (hideCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
 
