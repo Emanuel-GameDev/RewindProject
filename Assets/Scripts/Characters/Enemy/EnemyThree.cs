@@ -23,6 +23,7 @@ public class EnemyThree : BaseEnemy
     private SpriteLineHidener hidener;
     private float elapsedTime;
     private bool isMoving;
+    private bool isActive;
     private List<Collider2D> colliders;
 
     [Header("Suoni")]
@@ -90,11 +91,16 @@ public class EnemyThree : BaseEnemy
 
     private void Spawn()
     {
-        sourceGenerator.PlaySound(spawnSound);
-        core.SetActive(true);
-        animator.SetTrigger(SPAWN);
-        hidener.Hide();
-        bodyRotate.SetTarget(rotationTarget);
+        if (!isActive)
+        {
+            isActive = true;
+            transform.position = startPosition;
+            sourceGenerator.PlaySound(spawnSound);
+            core.SetActive(true);
+            animator.SetTrigger(SPAWN);
+            hidener.Hide();
+            bodyRotate.SetTarget(rotationTarget);
+        }
     }
     public void StartChase()
     {
@@ -152,6 +158,7 @@ public class EnemyThree : BaseEnemy
         bodyRotate.SetTarget(rotationTarget);
         animator.SetTrigger(DESPAWN);
         DisactivateColliders();
+        isActive = false;
     }
 
     public void HideBody()
@@ -161,7 +168,7 @@ public class EnemyThree : BaseEnemy
 
     public void CompleteDespawn()
     {
-        transform.position = startPosition;
+        
     }
 
     private void OnDrawGizmos()
