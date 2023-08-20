@@ -51,6 +51,7 @@ public class SummonTower : Ability
         else
             summonPos = new Vector2(player.transform.position.x - summonOffset.x, player.transform.position.y + summonOffset.y);
 
+        parent.GetComponent<Animator>().SetTrigger("Defending");
         currentTower.Activate(summonPos);
 
         canActivate = false;
