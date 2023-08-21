@@ -78,7 +78,7 @@ public class MenuManager : MonoBehaviour
         if(menuToClose == submenus[0])
         {
             inputs.Menu.Disable();
-
+            Time.timeScale = 1;
             inputs.Player.Enable();
             inputs.AbilityController.Enable();
             inputs.UI.Enable();

@@ -221,6 +221,7 @@ public class PlayerController : Character
         if (MenuManager.Instance != null)
         {
             MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
+            Time.timeScale = 0;
             inputs.Player.Disable();
             inputs.AbilityController.Disable();
             inputs.UI.Disable();
