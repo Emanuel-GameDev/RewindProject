@@ -600,5 +600,15 @@ public class PlayerController : Character
         }
     }
 
+    public void EnableInputs()
+    {
+        inputs.Player.Enable();
+    }
+
+    public void DisableInputs()
+    {
+        inputs.Player.Disable();
+    }
+
     #endregion
 }
