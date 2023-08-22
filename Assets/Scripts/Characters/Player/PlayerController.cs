@@ -112,6 +112,7 @@ public class PlayerController : Character
         inputs.Player.Dash.performed += TryDash;
     }
 
+   
 
     private void Awake()
     {
@@ -218,9 +219,9 @@ public class PlayerController : Character
 
     private void OpenMenuInput(InputAction.CallbackContext obj)
     {
-        if (MenuManager.Instance != null)
+        if (GameManager.Instance.pauseMenuManager != null)
         {
-            MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
+            GameManager.Instance.pauseMenuManager.OpenMenu(GameManager.Instance.pauseMenuManager.submenus[0]);
             Time.timeScale = 0;
             inputs.Player.Disable();
             inputs.AbilityController.Disable();

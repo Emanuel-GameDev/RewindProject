@@ -8,14 +8,12 @@ using UnityEngine.EventSystems;
 
 public class MenuManager : MonoBehaviour
 {
-    public static MenuManager Instance;
-
     public PlayerInputs inputs { get; private set; }
 
 
     [HideInInspector] public Menu[] submenus;
 
-    private void OnEnable()
+    public virtual void OnEnable()
     {
         inputs = PlayerController.instance.inputs;
         inputs.Menu.Disable();
@@ -49,7 +47,7 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
+        
     }
 
     public void OpenMenu(Menu menu)
@@ -89,8 +87,10 @@ public class MenuManager : MonoBehaviour
 
     }
 
-    private void OnDisable()
+    public virtual void OnDisable()
     {
         inputs.Menu.CloseMenu.performed -= CloseMenuInput;
+        inputs.Menu.NextTab.performed -= OpenNextTab;
+        inputs.Menu.PreviousTab.performed -= OpenPreviousTab;
     }
 }

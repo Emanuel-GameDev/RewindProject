@@ -20,37 +20,18 @@ public class Checkpoint : MonoBehaviour
             menu.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.GetComponent<PlayerController>())
-        {
-            taken = true;
-            SetCheckpoint();
-            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
-        }
-    }
-
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (menu != null)
             menu.SetActive(false);
-
-        if (collision.gameObject.GetComponent<PlayerController>())
-            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed -= Interact;
     }
 
-    private void OnDisable()
-    {
-        PlayerController.instance.inputs.Player.Interaction.performed -= Interact;
-    }
 
-    private void Interact(InputAction.CallbackContext obj)
+    public void Interact()
     {
         taken = true;
         SetCheckpoint();
-
-        Debug.Log("CheckpointTaken");
 
         HandleMenu();
     }

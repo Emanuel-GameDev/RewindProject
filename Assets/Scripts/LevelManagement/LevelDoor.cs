@@ -31,25 +31,12 @@ public class LevelDoor : MonoBehaviour
         levelSelectionMenu.SetActive(false);
     }
 
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.GetComponent<PlayerController>())
-            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed += Interact;
-    }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<PlayerController>())
-            collision.gameObject.GetComponent<PlayerController>().inputs.Player.Interaction.performed -= Interact;
-
         levelSelectionMenu.SetActive(false);
     }
 
-    private void OnDisable()
-    {
-        PlayerController.instance.inputs.Player.Interaction.performed -= Interact;
-    }
+    
 
     private void KindleLights()
     {  
@@ -59,14 +46,14 @@ public class LevelDoor : MonoBehaviour
         for (int i = 0; i < lights.Count; i++)
         {
             
-            if (checkpointTaken[i] == true)
+            if (checkpointTaken[i+1] == true)
             {
                 lights[i].Light();
             }
         }
     }
 
-    private void Interact(InputAction.CallbackContext obj)
+    public void Interact()
     {
         if (checkpointTaken.FindAll(taken => taken == true).Count <= 1)
             EnterDoor();
