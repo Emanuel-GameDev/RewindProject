@@ -19,8 +19,6 @@ public class LevelManager : MonoBehaviour
     public bool deleteSavesOnEditorQuit=false; 
     public PlayerInputs inputs { get; private set; }
 
-    LineRenderer lineRenderer;
-
     [SerializeField] bool hideCursor;
 
     private void OnEnable()
@@ -29,8 +27,6 @@ public class LevelManager : MonoBehaviour
         inputs = new PlayerInputs();
         inputs.Player.Enable();
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
-
-        lineRenderer = GetComponent<LineRenderer>();
 
         SceneManager.sceneLoaded += OnLevelLoaded;
 
@@ -93,7 +89,7 @@ public class LevelManager : MonoBehaviour
         if (DataSerializer.HasKey(level.name + "TAKENCHECKPOINTS"))
             checkpointsTaken = DataSerializer.Load<List<bool>>(level.name + "TAKENCHECKPOINTS");
         else
-            checkpointsTaken = new List<bool>() { true,false,false };
+            checkpointsTaken = new List<bool>() { true,false,false,false,false };
 
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
@@ -104,13 +100,11 @@ public class LevelManager : MonoBehaviour
 
     private void GetSpawnPoint()
     {
-        if (!DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad))
-            return;
-
+        DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad);
         DataSerializer.DeleteKey("CHECKPOINTIDTOLOAD");
 
 
-
+        Debug.Log(idToLoad);
         if (checkpoints.Count < 1)
             DataSerializer.Save("SPAWNPOINT", transform.position);
         else if (idToLoad <= 0)
@@ -119,9 +113,6 @@ public class LevelManager : MonoBehaviour
             DataSerializer.Save("SPAWNPOINT", checkpoints[idToLoad].transform.position);
     }
 
-
-
-   
 
     public void Respawn()
     {

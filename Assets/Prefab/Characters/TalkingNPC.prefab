@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5040682040768415375}
   - component: {fileID: 5040682040768415372}
   - component: {fileID: 5040682040768415409}
+  - component: {fileID: 6298582983264042410}
   m_Layer: 0
   m_Name: TalkingNPC
   m_TagString: Untagged
@@ -163,6 +164,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 1
+--- !u!114 &6298582983264042410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5040682040768415373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba0c502e4bc0274fb5955d4f6cad0b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5884768525568054542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -176,11 +189,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -189,7 +202,7 @@ PrefabInstance:
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 5040682040768415409}
+      objectReference: {fileID: 6298582983264042410}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -204,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ChangeObjectState
+      value: DialogueEnd
       objectReference: {fileID: 0}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -212,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: SaveObjState, Assembly-CSharp
+      value: TalkingNPC, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6337208624985686908, guid: 76afc20d8947bc24bb566dd68e2d7aa0, type: 3}
       propertyPath: OnDialogueEnd.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
