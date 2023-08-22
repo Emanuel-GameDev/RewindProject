@@ -985,7 +985,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""id"": ""2502dd87-da56-41d0-a8af-972357b74221"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=0.5,y=0.5)"",
+                    ""processors"": ""ScaleVector2(x=0.5,y=0.5),StickDeadzone"",
                     ""groups"": ""Gamepad"",
                     ""action"": ""DrawInput"",
                     ""isComposite"": false,
