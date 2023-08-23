@@ -39,12 +39,31 @@ public class BossBheaviour : MonoBehaviour
 
     [Header("Sphere Attack Settings")]
     [SerializeField] GameObject projectilePrefab;
+    [Tooltip("Imposta il numero di proiettili che vengono sparati")]
     [SerializeField] int numberOfProjectile = 5;
+    [Tooltip("Imposta la distanza tra un proiettile e l'altro")]
     [SerializeField] float distanceBetweenProjectile = 5f;
+    [Tooltip("Imposta quanto tempo deve passare prima che i proiettili vengano creati")]
     [SerializeField] float waitBeforeSpawn = 2f;
+    [Tooltip("Imposta quanto tempo deve passare prima che i proiettili vengano sparati dopo essere stati creati")]
     [SerializeField] float waitBeforeShot = 2f;
+    [Tooltip("Imposta la distanza verticale in cui compaiono i proiettili rispetto ai punti di sosta del boss")]
     [SerializeField] float projectileVerticalOffset = 2f;
+    [Tooltip("Imposta la distanza orizzontale in cui compaiono i proiettili rispetto ai punti di sosta del boss")]
     [SerializeField] float projectileHorizontalOffset = 5f;
+    [Tooltip("Imposta la velocità di movimento dei proiettili")]
+    [SerializeField] float projectileSpeed = 750f;
+    [Tooltip("Imposta la durata dei proiettili e quanto tempo passa prima che il boss cambi stato dopo aver sparato")]
+    [SerializeField] float projectileLifeTime = 5f;
+
+    [Header("Uroboro Attack Settings")]
+    [SerializeField] GameObject uroboro1;
+    [SerializeField] GameObject uroboro2;
+    [SerializeField] GameObject endPoint1;
+    [SerializeField] GameObject endPoint2;
+    [SerializeField] float spawnOffset = 2;
+
+
 
     [Header("Other Settings")]
     [Tooltip("Imposta quanto è probabile che esegua nuovamente la stessa mossa di seguito in relazione alle altre (1 stessa probabilità delle altre, 0 nessuna probabilità)")]
@@ -210,14 +229,20 @@ public class BossBheaviour : MonoBehaviour
         this.nextState = nextState;
     }
 
-    public GameObject GenerateProjectile(Vector2 point)
+    public BossProjectile GenerateProjectile(Vector2 point)
     {
-        return Instantiate(projectilePrefab, point, Quaternion.identity);
+        BossProjectile projectile = Instantiate(projectilePrefab, point, Quaternion.identity).GetComponent<BossProjectile>();
+        projectile.Inizialize(Vector2.zero, point, 0);
+        projectile.lifeTime = projectileLifeTime;
+
+        return projectile;
     }
 
     //FUNZIONI GET
     //====================================================================================================================================
     #region Funzioni Get
+
+    #region Posizione e Movimento
     public List<BossPosition> GetPositions()
     {
         return positions;
@@ -264,6 +289,9 @@ public class BossBheaviour : MonoBehaviour
 
         return null;
     }
+    #endregion
+
+    #region Proiettili
 
     public GameObject GetProjectilePrefab()
     {
@@ -299,6 +327,20 @@ public class BossBheaviour : MonoBehaviour
         return projectileHorizontalOffset;
     }
 
+    public float GetProjectileSpeed()
+    {
+        return projectileSpeed;
+    }
+    public float GetProjectileLifeTime()
+    {
+        return projectileLifeTime;
+    }
+    #endregion
+
+    #region Uroboro
+
+
+    #endregion
 
     #endregion
 

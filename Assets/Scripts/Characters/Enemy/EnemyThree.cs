@@ -89,7 +89,7 @@ public class EnemyThree : BaseEnemy
         }
     }
 
-    private void Spawn()
+    public void Spawn()
     {
         if (!isActive)
         {

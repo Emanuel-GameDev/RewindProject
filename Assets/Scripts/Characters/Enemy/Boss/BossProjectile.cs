@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossProjectile : MonoBehaviour
+public class BossProjectile : Projectile
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Dismiss()
     {
-        
+        Destroy(gameObject);
+    }
+    public override void Inizialize(Vector2 direction, Vector2 position, float speed)
+    {
+        this.direction = direction;
+        this.speed = speed;
+        elapsedTime = 0;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
