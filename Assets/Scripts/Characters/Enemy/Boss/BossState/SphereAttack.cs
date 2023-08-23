@@ -36,6 +36,7 @@ public class SphereAttack : State
     public override void Update()
     {
         elapsed += Time.deltaTime;
+
         if (shooting)
         {
             if(elapsed> bossBheaviour.GetProjectileLifeTime())

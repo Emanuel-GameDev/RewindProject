@@ -8,11 +8,14 @@ public class BossProjectile : Projectile
     {
         Destroy(gameObject);
     }
+
     public override void Inizialize(Vector2 direction, Vector2 position, float speed)
     {
         this.direction = direction;
         this.speed = speed;
         elapsedTime = 0;
     }
+
+
 
 }

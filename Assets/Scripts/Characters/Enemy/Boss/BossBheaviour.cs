@@ -24,6 +24,7 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] BossPosition startPosition;
     [SerializeField] GameObject bossBody;
     [SerializeField] BossGroundManager groundManager;
+    [SerializeField] GameObject targetPlayer;
 
     [Header("Movement")]
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro orizzontalmente")]
@@ -66,12 +67,22 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] float uroboroSpeed = 10f;
     [SerializeField] float uroboroTimeChange = 5f;
 
-
+    [Header("Rewindable Attack Settings")]
+    [SerializeField] GameObject rewindableProjectilePrefab;
+    [SerializeField] float rewindableSpeed = 1000f;
+    [SerializeField] float rewindableVerticalOffset = 2;
+    [Tooltip("Imposta quanto tempo deve passare prima che il proiettile venga creato")]
+    [SerializeField] float rewindableWaitBeforeSpawn = 2f;
+    [Tooltip("Imposta quanto tempo deve passare prima che il proiettile venga sparato dopo essere stato creato")]
+    [SerializeField] float rewindableWaitBeforeShoot = 2f;
+    [Tooltip("Imposta la durata del proiettile e quanto tempo passa prima che il boss cambi stato dopo aver sparato")]
+    [SerializeField] float rewindableLifeTime = 5f;
 
     [Header("Other Settings")]
     [Tooltip("Imposta quanto è probabile che esegua nuovamente la stessa mossa di seguito in relazione alle altre (1 stessa probabilità delle altre, 0 nessuna probabilità)")]
     [Range(0f, 1f)]
     [SerializeField] float repeatPercentage = 0.5f;
+
 
     private StateMachine<eBossState> stateMachine;
     private List<BossPosition> positions;
@@ -241,11 +252,26 @@ public class BossBheaviour : MonoBehaviour
         return projectile;
     }
 
+    public BossProjectile GenerateRewindable(Vector2 point)
+    {
+        BossProjectile rewindable = Instantiate(rewindableProjectilePrefab, point, Quaternion.identity).GetComponent<BossProjectile>();
+        rewindable.Inizialize(Vector2.zero, point, 0);
+        rewindable.lifeTime = rewindableLifeTime;
+
+        return rewindable;
+    }
+
     //FUNZIONI GET
     //====================================================================================================================================
     #region Funzioni Get
 
-    #region Posizione e Movimento
+    #region Generiche
+
+    public GameObject GetTargetPlayer()
+    {
+        return targetPlayer;
+    }
+
     public List<BossPosition> GetPositions()
     {
         return positions;
@@ -375,6 +401,35 @@ public class BossBheaviour : MonoBehaviour
     public float GetUroboroTimeChange()
     {
         return uroboroTimeChange;
+    }
+
+    #endregion
+
+    #region Poiettile Rewindable
+
+    public float GetRewindableVerticalOffset()
+    {
+        return rewindableVerticalOffset;
+    }
+
+    public float GetRewindableWaitBeforeSpawn()
+    {
+        return rewindableWaitBeforeSpawn;
+    }
+
+    public float GetRewindableWaitBeforeShoot()
+    {
+        return rewindableWaitBeforeShoot;
+    }
+
+    public float GetRewindableLifeTime()
+    {
+        return rewindableLifeTime;
+    }
+
+    public float GetRewindableSpeed()
+    {
+        return rewindableSpeed;
     }
 
     #endregion
