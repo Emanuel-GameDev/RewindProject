@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ToolBox.Serialization;
 using UnityEngine;
-using UnityEngine.UI;   
 
 public class AbilityManager : MonoBehaviour
 {
@@ -12,7 +9,7 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] private List<Ability> _abilities;
 
     [SerializeField] List<string> abilityNameToSave = new List<string>();
-    
+
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
     public AbilityWheel wheel;
@@ -27,20 +24,30 @@ public class AbilityManager : MonoBehaviour
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
-        
-        if (DataSerializer.TryLoad<List<string>>("ABILITIES", out abilityNameToSave))
+    }
+
+    private void Start()
+    {
+
+        if (!GameManager.Instance.debug)
         {
-            foreach(string abilityName in abilityNameToSave)
+
+
+            if (DataSerializer.TryLoad<List<string>>("ABILITIES", out abilityNameToSave))
             {
-                Ability abilityToGive = _gameAbilities.Find(a => a.name == abilityName);
-                AddToAbilities(abilityToGive);
+                foreach (string abilityName in abilityNameToSave)
+                {
+                    Ability abilityToGive = _gameAbilities.Find(a => a.name == abilityName);
+                    abilityToGive.Pick(PlayerController.instance);
+                }
+
+            }
+            else
+            {
+                abilityNameToSave = new List<string>();
+                _abilities = new List<Ability>();
             }
 
-        }
-        else
-        {
-            abilityNameToSave = new List<string>();
-            _abilities = new List<Ability>();
         }
 
     }
