@@ -149,4 +149,11 @@ public class EnemyOne : BaseEnemy
         EndAttack();
     }
 
+    public override void OnDie()
+    {
+        base.OnDie();
+        EndAttack();
+        hitPause = false;
+    }
+
 }
