@@ -59,9 +59,12 @@ public class BossBheaviour : MonoBehaviour
     [Header("Uroboro Attack Settings")]
     [SerializeField] GameObject uroboro1;
     [SerializeField] GameObject uroboro2;
-    [SerializeField] GameObject endPoint1;
-    [SerializeField] GameObject endPoint2;
-    [SerializeField] float spawnOffset = 2;
+    [SerializeField] BossUroboroEndPoint uroboroEndPoint1;
+    [SerializeField] BossUroboroEndPoint uroboroEndPoint2;
+    [SerializeField] float uroboroHorizontalSpawnOffset = 2;
+    [SerializeField] float uroboroVerticalSpawnOffset = 2;
+    [SerializeField] float uroboroSpeed = 10f;
+    [SerializeField] float uroboroTimeChange = 5f;
 
 
 
@@ -338,7 +341,41 @@ public class BossBheaviour : MonoBehaviour
     #endregion
 
     #region Uroboro
+    public GameObject GetUroboro1()
+    {
+        return uroboro1;
+    }
+    public GameObject GetUroboro2()
+    {
+        return uroboro2;
+    }
 
+    public BossUroboroEndPoint GetUroboroEndPoint1()
+    {
+        return uroboroEndPoint1;
+    }
+
+    public BossUroboroEndPoint GetUroboroEndPoint2()
+    {
+        return uroboroEndPoint2;
+    }
+
+    public float GetUroboroHorizontalSpawnOffset()
+    {
+        return uroboroHorizontalSpawnOffset;
+    }
+    public float GetUroboroVerticalSpawnOffset()
+    {
+        return uroboroVerticalSpawnOffset;
+    }
+    public float GetUroboroSpeed()
+    {
+        return uroboroSpeed;
+    }
+    public float GetUroboroTimeChange()
+    {
+        return uroboroTimeChange;
+    }
 
     #endregion
 
