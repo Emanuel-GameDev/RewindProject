@@ -16,28 +16,50 @@ public class ProjectileAbility : Ability
 
     bool readyToUse = true;
     PathCreator instantietedPathCreator;
+    PlayerController player;
 
+    private void OnEnable()
+    {
+        readyToUse = true;
+    }
 
     public override void Activate1(GameObject parent)
     {
-        if (!readyToUse || instantietedPathCreator!=null)
+        if (!readyToUse || instantietedPathCreator != null)
             return;
 
-        if (!PlayerController.instance.grounded)
-            return;
-        PlayerController.instance.animator.SetBool("UsingCard", true);
+        if(parent.GetComponent<PlayerController>())
+            player = parent.GetComponent<PlayerController>();
 
-        GameObject projectile = Instantiate(prefabProjectile, parent.transform.position, Quaternion.Euler(0, 0, PlayerController.instance.groundAngle));
-        
-        if(PlayerController.instance.bodySprite.transform.localScale.x >= 0)
-            projectile.GetComponent<PlayerProjectile>().Inizialize(Quaternion.Euler(0,0,-PlayerController.instance.groundAngle) *  Vector2.right, PlayerController.instance.transform.position + Vector3.right, normalProjectileSpeed*60);
+        if (!player.grounded)
+            return;
+
+        player.animator.SetBool("UsingCard", true);
+        player.animator.SetTrigger("ActivateCard");
+        player.StartCoroutine(WaitAndSpawnNormalProjectile());
+
+        player.inputs.Player.Disable();
+    }
+
+    private void ShotProjectile( )
+    {
+        GameObject projectile = Instantiate(prefabProjectile, player.projectileSpawn.position, Quaternion.Euler(0, 0, player.groundAngle));
+
+        if (PlayerController.instance.bodySprite.transform.localScale.x >= 0)
+            projectile.GetComponent<PlayerProjectile>().Inizialize(Quaternion.Euler(0, 0, -player.groundAngle) * Vector2.right, player.projectileSpawn.position, normalProjectileSpeed * 60);
         else
-            projectile.GetComponent<PlayerProjectile>().Inizialize(Quaternion.Euler(0, 0, -PlayerController.instance.groundAngle) * -Vector2.right, PlayerController.instance.transform.position + Vector3.left, normalProjectileSpeed* 60);
+            projectile.GetComponent<PlayerProjectile>().Inizialize(Quaternion.Euler(0, 0, -player.groundAngle) * -Vector2.right, player.projectileSpawn.position, normalProjectileSpeed * 60);
 
         projectile.GetComponent<PlayerProjectile>().lifeTime = normalProjectileLifeTime;
 
+        player.activateCurrentAbility = false;
+        player.animator.SetBool("UsingCard", false);
+
+        player.inputs.Player.Enable();
+
         readyToUse = false;
-        LevelManager.instance.StartCoroutine(Cooldown());
+
+        player.StartCoroutine(Cooldown());
     }
 
     public override void Activate2(GameObject parent)
@@ -45,66 +67,93 @@ public class ProjectileAbility : Ability
         if (!readyToUse)
             return;
 
+        if (parent.GetComponent<PlayerController>())
+            player = parent.GetComponent<PlayerController>();
+
         if (!PlayerController.instance.grounded)
             return;
-
-        PlayerController.instance.animator.SetBool("UsingCard", true);
-
-        PlayerController.instance.inputs.Player.Disable();
-
-        GameObject instantietedPathCreatorObj = Instantiate(prefabPathCreator,PlayerController.instance.projectileSpawn.position,Quaternion.identity);
-        instantietedPathCreator = instantietedPathCreatorObj.GetComponent<PathCreator>();
-        instantietedPathCreator.projectileSpeed = guidedProjectileSpeed;
-        instantietedPathCreator.isDrawing = true;
-
-        instantietedPathCreator.StartCoroutine(DrawTimer());
         
-    }
+        player.animator.SetBool("UsingCard", true);
+        player.animator.SetTrigger("ActivateCard");
 
-    IEnumerator DrawTimer()
-    {
-        yield return new WaitForSeconds(timeToDraw);
-        if (readyToUse && !instantietedPathCreator.instatietedProjectile)
-        {
-            SpawnGuidedProjectile();
-            PlayerController.instance.inputs.Player.Enable();
-        }
-        PlayerController.instance.animator.SetBool("UsingCard", false);
-        LevelManager.instance.StopCoroutine(DrawTimer());
-    }
-    public override void Disactivate1(GameObject gameObject)
-    {
-        PlayerController.instance.animator.SetBool("UsingCard", false);
+        player.inputs.Player.Disable();
+
+        player.StartCoroutine(WaitAndSpawnGuidedProjectile());
+
     }
 
     public override void Disactivate2(GameObject gameObject)
     {
-        if (!readyToUse || instantietedPathCreator==null)
+        if (!readyToUse || instantietedPathCreator == null)
+        {
             return;
-        PlayerController.instance.animator.SetBool("UsingCard", false);
-        LevelManager.instance.StopCoroutine(DrawTimer());
+        }
+
+        player.animator.SetBool("UsingCard", false);
+
+        player.StopCoroutine(DrawTimer());
+
         SpawnGuidedProjectile();
-        PlayerController.instance.inputs.Player.Enable();
+
+        player.inputs.Player.Enable();
     }
+
+    private void ShotGuidedProjectile()
+    {
+        GameObject instantietedPathCreatorObj = Instantiate(prefabPathCreator, player.projectileSpawn.position, Quaternion.identity);
+        
+        instantietedPathCreator = instantietedPathCreatorObj.GetComponent<PathCreator>();
+        instantietedPathCreator.projectileSpeed = guidedProjectileSpeed;
+        instantietedPathCreator.isDrawing = true;
+
+        player.activateCurrentAbility = false;
+
+        instantietedPathCreator.StartCoroutine(DrawTimer());
+    }
+
 
     private void SpawnGuidedProjectile()
     {
-        LevelManager.instance.StartCoroutine(Cooldown());
+        player.StartCoroutine(Cooldown());
+
         instantietedPathCreator.isDrawing = false;
         instantietedPathCreator.SpawnProjectile(prefabProjectile);
         instantietedPathCreator = null;
+
         readyToUse = false;
     }
-
-    private void OnEnable()
-    {
-        readyToUse = true;
-    }
-
 
     IEnumerator Cooldown()
     {
         yield return new WaitForSeconds(cooldownTime);
         readyToUse = true;
     }
+
+    IEnumerator DrawTimer()
+    {
+        yield return new WaitForSeconds(timeToDraw);
+
+        if (readyToUse && !instantietedPathCreator.instatietedProjectile)
+        {
+            SpawnGuidedProjectile();
+            player.inputs.Player.Enable();
+        }
+
+        player.animator.SetBool("UsingCard", false);
+
+        player.StopCoroutine(DrawTimer());
+    }
+    IEnumerator WaitAndSpawnGuidedProjectile( )
+    {
+        yield return new WaitUntil(() => player.activateCurrentAbility == true);
+        ShotGuidedProjectile();
+    }
+
+    IEnumerator WaitAndSpawnNormalProjectile()
+    {
+        yield return new WaitUntil(() => player.activateCurrentAbility == true);
+        ShotProjectile();
+    }
+
+    
 }
