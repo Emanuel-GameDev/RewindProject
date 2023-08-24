@@ -587,6 +587,13 @@ public class PlayerController : Character
         transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
     }
 
+    public bool activateCurrentAbility;
+
+    public void AbilityActivationAnimationEvent()
+    {
+        activateCurrentAbility = true;
+    }
+
     public void GroundCheck()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);

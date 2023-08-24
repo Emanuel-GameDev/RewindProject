@@ -17,14 +17,13 @@ public class SaveObjState : MonoBehaviour
         gameObject.SetActive(objActive);
     }
 
-    public void ChangeObjectState(bool state)
+ 
+
+
+    public void ChangeObjectStateOnReload(bool state)
     {
         objActive = state;
         DataSerializer.Save(SceneManager.GetActiveScene().name + name + "State", objActive);
-        gameObject.SetActive(objActive);
     }
 
-   
-
-    
 }
