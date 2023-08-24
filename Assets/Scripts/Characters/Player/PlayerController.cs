@@ -4,6 +4,7 @@ using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public enum PlayerState
 {
@@ -606,6 +607,10 @@ public class PlayerController : Character
             doubleJump = true;
             isFalling = false;
         }
+    }
+    public void ReloadLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void EnableInputs()

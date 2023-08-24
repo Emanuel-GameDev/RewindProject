@@ -16248,9 +16248,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 228295229}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: Respawn
+      - m_Target: {fileID: 1577871658}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: ReloadLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -39206,6 +39206,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1576298592}
   m_CullTransparentMesh: 1
+--- !u!114 &1577871658 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5481834699438083077, guid: ae449447977b52a48a32472afeb727ea, type: 3}
+  m_PrefabInstance: {fileID: 5481834698675356255}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1e7c9fa27ffb64a9e6879017a4ee2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1578312285
 GameObject:
   m_ObjectHideFlags: 0
@@ -50938,9 +50949,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1619736982}
     - target: {fileID: 5481834699438083078, guid: ae449447977b52a48a32472afeb727ea, type: 3}
-      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481834699438083078, guid: ae449447977b52a48a32472afeb727ea, type: 3}
+      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 228295229}
+    - target: {fileID: 5481834699438083078, guid: ae449447977b52a48a32472afeb727ea, type: 3}
+      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481834699438083078, guid: ae449447977b52a48a32472afeb727ea, type: 3}
+      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Respawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481834699438083078, guid: ae449447977b52a48a32472afeb727ea, type: 3}
+      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: LevelManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5481834699438083078, guid: ae449447977b52a48a32472afeb727ea, type: 3}
+      propertyPath: OnDie.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5481834699438083082, guid: ae449447977b52a48a32472afeb727ea, type: 3}
       propertyPath: m_Name
       value: Player
