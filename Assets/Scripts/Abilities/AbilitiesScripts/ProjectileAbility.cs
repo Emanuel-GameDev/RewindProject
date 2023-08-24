@@ -22,7 +22,10 @@ public class ProjectileAbility : Ability
     {
         if (!readyToUse || instantietedPathCreator!=null)
             return;
-        
+
+        if (!PlayerController.instance.grounded)
+            return;
+        PlayerController.instance.animator.SetBool("UsingCard", true);
 
         GameObject projectile = Instantiate(prefabProjectile, parent.transform.position, Quaternion.Euler(0, 0, PlayerController.instance.groundAngle));
         
@@ -42,6 +45,10 @@ public class ProjectileAbility : Ability
         if (!readyToUse)
             return;
 
+        if (!PlayerController.instance.grounded)
+            return;
+
+        PlayerController.instance.animator.SetBool("UsingCard", true);
 
         PlayerController.instance.inputs.Player.Disable();
 
@@ -62,13 +69,19 @@ public class ProjectileAbility : Ability
             SpawnGuidedProjectile();
             PlayerController.instance.inputs.Player.Enable();
         }
+        PlayerController.instance.animator.SetBool("UsingCard", false);
         LevelManager.instance.StopCoroutine(DrawTimer());
+    }
+    public override void Disactivate1(GameObject gameObject)
+    {
+        PlayerController.instance.animator.SetBool("UsingCard", false);
     }
 
     public override void Disactivate2(GameObject gameObject)
     {
         if (!readyToUse || instantietedPathCreator==null)
             return;
+        PlayerController.instance.animator.SetBool("UsingCard", false);
         LevelManager.instance.StopCoroutine(DrawTimer());
         SpawnGuidedProjectile();
         PlayerController.instance.inputs.Player.Enable();

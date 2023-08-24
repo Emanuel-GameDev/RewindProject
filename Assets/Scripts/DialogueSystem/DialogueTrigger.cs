@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public bool dialogueTriggered = false;
+    bool dialogueTriggered = false;
+    [SerializeField] bool repeatable = false;
 
     private void OnEnable()
     {
@@ -20,7 +21,7 @@ public class DialogueTrigger : MonoBehaviour
         if (collision.gameObject.layer != LayerMask.NameToLayer("Player"))
             return;
 
-        if (!dialogueTriggered || GetComponentInChildren<Dialogue>(true).repeatable)
+        if (!dialogueTriggered || repeatable)
         {
             dialogueTriggered = true;
             DataSerializer.Save(SceneManager.GetActiveScene().name + name, dialogueTriggered);

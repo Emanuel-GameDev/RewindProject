@@ -121,6 +121,7 @@ public class LevelManager : MonoBehaviour
         else
             Teleport(PlayerController.instance.gameObject, checkpoints[0].transform.position);
 
+        
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }
 

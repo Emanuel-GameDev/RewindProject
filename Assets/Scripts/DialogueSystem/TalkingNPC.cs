@@ -12,12 +12,8 @@ public class TalkingNPC : MonoBehaviour
         dialogue = GetComponentInChildren<Dialogue>();
     }
 
-    public void DialogueEnd()
+    public void DespawnOnReload()
     {
-        if (dialogue.repeatable)
-            return;
-
-        GetComponent<SaveObjState>().ChangeObjectState(false);
-        gameObject.SetActive(false);
+        GetComponent<SaveObjState>().ChangeObjectStateOnReload(false);
     }
 }
