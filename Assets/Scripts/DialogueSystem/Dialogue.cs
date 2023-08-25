@@ -10,12 +10,14 @@ using UnityEngine.SceneManagement;
 
 public class Dialogue : MonoBehaviour
 {
+
     [SerializeField] Interaction[] dialogues;
     [SerializeField] float characterPerSecond;
 
     [Header ("Boxes")]
     [SerializeField] TextMeshProUGUI speakerTextBox;
     [SerializeField] TextMeshProUGUI dialogueTextBox;
+    [SerializeField] AudioSource audioSource;
 
     public PlayerInputs inputs { get; private set; }
 
@@ -43,13 +45,15 @@ public class Dialogue : MonoBehaviour
         public UnityEngine.Color speakerColor;
         public string textLine;
         public UnityEngine.Color textColor;
+        public AudioClip speakerVoiceAudio;
 
-        public Line(string speaker, UnityEngine.Color speakerColor, string line, UnityEngine.Color textColor)
+        public Line(string speaker, UnityEngine.Color speakerColor, string line, UnityEngine.Color textColor, AudioClip speakerVoiceAudio)
         {
             this.speaker = speaker;
             this.speakerColor = speakerColor;
             this.textLine = line;
             this.textColor = textColor;
+            this.speakerVoiceAudio = speakerVoiceAudio;
         }
     }
 
@@ -61,6 +65,8 @@ public class Dialogue : MonoBehaviour
         inputs.Dialogue.Enable();
         inputs.Player.Disable();
         inputs.AbilityController.Disable();
+
+        audioSource = GetComponent<AudioSource>();
 
         if (DataSerializer.TryLoad<int>(SceneManager.GetActiveScene().name + transform.parent.parent.position.x + transform.parent.parent.position.y + "dialogueIndex", out int dIndex))
             dialogueIndex = dIndex;
@@ -102,6 +108,12 @@ public class Dialogue : MonoBehaviour
     {
         speakerTextBox.text = dialogues[dialogueIndex].lines[lineIndex].speaker;
         dialogueTextBox.color = dialogues[dialogueIndex].lines[lineIndex].textColor;
+        
+        if(audioSource!=null && dialogues[dialogueIndex].lines[lineIndex].speakerVoiceAudio != null)
+        {
+            audioSource.clip = dialogues[dialogueIndex].lines[lineIndex].speakerVoiceAudio;
+            audioSource.Play();
+        }
 
         foreach (char c in dialogues[dialogueIndex].lines[lineIndex].textLine.ToCharArray())
         {
@@ -115,6 +127,9 @@ public class Dialogue : MonoBehaviour
     {
         if (lineIndex < dialogues[dialogueIndex].lines.Length - 1)
         {
+            if (audioSource != null)
+                audioSource.Stop();
+
             lineIndex++;
             dialogueTextBox.text = string.Empty;
             speakerTextBox.color = dialogues[dialogueIndex].lines[lineIndex].speakerColor;

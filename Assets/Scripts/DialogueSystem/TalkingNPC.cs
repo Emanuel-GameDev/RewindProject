@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class TalkingNPC : MonoBehaviour
 {
-    Dialogue dialogue;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        dialogue = GetComponentInChildren<Dialogue>();
-    }
+    
 
     public void DespawnOnReload()
     {
