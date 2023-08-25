@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using ToolBox.Serialization;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,7 @@ public class LevelDoor : MonoBehaviour
 {
     [SerializeField] SceneAsset levelToLoad;
     [SerializeField] GameObject levelSelectionMenu;
+    [SerializeField] public MenuButton eventSystemDefaultButton;
 
     List<DoorMenuSelectionButton> buttons;
     List<LevelLight> lights;
@@ -34,9 +36,18 @@ public class LevelDoor : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         levelSelectionMenu.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(null);
+        PlayerController.instance.inputs.Player.Enable();
+        PlayerController.instance.inputs.AbilityController.Enable();
+        PlayerController.instance.inputs.Menu.CloseMenu.performed -= CloseMenu_performed;
+    }
+    private void OnDisable()
+    {
+        PlayerController.instance.inputs.Menu.CloseMenu.performed -= CloseMenu_performed;
+        PlayerController.instance.inputs.Player.Enable();
+        PlayerController.instance.inputs.AbilityController.Enable();
     }
 
-    
 
     private void KindleLights()
     {  
@@ -66,6 +77,11 @@ public class LevelDoor : MonoBehaviour
         if (!levelSelectionMenu.activeSelf)
         {
             levelSelectionMenu.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(eventSystemDefaultButton.gameObject);
+            PlayerController.instance.inputs.Menu.CloseMenu.performed += CloseMenu_performed;
+
+            PlayerController.instance.inputs.Player.Disable();
+            PlayerController.instance.inputs.AbilityController.Disable();
 
             for (int i = 0; i < checkpointTaken.Count; i++)
             {
@@ -74,18 +90,27 @@ public class LevelDoor : MonoBehaviour
 
                 if (checkpointTaken[i])
                 {
-                    buttons[i].locked = false;
-                    buttons[i].buttonText.color = Color.white;
+                    buttons[i].interactable = true;
                 }
                 else
                 {
-                    buttons[i].locked = true;
-                    buttons[i].buttonText.color = Color.gray;
+                    buttons[i].interactable = false;
                 }
             }
         }
         else
+        {
             levelSelectionMenu.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(null);
+            PlayerController.instance.inputs.Menu.CloseMenu.performed -= CloseMenu_performed;
+            PlayerController.instance.inputs.Player.Enable();
+            PlayerController.instance.inputs.AbilityController.Enable();
+        }
+    }
+
+    private void CloseMenu_performed(InputAction.CallbackContext obj)
+    {
+        HandleMenu();
     }
 
     public void EnterDoor()

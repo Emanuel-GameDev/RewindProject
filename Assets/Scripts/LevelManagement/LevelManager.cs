@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour
 
         DataSerializer.FileSaving += DeleteSaves;
     }
-
+    
     private void Start()
     {
         // Locks the cursor
