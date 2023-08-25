@@ -52,8 +52,11 @@ public class Checkpoint : MonoBehaviour
         SceneManager.LoadScene(Hub.name);
     }
 
+    
+
     public void SetCheckpoint()
     {
+        DataSerializer.Save("CHECKPOINTIDTOLOAD", LevelManager.instance.checkpoints.FindIndex(0,5,c=>c==this));
         DataSerializer.Save("SPAWNPOINT", transform.position);
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
         PubSub.Instance.Notify(EMessageType.CheckpointVisited, this);
