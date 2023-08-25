@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] List<Checkpoint> checkpoints;
+    public List<Checkpoint> checkpoints;
     public static LevelManager instance;
 
     [HideInInspector] public List<bool> checkpointsTaken;
@@ -101,10 +101,9 @@ public class LevelManager : MonoBehaviour
     private void GetSpawnPoint()
     {
         DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad);
-        DataSerializer.DeleteKey("CHECKPOINTIDTOLOAD");
+       
 
 
-        Debug.Log(idToLoad);
         if (checkpoints.Count < 1)
             DataSerializer.Save("SPAWNPOINT", transform.position);
         else if (idToLoad <= 0)
