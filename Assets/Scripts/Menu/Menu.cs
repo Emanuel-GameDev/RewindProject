@@ -28,6 +28,7 @@ public class Menu : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(selection.gameObject);
     }
+
     private void Awake()
     {
         DataSerializer.TryLoad("PAUSEMENULOCK" + gameObject.name, out unlocked);
