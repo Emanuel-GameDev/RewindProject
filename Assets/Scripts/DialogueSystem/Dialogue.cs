@@ -5,36 +5,59 @@ using TMPro;
 using UnityEngine.InputSystem;
 using System.Drawing;
 using UnityEngine.Events;
+using ToolBox.Serialization;
+using UnityEngine.SceneManagement;
 
 public class Dialogue : MonoBehaviour
 {
-    [SerializeField] Line[] lines;
+
+    [SerializeField] Interaction[] dialogues;
     [SerializeField] float characterPerSecond;
 
     [Header ("Boxes")]
     [SerializeField] TextMeshProUGUI speakerTextBox;
     [SerializeField] TextMeshProUGUI dialogueTextBox;
+    [SerializeField] AudioSource audioSource;
 
-    public bool repeatable = false;
-    public UnityEvent OnDialogueEnd;
+    public PlayerInputs inputs { get; private set; }
+
+    int lineIndex;
+    int dialogueIndex;
+
+    
+    public UnityEvent OnDialoguesEnded;
+
+    [System.Serializable]
+    struct Interaction
+    {
+        public Line[] lines;
+
+        public Interaction(Line[] lines)
+        {
+            this.lines = lines;
+        }
+    }
 
     [System.Serializable]
     struct Line
     {
         public string speaker;
+        public UnityEngine.Color speakerColor;
         public string textLine;
-        
-        public Line(string speaker,string line)
+        public UnityEngine.Color textColor;
+        public AudioClip speakerVoiceAudio;
+
+        public Line(string speaker, UnityEngine.Color speakerColor, string line, UnityEngine.Color textColor, AudioClip speakerVoiceAudio)
         {
             this.speaker = speaker;
+            this.speakerColor = speakerColor;
             this.textLine = line;
+            this.textColor = textColor;
+            this.speakerVoiceAudio = speakerVoiceAudio;
         }
     }
 
 
-    public PlayerInputs inputs { get; private set; }
-
-    int index;
 
     private void OnEnable()
     {
@@ -43,17 +66,24 @@ public class Dialogue : MonoBehaviour
         inputs.Player.Disable();
         inputs.AbilityController.Disable();
 
+        audioSource = GetComponent<AudioSource>();
+
+        if (DataSerializer.TryLoad<int>(SceneManager.GetActiveScene().name + transform.parent.parent.position.x + transform.parent.parent.position.y + "dialogueIndex", out int dIndex))
+            dialogueIndex = dIndex;
+
         inputs.Dialogue.NextLyne.performed += NextLyne_performed;
+        dialogueTextBox.text = string.Empty;
+        StartDialogue();
     }
 
     private void NextLyne_performed(InputAction.CallbackContext obj)
     {
-        if(dialogueTextBox.text ==lines[index].textLine)
+        if(dialogueTextBox.text == dialogues[dialogueIndex].lines[lineIndex].textLine)
             NextLine();
         else
         {
             StopAllCoroutines();
-            dialogueTextBox.text = lines[index].textLine;
+            dialogueTextBox.text = dialogues[dialogueIndex].lines[lineIndex].textLine;
         }
     }
 
@@ -65,22 +95,27 @@ public class Dialogue : MonoBehaviour
         inputs.Dialogue.NextLyne.performed -= NextLyne_performed;
     }
 
-    private void Start()
-    {
-        dialogueTextBox.text = string.Empty;
-        StartDialogue();
-    }
+    
 
     void StartDialogue()
     {
-        index = 0;
+        lineIndex = 0;
+        speakerTextBox.color = dialogues[dialogueIndex].lines[lineIndex].speakerColor;
         StartCoroutine(TypeLine());
     }
 
     IEnumerator TypeLine()
     {
-        speakerTextBox.text = lines[index].speaker;
-        foreach (char c in lines[index].textLine.ToCharArray())
+        speakerTextBox.text = dialogues[dialogueIndex].lines[lineIndex].speaker;
+        dialogueTextBox.color = dialogues[dialogueIndex].lines[lineIndex].textColor;
+        
+        if(audioSource!=null && dialogues[dialogueIndex].lines[lineIndex].speakerVoiceAudio != null)
+        {
+            audioSource.clip = dialogues[dialogueIndex].lines[lineIndex].speakerVoiceAudio;
+            audioSource.Play();
+        }
+
+        foreach (char c in dialogues[dialogueIndex].lines[lineIndex].textLine.ToCharArray())
         {
             dialogueTextBox.text += c;
             yield return new WaitForSeconds(1/characterPerSecond);
@@ -90,16 +125,28 @@ public class Dialogue : MonoBehaviour
 
     void NextLine()
     {
-        if (index < lines.Length - 1)
+        if (lineIndex < dialogues[dialogueIndex].lines.Length - 1)
         {
-            index++;
+            if (audioSource != null)
+                audioSource.Stop();
+
+            lineIndex++;
             dialogueTextBox.text = string.Empty;
+            speakerTextBox.color = dialogues[dialogueIndex].lines[lineIndex].speakerColor;
             StartCoroutine(TypeLine());
         }
         else
         {
-            index = 0;
-            OnDialogueEnd?.Invoke();
+            lineIndex = 0;
+
+            dialogueIndex++;
+
+            if (dialogueIndex == dialogues.Length)
+            {
+                dialogueIndex--;
+                OnDialoguesEnded?.Invoke();
+            }
+            DataSerializer.Save(SceneManager.GetActiveScene().name + transform.parent.parent.position.x + transform.parent.parent.position.y + "dialogueIndex", dialogueIndex);
             gameObject.SetActive(false);
         }
     }

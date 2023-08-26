@@ -255,7 +255,7 @@ MonoBehaviour:
   fastRespawnRefreshTimer: 0.5
   noFriction: {fileID: 6200000, guid: 9775ba6ee0a60004293f5156640f7d5a, type: 2}
   fullFriction: {fileID: 6200000, guid: 10a9534580af12747ba7f7fa3a7a01d6, type: 2}
-  projectileSpawn: {fileID: 0}
+  projectileSpawn: {fileID: 4450616809838545629}
   fallStartPoint: 0
   fastRespawnTimer: 0
   horizontalInput: 0
@@ -276,6 +276,7 @@ MonoBehaviour:
   horizontalMovement: 0
   groundAngle: 0
   canDoubleJump: 0
+  activateCurrentAbility: 0
 --- !u!114 &5481834699438083078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,9 +294,9 @@ MonoBehaviour:
   OnDie:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
-        m_MethodName: Respawn
+      - m_Target: {fileID: 5481834699438083077}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: ReloadLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

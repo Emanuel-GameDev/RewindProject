@@ -34,6 +34,11 @@ public class PlayerTriggerCause : Cause
         inputs.Player.Interaction.performed += Interaction;
     }
 
+    private void OnDisable()
+    {
+        inputs.Player.Interaction.performed -= Interaction;
+    }
+
     protected override void OnValidate()
     {
         if (!GetComponent<CircleCollider2D>().isTrigger)
@@ -43,7 +48,7 @@ public class PlayerTriggerCause : Cause
     private void Interaction(InputAction.CallbackContext obj)
     {
         if (!buttonInteraction || !areaEntered) return;
-
+        
         if (target != null)
         {
             ActivateEffect();

@@ -33,7 +33,7 @@ public class MenuVideoButton : MenuButton
 
     public void UnlockButton()
     {
-        GetComponent<SaveObjState>().ChangeObjectState(true);
+        GetComponent<SaveObjState>().ChangeObjectStateOnReload(true);
     }
 
     IEnumerator Wait()

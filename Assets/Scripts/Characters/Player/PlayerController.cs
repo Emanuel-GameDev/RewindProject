@@ -4,6 +4,7 @@ using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public enum PlayerState
 {
@@ -112,6 +113,7 @@ public class PlayerController : Character
         inputs.Player.Dash.performed += TryDash;
     }
 
+   
 
     private void Awake()
     {
@@ -218,9 +220,10 @@ public class PlayerController : Character
 
     private void OpenMenuInput(InputAction.CallbackContext obj)
     {
-        if (MenuManager.Instance != null)
+        if (GameManager.Instance.pauseMenuManager != null)
         {
-            MenuManager.Instance.OpenMenu(MenuManager.Instance.submenus[0]);
+            GameManager.Instance.pauseMenuManager.OpenMenu(GameManager.Instance.pauseMenuManager.submenus[0]);
+            Time.timeScale = 0;
             inputs.Player.Disable();
             inputs.AbilityController.Disable();
             inputs.UI.Disable();
@@ -585,6 +588,13 @@ public class PlayerController : Character
         transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
     }
 
+    public bool activateCurrentAbility;
+
+    public void AbilityActivationAnimationEvent()
+    {
+        activateCurrentAbility = true;
+    }
+
     public void GroundCheck()
     {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundMask);
@@ -597,6 +607,20 @@ public class PlayerController : Character
             doubleJump = true;
             isFalling = false;
         }
+    }
+    public void ReloadLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void EnableInputs()
+    {
+        inputs.Player.Enable();
+    }
+
+    public void DisableInputs()
+    {
+        inputs.Player.Disable();
     }
 
     #endregion

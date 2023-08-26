@@ -23,23 +23,25 @@ public class Tower : MonoBehaviour
         collisionMask = mask;
     }
 
-
     public void Activate(Vector2 pos)
     {
         transform.position = pos;
 
         animator.SetTrigger("Activated");
+
+        if (animator.GetBool("Destroyed"))
+            animator.SetBool("Destroyed", false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
-    {
+    {        
         if (((1 << collision.gameObject.layer) & collisionMask) != 0)
         {
             hp -= 1;
 
             if (hp == 0)
             {
-                animator.SetTrigger("Destroyed");
+                animator.SetBool("Destroyed", true);
                 Dismiss();
             }
         }
