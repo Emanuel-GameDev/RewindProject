@@ -17,6 +17,7 @@ public class SummonTower : Ability
     private Tower currentTower;
     private bool canActivate = true;
     private float lastActivationTime;
+    private bool active = false;
 
     private void OnEnable()
     {
@@ -38,11 +39,11 @@ public class SummonTower : Ability
 
     public override void Activate1(GameObject parent)
     {
-        if (!canActivate || currentTower == null) return;
+        if (!canActivate || currentTower == null || active) return;
 
         PlayerController player = parent.GetComponent<PlayerController>();
 
-        if (!player.grounded) return;
+        if (!player.grounded || !currentTower.CanBeActivated()) return;
         
         Vector2 summonPos;
 
@@ -52,10 +53,16 @@ public class SummonTower : Ability
             summonPos = new Vector2(player.transform.position.x - summonOffset.x, player.transform.position.y + summonOffset.y);
 
         parent.GetComponent<Animator>().SetTrigger("Defending");
-        currentTower.Activate(summonPos);
+        currentTower.Activate(this, summonPos, facingRight);
 
+        active = true;
+    }
+
+    public void StartCooldown()
+    {
         canActivate = false;
         lastActivationTime = Time.time;
+        active = false;
     }
 
     public override void UpdateAbility()
@@ -63,7 +70,10 @@ public class SummonTower : Ability
         base.UpdateAbility();
 
         if (!canActivate && Time.time >= lastActivationTime + cooldown)
+        {
             canActivate = true;
+            lastActivationTime = 0f;
+        }
     }
 
     public override void Pick(Character picker)
