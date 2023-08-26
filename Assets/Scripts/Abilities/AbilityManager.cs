@@ -17,11 +17,11 @@ public class AbilityManager : MonoBehaviour
 
     public AbilityWheel wheel;
 
-    #region Debug Variables
+    // Debug
+    [Tooltip("Enable only for debugging, this bool set to true on a serious test will make this script not work")]
+    [HideInInspector] public bool debug = false;
     [HideInInspector]
     public List<Ability> DebugAbilities = new List<Ability>();
-
-    #endregion
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class AbilityManager : MonoBehaviour
         Ability newAbility = obj as Ability;
 
         // Add to unlocked abilities
-        if (GameManager.Instance.debug)
+        if (debug)
             DebugAbilities.Add(newAbility);
         else
             _abilities.Add(newAbility);
@@ -84,17 +84,9 @@ public class AbilityManager : MonoBehaviour
 
     public Ability GetAbilityFrom(Sprite abilityIcon)
     {
-        if (GameManager.Instance.debug)
+        if (debug)
             return DebugAbilities.Where(ability => ability.icon == abilityIcon)?.First();
 
         return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
-    }
-
-    public List<Ability> GetUnlockedAbilities()
-    {
-        if (GameManager.Instance.debug)
-            return DebugAbilities;
-        else
-            return _abilities;
     }
 }

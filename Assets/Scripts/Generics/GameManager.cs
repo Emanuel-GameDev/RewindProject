@@ -12,9 +12,6 @@ public class GameManager : MonoBehaviour
     public MenuManager pauseMenuManager;
     public UIManager uiManager;
 
-    [Tooltip("Enable only for debugging, this bool set to true on a serious test will make scripts not work")]
-    public bool debug;
-
     private void Awake()
     {
         if (Instance == null)
