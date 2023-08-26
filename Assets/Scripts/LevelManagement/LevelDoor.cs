@@ -67,7 +67,10 @@ public class LevelDoor : MonoBehaviour
     public void Interact()
     {
         if (checkpointTaken.FindAll(taken => taken == true).Count <= 1)
+        {
+            DataSerializer.Save("CHECKPOINTIDTOLOAD", 0);
             EnterDoor();
+        }
         else
             HandleMenu();
     }
