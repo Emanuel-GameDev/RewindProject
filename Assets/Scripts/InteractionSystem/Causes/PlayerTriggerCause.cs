@@ -28,15 +28,13 @@ public class PlayerTriggerCause : Cause
 
     private void OnEnable()
     {
-        inputs = new PlayerInputs();
-        inputs.Player.Enable();
-
-        inputs.Player.Interaction.performed += Interaction;
+        PlayerController.instance.inputs.Player.Interaction.performed += Interaction;
     }
 
     private void OnDisable()
     {
-        inputs.Player.Interaction.performed -= Interaction;
+        PlayerController.instance.inputs.Player.Interaction.performed -= Interaction;
+        PlayerController.instance.inputs.Dispose();
     }
 
     protected override void OnValidate()
@@ -52,13 +50,29 @@ public class PlayerTriggerCause : Cause
         if (target != null)
         {
             ActivateEffect();
+
+            if (target.gameObject.GetComponent<PlayerController>())
+            {
+                if(target.gameObject.GetComponent<PlayerController>().buttonReminder.activeSelf)
+                    target.gameObject.GetComponent<PlayerController>().buttonReminder.SetActive(false);
+                else
+                    target.gameObject.GetComponent<PlayerController>().buttonReminder.SetActive(true);
+            }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
+
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetLayer.value, 2f)))
         {
+            if (collision.gameObject.GetComponent<PlayerController>())
+            {
+                if(collision.gameObject.GetComponent<PlayerController>().buttonReminder)
+                collision.gameObject.GetComponent<PlayerController>().buttonReminder.SetActive(true);
+            }
+
             areaEntered = true;
 
             target = collision.gameObject.GetComponent<Character>();
@@ -67,15 +81,24 @@ public class PlayerTriggerCause : Cause
 
             ActivateEffect();
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetLayer.value, 2f)))
         {
+
+            if (collision.gameObject.GetComponent<PlayerController>())
+            {
+                if (collision.gameObject.GetComponent<PlayerController>().buttonReminder)
+                collision.gameObject.GetComponent<PlayerController>().buttonReminder.SetActive(false);
+            }
+
             areaEntered = false;
 
             target = null;
         }
+
     }
 }

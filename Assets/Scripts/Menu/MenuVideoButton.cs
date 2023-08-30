@@ -33,6 +33,7 @@ public class MenuVideoButton : MenuButton
 
     public void UnlockButton()
     {
+        gameObject.SetActive(true);
         GetComponent<SaveObjState>().ChangeObjectStateOnReload(true);
     }
 

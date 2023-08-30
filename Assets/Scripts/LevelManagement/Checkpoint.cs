@@ -41,6 +41,7 @@ public class Checkpoint : MonoBehaviour
         taken = true;
         SetCheckpoint();
 
+
         HandleMenu();
     }
 
@@ -48,7 +49,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (menu == null)
             return;
-        Debug.Log("D");
+
         if (!menu.activeSelf)
         {
             menu.SetActive(true);
@@ -78,7 +79,6 @@ public class Checkpoint : MonoBehaviour
 
     public void ReturnToHub()
     {
-        
         SceneManager.LoadScene(Hub.name);
     }
 

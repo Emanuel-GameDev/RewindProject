@@ -13,6 +13,7 @@ public abstract class Ability : ScriptableObject
     public Sprite icon;
     public float cooldownTime;
     public bool passive = false;
+    public Sprite smallIcon;
     public string menuDescription;
 
 
