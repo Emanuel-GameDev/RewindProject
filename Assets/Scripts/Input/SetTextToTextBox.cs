@@ -26,10 +26,26 @@ public class SetTextToTextBox : MonoBehaviour
         playerInputs = PlayerController.instance.inputs;
         textBox = GetComponent<TMP_Text>();
         currentDevice = IDevice.KeyboardMouse;
+
+        InputSystem.onActionChange += InputSystem_onActionChange;
         SetText();
-        InputSystem.onAnyButtonPress.Call(ButtonPressed);
     }
-    
+
+    private void InputSystem_onActionChange(object arg1, InputActionChange arg2)
+    {
+        if (arg2 == InputActionChange.ActionPerformed)
+        {
+            if (arg1 is InputAction)
+            {
+                InputAction inputAction = (InputAction)arg1;
+
+                if (inputAction.activeControl != null)
+                    ButtonPressed(inputAction.activeControl);
+            }
+        }
+
+       
+    }
 
     [ContextMenu("Set Text")]
     private void SetText() 
