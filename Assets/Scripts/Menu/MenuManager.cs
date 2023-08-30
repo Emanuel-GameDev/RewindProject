@@ -10,7 +10,7 @@ public class MenuManager : MonoBehaviour
 {
     public PlayerInputs inputs { get; private set; }
 
-    [HideInInspector] public AudioSource audioSource;
+    public AudioSource audioSource;
     [SerializeField] AudioClip nextTabAudioClip;
     public AudioClip buttonSelectedSound;
     [HideInInspector] public Menu[] submenus;
@@ -22,8 +22,8 @@ public class MenuManager : MonoBehaviour
         inputs.Menu.CloseMenu.performed += CloseMenuInput;
         inputs.Menu.NextTab.performed += OpenNextTab;
         inputs.Menu.PreviousTab.performed += OpenPreviousTab;
-        submenus = GetComponentsInChildren<Menu>(true);
         audioSource = GetComponent<AudioSource>();
+        submenus = GetComponentsInChildren<Menu>(true);
     }
 
     private void OpenPreviousTab(InputAction.CallbackContext obj)
