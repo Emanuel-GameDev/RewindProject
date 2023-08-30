@@ -19,7 +19,8 @@ public class ChangeGroundAttack : State
 
     public override void Enter()
     {
-        if(bossBheaviour.GetCurrentPosition().GetHorizontalPosition() == eHorizontalPosition.Center)
+        Debug.Log(this.GetType().Name);
+        if (bossBheaviour.GetCurrentPosition().GetHorizontalPosition() == eHorizontalPosition.Center)
         {
             bossBheaviour.SetNextState(eBossState.ChangeGroundAttack);
             bossBheaviour.ChangeState(eBossState.Moving);

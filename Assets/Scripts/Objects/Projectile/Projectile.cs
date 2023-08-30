@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] float speed;
+    [SerializeField] protected float speed;
     [SerializeField] public  float lifeTime;
-    float elapsedTime;
-    private Vector2 direction;
+    protected float elapsedTime;
+    protected private Vector2 direction;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D body;
 
@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
         Dismiss();
     }
 
-    public void Inizialize(Vector2 direction, Vector2 position, float speed)
+    public virtual void Inizialize(Vector2 direction, Vector2 position, float speed)
     {
         this.direction = direction;
         if(direction == Vector2.left)

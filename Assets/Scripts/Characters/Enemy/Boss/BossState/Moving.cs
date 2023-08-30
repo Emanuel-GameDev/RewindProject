@@ -19,6 +19,7 @@ public class Moving : State
 
     public override void Enter()
     {
+        Debug.Log(this.GetType().Name);
         startPosition = bossBheaviour.GetCurrentPosition().transform.position;
         endPosition = NextPosition();
         elapsedTime = 0f;
