@@ -23,7 +23,7 @@ public class CameraTrigger : MonoBehaviour
 
     private void OnEnable()
     {
-        inputs = new PlayerInputs();
+        inputs = PlayerController.instance.inputs;
 
         if (!inputs.Player.enabled)
             inputs.Player.Enable();

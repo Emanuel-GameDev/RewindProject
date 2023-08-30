@@ -4,6 +4,7 @@ using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Profiling;
 using UnityEngine.SceneManagement;
 
 public enum PlayerState
@@ -51,7 +52,8 @@ public class PlayerController : Character
     [SerializeField] float fastRespawnRefreshTimer = 0.5f;
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] PhysicsMaterial2D fullFriction;
-    public Transform projectileSpawn; 
+    public Transform projectileSpawn;
+    public GameObject buttonReminder;
 
     public float fallStartPoint;
     [HideInInspector] public float fastRespawnTimer = 0;
@@ -100,8 +102,8 @@ public class PlayerController : Character
         inputs = new PlayerInputs();
         inputs.Player.Enable();
 
-        inputs.Player.Walk.performed += SetHorizontalInput;
-        inputs.Player.Walk.canceled += SetHorizontalInput;
+        //inputs.Player.Walk.performed += SetHorizontalInput;
+        //inputs.Player.Walk.canceled += SetHorizontalInput;
 
         inputs.Player.Run.performed += RunInput;
         inputs.Player.Run.canceled += RunInput;
@@ -136,6 +138,8 @@ public class PlayerController : Character
         stateMachine.RegisterState(PlayerState.PlayerFalling, new PlayerFallingState(this));
         stateMachine.RegisterState(PlayerState.PlayerMooving, new PlayerMoovingState(this));
         stateMachine.SetState(PlayerState.PlayerIdle);
+
+        buttonReminder.SetActive(false);
     }
 
     private void Update()
@@ -146,12 +150,12 @@ public class PlayerController : Character
             previousHorizontalInputs.Dequeue();
         else
             previousHorizontalInputs.Enqueue(horizontalInput);
+
+        GroundCheck();
     }
 
     public void FixedUpdate()
     {
-        GroundCheck();
-
         if (grounded)
         {
             if (fastRespawnTimer < fastRespawnRefreshTimer)
@@ -164,7 +168,7 @@ public class PlayerController : Character
         }
         else
             fastRespawnTimer = 0;
-
+        
     }
 
     public void OnDrawGizmos()
@@ -183,8 +187,8 @@ public class PlayerController : Character
     {
         horizontalMovement = 0;
 
-        inputs.Player.Walk.performed -= SetHorizontalInput;
-        inputs.Player.Walk.canceled -= SetHorizontalInput;
+        //inputs.Player.Walk.performed -= SetHorizontalInput;
+        //inputs.Player.Walk.canceled -= SetHorizontalInput;
 
         inputs.Player.Run.performed -= RunInput;
         inputs.Player.Run.canceled -= RunInput;
@@ -196,6 +200,7 @@ public class PlayerController : Character
         inputs.Player.Dash.performed -= TryDash;
 
         inputs.Player.Disable();
+
     }
 
     #endregion
@@ -235,14 +240,15 @@ public class PlayerController : Character
     #region Movement
     public void CalculateHorizontalMovement()
     {
-       
+        horizontalInput = inputs.Player.Walk.ReadValue<float>();
+
         if (horizontalInput != 0 && !animator.GetBool("Attacking"))
         {
                 //calcolo movimento
                 horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
 
-                //controllo per la corsa
-                if (!isRunning)
+            //controllo per la corsa
+            if (!isRunning)
                     horizontalMovement = Mathf.Clamp(horizontalMovement, -walkSpeed, walkSpeed);
                 else
                     horizontalMovement = Mathf.Clamp(horizontalMovement, -runSpeed, runSpeed);
@@ -269,17 +275,25 @@ public class PlayerController : Character
 
         if (horizontalMovement > 0.1)
         {
-            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
-                bodySprite.gameObject.transform.localScale = new Vector3(1, 1 ,1);
-            else
-                previousHorizontalInputs.Clear();
+            if (bodySprite.gameObject.transform.localScale != new Vector3(1, 1, 1))
+            {
+                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+                    bodySprite.gameObject.transform.localScale = new Vector3(1, 1, 1);
+                else
+                    previousHorizontalInputs.Clear();
+
+            }
         }
-        else if(horizontalMovement < -0.1)
+        else if (horizontalMovement < -0.1)
         {
-            if(!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
-                bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
-            else
-                previousHorizontalInputs.Clear();
+            if (bodySprite.gameObject.transform.localScale != new Vector3(-1, 1, 1))
+            {
+                if (!animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection"))
+                    bodySprite.gameObject.transform.localScale = new Vector3(-1, 1, 1);
+                else
+                    previousHorizontalInputs.Clear();
+
+            }
         }
 
         if (horizontalInput != 0 && previousHorizontalInputs.Contains(-horizontalInput) && isRunning && !animator.GetCurrentAnimatorStateInfo(0).IsName("MainCharacter_ChangeDirection") && previousHorizontalInputs.Count>0)

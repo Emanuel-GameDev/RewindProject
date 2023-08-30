@@ -8,18 +8,33 @@ using TMPro;
 using UnityEditor;
 using UnityEngine.UI;
 
-public class MenuButton : Button
+
+public class MenuButton :  Button,ISelectHandler
 {
     internal TextMeshProUGUI buttonTextUI;
-    internal Image icon;
-
-    //[SerializeField] internal Color baseColor;
-    //[SerializeField] internal Color selectedColor;
-
-    //[SerializeField] internal UnityEvent OnClick;
 
     public bool locked = false;
+    AudioSource audioSource;
+    AudioClip buttonSelectedSound;
     
+    public override void OnSelect(BaseEventData eventData)
+    {
+        base.OnSelect(eventData);
+
+        if (!buttonSelectedSound)
+            return;
+
+        if (GetComponentInParent<MenuManager>().audioSource.isPlaying)
+            return;
+
+        //PlayClick();
+    }
+
+    public void PlayClick()
+    {
+        audioSource.clip = buttonSelectedSound;
+        audioSource.Play();
+    }
 
     //public override void OnPointerClick(PointerEventData eventData)
     //{
@@ -64,8 +79,21 @@ public class MenuButton : Button
     {
         base.OnEnable();
         buttonTextUI = GetComponentInChildren<TextMeshProUGUI>();
-        icon = GetComponentInChildren<Image>();
 
+        if(GetComponentInParent<MenuManager>())
+            buttonSelectedSound = GetComponentInParent<MenuManager>().buttonSelectedSound;
+
+        if (GetComponent<AudioSource>())
+        {
+            audioSource = GetComponent<AudioSource>();
+            audioSource.volume = 20;
+        }
+        else
+        {
+            gameObject.AddComponent(typeof(AudioSource));
+            audioSource = GetComponent<AudioSource>();
+            audioSource.volume = 20;
+        }
         //if (locked)
         //{
         //    if (buttonTextUI)

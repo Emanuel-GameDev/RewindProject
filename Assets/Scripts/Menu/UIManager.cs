@@ -25,17 +25,15 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        inputs = new PlayerInputs();
+        if (!PlayerController.instance.inputs.UI.enabled)
+            PlayerController.instance.inputs.UI.Enable();
 
-        if (!inputs.UI.enabled)
-            inputs.UI.Enable();
-
-        inputs.UI.ScrollWheelClick.performed += OpenAbilityMenu;
+        PlayerController.instance.inputs.UI.ScrollWheelClick.performed += OpenAbilityMenu;
     }
 
     private void OnDisable()
     {
-        inputs.UI.ScrollWheelClick.performed -= OpenAbilityMenu;
+        PlayerController.instance.inputs.UI.ScrollWheelClick.performed -= OpenAbilityMenu;
     }
 
     private void OpenAbilityMenu(InputAction.CallbackContext obj)

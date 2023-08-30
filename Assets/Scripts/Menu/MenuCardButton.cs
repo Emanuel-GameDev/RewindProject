@@ -11,10 +11,18 @@ public class MenuCardButton : MenuButton
     protected override void OnEnable()
     {
         base.OnEnable();
-        ability = GetComponent<CardMenuData>().ability;
-        icon.sprite = ability.icon;
-        buttonTextUI.text = ability.name;
-        menuCards = GetComponentInParent<MenuCards>();
+
+       
+            ability = GetComponent<CardMenuData>().ability;
+            GetComponent<CardMenuData>().smallIcon.sprite = ability.smallIcon;
+            buttonTextUI.text = ability.name;
+            menuCards = GetComponentInParent<MenuCards>();
+    }
+
+    public void UnlockButton()
+    {
+        gameObject.SetActive(true);
+        GetComponent<SaveObjState>().ChangeObjectStateOnReload(true);
     }
 
     public void ChangeCardMenu()
@@ -29,6 +37,6 @@ public class MenuCardButton : MenuButton
         menuCards.cardImageBox.sprite = ability.icon;
         menuCards.descriptionBox.text = ability.menuDescription;
         menuCards.fullscreenCardImageBox.sprite = ability.icon;
-        menuCards.scrollbar.value = 0;
+        menuCards.cardIcon.sprite = ability.smallIcon;
     }
 }
