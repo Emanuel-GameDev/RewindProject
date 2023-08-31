@@ -89,7 +89,7 @@ public class EnemyThree : BaseEnemy
         }
     }
 
-    private void Spawn()
+    public void Spawn()
     {
         if (!isActive)
         {
@@ -150,7 +150,7 @@ public class EnemyThree : BaseEnemy
         }
     }
 
-    private void StopChase()
+    public void StopChase()
     {
         sourceGenerator.PlaySound(deathSound);
         tree.SetVariableValue(MOVE, false);
@@ -195,6 +195,17 @@ public class EnemyThree : BaseEnemy
         {
             coll.enabled = false;
         }
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+        tree.SetVariableValue(SPEED, speed);
+    }
+
+    public void SetStartPosition(Vector2 start)
+    {
+        startPosition = start;
     }
 
 }

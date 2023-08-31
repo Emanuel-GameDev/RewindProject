@@ -25,6 +25,7 @@ public class Start : State
 
     public override void Enter()
     {
+        Debug.Log(this.GetType().Name);
         elapsed = 0;
     }
 
