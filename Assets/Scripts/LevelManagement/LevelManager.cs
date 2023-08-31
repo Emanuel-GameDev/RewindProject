@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         instance = this;
-        inputs = new PlayerInputs();
+        inputs = PlayerController.instance.inputs;
         inputs.Player.Enable();
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
