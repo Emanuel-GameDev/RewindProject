@@ -24,7 +24,7 @@ public class Menu : MonoBehaviour
     }
 
 
-    public void SetEventSystemSelection(MenuButton selection)
+    public virtual void SetEventSystemSelection(MenuButton selection)
     {
         EventSystem.current.SetSelectedGameObject(selection.gameObject);
     }
