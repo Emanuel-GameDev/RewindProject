@@ -144,7 +144,6 @@ public class PlayerController : Character
 
     private void Update()
     {
-        Debug.Log(inputs.Player.enabled);
         stateMachine.StateUpdate();
 
         if (previousHorizontalInputs.Count >= 5)

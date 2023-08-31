@@ -20,7 +20,10 @@ public class LevelDoor : MonoBehaviour
     {
         if (DataSerializer.HasKey(levelToLoad.name + "TAKENCHECKPOINTS"))
             checkpointTaken = DataSerializer.Load<List<bool>>(levelToLoad.name + "TAKENCHECKPOINTS");
-            
+
+        PlayerController.instance.inputs.Menu.Enable();
+
+
     }
 
     private void Start()
@@ -46,6 +49,7 @@ public class LevelDoor : MonoBehaviour
         PlayerController.instance.inputs.Menu.CloseMenu.performed -= CloseMenu_performed;
         PlayerController.instance.inputs.Player.Enable();
         PlayerController.instance.inputs.AbilityController.Enable();
+        PlayerController.instance.inputs.Menu.Disable();
     }
 
 
@@ -66,6 +70,7 @@ public class LevelDoor : MonoBehaviour
 
     public void Interact()
     {
+        
         if (checkpointTaken.FindAll(taken => taken == true).Count <= 1)
         {
             DataSerializer.Save("CHECKPOINTIDTOLOAD", 0);
@@ -77,13 +82,17 @@ public class LevelDoor : MonoBehaviour
 
     private void HandleMenu()
     {
+        
         if (!levelSelectionMenu.activeSelf)
         {
+            
             levelSelectionMenu.SetActive(true);
             EventSystem.current.SetSelectedGameObject(eventSystemDefaultButton.gameObject);
+            PlayerController.instance.inputs.Menu.Enable();
             PlayerController.instance.inputs.Menu.CloseMenu.performed += CloseMenu_performed;
 
             PlayerController.instance.inputs.Player.Disable();
+            PlayerController.instance.inputs.Player.Interaction.Enable();
             PlayerController.instance.inputs.AbilityController.Disable();
 
             for (int i = 0; i < checkpointTaken.Count; i++)
@@ -93,11 +102,11 @@ public class LevelDoor : MonoBehaviour
 
                 if (checkpointTaken[i])
                 {
-                    buttons[i].interactable = true;
+                    buttons[i].gameObject.SetActive(true);
                 }
                 else
                 {
-                    buttons[i].interactable = false;
+                    buttons[i].gameObject.SetActive(false);
                 }
             }
         }
@@ -106,6 +115,7 @@ public class LevelDoor : MonoBehaviour
             levelSelectionMenu.SetActive(false);
             EventSystem.current.SetSelectedGameObject(null);
             PlayerController.instance.inputs.Menu.CloseMenu.performed -= CloseMenu_performed;
+            PlayerController.instance.inputs.Menu.Disable();
             PlayerController.instance.inputs.Player.Enable();
             PlayerController.instance.inputs.AbilityController.Enable();
         }
