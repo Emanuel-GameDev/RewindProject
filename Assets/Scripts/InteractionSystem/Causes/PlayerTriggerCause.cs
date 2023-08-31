@@ -34,7 +34,6 @@ public class PlayerTriggerCause : Cause
     private void OnDisable()
     {
         PlayerController.instance.inputs.Player.Interaction.performed -= Interaction;
-        PlayerController.instance.inputs.Dispose();
     }
 
     protected override void OnValidate()
