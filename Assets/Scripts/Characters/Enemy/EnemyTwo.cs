@@ -27,6 +27,9 @@ public class EnemyTwo : BaseEnemy
     [Tooltip("Imposta la velocita di movimento del proiettile")]
     [SerializeField] float projectileSpeed;
 
+    private bool active;
+
+
     //Nomi delle variabili nel behaviour tree
     private const string VIEW_DISTANCE = "View Distance";
     private const string MELEE_DISTANCE = "Melee Distance";
@@ -35,6 +38,11 @@ public class EnemyTwo : BaseEnemy
     private const string NUMBER_OF_SHOTS_PER_SERIE = "Number Of Shots Per Serie";
     private const string TIME_BETWEEN_ATTACKS = "Time Between Attacks";
     private const string SELF_GAME_OBJECT = "Self Game Object";
+
+    //Nomi delle variabili nell'animator
+    private const string ACTIVATION = "Activation";
+    private const string DEACTIVATION = "Deactivation";
+    private const string ATTACK = "Attack";
 
     private void Update()
     {
@@ -59,10 +67,29 @@ public class EnemyTwo : BaseEnemy
         return target.transform.position.x > transform.position.x;
     }
 
+    public void Activate()
+    {
+        if (!active)
+        {
+            active = true;
+            animator.SetTrigger(ACTIVATION);
+        }
+    }
+
+    public void Deactivate()
+    {
+        if (active)
+        {
+            active = false;
+            animator.SetTrigger(DEACTIVATION);
+        }
+    }
+
     public void Shoot()
     {
         Vector2 direction = PlayerIsOnTheRight() ? Vector2.right : Vector2.left;
         ProjectilePool.Instance.GetProjectile().Inizialize(direction, shootPoint.position, projectileSpeed);
+        animator.SetTrigger(ATTACK);
     }
 
     public void MeleeAttack()
