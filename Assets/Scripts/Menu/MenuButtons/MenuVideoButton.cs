@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class MenuVideoButton : MenuButton
@@ -23,20 +24,17 @@ public class MenuVideoButton : MenuButton
             videoMenu.videoButton.gameObject.SetActive(true);
         }
 
+        videoMenu.eventSystemDefaultButton = this;
+
         videoMenu.videoPlayer.clip = GetComponent<VideoMenuData>().videoTutorial;
-        videoMenu.descriptionBox.text = GetComponent<VideoMenuData>().videoDescription;
+        videoMenu.descriptionBox.text = GetComponentInChildren<Text>().text;
         videoMenu.fullscreenVideoPlayer.clip = GetComponent<VideoMenuData>().videoTutorial;
         videoMenu.videoPlayer.Prepare();
         StartCoroutine(Wait());
 
     }
 
-    public void UnlockButton()
-    {
-        gameObject.SetActive(true);
-        GetComponent<SaveObjState>().ChangeObjectStateOnReload(true);
-    }
-
+   
     IEnumerator Wait()
     {
         yield return new WaitUntil(()=>videoMenu.videoPlayer.isPrepared==true);

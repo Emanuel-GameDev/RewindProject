@@ -11,18 +11,26 @@ public class MenuManager : MonoBehaviour
     public PlayerInputs inputs { get; private set; }
 
     public AudioSource audioSource;
-    [SerializeField] AudioClip nextTabAudioClip;
     public AudioClip buttonSelectedSound;
+    public AudioClip buttonClickSound;
+
+    [SerializeField] AudioClip nextTabAudioClip;
+
+
     [HideInInspector] public Menu[] submenus;
 
     public virtual void OnEnable()
     {
         inputs = PlayerController.instance.inputs;
+
         inputs.Menu.Disable();
+
         inputs.Menu.CloseMenu.performed += CloseMenuInput;
         inputs.Menu.NextTab.performed += OpenNextTab;
         inputs.Menu.PreviousTab.performed += OpenPreviousTab;
+
         audioSource = GetComponent<AudioSource>();
+
         submenus = GetComponentsInChildren<Menu>(true);
     }
 
@@ -54,17 +62,11 @@ public class MenuManager : MonoBehaviour
         OpenMenu(currentMenu.nextTab);
     }
 
-    private void Start()
-    {
-        
-    }
-
     public void OpenMenu(Menu menu)
     {
         inputs.Menu.Enable();
 
         menu.gameObject.SetActive(true);
-        
     }
 
     private void CloseMenuInput(InputAction.CallbackContext obj)
@@ -91,7 +93,7 @@ public class MenuManager : MonoBehaviour
             inputs.UI.Enable();
         }
         else
-            GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1].SetEventSystemSelection(GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1].eventSystemDefaultButton);
+            GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1].SetEventSystemSelection();
 
 
     }

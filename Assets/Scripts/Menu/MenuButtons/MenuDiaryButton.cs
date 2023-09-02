@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuDiaryButton : MenuButton
 {
@@ -17,6 +18,7 @@ public class MenuDiaryButton : MenuButton
     public void ChangeMenu()
     {
         menuDiary.nameBox.text = GetComponentInChildren<TextMeshProUGUI>().text;
-        menuDiary.descriptionBox.text = GetComponent<DiaryButtonData>().text;
+        menuDiary.descriptionBox.text = GetComponentInChildren<Text>(true).text;
+        menuDiary.eventSystemDefaultButton = this;
     }
 }

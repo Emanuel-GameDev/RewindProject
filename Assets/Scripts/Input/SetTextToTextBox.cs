@@ -16,18 +16,20 @@ public class SetTextToTextBox : MonoBehaviour
     [SerializeField] ListOfTmpSpriteAsset listOfTmpSpriteAsset;
 
     IDevice currentDevice;
-    PlayerInputs playerInputs;
     TMP_Text textBox;
 
 
-
-    private void Start()
+    private void OnEnable()
     {
-        playerInputs = PlayerController.instance.inputs;
         textBox = GetComponent<TMP_Text>();
         currentDevice = IDevice.KeyboardMouse;
 
         InputSystem.onActionChange += InputSystem_onActionChange;
+    }
+
+
+    private void Start()
+    {
         SetText();
     }
 
@@ -43,8 +45,6 @@ public class SetTextToTextBox : MonoBehaviour
                     ButtonPressed(inputAction.activeControl);
             }
         }
-
-       
     }
 
     [ContextMenu("Set Text")]

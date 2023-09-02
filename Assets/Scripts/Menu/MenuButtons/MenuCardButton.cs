@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuCardButton : MenuButton
@@ -19,11 +20,6 @@ public class MenuCardButton : MenuButton
             menuCards = GetComponentInParent<MenuCards>();
     }
 
-    public void UnlockButton()
-    {
-        gameObject.SetActive(true);
-        GetComponent<SaveObjState>().ChangeObjectStateOnReload(true);
-    }
 
     public void ChangeCardMenu()
     {
@@ -35,8 +31,10 @@ public class MenuCardButton : MenuButton
 
         menuCards.cardName.text = ability.name;
         menuCards.cardImageBox.sprite = ability.icon;
-        menuCards.descriptionBox.text = ability.menuDescription;
+        menuCards.descriptionBox.text = GetComponentInChildren<Text>().text;
         menuCards.fullscreenCardImageBox.sprite = ability.icon;
         menuCards.cardIcon.sprite = ability.smallIcon;
+
+        menuCards.eventSystemDefaultButton = this;
     }
 }

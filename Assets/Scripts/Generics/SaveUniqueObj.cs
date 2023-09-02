@@ -4,14 +4,14 @@ using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SaveObjState : MonoBehaviour
+public class SaveUniqueObj : MonoBehaviour
 {
-    [SerializeField] bool startingStateActive =true;
+    [SerializeField] bool startingStateActive = true;
     bool objActive;
 
     private void OnEnable()
     {
-        if (!DataSerializer.TryLoad(SceneManager.GetActiveScene().name + name + "State", out objActive))
+        if (!DataSerializer.TryLoad(gameObject.name + "State", out objActive))
             objActive = startingStateActive;
 
         gameObject.SetActive(objActive);
@@ -21,7 +21,6 @@ public class SaveObjState : MonoBehaviour
     public void ChangeObjectStateOnReload(bool state)
     {
         objActive = state;
-        DataSerializer.Save(SceneManager.GetActiveScene().name + name + "State", objActive);
+        DataSerializer.Save(gameObject.name + "State", objActive);
     }
-
 }
