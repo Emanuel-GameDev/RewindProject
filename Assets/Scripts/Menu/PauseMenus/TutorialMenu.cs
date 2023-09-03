@@ -16,18 +16,23 @@ public class TutorialMenu : Menu
 
     public override void OnEnable()
     {
-        base.OnEnable();
-        videoPlayer.gameObject.SetActive(false);
-        videoButton.gameObject.SetActive(false);
-        descriptionBox.text = "";
+        MenuVideoButton[] buttons = GetComponentsInChildren<MenuVideoButton>();
+
+        if (buttons.Length <= 0)
+        {
+            descriptionBox.text = "";
+            videoPlayer.gameObject.SetActive(false);
+            videoButton.gameObject.SetActive(false);
+        }
+        else
+            videoPlayer.Play();
+
 
         if (GetComponentsInChildren<MenuVideoButton>().Length > 0)
             PlayerController.instance.inputs.Menu.MenuInteractionOne.started += MenuInteractionOne_performed;
 
-        MenuVideoButton[] buttons = GetComponentsInChildren<MenuVideoButton>();
 
         
-
         if (buttons.Length > 0 && eventSystemDefaultButton == null)
         {
             eventSystemDefaultButton = buttons[0];

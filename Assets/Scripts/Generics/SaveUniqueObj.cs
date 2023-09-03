@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class SaveUniqueObj : MonoBehaviour
 {
     [SerializeField] bool startingStateActive = true;
-    bool objActive;
+    [HideInInspector] public bool objActive;
 
     private void OnEnable()
     {

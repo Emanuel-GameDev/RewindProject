@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuDiaryButton : MenuButton
@@ -14,6 +15,14 @@ public class MenuDiaryButton : MenuButton
         base.OnEnable();
         menuDiary = GetComponentInParent<MenuDiary>();
     }
+
+    public override void OnSelect(BaseEventData eventData)
+    {
+        base.OnSelect(eventData);
+
+        onClick?.Invoke();
+    }
+
 
     public void ChangeMenu()
     {

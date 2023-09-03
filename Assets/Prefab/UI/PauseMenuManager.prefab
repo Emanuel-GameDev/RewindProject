@@ -255,7 +255,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929049990924472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,6 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: 08a77af2f464817458709e94a8c5a9c9, type: 2}
   smallIcon: {fileID: 2671929050151016857}
+  tutorialButton: {fileID: 0}
 --- !u!222 &2671929049990924474
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -437,6 +437,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929049992155547
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +687,8 @@ MonoBehaviour:
   descriptionSelection: {fileID: 2671929051637104549}
   fullscreenMenu: {fileID: 2671929051897251918}
   cardIcon: {fileID: 2671929051970206248}
+  openTutorialMenuButton: {fileID: 2671929051855840844}
+  goToTutorialButton: {fileID: 0}
 --- !u!1 &2671929050018960854
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,7 +795,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050018960843
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2353,7 +2355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   message: BUTTONPROMPT
-  bindingToShow: {fileID: -6441814660764225401, guid: ccc882ec94f4a4042b34aef2d6de09a3, type: 3}
+  bindingToShow: {fileID: 4524128797576557213, guid: ccc882ec94f4a4042b34aef2d6de09a3, type: 3}
   listOfTmpSpriteAsset: {fileID: 11400000, guid: dc5e2f7ebed3c984ab3f89880ff60281, type: 2}
 --- !u!1 &2671929050190506216
 GameObject:
@@ -2969,7 +2971,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929050234830214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3004,6 +3005,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: f47777a6dd5c3b34181d8d764bde5719, type: 2}
   smallIcon: {fileID: 2671929050254049411}
+  tutorialButton: {fileID: 2671929051796446913}
 --- !u!222 &2671929050234830208
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3151,6 +3153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929050249710158
 GameObject:
   m_ObjectHideFlags: 0
@@ -4415,7 +4418,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929050333307240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4450,6 +4452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: 92d62ead0385b77448c3b695e286ca17, type: 2}
   smallIcon: {fileID: 2671929051870164490}
+  tutorialButton: {fileID: 0}
 --- !u!222 &2671929050333307242
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4597,6 +4600,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929050348617147
 GameObject:
   m_ObjectHideFlags: 0
@@ -4763,7 +4767,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!222 &2671929050353951720
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5004,7 +5007,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050375192946
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5812,7 +5814,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050400642955
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6289,7 +6290,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929050423623036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6442,6 +6442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929050427534649
 GameObject:
   m_ObjectHideFlags: 0
@@ -6539,7 +6540,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!222 &2671929050427534653
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7066,7 +7066,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050479855031
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7966,7 +7965,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050551091624
 AudioSource:
   m_ObjectHideFlags: 0
@@ -10335,7 +10333,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929050712301757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10488,6 +10485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929050727311924
 GameObject:
   m_ObjectHideFlags: 0
@@ -10895,7 +10893,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!222 &2671929050746533359
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11382,7 +11379,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  locked: 0
 --- !u!222 &2671929050773227835
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12226,7 +12222,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050837229060
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13291,7 +13286,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: Gandalf Sax, also known as Epic Gandalf Sax, is a viral video of Lord of
     the Rings character Gandalf (Ian McKellen) nodding his head in a loop in time
-    with the Epic Sax Guy music.
+    with the Epic Sax Guy music.sd asdasdasd asd
 --- !u!1 &2671929050906385725
 GameObject:
   m_ObjectHideFlags: 0
@@ -13398,7 +13393,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050906385714
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14207,7 +14201,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050941348013
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14410,7 +14403,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929050946118080
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15165,8 +15157,8 @@ RectTransform:
   m_Father: {fileID: 2671929050998604387}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.67888635}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -16486,7 +16478,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051062321517
 AudioSource:
   m_ObjectHideFlags: 0
@@ -17361,7 +17352,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051116852794
 AudioSource:
   m_ObjectHideFlags: 0
@@ -17636,7 +17626,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051121136883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17671,6 +17660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: c62b0fcc3df77e84eb4dbce39c5a509f, type: 2}
   smallIcon: {fileID: 2671929051202859690}
+  tutorialButton: {fileID: 0}
 --- !u!222 &2671929051121136893
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17818,6 +17808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051122940338
 GameObject:
   m_ObjectHideFlags: 0
@@ -18416,7 +18407,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051144705664
 AudioSource:
   m_ObjectHideFlags: 0
@@ -18526,6 +18516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051153361851
 GameObject:
   m_ObjectHideFlags: 0
@@ -19051,7 +19042,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051176697789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19086,6 +19076,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: 9d8babfc7e359a34d9294f486db66d9d, type: 2}
   smallIcon: {fileID: 2671929050710831629}
+  tutorialButton: {fileID: 0}
 --- !u!222 &2671929051176697791
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19233,6 +19224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051192050224
 GameObject:
   m_ObjectHideFlags: 0
@@ -19369,7 +19361,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051192050230
 AudioSource:
   m_ObjectHideFlags: 0
@@ -20103,7 +20094,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051230332152
 AudioSource:
   m_ObjectHideFlags: 0
@@ -20213,6 +20203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051230936841
 GameObject:
   m_ObjectHideFlags: 0
@@ -21151,7 +21142,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!222 &2671929051302023794
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21685,7 +21675,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051325853493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21838,6 +21827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051345569952
 GameObject:
   m_ObjectHideFlags: 0
@@ -22385,7 +22375,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051400170471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22420,6 +22409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: e0f0df7f0a805344b89666f465f336a1, type: 2}
   smallIcon: {fileID: 2671929051116985610}
+  tutorialButton: {fileID: 0}
 --- !u!222 &2671929051400170465
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22567,6 +22557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051404514548
 GameObject:
   m_ObjectHideFlags: 0
@@ -24301,7 +24292,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051580097685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24454,6 +24444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051583157059
 GameObject:
   m_ObjectHideFlags: 0
@@ -24741,7 +24732,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051591670487
 AudioSource:
   m_ObjectHideFlags: 0
@@ -25552,7 +25542,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051619786343
 AudioSource:
   m_ObjectHideFlags: 0
@@ -27037,7 +27026,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051718205360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27072,6 +27060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: 3a28654d0bf987548a68c173d8db03de, type: 2}
   smallIcon: {fileID: 2671929050767691803}
+  tutorialButton: {fileID: 2671929050423623026}
 --- !u!222 &2671929051718205365
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -27219,6 +27208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051719000778
 GameObject:
   m_ObjectHideFlags: 0
@@ -27727,7 +27717,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051736897693
 AudioSource:
   m_ObjectHideFlags: 0
@@ -28249,7 +28238,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!222 &2671929051754511540
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28880,7 +28868,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051796446915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29033,6 +29020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051798343892
 GameObject:
   m_ObjectHideFlags: 0
@@ -29350,7 +29338,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051820017216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29385,6 +29372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ability: {fileID: 11400000, guid: 9d8babfc7e359a34d9294f486db66d9d, type: 2}
   smallIcon: {fileID: 2671929050952343583}
+  tutorialButton: {fileID: 0}
 --- !u!222 &2671929051820017218
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -29532,6 +29520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051832729647
 GameObject:
   m_ObjectHideFlags: 0
@@ -30421,7 +30410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2671929051855840845
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30489,7 +30478,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2671929051855840846}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee2c2a41b02036c428d20599a4bb0209, type: 3}
   m_Name: 
@@ -30531,14 +30520,13 @@ MonoBehaviour:
         m_MethodName: OpenMenu
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 2671929051897251918}
+          m_ObjectArgument: {fileID: 2671929051840748071}
           m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051855840833
 AudioSource:
   m_ObjectHideFlags: 0
@@ -31056,7 +31044,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!222 &2671929051871684269
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32417,7 +32404,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929051951050661
 AudioSource:
   m_ObjectHideFlags: 0
@@ -32759,7 +32745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2671929051958710064
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33379,7 +33365,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!114 &2671929051990374890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33532,6 +33517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929051994758590
 GameObject:
   m_ObjectHideFlags: 0
@@ -33871,7 +33857,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!222 &2671929052023221518
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -34726,7 +34711,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  locked: 0
 --- !u!82 &2671929052093190229
 AudioSource:
   m_ObjectHideFlags: 0
@@ -34836,6 +34820,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingStateActive: 0
+  objActive: 0
 --- !u!1 &2671929052102719117
 GameObject:
   m_ObjectHideFlags: 0

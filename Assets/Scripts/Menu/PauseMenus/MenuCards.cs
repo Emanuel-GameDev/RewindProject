@@ -19,8 +19,9 @@ public class MenuCards : Menu
     public MenuFullscreen fullscreenMenu;
 
     public Image cardIcon;
-     
 
+    public MenuButton openTutorialMenuButton;
+    public MenuVideoButton goToTutorialButton;
 
     public override void OnEnable()
     {
@@ -32,10 +33,7 @@ public class MenuCards : Menu
 
         if(GetComponentsInChildren<MenuCardButton>().Length>0)
             PlayerController.instance.inputs.Menu.MenuInteractionOne.started += MenuInteractionOne_performed;
-
-
-
-
+       
         MenuCardButton[] buttons = GetComponentsInChildren<MenuCardButton>();
 
         if (buttons.Length > 0 && eventSystemDefaultButton == null)
@@ -48,6 +46,16 @@ public class MenuCards : Menu
         if (eventSystemDefaultButton != null)
             SetEventSystemSelection();
         
+    }
+
+    public void MenuInteractionTwo_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        GameManager.Instance.pauseMenuManager.CloseActiveMenu();
+        GameManager.Instance.pauseMenuManager.OpenMenu(nextTab);
+
+        nextTab.eventSystemDefaultButton = goToTutorialButton;
+        nextTab.SetEventSystemSelection();
+
     }
 
     private static void SetNavigation(MenuCardButton[] buttons)
@@ -111,10 +119,6 @@ public class MenuCards : Menu
         }
     }
 
-    public void OnDisable()
-    {
-        PlayerController.instance.inputs.Menu.MenuInteractionOne.started -= MenuInteractionOne_performed;
-    }
 
     private void MenuInteractionOne_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
@@ -122,6 +126,10 @@ public class MenuCards : Menu
         PlayerController.instance.inputs.Menu.MenuInteractionOne.Disable();
     }
 
+    public void OnDisable()
+    {
+        PlayerController.instance.inputs.Menu.MenuInteractionOne.started -= MenuInteractionOne_performed;
+    }
 
 
 }

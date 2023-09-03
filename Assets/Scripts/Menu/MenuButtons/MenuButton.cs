@@ -13,7 +13,6 @@ public class MenuButton :  Button,ISelectHandler
 {
     internal TextMeshProUGUI buttonTextUI;
 
-    public bool locked = false;
     AudioSource audioSource;
     AudioClip buttonSelectedSound;
     AudioClip buttonSubmitSound;
@@ -30,21 +29,22 @@ public class MenuButton :  Button,ISelectHandler
             audioSource.volume = 0.8f;
             PlayClick(buttonSelectedSound);
         }
+
     }
 
-    public override void OnSubmit(BaseEventData eventData)
-    {
-        base.OnSubmit(eventData);
+    //public override void OnSubmit(BaseEventData eventData)
+    //{
+    //    base.OnSubmit(eventData);
 
-        if (!GetComponentInParent<MenuManager>())
-            return;
+    //    if (!GetComponentInParent<MenuManager>())
+    //        return;
 
-        if (!GetComponentInParent<MenuManager>().audioSource.isPlaying)
-        {
-            audioSource.volume = 0.2f;
-            PlayClick(buttonSubmitSound);
-        }
-    }
+    //    if (!GetComponentInParent<MenuManager>().audioSource.isPlaying)
+    //    {
+    //        audioSource.volume = 0.2f;
+    //        PlayClick(buttonSubmitSound);
+    //    }
+    //}
 
     public void PlayClick(AudioClip clip)
     {
@@ -62,6 +62,7 @@ public class MenuButton :  Button,ISelectHandler
     {
         base.OnEnable();
         buttonTextUI = GetComponentInChildren<TextMeshProUGUI>();
+
 
         if (GetComponentInParent<MenuManager>())
         {
