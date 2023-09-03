@@ -34,6 +34,7 @@ public class MenuCardButton : MenuButton
         {
             menuCards.artworkSelection.gameObject.SetActive(true);
             menuCards.descriptionSelection.gameObject.SetActive(true);
+            menuCards.openTutorialMenuButton.gameObject.SetActive(true);
         }
 
         menuCards.cardName.text = ability.name;

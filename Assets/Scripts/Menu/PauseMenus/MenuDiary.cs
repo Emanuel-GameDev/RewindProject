@@ -12,10 +12,14 @@ public class MenuDiary : Menu
 
     public override void OnEnable()
     {
-        nameBox.text = "";
-        descriptionBox.text = "";
-
         MenuDiaryButton[] buttons = GetComponentsInChildren<MenuDiaryButton>();
+
+        if (buttons.Length <= 0)
+        {
+            nameBox.text = "";
+            descriptionBox.text = "";
+        }
+
 
         if (buttons.Length > 0 && eventSystemDefaultButton == null)
         {

@@ -21,20 +21,25 @@ public class MenuCards : Menu
     public Image cardIcon;
 
     public MenuButton openTutorialMenuButton;
-    public MenuVideoButton goToTutorialButton;
+    [HideInInspector] public MenuVideoButton goToTutorialButton;
 
     public override void OnEnable()
     {
-        cardName.text = "";
-        descriptionBox.text = "";
-        fullscreenCardImageBox.sprite = null;
-        artworkSelection.gameObject.SetActive(false);
-        descriptionSelection.gameObject.SetActive(false);
+        MenuCardButton[] buttons = GetComponentsInChildren<MenuCardButton>();
+
+        if (buttons.Length <= 0)
+        {
+            cardName.text = "";
+            descriptionBox.text = "";
+            fullscreenCardImageBox.sprite = null;
+            artworkSelection.gameObject.SetActive(false);
+            descriptionSelection.gameObject.SetActive(false);
+            openTutorialMenuButton.gameObject.SetActive(false);
+        }
 
         if(GetComponentsInChildren<MenuCardButton>().Length>0)
             PlayerController.instance.inputs.Menu.MenuInteractionOne.started += MenuInteractionOne_performed;
        
-        MenuCardButton[] buttons = GetComponentsInChildren<MenuCardButton>();
 
         if (buttons.Length > 0 && eventSystemDefaultButton == null)
         {
