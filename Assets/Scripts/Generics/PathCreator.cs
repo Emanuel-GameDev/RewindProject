@@ -48,15 +48,18 @@ public class PathCreator : MonoBehaviour
 
         if (projectileSpawned)
         {
-            if(points.Count>0)
-            instatietedProjectile.transform.position = Vector2.MoveTowards(instatietedProjectile.transform.position, points[0], projectileSpeed * Time.deltaTime );
-           
-            if (instatietedProjectile.transform.position == points[0])
+            if (points.Count > 0)
             {
-                points.RemoveAt(0);
+                instatietedProjectile.transform.position = Vector2.MoveTowards(instatietedProjectile.transform.position, points[0], projectileSpeed * Time.deltaTime );
+
+                if (instatietedProjectile.transform.position == points[0])
+                {
+                    points.RemoveAt(0);
+                }
             }
+           
             //potrebbe essere un po pesante
-                ReloadLine();
+            ReloadLine();
 
             if (points.Count == 0)
             {

@@ -6,27 +6,25 @@ using UnityEngine.EventSystems;
 
 public class Menu : MonoBehaviour
 {
-    public bool startUnlocked = false;
+
     [SerializeField] public Menu nextTab;
     [SerializeField] public Menu previousTab;
 
-    [SerializeField]public MenuButton eventSystemDefaultButton;
+    [SerializeField] public MenuButton eventSystemDefaultButton;
 
     [HideInInspector] public bool notificationInThisMenu=false;
     [HideInInspector] public bool unlocked = false;
 
     public virtual void OnEnable()
     {
-        if (startUnlocked)
-            UnlockMenu();
         if(eventSystemDefaultButton!=null)
-        SetEventSystemSelection(eventSystemDefaultButton);
+            SetEventSystemSelection();
     }
 
-
-    public virtual void SetEventSystemSelection(MenuButton selection)
+    
+    public virtual void SetEventSystemSelection()
     {
-        EventSystem.current.SetSelectedGameObject(selection.gameObject);
+        EventSystem.current.SetSelectedGameObject(eventSystemDefaultButton.gameObject);
     }
 
     private void Awake()

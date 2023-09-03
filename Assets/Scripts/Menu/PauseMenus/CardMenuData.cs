@@ -7,4 +7,5 @@ public class CardMenuData : MonoBehaviour
 {
     public Ability ability;
     public Image smallIcon;
+    public MenuVideoButton tutorialButton;
 }

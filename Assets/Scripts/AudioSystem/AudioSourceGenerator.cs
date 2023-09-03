@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioSourceGenerator : MonoBehaviour
 {
+    public AudioMixerGroup mixer;
     public void PlaySound(AudioClip audio)
     {
         GameObject soundObject = new GameObject();
 
-        soundObject.AddComponent<AudioSource>();
-
-        soundObject.GetComponent<AudioSource>().volume = 0.5f;
-        soundObject.GetComponent<AudioSource>().clip = audio;
+        AudioSource source = soundObject.AddComponent<AudioSource>();
+        
+        source.outputAudioMixerGroup = mixer;
+        source.clip = audio;
 
         soundObject.GetComponent<AudioSource>().Play();
 

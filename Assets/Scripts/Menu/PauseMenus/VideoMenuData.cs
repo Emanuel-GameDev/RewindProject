@@ -6,5 +6,4 @@ using UnityEngine.Video;
 public class VideoMenuData : MonoBehaviour
 {
     [SerializeField] public VideoClip videoTutorial;
-    [SerializeField] public string videoDescription;
 }
