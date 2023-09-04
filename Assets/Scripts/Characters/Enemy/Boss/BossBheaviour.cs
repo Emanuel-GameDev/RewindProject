@@ -60,16 +60,24 @@ public class BossBheaviour : MonoBehaviour
     [Header("Uroboro Attack Settings")]
     [SerializeField] GameObject uroboro1;
     [SerializeField] GameObject uroboro2;
+    [Tooltip("Imposta il riferimento al punto di arrivo dell'uroboro1")]
     [SerializeField] BossUroboroEndPoint uroboroEndPoint1;
+    [Tooltip("Imposta  il riferimento al punto di arrivo dell'uroboro2")]
     [SerializeField] BossUroboroEndPoint uroboroEndPoint2;
+    [Tooltip("Imposta la distanza orizzontale in cui compaiono gli uroboro rispetto ai punti di sosta del boss")]
     [SerializeField] float uroboroHorizontalSpawnOffset = 2;
+    [Tooltip("Imposta la distanza verticale in cui compaiono gli uroboro rispetto ai punti di sosta del boss")]
     [SerializeField] float uroboroVerticalSpawnOffset = 2;
+    [Tooltip("Imposta la velocità di movimento degli uroboro")]
     [SerializeField] float uroboroSpeed = 10f;
+    [Tooltip("Imposta dopo quanto tempo il boss deve cambiare stato dopo aver fatto comparire gli uroboro")]
     [SerializeField] float uroboroTimeChange = 5f;
 
     [Header("Rewindable Attack Settings")]
     [SerializeField] GameObject rewindableProjectilePrefab;
+    [Tooltip("Imposta la velocità di movimento del proiettile")]
     [SerializeField] float rewindableSpeed = 1000f;
+    [Tooltip("Imposta la distanza verticale a cui compare il proiettile rispetto ai punti di sosta del boss")]
     [SerializeField] float rewindableVerticalOffset = 2;
     [Tooltip("Imposta quanto tempo deve passare prima che il proiettile venga creato")]
     [SerializeField] float rewindableWaitBeforeSpawn = 2f;
@@ -82,6 +90,8 @@ public class BossBheaviour : MonoBehaviour
     [Tooltip("Imposta quanto è probabile che esegua nuovamente la stessa mossa di seguito in relazione alle altre (1 stessa probabilità delle altre, 0 nessuna probabilità)")]
     [Range(0f, 1f)]
     [SerializeField] float repeatPercentage = 0.5f;
+    [Tooltip("Imposta la durata della caduta del boss quando viene stordito")]
+    [SerializeField] float fallingDuration = 2f;
 
 
     private StateMachine<eBossState> stateMachine;
@@ -318,6 +328,12 @@ public class BossBheaviour : MonoBehaviour
 
         return null;
     }
+
+    public float GetFallingDuration()
+    {
+        return fallingDuration;
+    }
+
     #endregion
 
     #region Proiettili
