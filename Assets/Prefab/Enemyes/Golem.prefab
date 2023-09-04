@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 7298647726856151652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.5, y: -3.49, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.87626, y: 0.87626, z: 0.87626}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7298647728744835917}
@@ -52,11 +52,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6746ddf7440f93f42a2af6584f4db9b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
+  maxHealth: 3
   healthBar: {fileID: 0}
   OnDie:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7298647726856151662}
+        m_TargetAssemblyTypeName: GolemBheaviour, Assembly-CSharp
+        m_MethodName: OnDie
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnHit:
     m_PersistentCalls:
       m_Calls:
@@ -80,7 +92,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7298647726856151652}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -153,13 +165,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  healtPoint: 2
-  viewDistance: 20
-  meleeDistance: 3
-  timeBetweenShots: 1
-  timeBetweenShotsSeries: 5
+  healtPoint: 3
+  viewDistance: 30
+  meleeDistance: 4
+  timeBetweenShots: 0.5
+  timeBetweenShotsSeries: 3
   numberOfShotsPerSerie: 5
-  timeBetweenAttacks: 2
+  timeBetweenAttacks: 1.5
   shootPoint: {fileID: 7298647728744835917}
   projectileSpeed: 1000
 --- !u!61 &3843989214561769088
@@ -361,7 +373,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7298647728744835918}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.125, y: 1.265, z: 0}
+  m_LocalPosition: {x: 0.125, y: 1.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
