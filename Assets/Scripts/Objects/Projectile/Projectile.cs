@@ -8,8 +8,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] public  float lifeTime;
     protected float elapsedTime;
     protected private Vector2 direction;
-    private SpriteRenderer spriteRenderer;
-    private Rigidbody2D body;
+    protected SpriteRenderer spriteRenderer;
+    protected Rigidbody2D body;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
         body.isKinematic = true;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         body.velocity = direction * speed * Time.deltaTime;
 

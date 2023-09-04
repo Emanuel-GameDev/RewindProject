@@ -9,7 +9,7 @@ public class RewindableAttack : State
     private BossBheaviour bossBheaviour;
     bool readyToShoot;
     bool shooting;
-    BossProjectile rewindable;
+    BossRewindableProjectile rewindable;
 
     public RewindableAttack(BossBheaviour bossBheaviour)
     {

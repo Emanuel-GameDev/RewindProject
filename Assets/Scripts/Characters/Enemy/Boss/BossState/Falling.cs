@@ -7,8 +7,9 @@ using UnityEngine;
 public class Falling : State
 {
     BossBheaviour bossBheaviour;
-    float timeToWait = 5f;
+    float fallingDuration = 5f;
     float elapsed;
+    Vector3 startPosition;
     Vector2 destination;
 
     public Falling(BossBheaviour bossBheaviour)
@@ -19,9 +20,14 @@ public class Falling : State
     public override void Update()
     {
         elapsed += Time.deltaTime;
-        if (elapsed > timeToWait)
+        if (elapsed > fallingDuration)
         {
             bossBheaviour.ChangeState(eBossState.Stunned);
+        }
+        else
+        {
+            float t = elapsed / fallingDuration;
+            bossBheaviour.GetBossBody().transform.position = Vector3.Lerp(startPosition, destination, t);
         }
     }
 
@@ -29,13 +35,14 @@ public class Falling : State
     {
         Debug.Log(this.GetType().Name);
         elapsed = 0;
-        timeToWait = bossBheaviour.GetFallingDuration();
+        fallingDuration = bossBheaviour.GetFallingDuration();
         SetArrivePoint();
-        
+        startPosition = bossBheaviour.GetBossBody().transform.position;
     }
 
     private void SetArrivePoint()
     {
-        
+        destination = bossBheaviour.GetOppositePosition().transform.position;
+        destination.y += bossBheaviour.GetCurrentPosition().GetVerticalPosition() == eVerticalPosition.Top ? - bossBheaviour.GetFallingVerticalOffset() : + bossBheaviour.GetFallingVerticalOffset();
     }
 }
