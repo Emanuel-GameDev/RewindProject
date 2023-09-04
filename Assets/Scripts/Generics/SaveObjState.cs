@@ -17,8 +17,6 @@ public class SaveObjState : MonoBehaviour
         gameObject.SetActive(objActive);
     }
 
- 
-
 
     public void ChangeObjectStateOnReload(bool state)
     {
