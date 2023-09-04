@@ -50,7 +50,7 @@ public class PlayerTriggerCause : Cause
         {
             ActivateEffect();
 
-            if (target.gameObject.GetComponent<PlayerController>())
+            if (target.gameObject.GetComponent<PlayerController>()  )
             {
                 if(target.gameObject.GetComponent<PlayerController>().buttonReminder.activeSelf)
                     target.gameObject.GetComponent<PlayerController>().buttonReminder.SetActive(false);

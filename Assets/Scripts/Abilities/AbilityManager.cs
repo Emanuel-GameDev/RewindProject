@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ToolBox.Serialization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AbilityManager : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class AbilityManager : MonoBehaviour
 
     public AbilityWheel wheel;
 
+    
+
     #region Debug Variables
     [HideInInspector]
     public List<Ability> DebugAbilities = new List<Ability>();
@@ -24,6 +27,7 @@ public class AbilityManager : MonoBehaviour
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
+
     }
 
     private void Start()
@@ -86,6 +90,12 @@ public class AbilityManager : MonoBehaviour
         foreach (AbilityHolder holder in _holders)
         {
             holder.activeAbility = newActiveAbility;
+
+            if (holder.abilityIconReminder)
+            {
+                holder.abilityIconReminder.gameObject.SetActive(true);
+                holder.abilityIconReminder.sprite = newActiveAbility.smallIcon;
+            }
         }
     }
 
