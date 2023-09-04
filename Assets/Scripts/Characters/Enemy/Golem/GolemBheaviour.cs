@@ -40,6 +40,7 @@ public class GolemBheaviour : MonoBehaviour
     private bool active;
     private bool transformed;
     private bool isDead;
+    private bool isAttacking;
 
     private int shootCount;
     private float elapsedTime;
@@ -120,8 +121,10 @@ public class GolemBheaviour : MonoBehaviour
                 RangeAsset();
             }
         }
-        else
+        else if (!isAttacking && shootCount <= 0)
             Deactivate();
+
+
     }
 
     public void Shoot()
@@ -129,6 +132,7 @@ public class GolemBheaviour : MonoBehaviour
         Vector2 direction = PlayerIsOnTheRight() ? Vector2.right : Vector2.left;
         ProjectilePool.Instance.GetProjectile().Inizialize(direction, shootPoint.position, projectileSpeed);
     }
+
     public void OnDie()
     {
         isDead = true;
@@ -138,6 +142,7 @@ public class GolemBheaviour : MonoBehaviour
     public void OnHit()
     {
         animator.SetTrigger(HITTED);
+        if(isAttacking) EndAttack();
     }
 
     public void ResetEnemy()
@@ -147,6 +152,7 @@ public class GolemBheaviour : MonoBehaviour
         coll.enabled = true;
         active = false;
         transformed = false;
+        isAttacking = false;
         ResetShootValue();
     }
 
@@ -196,32 +202,44 @@ public class GolemBheaviour : MonoBehaviour
 
     private void Attack()
     {
-        elapsedTime += Time.deltaTime;
-        if (transformed)
+        if (!isAttacking)
         {
-            if(elapsedTime > timeBetweenAttacks)
+            elapsedTime += Time.deltaTime;
+            if (transformed)
             {
-                animator.SetTrigger(ATTACK);
-                elapsedTime = 0;
-            }
+                if (elapsedTime > timeBetweenAttacks)
+                {
+                    AnimationAttack();
+                }
 
-        }
-        else
-        {
-            if(shootCount >= numberOfShotsPerSerie)
-            {
-                if (elapsedTime > timeBetweenShotsSeries)
-                    ResetShootValue();
             }
-            else if(elapsedTime > timeBetweenShots)
+            else
             {
-                animator.SetTrigger(ATTACK);
-                elapsedTime = 0;
-                shootCount++;
+                if (shootCount >= numberOfShotsPerSerie)
+                {
+                    if (elapsedTime > timeBetweenShotsSeries)
+                        ResetShootValue();
+                }
+                else if (elapsedTime > timeBetweenShots)
+                {
+                    AnimationAttack();
+                    shootCount++;
+                }
             }
         }
     }
 
+    private void AnimationAttack()
+    {
+        animator.SetTrigger(ATTACK);
+        isAttacking = true;
+        elapsedTime = 0;
+    }
+
+    private void EndAttack()
+    {
+        isAttacking = false;
+    }
 
     private void OnDrawGizmos()
     {
