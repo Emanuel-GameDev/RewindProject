@@ -1,3 +1,5 @@
+using BehaviorDesigner.Runtime.Tasks.Unity.UnityNavMeshAgent;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +30,12 @@ public class Falling : State
         Debug.Log(this.GetType().Name);
         elapsed = 0;
         timeToWait = bossBheaviour.GetFallingDuration();
-        destination = bossBheaviour.GetOppositePosition().transform.position;
+        SetArrivePoint();
+        
     }
 
+    private void SetArrivePoint()
+    {
+        
+    }
 }
