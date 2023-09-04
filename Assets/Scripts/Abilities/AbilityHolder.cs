@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class AbilityHolder : Character
 {
     public Ability activeAbility;
 
     private PlayerInputs playerInputs;
+
+    [SerializeField] public Image abilityIconReminder;
 
     private void Awake()
     {
