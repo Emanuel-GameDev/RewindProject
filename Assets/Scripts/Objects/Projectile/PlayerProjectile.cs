@@ -6,7 +6,7 @@ public class PlayerProjectile : Projectile
 {
     [SerializeField] LayerMask hittable;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
         if (IsInLayerMask(collision.gameObject.layer, hittable))
         {

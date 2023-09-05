@@ -32,9 +32,13 @@ public class Projectile : MonoBehaviour
     {
         ProjectilePool.Instance.DismissProjectile(this);
     }
-    public virtual void OnTriggerEnter(Collider other)
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        Dismiss();
+        if (!collision.isTrigger)
+        {
+            Dismiss();
+        }
     }
 
     public virtual void Inizialize(Vector2 direction, Vector2 position, float speed)

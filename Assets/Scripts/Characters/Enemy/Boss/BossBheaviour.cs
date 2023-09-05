@@ -76,6 +76,7 @@ public class BossBheaviour : MonoBehaviour
 
     [Header("Rewindable Attack Settings")]
     [SerializeField] GameObject rewindableProjectilePrefab;
+    [SerializeField] GameObject rewindableAuraTrigger;
     [Tooltip("Imposta la velocità di movimento del proiettile")]
     [SerializeField] float rewindableSpeed = 1000f;
     [Tooltip("Imposta la distanza verticale a cui compare il proiettile rispetto ai punti di sosta del boss")]
@@ -162,6 +163,7 @@ public class BossBheaviour : MonoBehaviour
         hitCounter = 0;
         changeGroundStarted = false;
         changeGroundCountdown = 0;
+        if(rewindableAuraTrigger == null) rewindableAuraTrigger = GetComponentInChildren<RewindableTriggerAura>().gameObject;
     }
 
     //FUNZIONI CAMBIO STATO
@@ -474,6 +476,11 @@ public class BossBheaviour : MonoBehaviour
     public float GetRewindableSpeed()
     {
         return rewindableSpeed;
+    }
+
+    public GameObject GetRewindableAuraObject()
+    {
+        return rewindableAuraTrigger;
     }
 
     #endregion

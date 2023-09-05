@@ -8,6 +8,7 @@ public class BossRewindableProjectile : BossProjectile
     GameObject target;
 
     private bool isRewinding = false;
+    private bool canBeRewinded = false;
     private List<RewindData> rewindData = new List<RewindData>();
     private int maxDataCount => (int)(maxRecordedTime * (1f / Time.fixedDeltaTime));
 
@@ -77,9 +78,36 @@ public class BossRewindableProjectile : BossProjectile
     }
     public void StartRewind()
     {
-        if (!isRewinding)
+        if (!isRewinding && canBeRewinded)
         {
             isRewinding = true;
         }
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<RewindableTriggerAura>())
+        {
+            canBeRewinded = true;
+        }
+        if (!collision.isTrigger)
+        {
+            Dismiss();
+        }
+        else
+        {
+            if (collision.gameObject.GetComponentInParent<BossBheaviour>() && isRewinding)
+            {
+                collision.gameObject.GetComponentInParent<BossBheaviour>().HitCounterUpdater(1);
+                Dismiss();
+            }
+        }
+    }
+
+
+    public override void Dismiss()
+    {
+        PubSub.Instance.Notify(EMessageType.TimeRewindStop, this);
+        base.Dismiss();
     }
 }
