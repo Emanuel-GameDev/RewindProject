@@ -135,7 +135,7 @@ public class LevelDoor : MonoBehaviour
 
     public void LoadLevel()
     {
-        SceneManager.LoadScene(levelToLoad.name);
+        LevelManager.instance.StartCoroutine(LevelManager.instance.LoadSceneAsynchronously(levelToLoad));
     }
 
 }

@@ -24,11 +24,15 @@ public class LevelManager : MonoBehaviour
     private void OnEnable()
     {
         instance = this;
-        inputs = PlayerController.instance.inputs;
-        inputs.Player.Enable();
-        PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
+        loadingScreen?.SetActive(false);
+        if (PlayerController.instance)
+        {
+            inputs = PlayerController.instance.inputs;
+            inputs.Player.Enable();
+            PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
-        SceneManager.sceneLoaded += OnLevelLoaded;
+            SceneManager.sceneLoaded += OnLevelLoaded;
+        }
 
         DataSerializer.FileSaving += DeleteSaves;
     }
@@ -56,9 +60,13 @@ public class LevelManager : MonoBehaviour
 
     private void OnDisable()
     {
-        inputs.Player.Disable();
+        if (PlayerController.instance)
+        {
+            inputs.Player.Disable();
+            SceneManager.sceneLoaded -= OnLevelLoaded;
 
-        SceneManager.sceneLoaded -= OnLevelLoaded;
+        }
+
 
         DataSerializer.FileSaving -= DeleteSaves;
     }
@@ -134,8 +142,29 @@ public class LevelManager : MonoBehaviour
         objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0);
     }
 
-    
-    
+
+    public void LoadLevel(SceneAsset levelToLoad)
+    {
+        StartCoroutine(LoadSceneAsynchronously(levelToLoad));
+    }
+
+    [SerializeField] GameObject loadingScreen;
+
+    public IEnumerator LoadSceneAsynchronously(SceneAsset levelToLoad)
+    {
+        AsyncOperation operation = SceneManager.LoadSceneAsync(levelToLoad.name);
+
+
+        loadingScreen?.SetActive(true);
+
+        while (!operation.isDone)
+        {
+            Debug.Log("In progress");
+
+            yield return null;
+        }
+
+    }
 
 
 }
