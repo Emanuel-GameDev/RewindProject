@@ -71,10 +71,10 @@
                 {
                     "name": "Dash",
                     "type": "Button",
-                    "id": "7758c3fc-712b-43d1-a505-3ea48be1e3ad",
+                    "id": "1a8e2f03-eabb-43a5-95f2-00e3a9e46f76",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "MultiTap(tapTime=0.2,tapDelay=0.4)",
                     "initialStateCheck": false
                 }
             ],
@@ -224,22 +224,22 @@
                 },
                 {
                     "name": "",
-                    "id": "285a5a2e-f4d0-44bb-a0ee-569021452168",
-                    "path": "<Keyboard>/d",
-                    "interactions": "MultiTap",
+                    "id": "1ddebef3-1696-4e11-9edd-f1f180314473",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "9917748f-3bf9-4b5e-adf1-6f566d870e0c",
-                    "path": "<Keyboard>/a",
-                    "interactions": "MultiTap",
+                    "id": "5b4ce457-24f2-4ccc-a60a-420d34e0920a",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -336,15 +336,6 @@
                     "type": "PassThrough",
                     "id": "97b5802f-c175-4264-b6bc-29e54479923d",
                     "expectedControlType": "Quaternion",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ScrollWheelClick",
-                    "type": "Button",
-                    "id": "305e785f-e990-40c4-a8f2-1fe6f5ab1606",
-                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -766,28 +757,6 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "cfffd3c1-ae14-454f-9301-ab2dff38f97b",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ScrollWheelClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "30414769-a25c-4125-b7c2-075ce6468d57",
-                    "path": "<Keyboard>/c",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "ScrollWheelClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
