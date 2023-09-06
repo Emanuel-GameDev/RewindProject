@@ -40,7 +40,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if(mixer)
-            mixer.SetFloat("Volume", -10);
+        if (mixer)
+        {
+            mixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
+        }
     }
 }
