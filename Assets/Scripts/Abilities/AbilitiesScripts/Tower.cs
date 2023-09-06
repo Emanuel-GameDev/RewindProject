@@ -53,12 +53,19 @@ public class Tower : MonoBehaviour
     {        
         if (((1 << collision.gameObject.layer) & collisionMask) != 0)
         {
+            Debug.Log(((1 << collision.gameObject.layer) & collisionMask));
+
             hp -= 1;
 
             if (hp == 0)
             {
                 animator.SetBool("Destroyed", true);
                 Dismiss();
+            }
+
+            if (collision.gameObject.layer == LayerMask.NameToLayer("projectile"))
+            {
+                Destroy(collision.gameObject);
             }
         }
     }
