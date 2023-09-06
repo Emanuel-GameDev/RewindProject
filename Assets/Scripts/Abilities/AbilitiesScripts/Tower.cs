@@ -53,8 +53,6 @@ public class Tower : MonoBehaviour
     {        
         if (((1 << collision.gameObject.layer) & collisionMask) != 0)
         {
-            Debug.Log(((1 << collision.gameObject.layer) & collisionMask));
-
             hp -= 1;
 
             if (hp == 0)
