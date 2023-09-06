@@ -13,7 +13,7 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
         body.isKinematic = true;
     }
