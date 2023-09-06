@@ -30,12 +30,12 @@ public class UIManager : MonoBehaviour
         if (!inputs.UI.enabled)
             inputs.UI.Enable();
 
-        inputs.UI.ScrollWheelClick.performed += OpenAbilityMenu;
+        inputs.UI.MiddleClick.performed += OpenAbilityMenu;
     }
 
     private void OnDisable()
     {
-        inputs.UI.ScrollWheelClick.performed -= OpenAbilityMenu;
+        inputs.UI.MiddleClick.performed -= OpenAbilityMenu;
     }
 
     private void OpenAbilityMenu(InputAction.CallbackContext obj)

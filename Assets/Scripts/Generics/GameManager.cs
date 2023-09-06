@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     public MenuManager pauseMenuManager;
     public UIManager uiManager;
 
+    [HideInInspector]
+    public bool debug;
+
     private void Awake()
     {
         if (Instance == null)

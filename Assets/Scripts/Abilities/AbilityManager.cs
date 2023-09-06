@@ -89,4 +89,12 @@ public class AbilityManager : MonoBehaviour
 
         return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
     }
+
+    public List<Ability> GetUnlockedAbilities()
+    {
+        if (debug)
+            return DebugAbilities;
+        else
+            return _abilities;
+    }
 }
