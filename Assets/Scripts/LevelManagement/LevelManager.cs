@@ -21,17 +21,38 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] bool hideCursor;
 
+    [Header("Loadings")]
+    [SerializeField] GameObject loadingScreen;
+    [SerializeField] bool fadeInOnLevelUnload = true;
+    [SerializeField] bool fadeOutOnLevelLoad = true;
+
     private void OnEnable()
     {
+        Time.timeScale = 1;
+
         instance = this;
-        loadingScreen?.SetActive(false);
+
+        level = SceneManager.GetActiveScene();
+
+        GetSpawnPoint();
+
+        if(PlayerController.instance)
+            Respawn();
+
+
+        if (loadingScreen && fadeOutOnLevelLoad)
+        {
+            loadingScreen.SetActive(true);
+            GetComponent<Animator>().Play("LoadingScreenFadeOut");
+        }
+
+
         if (PlayerController.instance)
         {
             inputs = PlayerController.instance.inputs;
             inputs.Player.Enable();
             PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
-            SceneManager.sceneLoaded += OnLevelLoaded;
         }
 
         DataSerializer.FileSaving += DeleteSaves;
@@ -39,6 +60,7 @@ public class LevelManager : MonoBehaviour
     
     private void Start()
     {
+        SetCheckpoint();
         // Locks the cursor
         if (hideCursor)
         {
@@ -50,12 +72,16 @@ public class LevelManager : MonoBehaviour
 
     private void SaveCheckpoints(object obj)
     {
+        
+
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
             checkpointsTaken[i] = checkpoints[i].taken;
         }
 
         DataSerializer.Save(level.name + "TAKENCHECKPOINTS", checkpointsTaken);
+
+
     }
 
     private void OnDisable()
@@ -63,10 +89,9 @@ public class LevelManager : MonoBehaviour
         if (PlayerController.instance)
         {
             inputs.Player.Disable();
-            SceneManager.sceneLoaded -= OnLevelLoaded;
 
         }
-
+        
 
         DataSerializer.FileSaving -= DeleteSaves;
     }
@@ -77,17 +102,6 @@ public class LevelManager : MonoBehaviour
         DataSerializer.DeleteAll();
     }
 
-    private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)
-    {
-        level = SceneManager.GetActiveScene();
-
-
-        GetSpawnPoint();
-
-        SetCheckpoint();
-
-        Respawn();
-    }
 
     private void SetCheckpoint()
     {
@@ -142,28 +156,38 @@ public class LevelManager : MonoBehaviour
         objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0);
     }
 
+    public void LoadingScreenState()
+    {
+        loadingScreen.SetActive(false);
+    }
 
     public void LoadLevel(SceneAsset levelToLoad)
     {
+        if (loadingScreen && fadeInOnLevelUnload)
+        {
+            loadingScreen.SetActive(true);
+            GetComponent<Animator>().Play("LoadingScreenFadeIn");
+        }
         StartCoroutine(LoadSceneAsynchronously(levelToLoad));
     }
 
-    [SerializeField] GameObject loadingScreen;
+
 
     public IEnumerator LoadSceneAsynchronously(SceneAsset levelToLoad)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(levelToLoad.name);
 
+        AudioSource[] components = FindObjectsOfType<AudioSource>();
 
-        loadingScreen?.SetActive(true);
+        foreach (AudioSource a in components)
+        {
+            a.Stop();
+        }
 
         while (!operation.isDone)
         {
-            Debug.Log("In progress");
-
             yield return null;
         }
-
     }
 
 

@@ -87,7 +87,7 @@ public class MenuButton :  Button,ISelectHandler
 
     public void LoadLevel(SceneAsset levelToLoad)
     {
-        LevelManager.instance.StartCoroutine(LevelManager.instance.LoadSceneAsynchronously(levelToLoad));
+        LevelManager.instance.LoadLevel(levelToLoad);
     }
 
    

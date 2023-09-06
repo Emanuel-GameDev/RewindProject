@@ -79,7 +79,7 @@ public class Checkpoint : MonoBehaviour
 
     public void ReturnToHub()
     {
-        SceneManager.LoadScene(Hub.name);
+        LevelManager.instance.LoadLevel(Hub);
     }
 
     private void OnDisable()
