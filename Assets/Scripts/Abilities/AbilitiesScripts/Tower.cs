@@ -60,6 +60,11 @@ public class Tower : MonoBehaviour
                 animator.SetBool("Destroyed", true);
                 Dismiss();
             }
+
+            if (collision.gameObject.layer == LayerMask.NameToLayer("projectile"))
+            {
+                Destroy(collision.gameObject);
+            }
         }
     }
 
