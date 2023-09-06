@@ -39,13 +39,20 @@ public class LevelManager : MonoBehaviour
         if(PlayerController.instance)
             Respawn();
 
-
-        if (loadingScreen && fadeOutOnLevelLoad)
+        if (loadingScreen)
         {
-            loadingScreen.SetActive(true);
-            GetComponent<Animator>().Play("LoadingScreenFadeOut");
-        }
+            if (fadeOutOnLevelLoad)
+            {
+                loadingScreen.SetActive(true);
+                GetComponent<Animator>().SetTrigger("FadeOut");
+            }
+            else
+            {
+                loadingScreen.SetActive(false);
+            }
 
+
+        }
 
         if (PlayerController.instance)
         {
@@ -73,7 +80,6 @@ public class LevelManager : MonoBehaviour
     private void SaveCheckpoints(object obj)
     {
         
-
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
             checkpointsTaken[i] = checkpoints[i].taken;
@@ -158,6 +164,7 @@ public class LevelManager : MonoBehaviour
 
     public void LoadingScreenState()
     {
+        if(loadingScreen)
         loadingScreen.SetActive(false);
     }
 
@@ -166,7 +173,7 @@ public class LevelManager : MonoBehaviour
         if (loadingScreen && fadeInOnLevelUnload)
         {
             loadingScreen.SetActive(true);
-            GetComponent<Animator>().Play("LoadingScreenFadeIn");
+            GetComponent<Animator>().SetTrigger("FadeIn");
         }
         StartCoroutine(LoadSceneAsynchronously(levelToLoad));
     }
@@ -175,6 +182,9 @@ public class LevelManager : MonoBehaviour
 
     public IEnumerator LoadSceneAsynchronously(SceneAsset levelToLoad)
     {
+        if(PlayerController.instance)
+            PlayerController.instance.inputs.Disable();
+
         AsyncOperation operation = SceneManager.LoadSceneAsync(levelToLoad.name);
 
         AudioSource[] components = FindObjectsOfType<AudioSource>();
