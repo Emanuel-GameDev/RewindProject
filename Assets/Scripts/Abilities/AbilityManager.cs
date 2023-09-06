@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ToolBox.Serialization;
 using UnityEngine;
-using UnityEngine.UI;   
+using UnityEngine.UI;
 
 public class AbilityManager : MonoBehaviour
 {
@@ -12,35 +10,48 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] private List<Ability> _abilities;
 
     [SerializeField] List<string> abilityNameToSave = new List<string>();
-    
+
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
     public AbilityWheel wheel;
 
-    // Debug
-    [Tooltip("Enable only for debugging, this bool set to true on a serious test will make this script not work")]
-    [HideInInspector] public bool debug = false;
+    
+
+    #region Debug Variables
     [HideInInspector]
     public List<Ability> DebugAbilities = new List<Ability>();
+
+    #endregion
 
     private void Awake()
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
-        
-        if (DataSerializer.TryLoad<List<string>>("ABILITIES", out abilityNameToSave))
+
+    }
+
+    private void Start()
+    {
+
+        if (!GameManager.Instance.debug)
         {
-            foreach(string abilityName in abilityNameToSave)
+
+
+            if (DataSerializer.TryLoad<List<string>>("ABILITIES", out abilityNameToSave))
             {
-                Ability abilityToGive = _gameAbilities.Find(a => a.name == abilityName);
-                AddToAbilities(abilityToGive);
+                foreach (string abilityName in abilityNameToSave)
+                {
+                    Ability abilityToGive = _gameAbilities.Find(a => a.name == abilityName);
+                    abilityToGive.Pick(PlayerController.instance);
+                }
+
+            }
+            else
+            {
+                abilityNameToSave = new List<string>();
+                _abilities = new List<Ability>();
             }
 
-        }
-        else
-        {
-            abilityNameToSave = new List<string>();
-            _abilities = new List<Ability>();
         }
 
     }
@@ -52,7 +63,7 @@ public class AbilityManager : MonoBehaviour
         Ability newAbility = obj as Ability;
 
         // Add to unlocked abilities
-        if (debug)
+        if (GameManager.Instance.debug)
             DebugAbilities.Add(newAbility);
         else
             _abilities.Add(newAbility);
@@ -79,12 +90,18 @@ public class AbilityManager : MonoBehaviour
         foreach (AbilityHolder holder in _holders)
         {
             holder.activeAbility = newActiveAbility;
+
+            if (holder.abilityIconReminder)
+            {
+                holder.abilityIconReminder.gameObject.SetActive(true);
+                holder.abilityIconReminder.sprite = newActiveAbility.smallIcon;
+            }
         }
     }
 
     public Ability GetAbilityFrom(Sprite abilityIcon)
     {
-        if (debug)
+        if (GameManager.Instance.debug)
             return DebugAbilities.Where(ability => ability.icon == abilityIcon)?.First();
 
         return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
@@ -92,7 +109,7 @@ public class AbilityManager : MonoBehaviour
 
     public List<Ability> GetUnlockedAbilities()
     {
-        if (debug)
+        if (GameManager.Instance.debug)
             return DebugAbilities;
         else
             return _abilities;

@@ -25,17 +25,15 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        inputs = new PlayerInputs();
+        if (!PlayerController.instance.inputs.UI.enabled)
+            PlayerController.instance.inputs.UI.Enable();
 
-        if (!inputs.UI.enabled)
-            inputs.UI.Enable();
-
-        inputs.UI.MiddleClick.performed += OpenAbilityMenu;
+        PlayerController.instance.inputs.UI.ScrollWheelClick.performed += OpenAbilityMenu;
     }
 
     private void OnDisable()
     {
-        inputs.UI.MiddleClick.performed -= OpenAbilityMenu;
+        PlayerController.instance.inputs.UI.ScrollWheelClick.performed -= OpenAbilityMenu;
     }
 
     private void OpenAbilityMenu(InputAction.CallbackContext obj)
@@ -120,6 +118,7 @@ public class UIManager : MonoBehaviour
         canShowMenu = false;
 
         character.GetComponent<PlayerController>().inputs.Player.Disable();
+        character.GetComponent<PlayerController>().inputs.AbilityController.Disable();
         GameManager.Instance.abilityManager.wheel.canSwitch = false;
 
         if (cardToShow == null)
@@ -154,6 +153,7 @@ public class UIManager : MonoBehaviour
     public void ShowCompleted()
     {
         character.GetComponent<PlayerController>().inputs.Player.Enable();
+        character.GetComponent<PlayerController>().inputs.AbilityController.Enable();
 
         cardToShow.Pick(character);
 

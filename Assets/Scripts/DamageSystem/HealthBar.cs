@@ -13,7 +13,7 @@ public class HealthBar : MonoBehaviour
         icons = new List<GameObject>();
     }
 
-    public void InitializeHealthBar(int health)
+    public virtual void InitializeHealthBar(int health)
     {
         for (int i = 0; i < icons.Count; i++)
         {
@@ -28,7 +28,7 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    public void UpdateHealthBar(int health)
+    public virtual void UpdateHealthBar(int health)
     {
         for (int i = 0; i < icons.Count; i++)
         {

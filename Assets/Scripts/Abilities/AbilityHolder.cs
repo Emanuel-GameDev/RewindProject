@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class AbilityHolder : Character
 {
@@ -10,9 +11,11 @@ public class AbilityHolder : Character
 
     private PlayerInputs playerInputs;
 
+    [SerializeField] public Image abilityIconReminder;
+
     private void Awake()
     {
-        playerInputs = new PlayerInputs();
+        playerInputs = PlayerController.instance.inputs;
     }
 
     private void OnEnable()
@@ -25,7 +28,7 @@ public class AbilityHolder : Character
         playerInputs.AbilityController.Activate2.canceled += Disactivate2;
         playerInputs.AbilityController.Activate3.canceled += Disactivate3;
 
-        playerInputs.Enable();
+        playerInputs.AbilityController.Enable();
     }
 
     private void Update()
@@ -98,7 +101,7 @@ public class AbilityHolder : Character
         playerInputs.AbilityController.Activate2.canceled -= Disactivate2;
         playerInputs.AbilityController.Activate3.canceled -= Disactivate3;
 
-        playerInputs.Disable();
+        playerInputs.AbilityController.Disable();
     }
 
 

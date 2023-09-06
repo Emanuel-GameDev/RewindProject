@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +13,14 @@ public class GameManager : MonoBehaviour
     public MenuManager pauseMenuManager;
     public UIManager uiManager;
 
+
+    [Header("Mixer")]
+    public AudioMixer mixer;
+
+    [Tooltip("Enable only for debugging, this bool set to true on a serious test will make scripts not work")]
     public bool debug;
+
+    public bool dontDestroyOnLoad = false;
 
     private void Awake()
     {
@@ -24,6 +32,15 @@ public class GameManager : MonoBehaviour
         if (transform.parent != null)
             transform.parent = null;
 
-        DontDestroyOnLoad(gameObject);
+        if(dontDestroyOnLoad)
+            DontDestroyOnLoad(gameObject);
+
+        
+    }
+
+    private void Start()
+    {
+        if(mixer)
+            mixer.SetFloat("Volume", -10);
     }
 }

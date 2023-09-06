@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] List<Checkpoint> checkpoints;
+    public List<Checkpoint> checkpoints;
     public static LevelManager instance;
 
     [HideInInspector] public List<bool> checkpointsTaken;
@@ -19,24 +19,30 @@ public class LevelManager : MonoBehaviour
     public bool deleteSavesOnEditorQuit=false; 
     public PlayerInputs inputs { get; private set; }
 
-    LineRenderer lineRenderer;
+    [SerializeField] bool hideCursor;
 
     private void OnEnable()
     {
         instance = this;
-        inputs = new PlayerInputs();
+        inputs = PlayerController.instance.inputs;
         inputs.Player.Enable();
         PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
-        lineRenderer = GetComponent<LineRenderer>();
-
         SceneManager.sceneLoaded += OnLevelLoaded;
-        inputs.Player.Respawn.performed += OnRespawn;
 
         DataSerializer.FileSaving += DeleteSaves;
     }
-
     
+    private void Start()
+    {
+        // Locks the cursor
+        if (hideCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
+
 
     private void SaveCheckpoints(object obj)
     {
@@ -53,7 +59,6 @@ public class LevelManager : MonoBehaviour
         inputs.Player.Disable();
 
         SceneManager.sceneLoaded -= OnLevelLoaded;
-        inputs.Player.Respawn.performed -= OnRespawn;
 
         DataSerializer.FileSaving -= DeleteSaves;
     }
@@ -84,7 +89,7 @@ public class LevelManager : MonoBehaviour
         if (DataSerializer.HasKey(level.name + "TAKENCHECKPOINTS"))
             checkpointsTaken = DataSerializer.Load<List<bool>>(level.name + "TAKENCHECKPOINTS");
         else
-            checkpointsTaken = new List<bool>() { true,false,false };
+            checkpointsTaken = new List<bool>() { true,false,false,false,false };
 
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
@@ -95,11 +100,8 @@ public class LevelManager : MonoBehaviour
 
     private void GetSpawnPoint()
     {
-        if (!DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad))
-            return;
-
-        DataSerializer.DeleteKey("CHECKPOINTIDTOLOAD");
-
+        DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad);
+       
 
 
         if (checkpoints.Count < 1)
@@ -111,12 +113,6 @@ public class LevelManager : MonoBehaviour
     }
 
 
-
-    private void OnRespawn(InputAction.CallbackContext obj)
-    {
-        Respawn();
-    }
-
     public void Respawn()
     {
         if(DataSerializer.TryLoad("SPAWNPOINT", out Vector3 spawnPoint))
@@ -124,6 +120,7 @@ public class LevelManager : MonoBehaviour
         else
             Teleport(PlayerController.instance.gameObject, checkpoints[0].transform.position);
 
+        
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }
 
@@ -136,5 +133,9 @@ public class LevelManager : MonoBehaviour
     {
         objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0);
     }
+
+    
+    
+
 
 }
