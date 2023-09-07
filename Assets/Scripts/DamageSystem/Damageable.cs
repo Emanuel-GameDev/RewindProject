@@ -69,7 +69,8 @@ public class Damageable : MonoBehaviour
         if (!invincible)
         {
             ChangeHealth(-healthToRemove);
-            StartCoroutine(InvincibilitySecons(invincibilitySeconds));
+            if(gameObject.activeSelf)
+                StartCoroutine(InvincibilitySecons(invincibilitySeconds));
         }
         
 
