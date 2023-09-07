@@ -12,9 +12,10 @@ public enum eBossState
     Moving,
     Falling,
     Stunned,
+    Recover,
+    SphereAttack,
     UroboroAttack,
     RewindableAttack,
-    SphereAttack,
     ChangeGroundAttack
 }
 
@@ -75,6 +76,7 @@ public class BossBheaviour : MonoBehaviour
 
     [Header("Rewindable Attack Settings")]
     [SerializeField] GameObject rewindableProjectilePrefab;
+    [SerializeField] GameObject rewindableAuraTrigger;
     [Tooltip("Imposta la velocità di movimento del proiettile")]
     [SerializeField] float rewindableSpeed = 1000f;
     [Tooltip("Imposta la distanza verticale a cui compare il proiettile rispetto ai punti di sosta del boss")]
@@ -85,19 +87,30 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] float rewindableWaitBeforeShoot = 2f;
     [Tooltip("Imposta la durata del proiettile e quanto tempo passa prima che il boss cambi stato dopo aver sparato")]
     [SerializeField] float rewindableLifeTime = 5f;
+    [Tooltip("Imposta dopo quanti colpi il boss viene stordito")]
+    [SerializeField] int necessaryHitForStunning = 5;
+
+    [Header("Falling Settings")]
+    [Tooltip("Imposta la durata della caduta del boss quando viene stordito")]
+    [SerializeField] float fallingDuration = 2f;
+    [Tooltip("Imposta la distanza verticale a cui deve arrivare il corpo del boss rispetto ai punti di sosta del boss")]
+    [SerializeField] float fallingVerticalOffset = 3f;
+    [Tooltip("Imposta la durata dello stordimento del bosso dopo che è caduto")]
+    [SerializeField] float stunnedTime = 5f;
+    [Tooltip("Imposta il tempo che ci mette il boss a tornare alla posizione normale finito lo stordimento")]
+    [SerializeField] float recoverTime = 5f;
 
     [Header("Other Settings")]
     [Tooltip("Imposta quanto è probabile che esegua nuovamente la stessa mossa di seguito in relazione alle altre (1 stessa probabilità delle altre, 0 nessuna probabilità)")]
     [Range(0f, 1f)]
     [SerializeField] float repeatPercentage = 0.5f;
-    [Tooltip("Imposta la durata della caduta del boss quando viene stordito")]
-    [SerializeField] float fallingDuration = 2f;
 
 
     private StateMachine<eBossState> stateMachine;
     private List<BossPosition> positions;
     private BossPosition currentPosition;
     private int hitCounter;
+    private int rewindHitCounter;
     private bool changeGroundStarted;
     private eBossState currentState;
     private eBossState nextState;
@@ -121,6 +134,10 @@ public class BossBheaviour : MonoBehaviour
         {
             HitCounterUpdater(1);
         }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            RewindHit(1);
+        }
     }
 
     private void StateMachineSetup()
@@ -128,8 +145,11 @@ public class BossBheaviour : MonoBehaviour
         stateMachine = new StateMachine<eBossState>();
         stateMachine.RegisterState(eBossState.Start, new Start(this));
         stateMachine.RegisterState(eBossState.Moving, new Moving(this));
-        stateMachine.RegisterState(eBossState.UroboroAttack, new UroboroAttack(this));
+        stateMachine.RegisterState(eBossState.Falling, new Falling(this));
+        stateMachine.RegisterState(eBossState.Stunned, new Stunned(this));
+        stateMachine.RegisterState(eBossState.Recover, new Recover(this));
         stateMachine.RegisterState(eBossState.SphereAttack, new SphereAttack(this));
+        stateMachine.RegisterState(eBossState.UroboroAttack, new UroboroAttack(this));
         stateMachine.RegisterState(eBossState.RewindableAttack, new RewindableAttack(this));
         stateMachine.RegisterState(eBossState.ChangeGroundAttack, new ChangeGroundAttack(this));
         stateMachine.SetState(eBossState.Start);
@@ -143,6 +163,7 @@ public class BossBheaviour : MonoBehaviour
         hitCounter = 0;
         changeGroundStarted = false;
         changeGroundCountdown = 0;
+        if(rewindableAuraTrigger == null) rewindableAuraTrigger = GetComponentInChildren<RewindableTriggerAura>().gameObject;
     }
 
     //FUNZIONI CAMBIO STATO
@@ -248,6 +269,16 @@ public class BossBheaviour : MonoBehaviour
         }
     }
 
+    public void RewindHit(int n)
+    {
+        rewindHitCounter += n;
+        if(rewindHitCounter >= necessaryHitForStunning)
+        {
+            ChangeState(eBossState.Falling);
+            rewindHitCounter = 0;
+        }
+    }
+
     public void SetNextState(eBossState nextState)
     {
         this.nextState = nextState;
@@ -262,10 +293,10 @@ public class BossBheaviour : MonoBehaviour
         return projectile;
     }
 
-    public BossProjectile GenerateRewindable(Vector2 point)
+    public BossRewindableProjectile GenerateRewindable(Vector2 point)
     {
-        BossProjectile rewindable = Instantiate(rewindableProjectilePrefab, point, Quaternion.identity).GetComponent<BossProjectile>();
-        rewindable.Inizialize(Vector2.zero, point, 0);
+        BossRewindableProjectile rewindable = Instantiate(rewindableProjectilePrefab, point, Quaternion.identity).GetComponent<BossRewindableProjectile>();
+        rewindable.Inizialize(Vector2.zero, point, 0, targetPlayer);
         rewindable.lifeTime = rewindableLifeTime;
 
         return rewindable;
@@ -290,6 +321,10 @@ public class BossBheaviour : MonoBehaviour
     public BossPosition GetCurrentPosition()
     {
         return currentPosition;
+    }
+    public BossPosition GetStartPosition()
+    {
+        return startPosition;
     }
 
     public GameObject GetBossBody()
@@ -327,11 +362,6 @@ public class BossBheaviour : MonoBehaviour
         }
 
         return null;
-    }
-
-    public float GetFallingDuration()
-    {
-        return fallingDuration;
     }
 
     #endregion
@@ -446,6 +476,35 @@ public class BossBheaviour : MonoBehaviour
     public float GetRewindableSpeed()
     {
         return rewindableSpeed;
+    }
+
+    public GameObject GetRewindableAuraObject()
+    {
+        return rewindableAuraTrigger;
+    }
+
+    #endregion
+
+    #region Falling
+
+    public float GetFallingDuration()
+    {
+        return fallingDuration;
+    }
+
+    public float GetFallingVerticalOffset()
+    {
+        return fallingVerticalOffset;
+    }
+
+    public float GetStunnedTime()
+    {
+        return stunnedTime;
+    }
+
+    public float GetRecoverTime()
+    {
+        return recoverTime;
     }
 
     #endregion
