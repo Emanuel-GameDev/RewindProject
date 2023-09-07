@@ -14,7 +14,9 @@ public enum EMessageType
     RewindZoneEntered,
     CardSelected,
     DeathCardActivated,
-    DeathCardDisactivated
+    DeathCardDisactivated,
+    SpawnBoss,
+    BossfightStart
 }
 
 public enum EAbilityState
