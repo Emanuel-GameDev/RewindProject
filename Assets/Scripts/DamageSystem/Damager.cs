@@ -35,7 +35,7 @@ public class Damager : MonoBehaviour
     private void KnockBack(Damageable damageable)
     {
         damageable.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 300);
-        Vector2 vec = new Vector2((damageable.GetComponentInParent<Transform>().position.x - transform.position.x), 0);
+        Vector2 vec = new Vector2((damageable.GetComponentInParent<Transform>(true).position.x - transform.position.x), 0);
         damageable.gameObject.GetComponent<Rigidbody2D>().AddForce(vec.normalized * knockbackForce * 1000);
 
     }
