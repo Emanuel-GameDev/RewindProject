@@ -113,13 +113,15 @@ public class PlayerController : Character
         inputs.Player.Jump.performed += JumpInput;
 
         inputs.Player.Dash.performed += TryDash;
+
+        instance = this;
     }
 
    
 
     private void Awake()
     {
-        instance = this;
+        
         animator = GetComponent<Animator>();
         bodySprite = GetComponentInChildren<SpriteRenderer>();
         trail = GetComponent<TrailRenderer>();
@@ -624,8 +626,10 @@ public class PlayerController : Character
     }
     public void ReloadLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LevelManager.instance.ReloadLevel();
     }
+
+    
 
     public void EnableInputs()
     {

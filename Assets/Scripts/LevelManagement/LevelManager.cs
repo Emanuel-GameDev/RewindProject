@@ -5,6 +5,7 @@ using ToolBox.Serialization;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
@@ -26,8 +27,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField] bool fadeInOnLevelUnload = true;
     [SerializeField] bool fadeOutOnLevelLoad = true;
 
+    PlayableDirector playableDirector;
+
     private void OnEnable()
     {
+        playableDirector = GetComponent<PlayableDirector>();
+        playableDirector.time = 0;
         Time.timeScale = 1;
 
         instance = this;
@@ -39,28 +44,34 @@ public class LevelManager : MonoBehaviour
         if(PlayerController.instance)
             Respawn();
 
+        if (PlayerController.instance)
+        {
+            inputs = PlayerController.instance.inputs;
+            PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
+        }
+
         if (loadingScreen)
         {
             if (fadeOutOnLevelLoad)
             {
                 loadingScreen.SetActive(true);
                 GetComponent<Animator>().SetTrigger("FadeOut");
+
+                if (PlayerController.instance)
+                    PlayerController.instance.inputs.Disable();
+
             }
             else
             {
                 loadingScreen.SetActive(false);
+
+                if (PlayerController.instance)
+                    PlayerController.instance.inputs.Enable();
             }
 
 
         }
 
-        if (PlayerController.instance)
-        {
-            inputs = PlayerController.instance.inputs;
-            inputs.Player.Enable();
-            PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
-
-        }
 
         DataSerializer.FileSaving += DeleteSaves;
     }
@@ -162,10 +173,13 @@ public class LevelManager : MonoBehaviour
         objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0);
     }
 
-    public void LoadingScreenState()
+    public void LoadingScreenEnded()
     {
         if(loadingScreen)
-        loadingScreen.SetActive(false);
+            loadingScreen.SetActive(false);
+
+        if (PlayerController.instance)
+            PlayerController.instance.inputs.Enable();
     }
 
     public void LoadLevel(SceneAsset levelToLoad)
@@ -175,17 +189,43 @@ public class LevelManager : MonoBehaviour
             loadingScreen.SetActive(true);
             GetComponent<Animator>().SetTrigger("FadeIn");
         }
-        StartCoroutine(LoadSceneAsynchronously(levelToLoad));
+        StartCoroutine(LoadSceneAsynchronously(levelToLoad.name));
+    }
+
+    public void ActivateDeathScreen()
+    {
+        PlayerController.instance.inputs.Disable();
+        PlayerController.instance.gameObject.SetActive(false);
+
+        playableDirector.Play(playableDirector.playableAsset);
+        
+    }
+
+    public void DeathScreenEnded()
+    {
+        LoadSceneAsynchronously(level.name);
+    }
+
+    public void ReloadLevel()
+    {
+        if (loadingScreen && fadeInOnLevelUnload)
+        {
+            loadingScreen.SetActive(true);
+            GetComponent<Animator>().SetTrigger("FadeIn");
+        }
+        StartCoroutine(LoadSceneAsynchronously(level.name));
+        //SceneManager.LoadScene(level.name);
     }
 
 
-
-    public IEnumerator LoadSceneAsynchronously(SceneAsset levelToLoad)
+    public IEnumerator LoadSceneAsynchronously(string nameLevelToLoad)
     {
-        if(PlayerController.instance)
+        if (PlayerController.instance)
+        {
             PlayerController.instance.inputs.Disable();
+        }
 
-        AsyncOperation operation = SceneManager.LoadSceneAsync(levelToLoad.name);
+        AsyncOperation operation = SceneManager.LoadSceneAsync(nameLevelToLoad);
 
         AudioSource[] components = FindObjectsOfType<AudioSource>();
 

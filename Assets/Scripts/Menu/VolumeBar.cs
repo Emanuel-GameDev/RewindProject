@@ -17,7 +17,7 @@ public class VolumeBar : MonoBehaviour
 
         set
         {
-            _volume = Mathf.Clamp(value, -80, 20);
+            _volume = Mathf.Clamp(value, -80, 10);
         }
     }
 
@@ -30,7 +30,7 @@ public class VolumeBar : MonoBehaviour
         segments = GetComponentsInChildren<BarSegment>();
 
         id = PlayerPrefs.GetInt("VolumeId", 2);
-        Volume = PlayerPrefs.GetFloat("Volume", 0);
+        Volume = PlayerPrefs.GetFloat("Volume", -5);
 
         for (int i = 0; i <= id; i++)
         {
@@ -50,11 +50,11 @@ public class VolumeBar : MonoBehaviour
         
         Volume += 5;
 
-        if (Volume > 15)
-            Volume = 15;
+        if (Volume > 10)
+            Volume = 10;
 
-        if (Volume < -10)
-            Volume = -10;
+        if (Volume < -15)
+            Volume = -15;
         
 
         if(id < segments.Length-1)
@@ -74,7 +74,7 @@ public class VolumeBar : MonoBehaviour
     {
         Volume -= 5;
 
-        if (Volume < -10)
+        if (Volume < -15)
             Volume = -80;
 
 

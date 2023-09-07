@@ -14,6 +14,8 @@ public class ProjectileAbility : Ability
     [SerializeField] float guidedProjectileSpeed = 1;
     [SerializeField] float timeToDraw = 0;
 
+    [SerializeField] AudioClip shotProjectileSound;
+
     bool readyToUse = true;
     PathCreator instantietedPathCreator;
     PlayerController player;
@@ -153,6 +155,7 @@ public class ProjectileAbility : Ability
     {
         yield return new WaitUntil(() => player.activateCurrentAbility == true);
         ShotProjectile();
+        PlayerController.instance.GetComponent<AudioSourceGenerator>().PlaySound(shotProjectileSound);
     }
 
     
