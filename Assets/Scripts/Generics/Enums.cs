@@ -12,7 +12,9 @@ public enum EMessageType
     TimeRewindStart,
     TimeRewindStop,
     RewindZoneEntered,
-    CardSelected
+    CardSelected,
+    DeathCardActivated,
+    DeathCardDisactivated
 }
 
 public enum EAbilityState

@@ -90,18 +90,22 @@ public class BossRewindableProjectile : BossProjectile
         {
             canBeRewinded = true;
         }
-        if (!collision.isTrigger)
+        if (IsInLayerMask(collision.gameObject.layer, targetLayers))
         {
-            Dismiss();
-        }
-        else
-        {
-            if (collision.gameObject.GetComponentInParent<BossBheaviour>() && isRewinding)
+            if (!collision.isTrigger)
             {
-                collision.gameObject.GetComponentInParent<BossBheaviour>().HitCounterUpdater(1);
-                Dismiss();
+                StopAndExplode();
+            }
+            else
+            {
+                if (collision.gameObject.GetComponentInParent<BossBheaviour>() && isRewinding)
+                {
+                    collision.gameObject.GetComponentInParent<BossBheaviour>().HitCounterUpdater(1);
+                    StopAndExplode();
+                }
             }
         }
+
     }
 
 

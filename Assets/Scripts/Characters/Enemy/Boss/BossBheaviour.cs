@@ -138,6 +138,10 @@ public class BossBheaviour : MonoBehaviour
         {
             RewindHit(1);
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GetComponentInChildren<Damageable>().TakeDamage(1); 
+        }
     }
 
     private void StateMachineSetup()
