@@ -244,7 +244,7 @@ public class PlayerController : Character
     {
         horizontalInput = inputs.Player.Walk.ReadValue<float>();
 
-        if (horizontalInput != 0 && !animator.GetBool("Attacking"))
+        if (horizontalInput != 0 && !animator.GetBool("Attacking") && canMove)
         {
                 //calcolo movimento
                 horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
@@ -632,12 +632,12 @@ public class PlayerController : Character
     public void TakeHit()
     {
         animator.SetTrigger("Hitted");
-        inputs.Disable();
+        canMove = false;
     }
-
+    public bool canMove = true;
     public void EnableAllInputs()
     {
-        inputs.Enable();
+        canMove = true;
     }
 
     public void EnableInputs()
