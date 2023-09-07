@@ -8,8 +8,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] public  float lifeTime;
     protected float elapsedTime;
     protected private Vector2 direction;
-    private SpriteRenderer spriteRenderer;
-    private Rigidbody2D body;
+    protected SpriteRenderer spriteRenderer;
+    protected Rigidbody2D body;
 
     private void Awake()
     {
@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
         body.isKinematic = true;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         body.velocity = direction * speed * Time.deltaTime;
 
@@ -32,9 +32,13 @@ public class Projectile : MonoBehaviour
     {
         ProjectilePool.Instance.DismissProjectile(this);
     }
-    public virtual void OnTriggerEnter(Collider other)
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        Dismiss();
+        if (!collision.isTrigger)
+        {
+            Dismiss();
+        }
     }
 
     public virtual void Inizialize(Vector2 direction, Vector2 position, float speed)

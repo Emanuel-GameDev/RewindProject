@@ -17,13 +17,14 @@ public class Stunned : State
         elapsed += Time.deltaTime;
         if (elapsed > timeToWait)
         {
-            bossBheaviour.ChangeState();
+            bossBheaviour.ChangeState(eBossState.Recover);
         }
     }
     public override void Enter()
     {
         Debug.Log(this.GetType().Name);
         elapsed = 0;
+        timeToWait = bossBheaviour.GetStunnedTime();
     }
 
 }
