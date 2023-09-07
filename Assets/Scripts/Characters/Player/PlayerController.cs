@@ -108,7 +108,7 @@ public class PlayerController : Character
         inputs.Player.Run.performed += RunInput;
         inputs.Player.Run.canceled += RunInput;
 
-        inputs.Player.OpenMenu.performed += OpenMenuInput;
+        inputs.Player.OpenMenu.started += OpenMenuInput;
 
         inputs.Player.Jump.performed += JumpInput;
 
@@ -197,7 +197,7 @@ public class PlayerController : Character
 
         inputs.Player.Jump.performed -= JumpInput;
 
-        inputs.Player.OpenMenu.performed -= OpenMenuInput;
+        inputs.Player.OpenMenu.started -= OpenMenuInput;
 
         inputs.Player.Dash.performed -= TryDash;
 
@@ -629,7 +629,16 @@ public class PlayerController : Character
         LevelManager.instance.ReloadLevel();
     }
 
-    
+    public void TakeHit()
+    {
+        animator.SetTrigger("Hitted");
+        inputs.Disable();
+    }
+
+    public void EnableAllInputs()
+    {
+        inputs.Enable();
+    }
 
     public void EnableInputs()
     {

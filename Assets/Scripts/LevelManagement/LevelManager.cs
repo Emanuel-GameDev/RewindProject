@@ -31,24 +31,27 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
+        instance = this;
+
         playableDirector = GetComponent<PlayableDirector>();
         playableDirector.time = 0;
+
         Time.timeScale = 1;
 
-        instance = this;
 
         level = SceneManager.GetActiveScene();
 
         GetSpawnPoint();
 
-        if(PlayerController.instance)
-            Respawn();
-
         if (PlayerController.instance)
         {
+            Respawn();
+
             inputs = PlayerController.instance.inputs;
             PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
+
         }
+        
 
         if (loadingScreen)
         {
@@ -186,6 +189,7 @@ public class LevelManager : MonoBehaviour
     {
         if (loadingScreen && fadeInOnLevelUnload)
         {
+            Time.timeScale = 1;
             loadingScreen.SetActive(true);
             GetComponent<Animator>().SetTrigger("FadeIn");
         }
@@ -210,6 +214,7 @@ public class LevelManager : MonoBehaviour
     {
         if (loadingScreen && fadeInOnLevelUnload)
         {
+            Time.timeScale = 1;
             loadingScreen.SetActive(true);
             GetComponent<Animator>().SetTrigger("FadeIn");
         }
@@ -220,6 +225,8 @@ public class LevelManager : MonoBehaviour
 
     public IEnumerator LoadSceneAsynchronously(string nameLevelToLoad)
     {
+        
+
         if (PlayerController.instance)
         {
             PlayerController.instance.inputs.Disable();
