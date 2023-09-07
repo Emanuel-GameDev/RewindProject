@@ -108,7 +108,7 @@ public class PlayerController : Character
         inputs.Player.Run.performed += RunInput;
         inputs.Player.Run.canceled += RunInput;
 
-        inputs.Player.OpenMenu.started += OpenMenuInput;
+        inputs.Player.OpenMenu.performed += OpenMenuInput;
 
         inputs.Player.Jump.performed += JumpInput;
 
@@ -197,7 +197,7 @@ public class PlayerController : Character
 
         inputs.Player.Jump.performed -= JumpInput;
 
-        inputs.Player.OpenMenu.started -= OpenMenuInput;
+        inputs.Player.OpenMenu.performed -= OpenMenuInput;
 
         inputs.Player.Dash.performed -= TryDash;
 
