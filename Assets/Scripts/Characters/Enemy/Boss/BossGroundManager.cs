@@ -267,4 +267,10 @@ public class BossGroundManager : MonoBehaviour
         else 
             return false;
     }
+
+    public float GetFadeInDuration()
+    {
+        return fadeInDuration;
+    }
+
 }

@@ -120,6 +120,7 @@ public class BossBheaviour : MonoBehaviour
     private eBossState nextState;
     private float changeGroundCountdown;
     private int nonRewindableAttackCount;
+    private bool isDead;
 
     public const string SPAWN = "Spawn";
     public const string NOIA = "Noia";
@@ -141,16 +142,19 @@ public class BossBheaviour : MonoBehaviour
 
         if(changeGroundCountdown > 0) changeGroundCountdown -= Time.deltaTime;
 
+        if (isDead) groundManager.UpdateState();
+
         //Temporaneo per test
         if (Input.GetKeyDown(KeyCode.O))
         {
-            PubSub.Instance.Notify(EMessageType.SpawnBoss, true);
+            SpawnBoss();
         }
         if (Input.GetKeyDown(KeyCode.I))
         {
-            PubSub.Instance.Notify(EMessageType.BossfightStart, true);
+            StartDestroy();
         }
     }
+
 
     private void StateMachineSetup()
     {
@@ -176,6 +180,7 @@ public class BossBheaviour : MonoBehaviour
         transform.position = startPosition.transform.position;
         hitCounter = 0;
         changeGroundStarted = false;
+        isDead = false;
         changeGroundCountdown = 0;
         NonRewindableCountReset();
         if(rewindableAuraTrigger == null) rewindableAuraTrigger = GetComponentInChildren<RewindableTriggerAura>().gameObject;
@@ -335,8 +340,50 @@ public class BossBheaviour : MonoBehaviour
 
     public void OnDeath()
     {
+        isDead = true;
+        if(currentPosition.GetVerticalPosition() == eVerticalPosition.Bottom)
+        {
+            ChangeEndGround();
+            currentPosition = GetOppositePosition();
+        }
         ChangeState(eBossState.Recover);
         nextState = eBossState.Dead;
+    }
+
+    private void ChangeEndGround()
+    {
+        groundManager.StartChangeGround();
+        StartCoroutine(WaitForPlayerReverse());
+    }
+
+    IEnumerator WaitForPlayerReverse()
+    {
+        yield return new WaitForSeconds(groundManager.GetFadeInDuration() * 1.2f);
+        if (!PlayerController.instance.IsGravityDownward())
+        {
+            InvertGravity ability = null;
+            List<Ability> abilities = GameManager.Instance.abilityManager.GetUnlockedAbilities();
+            foreach (Ability ab in abilities)
+            {
+                Debug.Log(ab.name);
+                if (ab is InvertGravity)
+                {
+                    ability = (InvertGravity)ab;
+                }
+            }
+
+            ability.Activate1(PlayerController.instance.transform.gameObject);
+        }
+    }
+
+    public void SpawnBoss()
+    {
+        PubSub.Instance.Notify(EMessageType.SpawnBoss, true);
+    }
+
+    public void StartDestroy()
+    {
+        PubSub.Instance.Notify(EMessageType.BossfightStart, true);
     }
 
     //ANIMAZIONI
