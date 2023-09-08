@@ -114,10 +114,26 @@ public class PlayerController : Character
 
         inputs.Player.Dash.performed += TryDash;
 
+        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, ActivateCardAnimation);
+        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, DeactivateCardAnimation);
+
         instance = this;
     }
 
-   
+    private void DeactivateCardAnimation(object obj)
+    {
+        Debug.Log("D");
+        animator.SetBool("UsingCard", false);
+    }
+
+    private void ActivateCardAnimation(object obj)
+    {
+        Debug.Log("A");
+        animator.SetTrigger("ActivateCard");
+        animator.SetBool("UsingCard", true);
+    }
+
+
 
     private void Awake()
     {
