@@ -120,15 +120,13 @@ public class PlayerController : Character
         instance = this;
     }
 
-    private void DeactivateCardAnimation(object obj)
+    public void DeactivateCardAnimation(object obj)
     {
-        Debug.Log("D");
         animator.SetBool("UsingCard", false);
     }
 
-    private void ActivateCardAnimation(object obj)
+    public void ActivateCardAnimation(object obj)
     {
-        Debug.Log("A");
         animator.SetTrigger("ActivateCard");
         animator.SetBool("UsingCard", true);
     }
