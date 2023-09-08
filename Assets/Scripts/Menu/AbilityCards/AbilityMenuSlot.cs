@@ -11,6 +11,7 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [HideInInspector] public string textName;
     [HideInInspector] public string textDescription;
     [HideInInspector] public string textTutorial;
+    [HideInInspector] public Sprite abSmallIcon;
     [HideInInspector] public AbilityMenu abMenu;
     [HideInInspector] public float animDuration;
 
@@ -129,6 +130,12 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
             {
                 childGO.GetComponent<Outline>().enabled = true;
             }
+
+            // Set small icon
+            if (abMenu.abSmallIcon.color.a != 1)
+                abMenu.abSmallIcon.color = new Color(1, 1, 1, 1);
+
+            abMenu.abSmallIcon.sprite = abSmallIcon;
         }
         else
         {
@@ -139,6 +146,8 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
             if (!passive)
                 childGO.GetComponent<Outline>().enabled = false;
+
+            abMenu.abSmallIcon.color = new Color(0, 0, 0, 0);
         }
 
         if (animationCoroutine != null)
