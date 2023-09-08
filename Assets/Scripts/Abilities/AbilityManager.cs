@@ -80,6 +80,23 @@ public class AbilityManager : MonoBehaviour
         DataSerializer.Save<List<string>>("ABILITIES", abilityNameToSave);
     }
 
+    private void Update()
+    {
+        List<Ability> abilities;
+        if (GameManager.Instance.debug)
+            abilities = DebugAbilities;
+        else
+            abilities = _abilities;
+        
+        foreach (Ability ability in abilities)
+        {
+            if (ability.global)
+            {
+                ability.UpdateAbility();
+            } 
+        }
+    }
+
     public void GiveAbility(object obj)
     {
         if (obj is not Sprite) return;

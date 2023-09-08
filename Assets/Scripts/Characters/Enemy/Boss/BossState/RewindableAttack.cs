@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class RewindableAttack : State
 {
@@ -23,8 +24,9 @@ public class RewindableAttack : State
         elapsed = 0;
         readyToShoot = false;
         shooting = false;
-        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, StartRewind);
+        //PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, StartRewind);
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, StopRewind);
+        bossBheaviour.NonRewindableCountReset();
     }
 
     public override void Update()
@@ -79,14 +81,14 @@ public class RewindableAttack : State
         elapsed = 0;
     }
 
-    public void StartRewind(object obj)
-    {
-        rewindable.StartRewind();
-    }
+    //public void StartRewind(object obj)
+    //{
+    //    rewindable.StartRewind();
+    //}
 
     public override void Exit()
     {
-        PubSub.Instance.UnregisterFunction(EMessageType.TimeRewindStart, StartRewind);
+        //PubSub.Instance.UnregisterFunction(EMessageType.TimeRewindStart, StartRewind);
         PubSub.Instance.UnregisterFunction(EMessageType.TimeRewindStop, StopRewind);
         DismissAuraTrigger();
     }

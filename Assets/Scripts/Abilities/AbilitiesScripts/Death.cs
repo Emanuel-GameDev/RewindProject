@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
@@ -9,25 +10,25 @@ public class Death : Ability
 {
     [SerializeField] int newDamage;
     private int oldDamage;
-    private float elapsed;
     private Damager damager;
+    private float elapsedTime = 0;
     
     public override void Activate1(GameObject parent)
     {
         damager = parent.GetComponentInChildren<Damager>();
-        if(damager != null)
-        {
-            oldDamage = damager.damage;
-            damager.damage = newDamage;
-            isActive = true;
-            elapsed = 0;
-        }
+        if(!isActive) SetOverDamage();
     }
 
-    public override void Disactivate1(GameObject gameObject)
+    public override void UpdateAbility()
     {
-        damager = gameObject.GetComponentInChildren<Damager>();
-        SetNormalDamage();
+        if (isActive)
+        {
+            elapsedTime += Time.deltaTime;
+            if(elapsedTime > cooldownTime)
+            {
+                SetNormalDamage();
+            }
+        }
     }
 
     private void SetNormalDamage()
@@ -39,15 +40,21 @@ public class Death : Ability
         }
     }
 
-    public override void UpdateAbility()
+    private void SetOverDamage()
     {
-        if (isActive)
+        if (damager != null)
         {
-            elapsed += Time.deltaTime;
-            if (elapsed > cooldownTime)
-            {
-                SetNormalDamage();
-            }
+            oldDamage = damager.damage;
+            damager.damage = newDamage;
+            isActive = true;
+            elapsedTime = 0;
         }
     }
+
+    public override void Pick(Character picker)
+    {
+        base.Pick(picker);
+        isActive = false;
+    }
+
 }

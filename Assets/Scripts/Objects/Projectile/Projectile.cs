@@ -6,15 +6,20 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] protected float speed;
     [SerializeField] public  float lifeTime;
+    [SerializeField] protected LayerMask targetLayers;
     protected float elapsedTime;
     protected private Vector2 direction;
     protected SpriteRenderer spriteRenderer;
     protected Rigidbody2D body;
+    protected Collider2D coll;
+    protected Animator animator;
 
     private void Awake()
     {
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
         body.isKinematic = true;
     }
 
@@ -23,7 +28,7 @@ public class Projectile : MonoBehaviour
         body.velocity = direction * speed * Time.deltaTime;
 
         if (elapsedTime >= lifeTime)
-            Dismiss();
+            StopAndExplode();
 
         elapsedTime += Time.deltaTime;
     }
@@ -35,10 +40,20 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.isTrigger)
+        if (IsInLayerMask(collision.gameObject.layer, targetLayers))
         {
-            Dismiss();
-        }
+            if (!collision.isTrigger)
+            {
+                StopAndExplode();
+            }
+        } 
+    }
+
+    protected void StopAndExplode()
+    {
+        coll.enabled = false;
+        speed = 0;
+        animator.SetTrigger("Explode");
     }
 
     public virtual void Inizialize(Vector2 direction, Vector2 position, float speed)
@@ -57,4 +72,14 @@ public class Projectile : MonoBehaviour
         elapsedTime = 0;
         gameObject.SetActive(true);
     }
+
+    protected bool IsInLayerMask(int layer, LayerMask layerMask)
+    {
+        // Converte la LayerMask in un intero bit a bit
+        int layerMaskValue = layerMask.value;
+
+        // Controlla se il bit corrispondente alla layer dell'oggetto è attivo
+        return (layerMaskValue & (1 << layer)) != 0;
+    }
+
 }

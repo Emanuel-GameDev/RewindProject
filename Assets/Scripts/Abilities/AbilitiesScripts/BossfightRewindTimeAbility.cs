@@ -5,29 +5,53 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Ability/BossRewindTime")]
 public class BossfightRewindTimeAbility : Ability
 {
+    [SerializeField] float parryTime;
+    private float elapsedTime = 0;
+    bool started = false;
+    
     public override void Activate1(GameObject parent)
     {
-        PubSub.Instance.Notify(EMessageType.TimeRewindStart, this);
+        Parry();
     }
 
     public override void Activate2(GameObject parent)
     {
-        PubSub.Instance.Notify(EMessageType.TimeRewindStart, this);
+        Parry();
     }
 
     public override void Activate3(GameObject parent)
     {
-        PubSub.Instance.Notify(EMessageType.TimeRewindStart, this);
+        Parry();
     }
 
-    public override void Disactivate1(GameObject gameObject)
+    public override void UpdateAbility()
     {
-        
+        if (isActive)
+        {
+            elapsedTime += Time.deltaTime;
+
+            if (started && elapsedTime > parryTime)
+            {
+                PubSub.Instance.Notify(EMessageType.ParryStop, this);
+                started = false;
+            }
+
+            if (elapsedTime > (cooldownTime + parryTime))
+            {
+                isActive = false;
+            }
+        }
     }
 
-    public override void Disactivate2(GameObject gameObject)
+    private void Parry()
     {
-        
+        if (!isActive)
+        {
+            PubSub.Instance.Notify(EMessageType.ParryStart, this);
+            isActive = true;
+            started = true;
+            elapsedTime = 0;
+        }
     }
 
 }

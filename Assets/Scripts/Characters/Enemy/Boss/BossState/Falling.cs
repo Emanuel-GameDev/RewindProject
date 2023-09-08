@@ -38,6 +38,7 @@ public class Falling : State
         fallingDuration = bossBheaviour.GetFallingDuration();
         SetArrivePoint();
         startPosition = bossBheaviour.GetBossBody().transform.position;
+        bossBheaviour.StunTrigger();
     }
 
     private void SetArrivePoint()

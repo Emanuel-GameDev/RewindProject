@@ -16,7 +16,8 @@ public enum eBossState
     SphereAttack,
     UroboroAttack,
     RewindableAttack,
-    ChangeGroundAttack
+    ChangeGroundAttack,
+    Dead
 }
 
 public class BossBheaviour : MonoBehaviour
@@ -104,18 +105,29 @@ public class BossBheaviour : MonoBehaviour
     [Tooltip("Imposta quanto è probabile che esegua nuovamente la stessa mossa di seguito in relazione alle altre (1 stessa probabilità delle altre, 0 nessuna probabilità)")]
     [Range(0f, 1f)]
     [SerializeField] float repeatPercentage = 0.5f;
+    [Tooltip("Imposta ogni quanti attacchi non Rewindabili deve per forza essere fatto un attacco Rewindabile")]
+    [SerializeField] int maxConsecutiveNonRewindableAttacks = 5;
 
 
     private StateMachine<eBossState> stateMachine;
     private List<BossPosition> positions;
     private BossPosition currentPosition;
+    private Animator animator;
     private int hitCounter;
     private int rewindHitCounter;
     private bool changeGroundStarted;
     private eBossState currentState;
     private eBossState nextState;
     private float changeGroundCountdown;
+    private int nonRewindableAttackCount;
 
+    public const string SPAWN = "Spawn";
+    public const string NOIA = "Noia";
+    public const string EXIT_NOIA = "ExitNoia";
+    public const string REWIND_HIT = "RewindHit";
+    public const string STUN = "Stun";
+    public const string DEATH = "Death";
+    public const string RECOVER = "Recover";
 
     void Start()
     {
@@ -130,13 +142,13 @@ public class BossBheaviour : MonoBehaviour
         if(changeGroundCountdown > 0) changeGroundCountdown -= Time.deltaTime;
 
         //Temporaneo per test
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            HitCounterUpdater(1);
+            PubSub.Instance.Notify(EMessageType.SpawnBoss, true);
         }
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            RewindHit(1);
+            PubSub.Instance.Notify(EMessageType.BossfightStart, true);
         }
     }
 
@@ -152,17 +164,20 @@ public class BossBheaviour : MonoBehaviour
         stateMachine.RegisterState(eBossState.UroboroAttack, new UroboroAttack(this));
         stateMachine.RegisterState(eBossState.RewindableAttack, new RewindableAttack(this));
         stateMachine.RegisterState(eBossState.ChangeGroundAttack, new ChangeGroundAttack(this));
+        stateMachine.RegisterState(eBossState.Dead, new Dead(this));
         stateMachine.SetState(eBossState.Start);
     }
 
     private void InitialSetup()
     {
         positions = GetComponentsInChildren<BossPosition>().ToList();
+        animator = GetComponent<Animator>();
         currentPosition = startPosition;
         transform.position = startPosition.transform.position;
         hitCounter = 0;
         changeGroundStarted = false;
         changeGroundCountdown = 0;
+        NonRewindableCountReset();
         if(rewindableAuraTrigger == null) rewindableAuraTrigger = GetComponentInChildren<RewindableTriggerAura>().gameObject;
     }
 
@@ -173,15 +188,21 @@ public class BossBheaviour : MonoBehaviour
     {
         eBossState nextState = eBossState.Start;
 
-        if (changeGroundStarted && changeGroundCountdown <= 0)
-            nextState = eBossState.ChangeGroundAttack;
-        else if (Enum.Equals(currentState, eBossState.Falling))
+        if (Enum.Equals(currentState, eBossState.Falling))
         {
             nextState = eBossState.Stunned;
         }
         else if (Enum.Equals(currentState, eBossState.Stunned))
         {
             nextState = eBossState.Moving;
+        }
+        else if(changeGroundStarted && changeGroundCountdown <= 0)
+        {
+            nextState = eBossState.ChangeGroundAttack;
+        }
+        else if(nonRewindableAttackCount > maxConsecutiveNonRewindableAttacks)
+        {
+            nextState = eBossState.RewindableAttack;
         }
         else
         {
@@ -263,7 +284,7 @@ public class BossBheaviour : MonoBehaviour
     public void HitCounterUpdater(int n)
     {
         hitCounter += n;
-        if(hitCounter >= necessaryHitForChangeGround && !changeGroundStarted)
+        if(!changeGroundStarted && hitCounter >= necessaryHitForChangeGround)
         {
             changeGroundStarted = true;
         }
@@ -271,6 +292,7 @@ public class BossBheaviour : MonoBehaviour
 
     public void RewindHit(int n)
     {
+        RewindHitTrigger();
         rewindHitCounter += n;
         if(rewindHitCounter >= necessaryHitForStunning)
         {
@@ -301,6 +323,67 @@ public class BossBheaviour : MonoBehaviour
 
         return rewindable;
     }
+
+    public void NonRewindableCountUpdate()
+    {
+        nonRewindableAttackCount++;
+    }
+    public void NonRewindableCountReset()
+    {
+        nonRewindableAttackCount = 0;
+    }
+
+    public void OnDeath()
+    {
+        ChangeState(eBossState.Recover);
+        nextState = eBossState.Dead;
+    }
+
+    //ANIMAZIONI
+    //====================================================================================================================================
+    #region Animation
+
+    public void SpawnTrigger()
+    {
+        animator.SetTrigger(SPAWN);
+    }
+
+    public void ExitNoiaTrigger()
+    {
+        animator.SetTrigger(EXIT_NOIA);
+    }
+
+    public void NoiaTrigger()
+    {
+        animator.SetTrigger(NOIA);
+    }
+
+    public void StunTrigger()
+    {
+        animator.SetTrigger(STUN);
+    }
+
+    public void DeathTrigger()
+    {
+        animator.SetTrigger(DEATH);
+    }
+
+    public void RewindHitTrigger()
+    {
+        animator.SetTrigger(REWIND_HIT);
+    }
+
+    public void RecoverTrigger()
+    {
+        animator.SetTrigger(RECOVER);
+    }
+
+    public void StartFight()
+    {
+        ChangeState();
+    }
+
+    #endregion
 
     //FUNZIONI GET
     //====================================================================================================================================
@@ -364,6 +447,10 @@ public class BossBheaviour : MonoBehaviour
         return null;
     }
 
+    public Animator GetAnimator()
+    {
+        return animator;
+    }
     #endregion
 
     #region Proiettili

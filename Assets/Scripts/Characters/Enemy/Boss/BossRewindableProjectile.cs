@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class BossRewindableProjectile : BossProjectile
 {
@@ -89,21 +90,28 @@ public class BossRewindableProjectile : BossProjectile
         if (collision.GetComponent<RewindableTriggerAura>())
         {
             canBeRewinded = true;
-        }
-        if (!collision.isTrigger)
-        {
-            Dismiss();
-        }
-        else
-        {
-            if (collision.gameObject.GetComponentInParent<BossBheaviour>() && isRewinding)
+            if (collision.GetComponent<RewindableTriggerAura>().GetParryIsActive())
             {
-                collision.gameObject.GetComponentInParent<BossBheaviour>().HitCounterUpdater(1);
-                Dismiss();
+                StartRewind();
             }
         }
-    }
+        if (IsInLayerMask(collision.gameObject.layer, targetLayers))
+        {
+            if (!collision.isTrigger)
+            {
+                StopAndExplode();
+            }
+            else
+            {
+                if (collision.gameObject.GetComponentInParent<BossBheaviour>() && isRewinding)
+                {
+                    collision.gameObject.GetComponentInParent<BossBheaviour>().RewindHit(1);
+                    StopAndExplode();
+                }
+            }
+        }
 
+    }
 
     public override void Dismiss()
     {

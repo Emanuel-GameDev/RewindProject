@@ -142,8 +142,8 @@ MonoBehaviour:
         Of View Angle","IsShared":true,"SinglemValue":90},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"View
         Distance","IsShared":true,"SinglemValue":30},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Walk
         Speed","IsShared":true,"SinglemValue":2.5},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Run
-        Speed","IsShared":true,"SinglemValue":5},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Stop
-        Distance","IsShared":true,"SinglemValue":2},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Time
+        Speed","IsShared":true,"SinglemValue":6},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Stop
+        Distance","IsShared":true,"SinglemValue":3.5},{"Type":"BehaviorDesigner.Runtime.SharedFloat","Name":"Time
         Between Attacks","IsShared":true,"SinglemValue":2},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Have
         See Target","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"Is
         Dead","IsShared":true,"BooleanmValue":false},{"Type":"BehaviorDesigner.Runtime.SharedGameObject","Name":"Self","IsShared":true,"GameObjectmValue":0},{"Type":"BehaviorDesigner.Runtime.SharedBool","Name":"CanSeek","IsShared":true,"BooleanmValue":false}]}'
@@ -197,11 +197,11 @@ MonoBehaviour:
   target: {fileID: 0}
   viewRotation: 90
   fieldOfView: 90
-  viewDistance: 15
+  viewDistance: 30
   walkSpeed: 2.5
   runSpeed: 5
-  stopDistance: 3
-  timeBetweenAttacks: 2
+  stopDistance: 3.5
+  timeBetweenAttacks: 1
   pauseDurationAfterHit: 5
   pathPoints: []
 --- !u!114 &1088861260380951062
@@ -218,6 +218,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   healthBar: {fileID: 0}
+  knockable: 0
+  invincible: 0
+  invincibilitySeconds: 0.2
   OnDie:
     m_PersistentCalls:
       m_Calls:
@@ -428,6 +431,7 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  knockbackForce: 1
 --- !u!61 &1088861261306170316
 BoxCollider2D:
   m_ObjectHideFlags: 0
