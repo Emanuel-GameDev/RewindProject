@@ -11,21 +11,24 @@ public class Death : Ability
     [SerializeField] int newDamage;
     private int oldDamage;
     private Damager damager;
-    private bool deathIsActive = false;
+    private float elapsedTime = 0;
     
     public override void Activate1(GameObject parent)
     {
         damager = parent.GetComponentInChildren<Damager>();
-        if(!deathIsActive) StartOverDamage();
-    }
-    public override void Disactivate1(GameObject gameObject)
-    {
-        
+        if(!isActive) SetOverDamage();
     }
 
-    private void StartOverDamage()
+    public override void UpdateAbility()
     {
-
+        if (isActive)
+        {
+            elapsedTime += Time.deltaTime;
+            if(elapsedTime > cooldownTime)
+            {
+                SetNormalDamage();
+            }
+        }
     }
 
     private void SetNormalDamage()
@@ -33,7 +36,7 @@ public class Death : Ability
         if (damager != null)
         {
             damager.damage = oldDamage;
-            deathIsActive = false;
+            isActive = false;
         }
     }
 
@@ -43,8 +46,15 @@ public class Death : Ability
         {
             oldDamage = damager.damage;
             damager.damage = newDamage;
-            deathIsActive = true;
+            isActive = true;
+            elapsedTime = 0;
         }
+    }
+
+    public override void Pick(Character picker)
+    {
+        base.Pick(picker);
+        isActive = false;
     }
 
 }

@@ -82,10 +82,18 @@ public class AbilityManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (Ability ability in _abilities)
+        List<Ability> abilities;
+        if (GameManager.Instance.debug)
+            abilities = DebugAbilities;
+        else
+            abilities = _abilities;
+        
+        foreach (Ability ability in abilities)
         {
             if (ability.global)
+            {
                 ability.UpdateAbility();
+            } 
         }
     }
 

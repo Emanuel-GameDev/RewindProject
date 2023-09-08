@@ -16,7 +16,8 @@ public enum eBossState
     SphereAttack,
     UroboroAttack,
     RewindableAttack,
-    ChangeGroundAttack
+    ChangeGroundAttack,
+    Dead
 }
 
 public class BossBheaviour : MonoBehaviour
@@ -163,6 +164,7 @@ public class BossBheaviour : MonoBehaviour
         stateMachine.RegisterState(eBossState.UroboroAttack, new UroboroAttack(this));
         stateMachine.RegisterState(eBossState.RewindableAttack, new RewindableAttack(this));
         stateMachine.RegisterState(eBossState.ChangeGroundAttack, new ChangeGroundAttack(this));
+        stateMachine.RegisterState(eBossState.Dead, new Dead(this));
         stateMachine.SetState(eBossState.Start);
     }
 
@@ -329,6 +331,12 @@ public class BossBheaviour : MonoBehaviour
     public void NonRewindableCountReset()
     {
         nonRewindableAttackCount = 0;
+    }
+
+    public void OnDeath()
+    {
+        ChangeState(eBossState.Recover);
+        nextState = eBossState.Dead;
     }
 
     //ANIMAZIONI
