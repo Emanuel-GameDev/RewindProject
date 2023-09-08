@@ -35,8 +35,9 @@ public class Projectile : MonoBehaviour
 
     public virtual void Dismiss()
     {
-        animator.SetTrigger("Spawn");
-        ProjectilePool.Instance.DismissProjectile(this);
+        //animator.SetTrigger("Spawn");
+        //ProjectilePool.Instance.DismissProjectile(this);
+        Destroy(this.gameObject);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
