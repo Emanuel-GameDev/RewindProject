@@ -21,6 +21,7 @@ public class UroboroAttack : State
         elapsed = 0;
         spawned = false;
         timeToChangeState = bossBheaviour.GetUroboroTimeChange();
+        bossBheaviour.NonRewindableCountUpdate();
     }
 
     public override void Update()
