@@ -36,6 +36,9 @@ public class MenuManager : MonoBehaviour
 
     private void OpenPreviousTab(InputAction.CallbackContext obj)
     {
+        if (GetComponentsInChildren<Menu>().Length < 1)
+            return;
+
         Menu currentMenu = GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1];
 
         if (currentMenu.previousTab == null)
@@ -50,6 +53,9 @@ public class MenuManager : MonoBehaviour
 
     private void OpenNextTab(InputAction.CallbackContext obj)
     {
+        if (GetComponentsInChildren<Menu>().Length < 1)
+            return;
+
         Menu currentMenu = GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1];
 
         if (currentMenu.nextTab == null)
