@@ -35,6 +35,7 @@ public class Projectile : MonoBehaviour
 
     public virtual void Dismiss()
     {
+        animator.SetTrigger("Spawn");
         ProjectilePool.Instance.DismissProjectile(this);
     }
 
@@ -71,6 +72,7 @@ public class Projectile : MonoBehaviour
         transform.position = position;
         elapsedTime = 0;
         gameObject.SetActive(true);
+        animator.SetTrigger("Spawn");
     }
 
     protected bool IsInLayerMask(int layer, LayerMask layerMask)
