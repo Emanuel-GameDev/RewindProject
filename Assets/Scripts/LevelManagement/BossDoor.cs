@@ -30,6 +30,7 @@ public class BossDoor : MonoBehaviour
     private void OpenDoor()
     {
         GetComponent<PlayerTriggerCause>().enabled = true;
+        GetComponentInChildren<Animator>().enabled = true;
         GetComponentInChildren<SpriteRenderer>().sprite = doorOpenSprite;
         GetComponentInChildren<Light2D>().gameObject.SetActive(true);
         doorOpen = true;
@@ -38,7 +39,7 @@ public class BossDoor : MonoBehaviour
     private void CloseDoor()
     {
         GetComponent<PlayerTriggerCause>().enabled = false;
-
+        GetComponentInChildren<Animator>().enabled = false;
         GetComponentInChildren<SpriteRenderer>().sprite = doorClosedSprite;
         GetComponentInChildren<Light2D>().gameObject.SetActive(false);
         doorOpen = false;
