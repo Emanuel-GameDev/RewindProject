@@ -33,6 +33,7 @@ public class AbilityMenu : MonoBehaviour
     [HideInInspector] public TextMeshProUGUI textName;
     [HideInInspector] public TextMeshProUGUI textDescription;
     [HideInInspector] public TextMeshProUGUI textTutorial;
+    [HideInInspector] public Image abSmallIcon;
 
     private List<AbilityMenuSlot> loadedSlots;
     private List<AbilityMenuSlot> passiveLoadedSlots;
@@ -43,6 +44,7 @@ public class AbilityMenu : MonoBehaviour
         textName = infoPanel.GetChild(0).GetComponent<TextMeshProUGUI>();
         textDescription = infoPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
         textTutorial = infoPanel.GetChild(2).GetComponent<TextMeshProUGUI>();
+        abSmallIcon = infoPanel.GetChild(3).GetComponent<Image>();
     }
 
     private void LoadCards()
@@ -156,6 +158,7 @@ public class AbilityMenu : MonoBehaviour
         abilityMenuSlot.textDescription = ability.description;
         abilityMenuSlot.textTutorial = ability.tutorial;
         abilityMenuSlot.animDuration = animDuration;
+        abilityMenuSlot.abSmallIcon = ability.smallIcon;
     }
 
     #endregion
