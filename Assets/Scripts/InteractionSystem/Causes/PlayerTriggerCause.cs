@@ -66,7 +66,7 @@ public class PlayerTriggerCause : Cause
 
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetLayer.value, 2f)))
         {
-            if (collision.gameObject.GetComponent<PlayerController>())
+            if (collision.gameObject.GetComponent<PlayerController>() && buttonInteraction)
             {
                 if(collision.gameObject.GetComponent<PlayerController>().buttonReminder)
                 collision.gameObject.GetComponent<PlayerController>().buttonReminder.SetActive(true);
