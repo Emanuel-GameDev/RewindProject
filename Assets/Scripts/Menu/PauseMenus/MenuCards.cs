@@ -38,7 +38,7 @@ public class MenuCards : Menu
         }
 
         if(GetComponentsInChildren<MenuCardButton>().Length>0)
-            PlayerController.instance.inputs.Menu.MenuInteractionOne.started += MenuInteractionOne_performed;
+            PlayerController.instance.inputs.Menu.MenuInteractionOne.performed += MenuInteractionOne_performed;
        
 
         if (buttons.Length > 0 && eventSystemDefaultButton == null)
@@ -133,7 +133,8 @@ public class MenuCards : Menu
 
     public void OnDisable()
     {
-        PlayerController.instance.inputs.Menu.MenuInteractionOne.started -= MenuInteractionOne_performed;
+        PlayerController.instance.inputs.Menu.MenuInteractionOne.performed -= MenuInteractionOne_performed;
+        PlayerController.instance.inputs.Menu.MenuInteractionTwo.performed -= MenuInteractionTwo_started;
     }
 
 
