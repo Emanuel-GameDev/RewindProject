@@ -22,7 +22,7 @@ public class Recover : State
         if (elapsed > revcoverTime)
         {
             bossBheaviour.SetCurrentPosition(recoverPosition);
-            bossBheaviour.ChangeState(eBossState.Start);
+            bossBheaviour.ChangeState();
         }
         else
         {
@@ -38,6 +38,7 @@ public class Recover : State
         startPosition = bossBheaviour.GetBossBody().transform.position;
         SetRecoverPosition();
         endPosition = recoverPosition.transform.position;
+        bossBheaviour.RecoverTrigger();
     }
 
     private void SetRecoverPosition()

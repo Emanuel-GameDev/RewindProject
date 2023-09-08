@@ -16,7 +16,9 @@ public enum EMessageType
     DeathCardActivated,
     DeathCardDisactivated,
     SpawnBoss,
-    BossfightStart
+    BossfightStart,
+    ParryStart,
+    ParryStop
 }
 
 public enum EAbilityState

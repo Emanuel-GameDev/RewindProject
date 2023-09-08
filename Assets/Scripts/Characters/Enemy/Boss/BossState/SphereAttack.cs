@@ -31,6 +31,7 @@ public class SphereAttack : State
         readyToShoot = false;
         shooting = false;
         directionToShoot = Vector2.zero;
+        bossBheaviour.NonRewindableCountUpdate();
     }
 
     public override void Update()

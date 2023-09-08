@@ -14,7 +14,7 @@ public abstract class Ability : ScriptableObject
     public float cooldownTime;
     public bool passive = false;
     public Sprite smallIcon;
-
+    public bool global;
 
     // Different from canActivate cause that bool include the cooldown, this one only checks the activation time
     [HideInInspector] public bool isActive = false;

@@ -64,7 +64,7 @@ public class Damageable : MonoBehaviour
         ChangeHealth(healthToHeal);
     }
 
-    public void TakeDamage(int healthToRemove)
+    public virtual void TakeDamage(int healthToRemove)
     {
         if (!invincible)
         {
