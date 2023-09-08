@@ -33,7 +33,7 @@ public class AbilityHolder : Character
 
     private void Update()
     {
-        if (activeAbility != null)
+        if (activeAbility != null && !activeAbility.global)
             activeAbility.UpdateAbility();
     }
 
