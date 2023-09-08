@@ -33,7 +33,7 @@ public class Menu : MonoBehaviour
         DataSerializer.TryLoad("PAUSEMENUNOT" + gameObject.name, out notificationInThisMenu);
     }
 
-    private void Start()
+    public virtual void Start()
     {
         gameObject.SetActive(false);
     }
