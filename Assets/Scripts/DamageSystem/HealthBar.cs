@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] GameObject healthIconPrefab;
+    [SerializeField] protected GameObject healthIconPrefab;
 
     List<GameObject> icons;
 

@@ -109,6 +109,7 @@ public class BossBheaviour : MonoBehaviour
     private StateMachine<eBossState> stateMachine;
     private List<BossPosition> positions;
     private BossPosition currentPosition;
+    private Animator animator;
     private int hitCounter;
     private int rewindHitCounter;
     private bool changeGroundStarted;
@@ -116,6 +117,12 @@ public class BossBheaviour : MonoBehaviour
     private eBossState nextState;
     private float changeGroundCountdown;
 
+    public const string SPAWN = "Spawn";
+    public const string NOIA = "Noia";
+    public const string EXIT_NOIA = "ExitNoia";
+    public const string REWIND_HIT = "RewindHit";
+    public const string STUN = "Stun";
+    public const string DEATH = "Death";
 
     void Start()
     {
@@ -138,6 +145,18 @@ public class BossBheaviour : MonoBehaviour
         {
             RewindHit(1);
         }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GetComponentInChildren<Damageable>().TakeDamage(1); 
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            PubSub.Instance.Notify(EMessageType.SpawnBoss, true);
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            PubSub.Instance.Notify(EMessageType.BossfightStart, true);
+        }
     }
 
     private void StateMachineSetup()
@@ -158,6 +177,7 @@ public class BossBheaviour : MonoBehaviour
     private void InitialSetup()
     {
         positions = GetComponentsInChildren<BossPosition>().ToList();
+        animator = GetComponent<Animator>();
         currentPosition = startPosition;
         transform.position = startPosition.transform.position;
         hitCounter = 0;
@@ -302,6 +322,31 @@ public class BossBheaviour : MonoBehaviour
         return rewindable;
     }
 
+    #region Animation
+   
+    public void SpawnTrigger()
+    {
+        animator.SetTrigger(SPAWN);
+    }
+
+    public void ExitNoiaTrigger()
+    {
+        animator.SetTrigger(EXIT_NOIA);
+    }
+
+    public void StunTrigger()
+    {
+        animator.SetTrigger(STUN);
+    }
+
+    public void StartFight()
+    {
+        ChangeState();
+    }
+
+    #endregion
+
+
     //FUNZIONI GET
     //====================================================================================================================================
     #region Funzioni Get
@@ -364,6 +409,10 @@ public class BossBheaviour : MonoBehaviour
         return null;
     }
 
+    public Animator GetAnimator()
+    {
+        return animator;
+    }
     #endregion
 
     #region Proiettili

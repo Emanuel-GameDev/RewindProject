@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Start : State
 {
     BossBheaviour bossBheaviour;
-    float timeToWait = 5f;
-    float elapsed;
-
 
     public Start(BossBheaviour bossBheaviour)
     {
@@ -16,17 +14,30 @@ public class Start : State
 
     public override void Update()
     {
-        elapsed += Time.deltaTime;
-        if(elapsed > timeToWait)
-        {
-            bossBheaviour.ChangeState();
-        }
     }
 
     public override void Enter()
     {
         Debug.Log(this.GetType().Name);
-        elapsed = 0;
+        PubSub.Instance.RegisterFunction(EMessageType.SpawnBoss, Spawn);
+        PubSub.Instance.RegisterFunction(EMessageType.BossfightStart, StartCombat);
+    }
+
+    private void Spawn (object obj)
+    {
+        bossBheaviour.SpawnTrigger();
+    }
+
+    private void StartCombat (object obj)
+    {
+        bossBheaviour.ExitNoiaTrigger();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        PubSub.Instance.UnregisterFunction(EMessageType.SpawnBoss, Spawn);
+        PubSub.Instance.UnregisterFunction(EMessageType.BossfightStart, StartCombat);
     }
 
 }
