@@ -8,8 +8,12 @@ public class Damageable : MonoBehaviour
     public int maxHealth = 1;
 
     [SerializeField] public HealthBar healthBar;
+    [SerializeField] public bool knockable = false;
 
     int _health;
+
+    [HideInInspector] public bool invincible = false;
+    [SerializeField] public float invincibilitySeconds = 0.2f;
 
     public int Health 
     {
@@ -41,6 +45,7 @@ public class Damageable : MonoBehaviour
     private void Start()
     {
         SetMaxHealth();
+        invincible = false;
     }
 
     public void SetMaxHealth()
@@ -61,9 +66,14 @@ public class Damageable : MonoBehaviour
 
     public void TakeDamage(int healthToRemove)
     {
+        if (!invincible)
+        {
+            ChangeHealth(-healthToRemove);
+            if(gameObject.activeSelf)
+                StartCoroutine(InvincibilitySecons(invincibilitySeconds));
+        }
         
-        ChangeHealth(-healthToRemove);
-        
+
     }
 
     public void Die()
@@ -73,6 +83,13 @@ public class Damageable : MonoBehaviour
     public void TakeHit()
     {
         OnHit?.Invoke();
+    }
+
+    IEnumerator InvincibilitySecons(float seconds)
+    {
+        invincible = true;
+        yield return new WaitForSeconds(seconds);
+        invincible = false;
     }
 
 }

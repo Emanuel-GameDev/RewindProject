@@ -113,13 +113,15 @@ public class PlayerController : Character
         inputs.Player.Jump.performed += JumpInput;
 
         inputs.Player.Dash.performed += TryDash;
+
+        instance = this;
     }
 
    
 
     private void Awake()
     {
-        instance = this;
+        
         animator = GetComponent<Animator>();
         bodySprite = GetComponentInChildren<SpriteRenderer>();
         trail = GetComponent<TrailRenderer>();
@@ -242,7 +244,7 @@ public class PlayerController : Character
     {
         horizontalInput = inputs.Player.Walk.ReadValue<float>();
 
-        if (horizontalInput != 0 && !animator.GetBool("Attacking"))
+        if (horizontalInput != 0 && !animator.GetBool("Attacking") && canMove)
         {
                 //calcolo movimento
                 horizontalMovement += horizontalInput * acceleration * Time.deltaTime;
@@ -624,7 +626,18 @@ public class PlayerController : Character
     }
     public void ReloadLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LevelManager.instance.ReloadLevel();
+    }
+
+    public void TakeHit()
+    {
+        animator.SetTrigger("Hitted");
+        canMove = false;
+    }
+    public bool canMove = true;
+    public void EnableAllInputs()
+    {
+        canMove = true;
     }
 
     public void EnableInputs()
