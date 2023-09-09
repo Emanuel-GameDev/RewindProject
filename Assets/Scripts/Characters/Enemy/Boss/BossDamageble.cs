@@ -5,11 +5,11 @@ using UnityEngine;
 public class BossDamageble : Damageable
 {
     [SerializeField] int healthTreshold = 50;
-    public override void TakeDamage(int healthToRemove)
+    public override void TakeDamage(int healthToRemove, Damager damager)
     {
         if(healthToRemove > healthTreshold)
         {
-            base.TakeDamage(1);
+            base.TakeDamage(1, damager);
         }
     }
 }

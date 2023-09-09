@@ -48,7 +48,7 @@ public class PlayerFallingState : State
                     if (player.GetComponent<Damageable>().Health > 1)
                         LevelManager.instance.FastRespawn();
 
-                    player.GetComponent<Damageable>().TakeDamage(1);
+                    player.GetComponent<Damageable>().TakeDamage(1, new Damager());
                 }
             }
 
