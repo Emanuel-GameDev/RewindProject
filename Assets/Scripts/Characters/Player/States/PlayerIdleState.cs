@@ -22,7 +22,6 @@ internal class PlayerIdleState : State
     {
         player.CalculateHorizontalMovement();
         player.CalculateFallSpeed();
-        player.CheckRotation();
         
 
         if (player.isJumping)

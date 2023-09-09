@@ -24,7 +24,6 @@ public class PlayerFallingState : State
         player.CalculateFallSpeed();
         player.CheckFriction();
 
-
         if (player.rBody.velocity.y == 0)
         {
             player.isFalling = false;
@@ -60,7 +59,7 @@ public class PlayerFallingState : State
     public override void Exit()
     {
         base.Exit();
-        player.animator.SetBool("Falling", player.isFalling);
+        player.animator.SetBool("Falling",false);
         player.fallStartPoint = 0;
     }
 }
