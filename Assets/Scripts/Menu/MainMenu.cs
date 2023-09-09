@@ -10,6 +10,7 @@ public class MainMenu : Menu
     public override void Start()
     {
         gameObject.SetActive(true);
+
         if (DataSerializer.HasKey("HasSaving"))
             continueButton.gameObject.SetActive(true);
         else
