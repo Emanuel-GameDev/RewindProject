@@ -117,7 +117,7 @@ public class EnemyOne : BaseEnemy
         attack.SetActive(true);
         animator.SetBool(ATTACK, true);
         tree.SetVariableValue(IS_DEAD, true);
-        audioGenerator.PlaySound(hitSound);
+        audioGenerator.PlaySound(attackSound);
     }
 
     public void EndAttack()
