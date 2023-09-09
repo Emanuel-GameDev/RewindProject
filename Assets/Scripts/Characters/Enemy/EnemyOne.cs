@@ -25,11 +25,17 @@ public class EnemyOne : BaseEnemy
     [Tooltip("Imposta i punti della ronda del nemico")]
     [SerializeField] GameObject[] pathPoints;
 
+    [Header("Sounds")]
+    [SerializeField] AudioClip hitSound;
+    [SerializeField] AudioClip roarSound;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip attackSound;
 
     GameObject attack;
     protected NavMeshAgent navMeshAgent;
     private bool hitPause = false;
     private float elapsedTime = 0;
+    private MainCharacter_SoundsGenerator audioGenerator;
 
     //Nomi delle variabili nel behaviour tree
     private const string VIEW_ROTATION = "View Rotation";
@@ -78,6 +84,10 @@ public class EnemyOne : BaseEnemy
     private void ManageAnimation()
     {
         animator.SetFloat(SPEED, navMeshAgent.velocity.magnitude);
+        if (navMeshAgent.velocity.magnitude > 2.6)
+        {
+            audioGenerator.PlaySound(roarSound);
+        }
     }
 
     private void FlipCharacter()
@@ -105,6 +115,7 @@ public class EnemyOne : BaseEnemy
         attack.SetActive(true);
         animator.SetBool(ATTACK, true);
         tree.SetVariableValue(IS_DEAD, true);
+        audioGenerator.PlaySound(hitSound);
     }
 
     public void EndAttack()
@@ -126,6 +137,7 @@ public class EnemyOne : BaseEnemy
         tree.SetVariableValue(PATH, pathPoints.ToList<GameObject>());
 
         attack = GetComponentInChildren<Damager>().gameObject;
+        audioGenerator = GetComponentInChildren<MainCharacter_SoundsGenerator>();
         hitPause = false;
         EndAttack();
     }
@@ -154,6 +166,13 @@ public class EnemyOne : BaseEnemy
         base.OnDie();
         EndAttack();
         hitPause = false;
+        audioGenerator.PlaySound(deathSound);
+    }
+
+    public override void OnHit()
+    {
+        base.OnHit();
+        audioGenerator.PlaySound(hitSound);
     }
 
 }
