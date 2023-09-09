@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,7 @@ public class Damageable : MonoBehaviour
 
         set
         {
+            int oldHealth= _health;
             _health = Mathf.Clamp(value, 0, maxHealth);
             healthBar?.UpdateHealthBar(_health);
 
@@ -32,16 +34,25 @@ public class Damageable : MonoBehaviour
                 //da rivedere quando ci saranno le animazioni
                 Die();
             }
-            else
+            else if(oldHealth > _health)
             {
                 TakeHit();
+            }
+            else
+            {
+                TakeHeal();
             }
         }
     }
 
+    private void TakeHeal()
+    {
+        OnHeal?.Invoke();
+    }
 
     [SerializeField] UnityEvent OnDie;
     [SerializeField] UnityEvent OnHit;
+    [SerializeField] UnityEvent OnHeal;
 
 
     private void Start()
@@ -70,10 +81,10 @@ public class Damageable : MonoBehaviour
     {
         if (!invincible)
         {
+            lastDamager = damager;
             ChangeHealth(-healthToRemove);
             if(gameObject.activeSelf)
                 StartCoroutine(InvincibilitySecons(invincibilitySeconds));
-            lastDamager = damager;
         }
     }
 
