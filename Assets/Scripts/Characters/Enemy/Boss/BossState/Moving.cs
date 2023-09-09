@@ -23,6 +23,7 @@ public class Moving : State
         startPosition = bossBheaviour.GetCurrentPosition().transform.position;
         endPosition = NextPosition();
         elapsedTime = 0f;
+        bossBheaviour.PlayCasualSound();
     }
 
     private Vector3 NextPosition()

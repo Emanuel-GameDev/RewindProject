@@ -77,7 +77,7 @@ public class RewindableAttack : State
         spawnPosition.y += bossBheaviour.GetCurrentPosition().GetVerticalPosition() == eVerticalPosition.Top ? - offset : offset;
         rewindable = bossBheaviour.GenerateRewindable(spawnPosition);
         readyToShoot = true;
-
+        bossBheaviour.PlaySound(bossBheaviour.GetProjectileSound());
         elapsed = 0;
     }
 
