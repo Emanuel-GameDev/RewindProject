@@ -10,6 +10,9 @@ public class Tower : MonoBehaviour
     private LayerMask collisionMask;
     private SummonTower parent;
 
+    // DEBUG
+    private Vector2 debugPos;
+    private float debugRad;
 
     private void Start()
     {
@@ -24,12 +27,26 @@ public class Tower : MonoBehaviour
         collisionMask = mask;
     }
 
-    public bool CanBeActivated()
+    public bool CanBeActivated(Vector3 pos, float radius, LayerMask mask)
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
             return false;
 
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(pos, radius, mask);
+        debugPos = pos;
+        debugRad = radius;
+
+        // Verifica se ci sono colliders nella sfera
+        if (colliders.Length > 0)
+            return false;
+
         return true;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(debugPos, debugRad);
     }
 
     public void Activate(SummonTower activator, Vector2 pos, bool mirrored)

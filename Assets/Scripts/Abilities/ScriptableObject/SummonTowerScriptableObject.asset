@@ -19,10 +19,15 @@ MonoBehaviour:
   cooldownTime: 0
   passive: 0
   smallIcon: {fileID: 21300000, guid: 721a6dadd2c63964abde46b286269a7d, type: 3}
+  global: 0
   isActive: 0
   towerPrefab: {fileID: 7463475878522753492, guid: e5cdd7076c67d9f4a8ceef81691252c4, type: 3}
-  summonOffset: {x: 2, y: -1}
-  cooldown: 3
+  summonOffset: {x: 2.26, y: -1}
+  summonSphereRadius: 1.22
+  summonMask:
+    serializedVersion: 2
+    m_Bits: 256
+  cooldown: 1
   hp: 1
   collisionMask:
     serializedVersion: 2

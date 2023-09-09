@@ -6,6 +6,9 @@ public class SummonTower : Ability
 {
     [SerializeField] private GameObject towerPrefab;
     [SerializeField] private Vector2 summonOffset;
+    [Tooltip("Radius of the sphere generated to check if summon pos is inside other objects")]
+    [SerializeField] private float summonSphereRadius;
+    [SerializeField] private LayerMask summonMask;
     [SerializeField] private float cooldown;
 
     [Header("TOWER DATA")]
@@ -42,8 +45,6 @@ public class SummonTower : Ability
         if (!canActivate || currentTower == null || active) return;
 
         PlayerController player = parent.GetComponent<PlayerController>();
-
-        if (!player.grounded || !currentTower.CanBeActivated()) return;
         
         Vector2 summonPos;
 
@@ -51,6 +52,8 @@ public class SummonTower : Ability
             summonPos = new Vector2(player.transform.position.x + summonOffset.x, player.transform.position.y + summonOffset.y);
         else
             summonPos = new Vector2(player.transform.position.x - summonOffset.x, player.transform.position.y + summonOffset.y);
+
+        if (!player.grounded || !currentTower.CanBeActivated(summonPos, summonSphereRadius, summonMask)) return;
 
         parent.GetComponent<Animator>().SetTrigger("Defending");
         currentTower.Activate(this, summonPos, facingRight);
@@ -84,6 +87,7 @@ public class SummonTower : Ability
         currentTower.Initialize(hp, collisionMask);
 
         canActivate = true;
+        active = false;
     }
 
     private void CheckHorizontalFacing(InputAction.CallbackContext obj)
