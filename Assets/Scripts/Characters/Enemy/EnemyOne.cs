@@ -35,6 +35,7 @@ public class EnemyOne : BaseEnemy
     protected NavMeshAgent navMeshAgent;
     private bool hitPause = false;
     private float elapsedTime = 0;
+    private bool asRoar;
     private MainCharacter_SoundsGenerator audioGenerator;
 
     //Nomi delle variabili nel behaviour tree
@@ -84,9 +85,10 @@ public class EnemyOne : BaseEnemy
     private void ManageAnimation()
     {
         animator.SetFloat(SPEED, navMeshAgent.velocity.magnitude);
-        if (navMeshAgent.velocity.magnitude > 2.6)
+        if (!asRoar && navMeshAgent.velocity.magnitude > 2.6)
         {
             audioGenerator.PlaySound(roarSound);
+            asRoar = true;
         }
     }
 
@@ -139,6 +141,7 @@ public class EnemyOne : BaseEnemy
         attack = GetComponentInChildren<Damager>().gameObject;
         audioGenerator = GetComponentInChildren<MainCharacter_SoundsGenerator>();
         hitPause = false;
+        asRoar = false;
         EndAttack();
     }
 
