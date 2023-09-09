@@ -659,8 +659,8 @@ public class PlayerController : Character
 
     public void ActivateCardAnimation(object obj)
     {
-        animator.SetTrigger("ActivateCard");
         animator.SetBool("UsingCard", true);
+        animator.SetTrigger("ActivateCard");
     }
 
 

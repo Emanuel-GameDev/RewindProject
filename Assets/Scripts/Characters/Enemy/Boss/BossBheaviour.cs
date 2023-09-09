@@ -27,6 +27,7 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] GameObject bossBody;
     [SerializeField] BossGroundManager groundManager;
     [SerializeField] GameObject targetPlayer;
+    [SerializeField] EndManager endManager;
 
     [Header("Movement")]
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro orizzontalmente")]
@@ -147,15 +148,6 @@ public class BossBheaviour : MonoBehaviour
 
         if (isDead) groundManager.UpdateState();
 
-        //Temporaneo per test
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SpawnBoss();
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            StartDestroy();
-        }
     }
 
 
@@ -354,6 +346,7 @@ public class BossBheaviour : MonoBehaviour
         }
         ChangeState(eBossState.Recover);
         nextState = eBossState.Dead;
+        targetPlayer.GetComponent<PlayerController>().inputs.Disable();
     }
 
     private void ChangeEndGround()
@@ -390,6 +383,12 @@ public class BossBheaviour : MonoBehaviour
     public void StartDestroy()
     {
         PubSub.Instance.Notify(EMessageType.BossfightStart, true);
+    }
+
+    public void StartEnd()
+    {
+        endManager.StartEnd();
+        gameObject.SetActive(false);
     }
 
     //ANIMAZIONI
