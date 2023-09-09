@@ -70,10 +70,11 @@ public class Damageable : MonoBehaviour
     {
         if (!invincible)
         {
+            lastDamager = damager;
             ChangeHealth(-healthToRemove);
             if(gameObject.activeSelf)
                 StartCoroutine(InvincibilitySecons(invincibilitySeconds));
-            lastDamager = damager;
+            
         }
     }
 
