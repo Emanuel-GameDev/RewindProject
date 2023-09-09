@@ -158,7 +158,7 @@ MonoBehaviour:
         byteDataArray: 
       Version: 1.7.4
   gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
+  showBehaviorDesignerGizmo: 0
 --- !u!195 &1088861260380951058
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -204,6 +204,10 @@ MonoBehaviour:
   timeBetweenAttacks: 1
   pauseDurationAfterHit: 5
   pathPoints: []
+  hitSound: {fileID: 8300000, guid: 91f7201865e982940bbc858d92d37c13, type: 3}
+  roarSound: {fileID: 8300000, guid: 30f56a9bfa97d3d4fa4dd6b7a5b72440, type: 3}
+  deathSound: {fileID: 8300000, guid: f40d5896d2bcd1541927e3a38efaa763, type: 3}
+  attackSound: {fileID: 8300000, guid: 17e1bae41a7f2654cb358f0be96898b3, type: 3}
 --- !u!114 &1088861260380951062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,6 +474,7 @@ GameObject:
   - component: {fileID: 1088861261969409434}
   - component: {fileID: 1088861261969409435}
   - component: {fileID: 8931381696462526800}
+  - component: {fileID: 4474549554578952078}
   m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
@@ -599,3 +604,21 @@ MonoBehaviour:
   event3:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4474549554578952078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088861261969409433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70411331c1d709545b1782901de5bd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 0}
+  footStepSounds:
+  - {fileID: 8300000, guid: 2fc8bb2abda6af64697f27feadc52c1b, type: 3}
+  - {fileID: 8300000, guid: 5da9b909a31cbe749baba526b6e18c1c, type: 3}
+  - {fileID: 8300000, guid: 0812c8708e5f52b44af89eccdff6b90f, type: 3}
+  - {fileID: 8300000, guid: 4fa764c3af7462c489ab0f137eb56210, type: 3}

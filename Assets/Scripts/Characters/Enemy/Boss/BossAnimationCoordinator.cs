@@ -7,6 +7,14 @@ public class BossAnimationCoordinator : MonoBehaviour
     [SerializeField] GameObject watchingEye;
     [SerializeField] GameObject animationSprite;
     [SerializeField] SpriteRenderer fogSprite;
+    [SerializeField] Material hitMaterial;
+    [SerializeField] float hitDuration = 0.3f;
+    Material oldMaterial;
+
+    private void Start()
+    {
+        oldMaterial = animationSprite.GetComponent<SpriteRenderer>().material;
+    }
 
     public void SetFogAlpha0()
     {
@@ -39,6 +47,18 @@ public class BossAnimationCoordinator : MonoBehaviour
     public void DisableAnimationSprite() 
     {
         animationSprite.SetActive(false);
+    }
+
+    public void ChangeColor()
+    {
+        StartCoroutine(ChangeColorCoroutine());
+    }
+
+    IEnumerator ChangeColorCoroutine()
+    {
+        animationSprite.GetComponent<SpriteRenderer>().material = hitMaterial;
+        yield return new WaitForSeconds(hitDuration);
+        animationSprite.GetComponent<SpriteRenderer>().material = oldMaterial;
     }
 
 }

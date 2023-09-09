@@ -9,13 +9,17 @@ using UnityEngine;
 public class Death : Ability
 {
     [SerializeField] int newDamage;
+    [SerializeField] Material newMaterial;
+    private Material oldMaterial;
     private int oldDamage;
     private Damager damager;
+    private SpriteRenderer spriteRenderer;
     private float elapsedTime = 0;
     
     public override void Activate1(GameObject parent)
     {
         damager = parent.GetComponentInChildren<Damager>();
+        spriteRenderer = parent.GetComponentInChildren<SpriteRenderer>();
         if(!isActive) SetOverDamage();
     }
 
@@ -35,8 +39,17 @@ public class Death : Ability
     {
         if (damager != null)
         {
+            SetNormalDamageColor();
             damager.damage = oldDamage;
             isActive = false;
+        }
+    }
+
+    private void SetNormalDamageColor()
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.material = oldMaterial;
         }
     }
 
@@ -44,10 +57,20 @@ public class Death : Ability
     {
         if (damager != null)
         {
+            SetOverDamageColor();
             oldDamage = damager.damage;
             damager.damage = newDamage;
             isActive = true;
             elapsedTime = 0;
+        }
+    }
+
+    private void SetOverDamageColor()
+    {
+        if(spriteRenderer != null)
+        {
+            oldMaterial = spriteRenderer.material;
+            spriteRenderer.material = newMaterial;
         }
     }
 
