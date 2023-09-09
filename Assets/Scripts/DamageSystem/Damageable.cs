@@ -15,6 +15,8 @@ public class Damageable : MonoBehaviour
     [HideInInspector] public bool invincible = false;
     [SerializeField] public float invincibilitySeconds = 0.2f;
 
+    private Damager lastDamager;
+
     public int Health 
     {
         get => _health; 
@@ -64,16 +66,15 @@ public class Damageable : MonoBehaviour
         ChangeHealth(healthToHeal);
     }
 
-    public virtual void TakeDamage(int healthToRemove)
+    public virtual void TakeDamage(int healthToRemove, Damager damager)
     {
         if (!invincible)
         {
             ChangeHealth(-healthToRemove);
             if(gameObject.activeSelf)
                 StartCoroutine(InvincibilitySecons(invincibilitySeconds));
+            lastDamager = damager;
         }
-        
-
     }
 
     public void Die()
@@ -90,6 +91,11 @@ public class Damageable : MonoBehaviour
         invincible = true;
         yield return new WaitForSeconds(seconds);
         invincible = false;
+    }
+
+    public Damager GetLastDamager()
+    {
+        return lastDamager;
     }
 
 }

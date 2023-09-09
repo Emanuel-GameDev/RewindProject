@@ -26,7 +26,7 @@ public class Damager : MonoBehaviour
         if (damageable.invincible)
             return;
 
-        damageable.TakeDamage(damage);
+        damageable.TakeDamage(damage, this);
 
         if (damageable.knockable && knockbackForce>0)
             KnockBack(damageable);

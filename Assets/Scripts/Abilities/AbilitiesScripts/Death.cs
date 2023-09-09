@@ -20,7 +20,7 @@ public class Death : Ability
     {
         damager = parent.GetComponentInChildren<Damager>();
         spriteRenderer = parent.GetComponentInChildren<SpriteRenderer>();
-        if(!isActive) SetOverDamage();
+        if(!isActive) SetOverDamage(parent);
     }
 
     public override void UpdateAbility()
@@ -53,7 +53,7 @@ public class Death : Ability
         }
     }
 
-    private void SetOverDamage()
+    private void SetOverDamage(GameObject parent)
     {
         if (damager != null)
         {
@@ -63,6 +63,8 @@ public class Death : Ability
             isActive = true;
             elapsedTime = 0;
         }
+        parent.GetComponent<PlayerController>().ActivateCardAnimation(this);
+        parent.GetComponent<PlayerController>().StartCoroutine(StopAimation(parent));
     }
 
     private void SetOverDamageColor()
@@ -78,6 +80,12 @@ public class Death : Ability
     {
         base.Pick(picker);
         isActive = false;
+    }
+
+    IEnumerator StopAimation(GameObject parent)
+    {
+        yield return new WaitForSeconds(0.01f);
+        parent.GetComponent<PlayerController>().DeactivateCardAnimation(this);
     }
 
 }

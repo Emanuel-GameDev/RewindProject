@@ -11,17 +11,17 @@ public class BossfightRewindTimeAbility : Ability
     
     public override void Activate1(GameObject parent)
     {
-        Parry();
+        Parry(parent);
     }
 
     public override void Activate2(GameObject parent)
     {
-        Parry();
+        Activate1(parent);
     }
 
     public override void Activate3(GameObject parent)
     {
-        Parry();
+        Activate1(parent);
     }
 
     public override void UpdateAbility()
@@ -43,7 +43,7 @@ public class BossfightRewindTimeAbility : Ability
         }
     }
 
-    private void Parry()
+    private void Parry(GameObject parent)
     {
         if (!isActive)
         {
@@ -51,7 +51,15 @@ public class BossfightRewindTimeAbility : Ability
             isActive = true;
             started = true;
             elapsedTime = 0;
+            parent.GetComponent<PlayerController>().ActivateCardAnimation(this);
+            parent.GetComponent<PlayerController>().StartCoroutine(StopAimation(parent));
         }
+    }
+
+    IEnumerator StopAimation(GameObject parent)
+    {
+        yield return new WaitForSeconds(0.01f);
+        parent.GetComponent<PlayerController>().DeactivateCardAnimation(this);
     }
 
 }

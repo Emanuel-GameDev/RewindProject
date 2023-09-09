@@ -7,9 +7,9 @@ public class DamageableParts : Damageable
 {
     private Damageable damageableMaster;
 
-    public new void TakeDamage(int damage)
+    public new void TakeDamage(int damage, Damager damager)
     {
-        damageableMaster.TakeDamage(damage);
+        damageableMaster.TakeDamage(damage, damager);
     }
 
     public new void Heal(int damage)
