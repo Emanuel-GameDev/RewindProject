@@ -115,7 +115,7 @@ public class AbilityMenu : MonoBehaviour
         // Setup child Image for graphics
         GameObject cardImage = new GameObject("CardImage");
         cardImage.transform.SetParent(newCard.transform);
-        cardImage.transform.localPosition = newCard.transform.localPosition;
+        cardImage.transform.localPosition = Vector3.zero;
 
         // Setup size = parent size
         cardImage.AddComponent<RectTransform>();
