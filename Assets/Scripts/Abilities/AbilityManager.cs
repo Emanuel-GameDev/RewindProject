@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class AbilityManager : MonoBehaviour
 {
     [SerializeField] List<Ability> _gameAbilities;
-    [SerializeField] private List<Ability> _abilities;
+    [SerializeField] public List<Ability> _abilities;
 
     [SerializeField] List<string> abilityNameToSave = new List<string>();
 
