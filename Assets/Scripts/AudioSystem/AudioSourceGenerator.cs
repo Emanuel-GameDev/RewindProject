@@ -14,7 +14,7 @@ public class AudioSourceGenerator : MonoBehaviour
         
         source.outputAudioMixerGroup = mixer;
         source.clip = audio;
-
+        source.volume = 0.5f;
         soundObject.GetComponent<AudioSource>().Play();
 
         Destroy(soundObject, audio.length);

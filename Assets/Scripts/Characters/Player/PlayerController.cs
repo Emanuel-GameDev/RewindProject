@@ -120,17 +120,6 @@ public class PlayerController : Character
         instance = this;
     }
 
-    public void DeactivateCardAnimation(object obj)
-    {
-        animator.SetBool("UsingCard", false);
-    }
-
-    public void ActivateCardAnimation(object obj)
-    {
-        animator.SetTrigger("ActivateCard");
-        animator.SetBool("UsingCard", true);
-    }
-
 
 
     private void Awake()
@@ -663,6 +652,17 @@ public class PlayerController : Character
     {
         inputs.Player.Disable();
     }
+    public void DeactivateCardAnimation(object obj)
+    {
+        animator.SetBool("UsingCard", false);
+    }
+
+    public void ActivateCardAnimation(object obj)
+    {
+        animator.SetTrigger("ActivateCard");
+        animator.SetBool("UsingCard", true);
+    }
+
 
     #endregion
 }
