@@ -45,7 +45,8 @@ public class PlayerController : Character
     [SerializeField] float maxFallDistanceWithoutTakingDamage = 5;
 
     [Header("Slope")]
-    [SerializeField] float maxSlope = 45;
+    [SerializeField] float maxWalkableSlope = 45;
+    [SerializeField] float wallSlope = 70;
     [SerializeField] float rotationRatioOnSlopes = 3;
 
     [Header("OTHER")]
@@ -86,7 +87,7 @@ public class PlayerController : Character
     [HideInInspector] public SpriteRenderer bodySprite;
 
     public float horizontalMovement = 0;
-    [HideInInspector] public float groundAngle = 0;
+   /* [HideInInspector]*/ public float groundAngle = 0;
 
 
     //Double jump
@@ -149,6 +150,8 @@ public class PlayerController : Character
 
     private void Update()
     {
+        GroundCheck();
+        CheckRotation();
         stateMachine.StateUpdate();
 
         if (previousHorizontalInputs.Count >= 5)
@@ -156,11 +159,12 @@ public class PlayerController : Character
         else
             previousHorizontalInputs.Enqueue(horizontalInput);
 
-        GroundCheck();
     }
 
     public void FixedUpdate()
     {
+        
+
         if (grounded)
         {
             if (fastRespawnTimer < fastRespawnRefreshTimer)
@@ -307,9 +311,15 @@ public class PlayerController : Character
             previousHorizontalInputs.Clear();
         }
 
-        
-        if(!isDashing)
-        rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
+
+        if (!isDashing && groundAngle < wallSlope) 
+            rBody.velocity = new Vector3(relativMovement.x, rBody.velocity.y, 0);
+
+        if (groundAngle > wallSlope)
+        {
+            canMove = false;
+            isFalling = true;
+        }
     }
 
 
@@ -426,9 +436,10 @@ public class PlayerController : Character
         int h;
 
         if (IsGravityDownward())
-            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 1.5f, groundMask);
+            h = Physics2D.CircleCastNonAlloc(transform.position, 0.1f, Vector2.down, hits, 5f, groundMask);
+        //h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 3f, groundMask);
         else
-            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.up, hits, 1.5f,groundMask);
+            h = Physics2D.CircleCastNonAlloc(transform.position, 0.1f, Vector2.up, hits, 5f, groundMask);
 
         if (h >= 1)
         {
@@ -442,7 +453,8 @@ public class PlayerController : Character
                     groundAngle += 180;
             }
 
-            transform.rotation = Quaternion.Euler(0, 0, -groundAngle / rotationRatioOnSlopes);
+            if(grounded)
+                transform.rotation = Quaternion.Euler(0, 0, -groundAngle / rotationRatioOnSlopes);
         }
 
         CheckFriction();
@@ -495,7 +507,7 @@ public class PlayerController : Character
 
         if (!isMoving)
         {
-            if (Mathf.Abs(groundAngle) < maxSlope)
+            if (Mathf.Abs(groundAngle) < maxWalkableSlope && grounded)
                 rBody.sharedMaterial = fullFriction;
             else
                 rBody.sharedMaterial = noFriction;
@@ -503,7 +515,6 @@ public class PlayerController : Character
         }
         else
             rBody.sharedMaterial = noFriction;
-
     }
 
     #endregion
@@ -626,6 +637,9 @@ public class PlayerController : Character
             doubleJump = true;
             isFalling = false;
         }
+
+        if (groundAngle > wallSlope)
+            grounded = false;
     }
     public void ReloadLevel()
     {
