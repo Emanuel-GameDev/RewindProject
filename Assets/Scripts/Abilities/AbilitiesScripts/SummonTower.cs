@@ -10,6 +10,8 @@ public class SummonTower : Ability
     [SerializeField] private float summonSphereRadius;
     [SerializeField] private LayerMask summonMask;
     [SerializeField] private float cooldown;
+    [SerializeField] private AudioClip summonClip;
+    [SerializeField] private AudioClip dismissClip;
 
     [Header("TOWER DATA")]
     [SerializeField] private int hp;
@@ -21,6 +23,7 @@ public class SummonTower : Ability
     private bool canActivate = true;
     private float lastActivationTime;
     private bool active = false;
+    private Character character;
 
     private void OnEnable()
     {
@@ -44,6 +47,7 @@ public class SummonTower : Ability
     {
         if (!canActivate || currentTower == null || active) return;
 
+        character = parent.GetComponent<Character>();
         PlayerController player = parent.GetComponent<PlayerController>();
         
         Vector2 summonPos;
@@ -75,13 +79,17 @@ public class SummonTower : Ability
         if (!player.grounded || !currentTower.CanBeActivated(summonPos, summonSphereRadius, summonMask)) return;
 
         parent.GetComponent<Animator>().SetTrigger("Defending");
+
         currentTower.Activate(this, summonPos, summonRot, facingRight);
+        parent.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(summonClip);
 
         active = true;
     }
 
     public void StartCooldown()
     {
+        character.gameObject.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(dismissClip);
+
         canActivate = false;
         lastActivationTime = Time.time;
         active = false;
