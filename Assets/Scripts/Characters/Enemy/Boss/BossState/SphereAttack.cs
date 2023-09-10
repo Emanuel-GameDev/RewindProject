@@ -122,7 +122,7 @@ public class SphereAttack : State
         for (int i = 0; i < bossBheaviour.GetNumberOfProjectile(); i++)
         {
             Vector2 point = spawnPoint;
-            point.x += bossBheaviour.GetDistanceBetweenVerticalProjectile() * i;
+            point.x += isOnCenterPosition ? bossBheaviour.GetDistanceBetweenVerticalProjectile() * i : bossBheaviour.GetDistanceBetweenHorizontalProjectile() * i;
             projectiles.Add(bossBheaviour.GenerateProjectile(point));
         }
         readyToShoot = true;
