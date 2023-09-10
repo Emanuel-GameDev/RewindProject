@@ -14,9 +14,6 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
     public AudioManager audioManager;
 
-    [Header("Mixer")]
-    public AudioMixer mixer;
-
     [Tooltip("Enable only for debugging, this bool set to true on a serious test will make scripts not work")]
     public bool debug;
 
@@ -40,11 +37,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        mixer = audioManager.GetMixer();
-
-        if (mixer)
+        if (audioManager.mixer)
         {
-            mixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
+            audioManager.mixer.audioMixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
         }
     }
 }
