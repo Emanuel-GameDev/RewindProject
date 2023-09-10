@@ -22,6 +22,7 @@ public class CreateWind : Ability
     [SerializeField] private float forceAngle = 0f;
     [Tooltip("The layers that are affected by the wind")]
     [SerializeField] private LayerMask[] colliderMask;
+    [SerializeField] private AudioClip windClip;
 
     private GameObject windZoneObj;
     private PlayerInputs inputs;
@@ -53,6 +54,8 @@ public class CreateWind : Ability
 
         currentHolder.GetComponent<PlayerController>().inputs.Player.Disable();
         windZoneObj.SetActive(true);
+        
+        parent.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(windClip);
     }
 
     public override void Disactivate1(GameObject gameObject)
