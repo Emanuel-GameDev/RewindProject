@@ -491,8 +491,10 @@ MonoBehaviour:
   cardImage: {fileID: 1272706256}
   cardName: {fileID: 1181659986}
   cardDescription: {fileID: 1653780231}
+  cardPickedSound: {fileID: 0}
   pickableImage: {fileID: 0}
   pickableText: {fileID: 0}
+  pickablePickedSound: {fileID: 0}
 --- !u!224 &16600826 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5216439231824781464, guid: 413e1c9adcbc06f49b57941316630743, type: 3}
@@ -842,6 +844,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 21.786804, y: 10.502541, z: 1}
   m_Center: {x: 10.13887, y: 0.76359653, z: 0}
+--- !u!4 &241620624 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+  m_PrefabInstance: {fileID: 595055845}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &241620627 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5961639460487951494, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+  m_PrefabInstance: {fileID: 595055845}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8332fde0951b8a44499bc336d4a3d409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &262485040
 GameObject:
   m_ObjectHideFlags: 0
@@ -1652,6 +1670,63 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &595055845
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1172226847}
+    m_Modifications:
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5.873599
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5369857
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.11418236
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951493, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5961639460487951498, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
+      propertyPath: m_Name
+      value: AudioManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a66a6d9124c78dc4b862c9028a8a0624, type: 3}
 --- !u!1 &646757769
 GameObject:
   m_ObjectHideFlags: 0
@@ -7483,8 +7558,7 @@ MonoBehaviour:
   abilityManager: {fileID: 1533999505}
   pauseMenuManager: {fileID: 0}
   uiManager: {fileID: 15556357}
-  audioManager: {fileID: 0}
-  mixer: {fileID: 0}
+  audioManager: {fileID: 241620627}
   debug: 1
   dontDestroyOnLoad: 0
 --- !u!1 &1163722724
@@ -7662,6 +7736,7 @@ Transform:
   - {fileID: 1533999506}
   - {fileID: 540455069}
   - {fileID: 335034618}
+  - {fileID: 241620624}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

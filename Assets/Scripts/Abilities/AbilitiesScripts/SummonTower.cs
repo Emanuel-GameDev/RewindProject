@@ -49,13 +49,20 @@ public class SummonTower : Ability
 
         character = parent.GetComponent<Character>();
         PlayerController player = parent.GetComponent<PlayerController>();
-        
+
         Vector2 summonPos;
         float summonRot;
 
         bool gravityDown = player.IsGravityDownward();
 
         GameObject contact = currentTower.GetContactPoint(player.transform.position, gravityDown);
+        Debug.Log(contact.name);
+
+        if (contact == null)
+        {
+            Debug.LogError("NO COntact found, can't activate ability");
+            return;
+        }
 
         if (gravityDown)
         {
@@ -86,10 +93,13 @@ public class SummonTower : Ability
         active = true;
     }
 
-    public void StartCooldown()
+    public void DismissAudio()
     {
         character.gameObject.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(dismissClip);
+    }
 
+    public void StartCooldown()
+    {
         canActivate = false;
         lastActivationTime = Time.time;
         active = false;
