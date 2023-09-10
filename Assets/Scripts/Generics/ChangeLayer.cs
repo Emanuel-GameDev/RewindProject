@@ -5,7 +5,7 @@ using UnityEngine;
 public class ChangeLayer : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
-    public int newLayerid = 8;
+    public int newLayerid = 7;
 
     public void changeLayer()
     {

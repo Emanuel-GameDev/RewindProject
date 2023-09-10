@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class ChangeMainThemeTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] AudioClip audioClip;
+    [SerializeField] LayerMask targetLayer;
+    [SerializeField] bool mustRevertToMainTheme;
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetLayer.value, 2f))) 
+        {
+            if(mustRevertToMainTheme)
+            {
+                AudioManager.Instance.ResetMainTheme();
+            }
+            else if (audioClip != null)
+            {
+                AudioManager.Instance.ChangeMainTheme(audioClip);
+            }
+        }
+   
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
