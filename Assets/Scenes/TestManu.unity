@@ -491,6 +491,8 @@ MonoBehaviour:
   cardImage: {fileID: 1272706256}
   cardName: {fileID: 1181659986}
   cardDescription: {fileID: 1653780231}
+  pickableImage: {fileID: 0}
+  pickableText: {fileID: 0}
 --- !u!224 &16600826 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5216439231824781464, guid: 413e1c9adcbc06f49b57941316630743, type: 3}
@@ -1103,6 +1105,9 @@ MonoBehaviour:
   checkpointsTaken: 
   deleteSavesOnEditorQuit: 1
   hideCursor: 0
+  loadingScreen: {fileID: 0}
+  fadeInOnLevelUnload: 1
+  fadeOutOnLevelLoad: 1
 --- !u!1 &336534315
 GameObject:
   m_ObjectHideFlags: 0
@@ -7478,6 +7483,7 @@ MonoBehaviour:
   abilityManager: {fileID: 1533999505}
   pauseMenuManager: {fileID: 0}
   uiManager: {fileID: 15556357}
+  audioManager: {fileID: 0}
   mixer: {fileID: 0}
   debug: 1
   dontDestroyOnLoad: 0
@@ -10697,7 +10703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 263047666046513916, guid: 328f3c6ed36fb364ca8df4f20b19e277, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 263047666046513917, guid: 328f3c6ed36fb364ca8df4f20b19e277, type: 3}
       propertyPath: m_Pivot.x
