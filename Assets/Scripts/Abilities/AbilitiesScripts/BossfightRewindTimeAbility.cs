@@ -8,7 +8,8 @@ public class BossfightRewindTimeAbility : Ability
     [SerializeField] float parryTime;
     private float elapsedTime = 0;
     bool started = false;
-    
+    private PlayerController player;
+
     public override void Activate1(GameObject parent)
     {
         Parry(parent);
@@ -51,15 +52,18 @@ public class BossfightRewindTimeAbility : Ability
             isActive = true;
             started = true;
             elapsedTime = 0;
-            parent.GetComponent<PlayerController>().ActivateCardAnimation(this);
-            parent.GetComponent<PlayerController>().StartCoroutine(StopAimation(parent));
+            player = parent.GetComponent<PlayerController>();
+            player.ActivateCardAnimation(this);
+            player.StartCoroutine(StopAimation(parent));
+            player.inputs.Player.Disable();
         }
     }
 
     IEnumerator StopAimation(GameObject parent)
     {
-        yield return new WaitForSeconds(0.01f);
-        parent.GetComponent<PlayerController>().DeactivateCardAnimation(this);
+        yield return new WaitForSeconds(0.4f);
+        player.DeactivateCardAnimation(this);
+        player.inputs.Player.Enable();
     }
 
 }
