@@ -47,16 +47,35 @@ public class SummonTower : Ability
         PlayerController player = parent.GetComponent<PlayerController>();
         
         Vector2 summonPos;
+        float summonRot;
 
-        if (facingRight)
-            summonPos = new Vector2(player.transform.position.x + summonOffset.x, player.transform.position.y + summonOffset.y);
+        bool gravityDown = player.IsGravityDownward();
+
+        GameObject contact = currentTower.GetContactPoint(player.transform.position, gravityDown);
+
+        if (gravityDown)
+        {
+            if (facingRight)
+                summonPos = new Vector2(player.transform.position.x + summonOffset.x, contact.transform.position.y + summonOffset.y);
+            else
+                summonPos = new Vector2(player.transform.position.x - summonOffset.x, contact.transform.position.y + summonOffset.y);
+
+            summonRot = 0f;
+        }
         else
-            summonPos = new Vector2(player.transform.position.x - summonOffset.x, player.transform.position.y + summonOffset.y);
+        {
+            if (facingRight)
+                summonPos = new Vector2(player.transform.position.x + summonOffset.x, contact.transform.position.y - summonOffset.y);
+            else
+                summonPos = new Vector2(player.transform.position.x - summonOffset.x, contact.transform.position.y - summonOffset.y);
+
+            summonRot = 180f;
+        }
 
         if (!player.grounded || !currentTower.CanBeActivated(summonPos, summonSphereRadius, summonMask)) return;
 
         parent.GetComponent<Animator>().SetTrigger("Defending");
-        currentTower.Activate(this, summonPos, facingRight);
+        currentTower.Activate(this, summonPos, summonRot, facingRight);
 
         active = true;
     }

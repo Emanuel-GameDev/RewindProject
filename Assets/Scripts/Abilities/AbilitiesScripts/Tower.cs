@@ -27,6 +27,28 @@ public class Tower : MonoBehaviour
         collisionMask = mask;
     }
 
+    public GameObject GetContactPoint(Vector3 pos, bool down)
+    {
+        RaycastHit2D[] hits;
+
+        if (down)
+            hits = Physics2D.RaycastAll(pos, Vector2.down);
+        else
+            hits = Physics2D.RaycastAll(pos, Vector2.up);
+
+        LayerMask mask = LayerMask.GetMask("Player");
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null && hit.collider.gameObject.layer != Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+            {
+                return hit.collider.gameObject;
+            }
+        }
+
+        return null;
+    }
+
     public bool CanBeActivated(Vector3 pos, float radius, LayerMask mask)
     {
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
@@ -49,15 +71,15 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(debugPos, debugRad);
     }
 
-    public void Activate(SummonTower activator, Vector2 pos, bool mirrored)
+    public void Activate(SummonTower activator, Vector2 pos, float rot, bool mirrored)
     {
         parent = activator;
         transform.position = pos;
 
         if (mirrored)
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, rot));
         else
-            transform.rotation = Quaternion.Euler(Vector3.zero);
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, rot));
 
         animator.SetTrigger("Activated");
 
