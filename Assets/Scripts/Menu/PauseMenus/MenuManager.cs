@@ -83,6 +83,9 @@ public class MenuManager : MonoBehaviour
 
     public void CloseActiveMenu()
     {
+        if (GetComponentsInChildren<Menu>().Length < 1)
+            return;
+
         Menu menuToClose = GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1];
 
         if (menuToClose.gameObject.activeSelf)
