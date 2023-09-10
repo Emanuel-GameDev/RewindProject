@@ -206,11 +206,13 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
         isDragging = true;
     }
 
+    
+
     public void OnDrag(PointerEventData eventData)
     {
         if (passive) return;
 
-        Vector3 mousePos = Input.mousePosition;
+        Vector3 mousePos = GameManager.Instance.fakeCursor.cursorTransform.position;
 
         isPointerOutOfScreen = mousePos.x < 0 || mousePos.x > Screen.width ||
                             mousePos.y < 0 || mousePos.y > Screen.height;
@@ -265,7 +267,7 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     #region Others
     private static AbilityMenuSlot UIRaycastToSlot(PointerEventData eventData)
     {
-        eventData.position = Input.mousePosition;
+        eventData.position = GameManager.Instance.fakeCursor.cursorTransform.position; 
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 

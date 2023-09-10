@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public MenuManager pauseMenuManager;
     public UIManager uiManager;
     public AudioManager audioManager;
+    public GamepadCursor fakeCursor;
 
     [Tooltip("Enable only for debugging, this bool set to true on a serious test will make scripts not work")]
     public bool debug;
