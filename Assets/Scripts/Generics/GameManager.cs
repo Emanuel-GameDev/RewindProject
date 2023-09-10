@@ -38,9 +38,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = false;
+        fakeCursor.SetFakeCursor(false);
+
+
         if (audioManager.mixer)
         {
             audioManager.mixer.audioMixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
         }
     }
+
 }

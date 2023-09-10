@@ -212,7 +212,12 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (passive) return;
 
-        Vector3 mousePos = GameManager.Instance.fakeCursor.cursorTransform.position;
+        Vector3 mousePos;
+
+        if (GameManager.Instance.fakeCursor.playerInputs.currentControlScheme == GameManager.Instance.fakeCursor.gamepadScheme)
+            mousePos = GameManager.Instance.fakeCursor.cursorTransform.position;
+        else
+            mousePos = Input.mousePosition;
 
         isPointerOutOfScreen = mousePos.x < 0 || mousePos.x > Screen.width ||
                             mousePos.y < 0 || mousePos.y > Screen.height;
@@ -267,7 +272,13 @@ public class AbilityMenuSlot : MonoBehaviour, IPointerEnterHandler, IPointerExit
     #region Others
     private static AbilityMenuSlot UIRaycastToSlot(PointerEventData eventData)
     {
-        eventData.position = GameManager.Instance.fakeCursor.cursorTransform.position; 
+        eventData.position = GameManager.Instance.fakeCursor.cursorTransform.position;
+
+        if (GameManager.Instance.fakeCursor.playerInputs.currentControlScheme == GameManager.Instance.fakeCursor.gamepadScheme)
+            eventData.position = GameManager.Instance.fakeCursor.cursorTransform.position;
+        else
+            eventData.position = Input.mousePosition;
+
         List<RaycastResult> results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
