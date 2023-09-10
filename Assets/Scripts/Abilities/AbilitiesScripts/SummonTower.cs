@@ -56,7 +56,7 @@ public class SummonTower : Ability
         bool gravityDown = player.IsGravityDownward();
 
         GameObject contact = currentTower.GetContactPoint(player.transform.position, gravityDown);
-        Debug.Log(contact.name);
+       
 
         if (contact == null)
         {
