@@ -443,7 +443,7 @@ MonoBehaviour:
         byteDataArray: 
       Version: 1.7.4
   gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 0
+  showBehaviorDesignerGizmo: 1
 --- !u!114 &2845267148701899974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -458,7 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healtPoint: 2
   target: {fileID: 0}
-  speed: 1
+  speed: 3
   viewDistance: 100
   core: {fileID: 2845267148432227065}
   movingArea: 0
@@ -581,7 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70411331c1d709545b1782901de5bd16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 0}
   hearOnlyOnProximity: 1
   maxHearingDistance: 50
   volume: 0.5
@@ -591,6 +590,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 33572cb76d8b1564bbaf249767d2c256, type: 3}
   - {fileID: 8300000, guid: 1a8136fae27640749820ea8b0f3f36a7, type: 3}
   - {fileID: 8300000, guid: b00ebc6db178be24185bee50ef4bad75, type: 3}
+  jumpSounds: []
+  damageSounds: []
+  dieSounds: []
 --- !u!114 &22756345937171775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,7 +605,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0bc61176cc55243b9d5686d7582073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 0}
   hearOnlyOnProximity: 0
   maxHearingDistance: 500
   volume: 0.5
