@@ -29,33 +29,22 @@ public class Tower : MonoBehaviour
 
     public GameObject GetContactPoint(Vector3 pos, bool down)
     {
-        //RaycastHit2D[] hits;
-
-        //if (down)
-        //    hits = Physics2D.RaycastAll(pos, Vector2.down);
-        //else
-        //    hits = Physics2D.RaycastAll(pos, Vector2.up);
-
-        //LayerMask mask = LayerMask.GetMask("Player");
-
-        //foreach (RaycastHit2D hit in hits)
-        //{
-        //    if (hit.collider != null && hit.collider.gameObject.layer != Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
-        //    {
-        //        return hit.collider.gameObject;
-        //    }
-        //}
-
-        RaycastHit2D hit;
-        LayerMask mask = LayerMask.GetMask("Ground");
+        RaycastHit2D[] hits;
 
         if (down)
-            hit = Physics2D.Raycast(pos, Vector2.down);
+            hits = Physics2D.RaycastAll(pos, Vector2.down);
         else
-            hit = Physics2D.Raycast(pos, Vector2.up);
+            hits = Physics2D.RaycastAll(pos, Vector2.up);
 
-        if (hit.collider != null && hit.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
-            return hit.collider.gameObject;
+        LayerMask mask = LayerMask.GetMask("Ground");
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null && hit.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
+            {
+                return hit.collider.gameObject;
+            }
+        }
 
         return null;
     }
