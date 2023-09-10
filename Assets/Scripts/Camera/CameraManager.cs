@@ -87,7 +87,7 @@ public class CameraManager : MonoBehaviour
     private void Update()
     {
         // TEmporaneo, per testing
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Y))
         {
             UpdateRewindPostProcess(1);
         }

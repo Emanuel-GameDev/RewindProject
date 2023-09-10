@@ -5,14 +5,13 @@ using UnityEngine.Audio;
 
 public class AudioSourceGenerator : MonoBehaviour
 {
-    public AudioMixerGroup mixer;
     public void PlaySound(AudioClip audio)
     {
         GameObject soundObject = new GameObject();
 
         AudioSource source = soundObject.AddComponent<AudioSource>();
         
-        source.outputAudioMixerGroup = mixer;
+        source.outputAudioMixerGroup = GameManager.Instance.audioManager.mixer;
         source.clip = audio;
         source.volume = 0.5f;
         soundObject.GetComponent<AudioSource>().Play();

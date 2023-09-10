@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource audioSource;
 
-    [SerializeField] float volume = 0.75f;
+    [SerializeField] public float volume = 0.75f;
     [SerializeField] float fadeDuration = 0.5f;
 
     [SerializeField] AudioClip themeClip;
@@ -16,10 +17,16 @@ public class AudioManager : MonoBehaviour
     private AudioClip nextAudio;
     private float elapsedTime;
 
+    [HideInInspector] public AudioMixerGroup mixer;
+
+    private void OnEnable()
+    {
+        audioSource = GetComponent<AudioSource>();
+        mixer = audioSource.outputAudioMixerGroup;
+    }
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, StartRewindClip);
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, StopRewindClip);
         PlayTrack(themeClip);
