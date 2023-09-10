@@ -23,6 +23,8 @@ public class AudioManager : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         mixer = audioSource.outputAudioMixerGroup;
+
+        
     }
 
     void Start()
