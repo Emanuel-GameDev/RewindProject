@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class Menu : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class Menu : MonoBehaviour
     [HideInInspector] public bool notificationInThisMenu=false;
     [HideInInspector] public bool unlocked = false;
 
+    InputAction inputAction;
     public virtual void OnEnable()
     {
         if(eventSystemDefaultButton!=null)
