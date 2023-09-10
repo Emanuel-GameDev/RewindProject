@@ -44,12 +44,6 @@ public class EndManager : MonoBehaviour
         if (startScene) Wait();
         if(startFadeOut) CoverFadeOut();
 
-        //Temporaneo per test
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            StartEnd();
-        }
-
     }
 
     private void Wait()

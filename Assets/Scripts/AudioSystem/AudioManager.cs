@@ -33,6 +33,7 @@ public class AudioManager : MonoBehaviour
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, StopRewindClip);
         PlayTrack(themeClip);
         rewindAudioSource.clip = rewindClip;
+        rewindAudioSource.loop = true;
         StopRewindClip(this);
     }
 
@@ -44,6 +45,7 @@ public class AudioManager : MonoBehaviour
 
     private void StartRewindClip(object obj)
     {
+        rewindAudioSource.volume = volume;
         rewindAudioSource.Play();
     }
 
@@ -71,14 +73,16 @@ public class AudioManager : MonoBehaviour
         PlayTrack(clip);
     }
     
-    public void ChangeMaintTheme(AudioClip audioClip)
+    public void ChangeMainTheme(AudioClip audioClip)
     {
-        StartCoroutine(FadeOut(audioClip));
+        if(mainAudioSource.clip != audioClip)
+            StartCoroutine(FadeOut(audioClip));
     }
 
     public void ResetMainTheme()
     {
-        StartCoroutine(FadeOut(themeClip));
+        if(mainAudioSource.clip != themeClip)
+            StartCoroutine(FadeOut(themeClip));
     }
 
     public AudioMixer GetMixer()
