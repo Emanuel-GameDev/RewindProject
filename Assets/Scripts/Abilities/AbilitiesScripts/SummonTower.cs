@@ -55,30 +55,30 @@ public class SummonTower : Ability
 
         bool gravityDown = player.IsGravityDownward();
 
-        GameObject contact = currentTower.GetContactPoint(player.transform.position, gravityDown);
-        Debug.Log(contact.name);
+        //GameObject contact = currentTower.GetContactPoint(player.transform.position, gravityDown);
+        Transform playerGround = player.transform.GetChild(0);
 
-        if (contact == null)
-        {
-            Debug.LogError("NO COntact found, can't activate ability");
-            return;
-        }
+        //if (contact == null)
+        //{
+        //    Debug.LogError("NO Contact found, can't activate ability");
+        //    return;
+        //}
 
         if (gravityDown)
         {
             if (facingRight)
-                summonPos = new Vector2(player.transform.position.x + summonOffset.x, contact.transform.position.y + summonOffset.y);
+                summonPos = new Vector2(playerGround.transform.position.x + summonOffset.x, playerGround.transform.position.y + summonOffset.y);
             else
-                summonPos = new Vector2(player.transform.position.x - summonOffset.x, contact.transform.position.y + summonOffset.y);
+                summonPos = new Vector2(playerGround.transform.position.x - summonOffset.x, playerGround.transform.position.y + summonOffset.y);
 
             summonRot = 0f;
         }
         else
         {
             if (facingRight)
-                summonPos = new Vector2(player.transform.position.x + summonOffset.x, contact.transform.position.y - summonOffset.y);
+                summonPos = new Vector2(playerGround.transform.position.x + summonOffset.x, playerGround.transform.position.y - summonOffset.y);
             else
-                summonPos = new Vector2(player.transform.position.x - summonOffset.x, contact.transform.position.y - summonOffset.y);
+                summonPos = new Vector2(playerGround.transform.position.x - summonOffset.x, playerGround.transform.position.y - summonOffset.y);
 
             summonRot = 180f;
         }
