@@ -52,8 +52,8 @@ public class GamepadCursor : MonoBehaviour
 
     private void Start()
     {
-        SetFakeCursor(true);
-        SetRealCursor(false);
+        //SetFakeCursor(true);
+        //SetRealCursor(false);
         
 
         if (playerInputs.currentControlScheme == mouseScheme)
@@ -66,6 +66,7 @@ public class GamepadCursor : MonoBehaviour
         {
             cursorTransform.gameObject.SetActive(true);
             Cursor.visible = false;
+            previousControlScheme = gamepadScheme;
         }
     }
 
