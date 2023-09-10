@@ -85,7 +85,7 @@ public class LevelManager : MonoBehaviour
         // Locks the cursor
         if (hideCursor)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
         }
     }
