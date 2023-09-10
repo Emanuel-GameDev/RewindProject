@@ -86,10 +86,14 @@ public class SummonTower : Ability
         active = true;
     }
 
+    public void DismissAudio()
+    {
+        Debug.Log("kjsf");
+        character.gameObject.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(dismissClip);
+    }
+
     public void StartCooldown()
     {
-        character.gameObject.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(dismissClip);
-
         canActivate = false;
         lastActivationTime = Time.time;
         active = false;

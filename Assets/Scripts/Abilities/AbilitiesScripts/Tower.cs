@@ -107,6 +107,11 @@ public class Tower : MonoBehaviour
         }
     }
 
+    public void PlayDismissAudio()
+    {
+        parent.DismissAudio();
+    }
+
     public void Dismiss()
     {
         hp = maxHp;
