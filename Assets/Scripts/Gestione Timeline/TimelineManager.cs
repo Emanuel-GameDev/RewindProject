@@ -17,6 +17,8 @@ public class TimelineManager : MonoBehaviour
     [SerializeField] float lockTime = 5f;
     [Tooltip("Usato per collegare le timeline con le Zone corrispondenti")]
     [SerializeField] List<TimeZone> timeZones;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip audioClip;
 
     private float timelineDuration;
     public eZone actualZone { get; private set; }
@@ -102,6 +104,14 @@ public class TimelineManager : MonoBehaviour
 
         timelineDirector.playOnAwake = false;
         timelineDirector.extrapolationMode = DirectorWrapMode.Hold;
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.outputAudioMixerGroup = GameManager.Instance.audioManager.mixer;
+        }
+        audioSource.clip = audioClip;
+        audioSource.Stop();
         //RewindIsactive = false;
     }
 
@@ -128,7 +138,19 @@ public class TimelineManager : MonoBehaviour
             if (elapsedTime > lockTime)
             {
                 PlayCurrentTimeline();
+                audioSource.Stop();
             }
+            else
+                PlayAudioWithIncreasingSpeed();
+        }
+    }
+
+    private void PlayAudioWithIncreasingSpeed()
+    {
+        if (audioSource.time < lockTime)
+        {
+            float pitch = Mathf.Lerp(1.0f, (audioSource.clip.length / lockTime), audioSource.time / lockTime);
+            audioSource.pitch = pitch;
         }
     }
 
@@ -202,6 +224,8 @@ public class TimelineManager : MonoBehaviour
         else
         {
             isLocked = true;
+            audioSource.Play();
+            audioSource.pitch = 1.0f;
             PauseTimeline();
             elapsedTime = 0;
             RewindIsactive = false;
