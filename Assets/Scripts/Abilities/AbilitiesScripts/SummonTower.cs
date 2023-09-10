@@ -49,7 +49,7 @@ public class SummonTower : Ability
 
         character = parent.GetComponent<Character>();
         PlayerController player = parent.GetComponent<PlayerController>();
-        
+
         Vector2 summonPos;
         float summonRot;
 
@@ -57,6 +57,12 @@ public class SummonTower : Ability
 
         GameObject contact = currentTower.GetContactPoint(player.transform.position, gravityDown);
         Debug.Log(contact.name);
+
+        if (contact == null)
+        {
+            Debug.LogError("NO COntact found, can't activate ability");
+            return;
+        }
 
         if (gravityDown)
         {
@@ -89,7 +95,6 @@ public class SummonTower : Ability
 
     public void DismissAudio()
     {
-        Debug.Log("kjsf");
         character.gameObject.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(dismissClip);
     }
 
