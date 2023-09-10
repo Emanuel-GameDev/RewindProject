@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(Collider2D))]
 public class PlayerTriggerCause : Cause
 {
     [Tooltip("Check this if you want the target to press a button inside an area to trigger effect")]
@@ -38,8 +38,8 @@ public class PlayerTriggerCause : Cause
 
     protected override void OnValidate()
     {
-        if (!GetComponent<CircleCollider2D>().isTrigger)
-            GetComponent<CircleCollider2D>().isTrigger = true;
+        if (!GetComponent<Collider2D>().isTrigger)
+            GetComponent<Collider2D>().isTrigger = true;
     }
 
     private void Interaction(InputAction.CallbackContext obj)
@@ -66,7 +66,7 @@ public class PlayerTriggerCause : Cause
 
         if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(targetLayer.value, 2f)))
         {
-            if (collision.gameObject.GetComponent<PlayerController>())
+            if (collision.gameObject.GetComponent<PlayerController>() && buttonInteraction)
             {
                 if(collision.gameObject.GetComponent<PlayerController>().buttonReminder)
                 collision.gameObject.GetComponent<PlayerController>().buttonReminder.SetActive(true);

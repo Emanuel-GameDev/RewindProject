@@ -14,6 +14,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI cardName;
     [SerializeField] TextMeshProUGUI cardDescription;
 
+    [Header("SHOW Pickable DATA")]
+    [SerializeField] Image pickableImage;
+    [SerializeField] TextMeshProUGUI pickableText;
+
     private Character character;
     private Animator animator;
     private Ability cardToShow;
@@ -134,6 +138,23 @@ public class UIManager : MonoBehaviour
         animator.SetTrigger("hasToShowCard");
     }
 
+    public void StartShowPickableAnimation(Sprite sprite, string text)
+    {
+        canShowMenu = false;
+
+        PlayerController.instance.inputs.Player.Disable();
+        PlayerController.instance.inputs.AbilityController.Disable();
+        GameManager.Instance.abilityManager.wheel.canSwitch = false;
+
+        
+
+        pickableImage.sprite = sprite;
+        pickableText.text = text;
+
+        animator.SetTrigger("hasToShowPickable");
+    }
+
+
     internal void UpdateWheel()
     {
         AbilityWheel wheel = GameManager.Instance.abilityManager.wheel;
@@ -160,6 +181,18 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.abilityManager.wheel.canSwitch = true;
         cardToShow = null;
         character = null;
+
+        // Enable menu show
+        canShowMenu = true;
+    }
+
+    public void ShowPickableCompleted()
+    {
+        PlayerController.instance.inputs.Player.Enable();
+        PlayerController.instance.inputs.AbilityController.Enable();
+
+
+        GameManager.Instance.abilityManager.wheel.canSwitch = true;
 
         // Enable menu show
         canShowMenu = true;

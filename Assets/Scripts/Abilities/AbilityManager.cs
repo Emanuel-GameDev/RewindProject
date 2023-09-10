@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class AbilityManager : MonoBehaviour
 {
     [SerializeField] List<Ability> _gameAbilities;
-    [SerializeField] private List<Ability> _abilities;
+    [SerializeField] public List<Ability> _abilities;
 
-    [SerializeField] List<string> abilityNameToSave = new List<string>();
+    [SerializeField] public List<string> abilityNameToSave = new List<string>();
 
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
@@ -82,10 +82,18 @@ public class AbilityManager : MonoBehaviour
 
     private void Update()
     {
-        foreach (Ability ability in _abilities)
+        List<Ability> abilities;
+        if (GameManager.Instance.debug)
+            abilities = DebugAbilities;
+        else
+            abilities = _abilities;
+        
+        foreach (Ability ability in abilities)
         {
             if (ability.global)
+            {
                 ability.UpdateAbility();
+            } 
         }
     }
 

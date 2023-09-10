@@ -24,7 +24,6 @@ public class PlayerFallingState : State
         player.CalculateFallSpeed();
         player.CheckFriction();
 
-
         if (player.rBody.velocity.y == 0)
         {
             player.isFalling = false;
@@ -48,7 +47,7 @@ public class PlayerFallingState : State
                     if (player.GetComponent<Damageable>().Health > 1)
                         LevelManager.instance.FastRespawn();
 
-                    player.GetComponent<Damageable>().TakeDamage(1);
+                    player.GetComponent<Damageable>().TakeDamage(1, new Damager());
                 }
             }
 
@@ -60,7 +59,7 @@ public class PlayerFallingState : State
     public override void Exit()
     {
         base.Exit();
-        player.animator.SetBool("Falling", player.isFalling);
+        player.animator.SetBool("Falling",false);
         player.fallStartPoint = 0;
     }
 }

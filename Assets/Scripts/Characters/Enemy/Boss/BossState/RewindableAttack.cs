@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class RewindableAttack : State
 {
@@ -9,7 +10,8 @@ public class RewindableAttack : State
     private BossBheaviour bossBheaviour;
     bool readyToShoot;
     bool shooting;
-    BossProjectile rewindable;
+    BossRewindableProjectile rewindable;
+    
 
     public RewindableAttack(BossBheaviour bossBheaviour)
     {
@@ -22,6 +24,9 @@ public class RewindableAttack : State
         elapsed = 0;
         readyToShoot = false;
         shooting = false;
+        //PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, StartRewind);
+        PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, StopRewind);
+        bossBheaviour.NonRewindableCountReset();
     }
 
     public override void Update()
@@ -53,9 +58,16 @@ public class RewindableAttack : State
     {
         Vector2 direction = (bossBheaviour.GetTargetPlayer().transform.position - rewindable.transform.position).normalized;
         rewindable.Inizialize(direction, rewindable.transform.position, bossBheaviour.GetRewindableSpeed());
-
+        SetAuraTrigger();
         shooting = true;
         elapsed = 0;
+    }
+
+    private void SetAuraTrigger()
+    {
+        bossBheaviour.GetRewindableAuraObject().transform.parent = bossBheaviour.GetTargetPlayer().transform;
+        bossBheaviour.GetRewindableAuraObject().transform.localPosition = Vector3.zero;
+        bossBheaviour.GetRewindableAuraObject().SetActive(true);
     }
 
     private void SpawnRewindable()
@@ -65,7 +77,30 @@ public class RewindableAttack : State
         spawnPosition.y += bossBheaviour.GetCurrentPosition().GetVerticalPosition() == eVerticalPosition.Top ? - offset : offset;
         rewindable = bossBheaviour.GenerateRewindable(spawnPosition);
         readyToShoot = true;
-
+        bossBheaviour.PlaySound(bossBheaviour.GetProjectileSound());
         elapsed = 0;
+    }
+
+    //public void StartRewind(object obj)
+    //{
+    //    rewindable.StartRewind();
+    //}
+
+    public override void Exit()
+    {
+        //PubSub.Instance.UnregisterFunction(EMessageType.TimeRewindStart, StartRewind);
+        PubSub.Instance.UnregisterFunction(EMessageType.TimeRewindStop, StopRewind);
+        DismissAuraTrigger();
+    }
+
+    private void DismissAuraTrigger()
+    {
+        bossBheaviour.GetRewindableAuraObject().SetActive(false);
+        bossBheaviour.GetRewindableAuraObject().transform.parent = bossBheaviour.transform;
+    }
+
+    private void StopRewind(object obj)
+    {
+        elapsed += bossBheaviour.GetRewindableLifeTime();
     }
 }

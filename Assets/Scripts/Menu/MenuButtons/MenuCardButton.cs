@@ -48,20 +48,20 @@ public class MenuCardButton : MenuButton
         if (GetComponent<CardMenuData>().tutorialButton == null)
         {
             menuCards.openTutorialMenuButton.gameObject.SetActive(false);
-            PlayerController.instance.inputs.Menu.MenuInteractionTwo.started -= menuCards.MenuInteractionTwo_started;
+            PlayerController.instance.inputs.Menu.MenuInteractionTwo.performed -= menuCards.MenuInteractionTwo_started;
             return;
         }
 
         if (GetComponent<CardMenuData>().tutorialButton.GetComponent<SaveUniqueObj>().objActive)
         {
-            PlayerController.instance.inputs.Menu.MenuInteractionTwo.started += menuCards.MenuInteractionTwo_started;
+            PlayerController.instance.inputs.Menu.MenuInteractionTwo.performed += menuCards.MenuInteractionTwo_started;
             menuCards.openTutorialMenuButton.gameObject.SetActive(true);
             menuCards.goToTutorialButton = GetComponent<CardMenuData>().tutorialButton;
         }
         else
         {
             menuCards.openTutorialMenuButton.gameObject.SetActive(false);
-            PlayerController.instance.inputs.Menu.MenuInteractionTwo.started -= menuCards.MenuInteractionTwo_started;
+            PlayerController.instance.inputs.Menu.MenuInteractionTwo.performed -= menuCards.MenuInteractionTwo_started;
         }
 
 

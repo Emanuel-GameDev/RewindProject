@@ -31,7 +31,7 @@ public class MenuButton :  Button,ISelectHandler
         }
 
     }
-
+    
     //public override void OnSubmit(BaseEventData eventData)
     //{
     //    base.OnSubmit(eventData);
@@ -87,6 +87,8 @@ public class MenuButton :  Button,ISelectHandler
 
     public void LoadLevel(SceneAsset levelToLoad)
     {
-        SceneManager.LoadScene(levelToLoad.name);
+        LevelManager.instance.LoadLevel(levelToLoad);
     }
+
+   
 }

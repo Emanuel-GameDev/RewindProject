@@ -13,6 +13,7 @@ internal class PlayerIdleState : State
     public override void Enter()
     {
         base.Enter();
+        player.canMove = true;
         player.canAttack = true;
         player.animator.SetBool("Moving", false);
     }
@@ -21,7 +22,6 @@ internal class PlayerIdleState : State
     {
         player.CalculateHorizontalMovement();
         player.CalculateFallSpeed();
-        player.CheckRotation();
         
 
         if (player.isJumping)

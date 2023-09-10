@@ -49,6 +49,8 @@ public class CreateWind : Ability
         if (facingRight) SetWindZoneRotation(0f);
         else SetWindZoneRotation(180f);
 
+        currentHolder.GetComponent<PlayerController>().ActivateCardAnimation(null);
+
         currentHolder.GetComponent<PlayerController>().inputs.Player.Disable();
         windZoneObj.SetActive(true);
     }
@@ -61,6 +63,9 @@ public class CreateWind : Ability
 
         windZoneObj.GetComponent<AreaEffector2D>().forceMagnitude = forceMagnitude;
         windZoneObj.SetActive(false);
+
+        currentHolder.GetComponent<PlayerController>().DeactivateCardAnimation(null);
+
         currentHolder.GetComponent<PlayerController>().inputs.Player.Enable();
 
         canActivate = false;

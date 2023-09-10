@@ -14,6 +14,9 @@ public class ProjectileAbility : Ability
     [SerializeField] float guidedProjectileSpeed = 1;
     [SerializeField] float timeToDraw = 0;
 
+    [SerializeField] AudioClip shotProjectileSound;
+    [SerializeField] AudioClip drawPathProjectileSound;
+
     bool readyToUse = true;
     PathCreator instantietedPathCreator;
     PlayerController player;
@@ -104,8 +107,8 @@ public class ProjectileAbility : Ability
         
         instantietedPathCreator = instantietedPathCreatorObj.GetComponent<PathCreator>();
         instantietedPathCreator.projectileSpeed = guidedProjectileSpeed;
+        instantietedPathCreator.audioSource.clip = drawPathProjectileSound;
         instantietedPathCreator.isDrawing = true;
-
         player.activateCurrentAbility = false;
 
         instantietedPathCreator.StartCoroutine(DrawTimer());
@@ -115,6 +118,7 @@ public class ProjectileAbility : Ability
     private void SpawnGuidedProjectile()
     {
         player.StartCoroutine(Cooldown());
+        PlayerController.instance.GetComponent<AudioSourceGenerator>().PlaySound(shotProjectileSound);
 
         instantietedPathCreator.isDrawing = false;
         instantietedPathCreator.SpawnProjectile(prefabProjectile);
@@ -153,6 +157,7 @@ public class ProjectileAbility : Ability
     {
         yield return new WaitUntil(() => player.activateCurrentAbility == true);
         ShotProjectile();
+        PlayerController.instance.GetComponent<AudioSourceGenerator>().PlaySound(shotProjectileSound);
     }
 
     

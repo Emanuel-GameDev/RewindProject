@@ -32,6 +32,7 @@ public class ChangeGroundAttack : State
             elapsedTime = 0;
             startPosition = bossBheaviour.GetCurrentPosition().transform.position;
             endPosition = bossBheaviour.GetOppositePosition().transform.position;
+            bossBheaviour.SetCurrentPosition(bossBheaviour.GetOppositePosition());
             moveBoss = false;
         }
     }
@@ -56,7 +57,6 @@ public class ChangeGroundAttack : State
             else
             {
                 moveBoss = false;
-                bossBheaviour.SetCurrentPosition(bossBheaviour.GetOppositePosition());
             }
             
         }

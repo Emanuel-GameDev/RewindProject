@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public AbilityManager abilityManager;
     public MenuManager pauseMenuManager;
     public UIManager uiManager;
-
+    public AudioManager audioManager;
 
     [Header("Mixer")]
     public AudioMixer mixer;
@@ -40,7 +40,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if(mixer)
-            mixer.SetFloat("Volume", -10);
+        mixer = audioManager.GetMixer();
+
+        if (mixer)
+        {
+            mixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
+        }
     }
 }

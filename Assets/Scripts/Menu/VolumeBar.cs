@@ -17,39 +17,47 @@ public class VolumeBar : MonoBehaviour
 
         set
         {
-            _volume = Mathf.Clamp(value, -80, 20);
+            _volume = Mathf.Clamp(value, -80, 10);
         }
     }
 
     BarSegment[] segments;
-    int id=0;
+    public int id=3;
 
     private void OnEnable()
     {
         settingsMenu = GetComponentInParent<SettingsMenu>();
         segments = GetComponentsInChildren<BarSegment>();
 
-        for (int i = 0; i < 4; i++)
+        id = PlayerPrefs.GetInt("VolumeId", 2);
+        Volume = PlayerPrefs.GetFloat("Volume", -5);
+
+        for (int i = 0; i <= id; i++)
         {
             segments[i].SegmentAbilitated(true);
         }
-        id = 4;
+
+        for (int i = id+1; i < segments.Length; i++)
+        {
+            segments[i].SegmentAbilitated(false);
+        }
+
     }
 
 
     public void IncreaseVolume()
     {
         
-        Volume += 10;
+        Volume += 5;
 
-        if (Volume > 20)
-            Volume = 20;
+        if (Volume > 10)
+            Volume = 10;
 
-        if (Volume < -30)
-            Volume = -30;
+        if (Volume < -15)
+            Volume = -15;
         
 
-        if(id < segments.Length)
+        if(id < segments.Length-1)
         {
             id++;
 
@@ -58,13 +66,15 @@ public class VolumeBar : MonoBehaviour
         }
         
         settingsMenu.SetVolume(Volume);
+        PlayerPrefs.SetInt("VolumeId", id);
+        PlayerPrefs.SetFloat("Volume", Volume);
     }
 
     public void DecreasecreaseVolume()
     {
-        Volume -= 10;
+        Volume -= 5;
 
-        if (Volume < -30)
+        if (Volume < -15)
             Volume = -80;
 
 
@@ -76,6 +86,14 @@ public class VolumeBar : MonoBehaviour
         }
 
         settingsMenu.SetVolume(Volume);
+
+        PlayerPrefs.SetInt("VolumeId", id);
+        PlayerPrefs.SetFloat("Volume", Volume);
+    }
+
+    private void OnDisable()
+    {
+        PlayerPrefs.Save();
     }
 
 }

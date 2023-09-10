@@ -141,8 +141,7 @@ public class GolemBheaviour : MonoBehaviour
     }
     public void OnHit()
     {
-        animator.SetTrigger(HITTED);
-        if(isAttacking) EndAttack();
+        if (!isAttacking) animator.SetTrigger(HITTED);
     }
 
     public void ResetEnemy()

@@ -19,6 +19,7 @@ public class EnemyThree : BaseEnemy
     [SerializeField] float despawnDistance = 50f;
     [SerializeField] Transform rotationTarget;
     [SerializeField] BodyRotate bodyRotate;
+    [SerializeField] bool faiRoar = false;
 
     private SpriteLineHidener hidener;
     private float elapsedTime;
@@ -43,6 +44,7 @@ public class EnemyThree : BaseEnemy
     private const string SPAWN = "Spawn";
     private const string DESPAWN = "Despawn";
     private const string DEAD = "Dead";
+    private const string ROAR = "Roar";
 
 
 
@@ -60,6 +62,7 @@ public class EnemyThree : BaseEnemy
         elapsedTime = 0f;
         colliders = GetComponentsInChildren<Collider2D>().ToList();
         DisactivateColliders();
+        animator.SetBool(ROAR, faiRoar);
     }
 
     public override void OnDie()
@@ -104,12 +107,22 @@ public class EnemyThree : BaseEnemy
     }
     public void StartChase()
     {
-        tree.SetVariableValue(MOVE, true);
-        isMoving = true;
+        if (!faiRoar)
+        {
+            tree.SetVariableValue(MOVE, true);
+            isMoving = true;
+        }
         hidener.Show();
         bodyRotate.SetTarget(target.transform);
         ActivateColliders();
     }
+
+    public void AferRoarStart()
+    {
+        tree.SetVariableValue(MOVE, true);
+        isMoving = true;
+    }
+
 
     //Test
     private void Update()

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BossProjectile : Projectile
 {
+    private bool spawned = false;
+    
     public override void Dismiss()
     {
         Destroy(gameObject);
@@ -14,6 +16,11 @@ public class BossProjectile : Projectile
         this.direction = direction;
         this.speed = speed;
         elapsedTime = 0;
+        if (!spawned)
+        {
+            animator.SetTrigger("Spawn");
+            spawned = true;
+        }
     }
 
 

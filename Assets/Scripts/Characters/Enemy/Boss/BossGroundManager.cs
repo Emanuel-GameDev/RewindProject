@@ -53,7 +53,7 @@ public class BossGroundManager : MonoBehaviour
     {
         float maxDistance = Camera.main.orthographicSize * Camera.main.aspect;
         float tileWidth = tilePrefab.transform.localScale.x;
-        int numberOfPairs = Mathf.FloorToInt(maxDistance / tileWidth);
+        int numberOfPairs = Mathf.FloorToInt(maxDistance / tileWidth) + 1;
 
         groundTiles.Add(Instantiate(tilePrefab, groundCenter.position, Quaternion.identity, groundCenter));
         ceilingTiles.Add(Instantiate(tilePrefab, ceilingCenter.position, Quaternion.Euler(180, 0f, 0f), groundCenter));
@@ -267,4 +267,10 @@ public class BossGroundManager : MonoBehaviour
         else 
             return false;
     }
+
+    public float GetFadeInDuration()
+    {
+        return fadeInDuration;
+    }
+
 }

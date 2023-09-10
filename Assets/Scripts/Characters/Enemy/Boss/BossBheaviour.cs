@@ -12,10 +12,12 @@ public enum eBossState
     Moving,
     Falling,
     Stunned,
+    Recover,
+    SphereAttack,
     UroboroAttack,
     RewindableAttack,
-    SphereAttack,
-    ChangeGroundAttack
+    ChangeGroundAttack,
+    Dead
 }
 
 public class BossBheaviour : MonoBehaviour
@@ -25,6 +27,7 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] GameObject bossBody;
     [SerializeField] BossGroundManager groundManager;
     [SerializeField] GameObject targetPlayer;
+    [SerializeField] EndManager endManager;
 
     [Header("Movement")]
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro orizzontalmente")]
@@ -75,6 +78,7 @@ public class BossBheaviour : MonoBehaviour
 
     [Header("Rewindable Attack Settings")]
     [SerializeField] GameObject rewindableProjectilePrefab;
+    [SerializeField] GameObject rewindableAuraTrigger;
     [Tooltip("Imposta la velocità di movimento del proiettile")]
     [SerializeField] float rewindableSpeed = 1000f;
     [Tooltip("Imposta la distanza verticale a cui compare il proiettile rispetto ai punti di sosta del boss")]
@@ -85,24 +89,50 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] float rewindableWaitBeforeShoot = 2f;
     [Tooltip("Imposta la durata del proiettile e quanto tempo passa prima che il boss cambi stato dopo aver sparato")]
     [SerializeField] float rewindableLifeTime = 5f;
+    [Tooltip("Imposta dopo quanti colpi il boss viene stordito")]
+    [SerializeField] int necessaryHitForStunning = 5;
+
+    [Header("Falling Settings")]
+    [Tooltip("Imposta la durata della caduta del boss quando viene stordito")]
+    [SerializeField] float fallingDuration = 2f;
+    [Tooltip("Imposta la distanza verticale a cui deve arrivare il corpo del boss rispetto ai punti di sosta del boss")]
+    [SerializeField] float fallingVerticalOffset = 3f;
+    [Tooltip("Imposta la durata dello stordimento del bosso dopo che è caduto")]
+    [SerializeField] float stunnedTime = 5f;
+    [Tooltip("Imposta il tempo che ci mette il boss a tornare alla posizione normale finito lo stordimento")]
+    [SerializeField] float recoverTime = 5f;
 
     [Header("Other Settings")]
     [Tooltip("Imposta quanto è probabile che esegua nuovamente la stessa mossa di seguito in relazione alle altre (1 stessa probabilità delle altre, 0 nessuna probabilità)")]
     [Range(0f, 1f)]
     [SerializeField] float repeatPercentage = 0.5f;
-    [Tooltip("Imposta la durata della caduta del boss quando viene stordito")]
-    [SerializeField] float fallingDuration = 2f;
+    [Tooltip("Imposta ogni quanti attacchi non Rewindabili deve per forza essere fatto un attacco Rewindabile")]
+    [SerializeField] int maxConsecutiveNonRewindableAttacks = 5;
 
+    [Header("Sound Settings")]
+    [SerializeField] AudioClip projectileSound;
 
     private StateMachine<eBossState> stateMachine;
     private List<BossPosition> positions;
     private BossPosition currentPosition;
+    private Animator animator;
+    private MainCharacter_SoundsGenerator audioGenerator;
     private int hitCounter;
+    private int rewindHitCounter;
     private bool changeGroundStarted;
     private eBossState currentState;
     private eBossState nextState;
     private float changeGroundCountdown;
+    private int nonRewindableAttackCount;
+    private bool isDead;
 
+    public const string SPAWN = "Spawn";
+    public const string NOIA = "Noia";
+    public const string EXIT_NOIA = "ExitNoia";
+    public const string REWIND_HIT = "RewindHit";
+    public const string STUN = "Stun";
+    public const string DEATH = "Death";
+    public const string RECOVER = "Recover";
 
     void Start()
     {
@@ -116,33 +146,40 @@ public class BossBheaviour : MonoBehaviour
 
         if(changeGroundCountdown > 0) changeGroundCountdown -= Time.deltaTime;
 
-        //Temporaneo per test
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            HitCounterUpdater(1);
-        }
+        if (isDead) groundManager.UpdateState();
+
     }
+
 
     private void StateMachineSetup()
     {
         stateMachine = new StateMachine<eBossState>();
         stateMachine.RegisterState(eBossState.Start, new Start(this));
         stateMachine.RegisterState(eBossState.Moving, new Moving(this));
-        stateMachine.RegisterState(eBossState.UroboroAttack, new UroboroAttack(this));
+        stateMachine.RegisterState(eBossState.Falling, new Falling(this));
+        stateMachine.RegisterState(eBossState.Stunned, new Stunned(this));
+        stateMachine.RegisterState(eBossState.Recover, new Recover(this));
         stateMachine.RegisterState(eBossState.SphereAttack, new SphereAttack(this));
+        stateMachine.RegisterState(eBossState.UroboroAttack, new UroboroAttack(this));
         stateMachine.RegisterState(eBossState.RewindableAttack, new RewindableAttack(this));
         stateMachine.RegisterState(eBossState.ChangeGroundAttack, new ChangeGroundAttack(this));
+        stateMachine.RegisterState(eBossState.Dead, new Dead(this));
         stateMachine.SetState(eBossState.Start);
     }
 
     private void InitialSetup()
     {
         positions = GetComponentsInChildren<BossPosition>().ToList();
+        animator = GetComponent<Animator>();
+        audioGenerator = GetComponent<MainCharacter_SoundsGenerator>();
         currentPosition = startPosition;
         transform.position = startPosition.transform.position;
         hitCounter = 0;
         changeGroundStarted = false;
+        isDead = false;
         changeGroundCountdown = 0;
+        NonRewindableCountReset();
+        if(rewindableAuraTrigger == null) rewindableAuraTrigger = GetComponentInChildren<RewindableTriggerAura>().gameObject;
     }
 
     //FUNZIONI CAMBIO STATO
@@ -152,15 +189,21 @@ public class BossBheaviour : MonoBehaviour
     {
         eBossState nextState = eBossState.Start;
 
-        if (changeGroundStarted && changeGroundCountdown <= 0)
-            nextState = eBossState.ChangeGroundAttack;
-        else if (Enum.Equals(currentState, eBossState.Falling))
+        if (Enum.Equals(currentState, eBossState.Falling))
         {
             nextState = eBossState.Stunned;
         }
         else if (Enum.Equals(currentState, eBossState.Stunned))
         {
             nextState = eBossState.Moving;
+        }
+        else if(changeGroundStarted && changeGroundCountdown <= 0)
+        {
+            nextState = eBossState.ChangeGroundAttack;
+        }
+        else if(nonRewindableAttackCount > maxConsecutiveNonRewindableAttacks)
+        {
+            nextState = eBossState.RewindableAttack;
         }
         else
         {
@@ -242,10 +285,23 @@ public class BossBheaviour : MonoBehaviour
     public void HitCounterUpdater(int n)
     {
         hitCounter += n;
-        if(hitCounter >= necessaryHitForChangeGround && !changeGroundStarted)
+        if(!changeGroundStarted && hitCounter >= necessaryHitForChangeGround)
         {
             changeGroundStarted = true;
         }
+    }
+
+    public void RewindHit(int n)
+    {
+        RewindHitTrigger();
+        rewindHitCounter += n;
+        if(rewindHitCounter >= necessaryHitForStunning)
+        {
+            ChangeState(eBossState.Falling);
+            rewindHitCounter = 0;
+        }
+        audioGenerator.PlayFootStepSound();
+
     }
 
     public void SetNextState(eBossState nextState)
@@ -262,14 +318,124 @@ public class BossBheaviour : MonoBehaviour
         return projectile;
     }
 
-    public BossProjectile GenerateRewindable(Vector2 point)
+    public BossRewindableProjectile GenerateRewindable(Vector2 point)
     {
-        BossProjectile rewindable = Instantiate(rewindableProjectilePrefab, point, Quaternion.identity).GetComponent<BossProjectile>();
-        rewindable.Inizialize(Vector2.zero, point, 0);
+        BossRewindableProjectile rewindable = Instantiate(rewindableProjectilePrefab, point, Quaternion.identity).GetComponent<BossRewindableProjectile>();
+        rewindable.Inizialize(Vector2.zero, point, 0, targetPlayer);
         rewindable.lifeTime = rewindableLifeTime;
 
         return rewindable;
     }
+
+    public void NonRewindableCountUpdate()
+    {
+        nonRewindableAttackCount++;
+    }
+    public void NonRewindableCountReset()
+    {
+        nonRewindableAttackCount = 0;
+    }
+
+    public void OnDeath()
+    {
+        isDead = true;
+        if(currentPosition.GetVerticalPosition() == eVerticalPosition.Bottom)
+        {
+            ChangeEndGround();
+            currentPosition = GetOppositePosition();
+        }
+        ChangeState(eBossState.Recover);
+        nextState = eBossState.Dead;
+        targetPlayer.GetComponent<PlayerController>().inputs.Disable();
+    }
+
+    private void ChangeEndGround()
+    {
+        groundManager.StartChangeGround();
+        StartCoroutine(WaitForPlayerReverse());
+    }
+
+    IEnumerator WaitForPlayerReverse()
+    {
+        yield return new WaitForSeconds(groundManager.GetFadeInDuration() * 1.2f);
+        if (!PlayerController.instance.IsGravityDownward())
+        {
+            InvertGravity ability = null;
+            List<Ability> abilities = GameManager.Instance.abilityManager.GetUnlockedAbilities();
+            foreach (Ability ab in abilities)
+            {
+                Debug.Log(ab.name);
+                if (ab is InvertGravity)
+                {
+                    ability = (InvertGravity)ab;
+                }
+            }
+
+            ability.Activate1(PlayerController.instance.transform.gameObject);
+        }
+    }
+
+    public void SpawnBoss()
+    {
+        PubSub.Instance.Notify(EMessageType.SpawnBoss, true);
+    }
+
+    public void StartDestroy()
+    {
+        PubSub.Instance.Notify(EMessageType.BossfightStart, true);
+    }
+
+    public void StartEnd()
+    {
+        endManager.StartEnd();
+        gameObject.SetActive(false);
+    }
+
+    //ANIMAZIONI
+    //====================================================================================================================================
+    #region Animation
+
+    public void SpawnTrigger()
+    {
+        animator.SetTrigger(SPAWN);
+    }
+
+    public void ExitNoiaTrigger()
+    {
+        animator.SetTrigger(EXIT_NOIA);
+    }
+
+    public void NoiaTrigger()
+    {
+        animator.SetTrigger(NOIA);
+    }
+
+    public void StunTrigger()
+    {
+        animator.SetTrigger(STUN);
+    }
+
+    public void DeathTrigger()
+    {
+        animator.SetTrigger(DEATH);
+    }
+
+    public void RewindHitTrigger()
+    {
+        animator.SetTrigger(REWIND_HIT);
+    }
+
+    public void RecoverTrigger()
+    {
+        animator.SetTrigger(RECOVER);
+    }
+
+    public void StartFight()
+    {
+        ChangeState();
+    }
+
+    #endregion
 
     //FUNZIONI GET
     //====================================================================================================================================
@@ -290,6 +456,10 @@ public class BossBheaviour : MonoBehaviour
     public BossPosition GetCurrentPosition()
     {
         return currentPosition;
+    }
+    public BossPosition GetStartPosition()
+    {
+        return startPosition;
     }
 
     public GameObject GetBossBody()
@@ -329,11 +499,10 @@ public class BossBheaviour : MonoBehaviour
         return null;
     }
 
-    public float GetFallingDuration()
+    public Animator GetAnimator()
     {
-        return fallingDuration;
+        return animator;
     }
-
     #endregion
 
     #region Proiettili
@@ -446,6 +615,53 @@ public class BossBheaviour : MonoBehaviour
     public float GetRewindableSpeed()
     {
         return rewindableSpeed;
+    }
+
+    public GameObject GetRewindableAuraObject()
+    {
+        return rewindableAuraTrigger;
+    }
+
+    #endregion
+
+    #region Falling
+
+    public float GetFallingDuration()
+    {
+        return fallingDuration;
+    }
+
+    public float GetFallingVerticalOffset()
+    {
+        return fallingVerticalOffset;
+    }
+
+    public float GetStunnedTime()
+    {
+        return stunnedTime;
+    }
+
+    public float GetRecoverTime()
+    {
+        return recoverTime;
+    }
+
+    #endregion
+
+    #region Sounds
+    public AudioClip GetProjectileSound()
+    {
+        return projectileSound;
+    }
+
+    public void PlaySound(AudioClip audioClip)
+    {
+        audioGenerator.PlaySound(audioClip);
+    }
+
+    public void PlayCasualSound()
+    {
+        audioGenerator.PlayFootStepSound();
     }
 
     #endregion

@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 2845267148432227058}
   - component: {fileID: 2845267148432227059}
   - component: {fileID: 2845267148432227056}
+  - component: {fileID: 2977115642183575441}
   m_Layer: 7
   m_Name: Sprite
   m_TagString: Untagged
@@ -186,7 +187,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2845267148701899974}
         m_TargetAssemblyTypeName: EnemyThree, Assembly-CSharp
-        m_MethodName: CompleteDespawn
+        m_MethodName: AferRoarStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -196,6 +197,102 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!82 &2977115642183575441
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2845267148432227065}
+  m_Enabled: 0
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: bcdc7c1711d172143bcbfe319163446d, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2845267148568417053
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,6 +372,7 @@ GameObject:
   - component: {fileID: 2845267148701899971}
   - component: {fileID: 2177252838863518626}
   - component: {fileID: 22756345937171775}
+  - component: {fileID: 121307379223486997}
   m_Layer: 7
   m_Name: Nemico3
   m_TagString: Untagged
@@ -367,6 +465,7 @@ MonoBehaviour:
   despawnDistance: 1000
   rotationTarget: {fileID: 2845267149664773868}
   bodyRotate: {fileID: 2845267149549375296}
+  faiRoar: 0
   spawnSound: {fileID: 8300000, guid: 942838e5464c24743ada6b7196c86b16, type: 3}
   deathSound: {fileID: 8300000, guid: be8cda8f4680ba244bb3b6b13158a320, type: 3}
   hitSound: {fileID: 8300000, guid: bcdc7c1711d172143bcbfe319163446d, type: 3}
@@ -422,12 +521,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   healthBar: {fileID: 0}
+  knockable: 0
+  invincible: 0
+  invincibilitySeconds: 0.2
   OnDie:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2845267148701899974}
         m_TargetAssemblyTypeName: BaseEnemy, Assembly-CSharp
         m_MethodName: OnDie
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 121307379223486997}
+        m_TargetAssemblyTypeName: HealDamager, Assembly-CSharp
+        m_MethodName: HealTarget
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -464,6 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70411331c1d709545b1782901de5bd16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixer: {fileID: 0}
   footStepSounds:
   - {fileID: 8300000, guid: d367b6c80de90894494adab80eb72f12, type: 3}
   - {fileID: 8300000, guid: 7c8f1322462dd994e94d9c909ad05767, type: 3}
@@ -482,6 +597,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0bc61176cc55243b9d5686d7582073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mixer: {fileID: 0}
+--- !u!114 &121307379223486997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2845267148701899977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24595fe37008fe04797434389c297c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healValue: 1
 --- !u!1 &2845267148846817187
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,6 +764,7 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  knockbackForce: 1
 --- !u!60 &2845267148920147156
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -681,6 +811,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   healthBar: {fileID: 0}
+  knockable: 0
+  invincible: 0
+  invincibilitySeconds: 0.2
   OnDie:
     m_PersistentCalls:
       m_Calls: []
@@ -1084,6 +1217,7 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  knockbackForce: 1
 --- !u!60 &2845267149005966316
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1129,6 +1263,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   healthBar: {fileID: 0}
+  knockable: 0
+  invincible: 0
+  invincibilitySeconds: 0.2
   OnDie:
     m_PersistentCalls:
       m_Calls: []
@@ -1200,6 +1337,7 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  knockbackForce: 1
 --- !u!60 &2845267149038590579
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2094,6 +2232,7 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 64
+  knockbackForce: 1
 --- !u!60 &2845267150179450471
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2147,6 +2286,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 1
   healthBar: {fileID: 0}
+  knockable: 0
+  invincible: 0
+  invincibilitySeconds: 0.2
   OnDie:
     m_PersistentCalls:
       m_Calls: []

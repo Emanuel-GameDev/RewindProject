@@ -11,6 +11,7 @@ public class PathCreator : MonoBehaviour
     LineRenderer lineRenderer;
     public float projectileSpeed = 1;
     List<Vector3> points;
+    [HideInInspector] public AudioSource audioSource;
 
     public GameObject instatietedProjectile;
     bool projectileSpawned=false;
@@ -21,6 +22,8 @@ public class PathCreator : MonoBehaviour
     {
         inputs = PlayerController.instance.inputs;
         points = new List<Vector3>();
+        audioSource = GetComponentInChildren<AudioSource>();
+        audioSource.volume = 0.5f;
         lineRenderer = GetComponent<LineRenderer>();
         inputs.AbilityController.DrawInput.performed += RegisterDrawInput;
     }
@@ -36,9 +39,16 @@ public class PathCreator : MonoBehaviour
     {
         if (isDrawing)
         {
-            RegisterPoints();
+            RegisterPoints(); 
+
+            if(audioSource.clip && !audioSource.isPlaying)
+                audioSource.Play();
+
             return;
         }
+
+        if (audioSource.clip && audioSource.isPlaying)
+            audioSource.Stop();
 
         if (!instatietedProjectile)
         {
