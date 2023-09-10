@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossUroboroEndPoint : MonoBehaviour
 {
-    GameObject targetUroboro;
+    [SerializeField] GameObject targetUroboro;
     EnemyThree uroboro;
 
     private void OnTriggerEnter2D(Collider2D collision)

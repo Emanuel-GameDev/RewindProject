@@ -125,5 +125,6 @@ public class SphereAttack : State
         }
         readyToShoot = true;
         elapsed = 0;
+        bossBheaviour.PlaySound(bossBheaviour.GetProjectileSound());
     }
 }

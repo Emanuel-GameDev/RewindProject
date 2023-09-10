@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4332430726460991174}
   - component: {fileID: 5822904588616681573}
   - component: {fileID: 1060591882383374964}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MeleeDamager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 8462867403129382916}
   - component: {fileID: 5928009284760057395}
   - component: {fileID: 4569397618166730573}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LevelMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5481834697802888612}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5481834699079364711}
   - component: {fileID: 5481834699079364710}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -317,7 +317,8 @@ GameObject:
   - component: {fileID: 5481834699438083074}
   - component: {fileID: 21933585599174570}
   - component: {fileID: 4548001170967385224}
-  m_Layer: 0
+  - component: {fileID: 2509995726244188882}
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,21 +356,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1e7c9fa27ffb64a9e6879017a4ee2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 10
+  walkSpeed: 4
+  runSpeed: 8
   acceleration: 40
   deAcceleration: 60
-  jumpForce: 20
-  jumpAbortForce: 100
-  maxJumpHeight: 5
+  jumpForce: 15
+  jumpAbortForce: 5.5
+  maxJumpHeight: 13
   groundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 3336
   groundCheck: {fileID: 5481834697802888612}
   groundCheckRadius: 0.28
-  minFallSpeed: 15
-  maxFallSpeed: 30
-  maxFallDistanceWithoutTakingDamage: 15
+  minFallSpeed: 6
+  maxFallSpeed: 15
+  maxFallDistanceWithoutTakingDamage: 10
   maxWalkableSlope: 45
   wallSlope: 70
   rotationRatioOnSlopes: 3
@@ -416,7 +417,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   knockable: 1
   invincible: 0
-  invincibilitySeconds: 0.5
+  invincibilitySeconds: 0
   OnDie:
     m_PersistentCalls:
       m_Calls:
@@ -476,8 +477,23 @@ MonoBehaviour:
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 1acbd8e9b18302746af00fab5fbe50cb, type: 3}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 21933585599174570}
+        m_TargetAssemblyTypeName: AudioSourceGenerator, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: beb527fa7b84bff43b12046b750430e1, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -684,6 +700,22 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 0
+--- !u!114 &2509995726244188882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5481834699438083082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e3589aeece29647b735eb080d03291, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRecordedTime: 10
+  rewindTimeWhenHitted: 5
+  immunityTime: 5
+  playerController: {fileID: 5481834699438083077}
 --- !u!1 &6495559176747350267
 GameObject:
   m_ObjectHideFlags: 0
@@ -5597,7 +5629,7 @@ GameObject:
   - component: {fileID: 8965806762028339204}
   - component: {fileID: 3076480569927130798}
   - component: {fileID: 5989575319601970131}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: InteractionButtonCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5699,7 +5731,7 @@ GameObject:
   - component: {fileID: 5010379757360864539}
   - component: {fileID: 149452627929282296}
   - component: {fileID: 646803287415048616}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}

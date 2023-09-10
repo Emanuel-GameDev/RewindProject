@@ -27,6 +27,7 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] GameObject bossBody;
     [SerializeField] BossGroundManager groundManager;
     [SerializeField] GameObject targetPlayer;
+    [SerializeField] EndManager endManager;
 
     [Header("Movement")]
     [Tooltip("Imposta quanto tempo ci mette a muoversi da un punto ad un altro orizzontalmente")]
@@ -108,11 +109,14 @@ public class BossBheaviour : MonoBehaviour
     [Tooltip("Imposta ogni quanti attacchi non Rewindabili deve per forza essere fatto un attacco Rewindabile")]
     [SerializeField] int maxConsecutiveNonRewindableAttacks = 5;
 
+    [Header("Sound Settings")]
+    [SerializeField] AudioClip projectileSound;
 
     private StateMachine<eBossState> stateMachine;
     private List<BossPosition> positions;
     private BossPosition currentPosition;
     private Animator animator;
+    private MainCharacter_SoundsGenerator audioGenerator;
     private int hitCounter;
     private int rewindHitCounter;
     private bool changeGroundStarted;
@@ -144,15 +148,6 @@ public class BossBheaviour : MonoBehaviour
 
         if (isDead) groundManager.UpdateState();
 
-        //Temporaneo per test
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            SpawnBoss();
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            StartDestroy();
-        }
     }
 
 
@@ -176,6 +171,7 @@ public class BossBheaviour : MonoBehaviour
     {
         positions = GetComponentsInChildren<BossPosition>().ToList();
         animator = GetComponent<Animator>();
+        audioGenerator = GetComponent<MainCharacter_SoundsGenerator>();
         currentPosition = startPosition;
         transform.position = startPosition.transform.position;
         hitCounter = 0;
@@ -304,6 +300,8 @@ public class BossBheaviour : MonoBehaviour
             ChangeState(eBossState.Falling);
             rewindHitCounter = 0;
         }
+        audioGenerator.PlayFootStepSound();
+
     }
 
     public void SetNextState(eBossState nextState)
@@ -348,6 +346,7 @@ public class BossBheaviour : MonoBehaviour
         }
         ChangeState(eBossState.Recover);
         nextState = eBossState.Dead;
+        targetPlayer.GetComponent<PlayerController>().inputs.Disable();
     }
 
     private void ChangeEndGround()
@@ -384,6 +383,12 @@ public class BossBheaviour : MonoBehaviour
     public void StartDestroy()
     {
         PubSub.Instance.Notify(EMessageType.BossfightStart, true);
+    }
+
+    public void StartEnd()
+    {
+        endManager.StartEnd();
+        gameObject.SetActive(false);
     }
 
     //ANIMAZIONI
@@ -639,6 +644,24 @@ public class BossBheaviour : MonoBehaviour
     public float GetRecoverTime()
     {
         return recoverTime;
+    }
+
+    #endregion
+
+    #region Sounds
+    public AudioClip GetProjectileSound()
+    {
+        return projectileSound;
+    }
+
+    public void PlaySound(AudioClip audioClip)
+    {
+        audioGenerator.PlaySound(audioClip);
+    }
+
+    public void PlayCasualSound()
+    {
+        audioGenerator.PlayFootStepSound();
     }
 
     #endregion

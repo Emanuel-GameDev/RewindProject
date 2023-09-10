@@ -61,7 +61,7 @@ public class CameraTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Check player collision
-        if (collision.gameObject.GetComponent<Character>() != null && !triggered)
+        if (collision.gameObject.GetComponent<PlayerController>() != null && !triggered)
         {
             if (cameraData == null) return;
 
@@ -72,7 +72,7 @@ public class CameraTrigger : MonoBehaviour
             PubSub.Instance.Notify(EMessageType.CameraSwitch, cameraData);
             triggered = true;
         }
-        else if (collision.gameObject.GetComponent<Character>() != null && triggered)
+        else if (collision.gameObject.GetComponent<PlayerController>() != null && triggered)
         {
             if (prevCameraData == null || !exitedSameDirection) return;
 
