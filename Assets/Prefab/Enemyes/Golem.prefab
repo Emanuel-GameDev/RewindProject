@@ -172,14 +172,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   healtPoint: 3
-  viewDistance: 30
-  meleeDistance: 4
+  viewDistance: 25
+  meleeDistance: 5
   timeBetweenShots: 0.5
   timeBetweenShotsSeries: 3
   numberOfShotsPerSerie: 5
   timeBetweenAttacks: 1.5
   shootPoint: {fileID: 7298647728744835917}
-  projectileSpeed: 1000
+  projectileSpeed: 750
 --- !u!114 &8181471844749614786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +196,9 @@ MonoBehaviour:
   maxHearingDistance: 50
   volume: 0.7
   footStepSounds: []
+  jumpSounds: []
+  damageSounds: []
+  dieSounds: []
 --- !u!1 &7298647726904510136
 GameObject:
   m_ObjectHideFlags: 0
