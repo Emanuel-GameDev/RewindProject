@@ -317,7 +317,6 @@ public class PlayerController : Character
 
         if (groundAngle > wallSlope)
         {
-            canMove = false;
             isFalling = true;
         }
     }
