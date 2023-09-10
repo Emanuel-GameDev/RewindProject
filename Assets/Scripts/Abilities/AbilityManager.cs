@@ -9,7 +9,7 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] List<Ability> _gameAbilities;
     [SerializeField] public List<Ability> _abilities;
 
-    [SerializeField] List<string> abilityNameToSave = new List<string>();
+    [SerializeField] public List<string> abilityNameToSave = new List<string>();
 
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
 
