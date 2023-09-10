@@ -443,7 +443,7 @@ MonoBehaviour:
         byteDataArray: 
       Version: 1.7.4
   gizmoViewMode: 2
-  showBehaviorDesignerGizmo: 1
+  showBehaviorDesignerGizmo: 0
 --- !u!114 &2845267148701899974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,6 +566,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2177252838863518626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,6 +582,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 0}
+  hearOnlyOnProximity: 1
+  maxHearingDistance: 50
+  volume: 0.5
   footStepSounds:
   - {fileID: 8300000, guid: d367b6c80de90894494adab80eb72f12, type: 3}
   - {fileID: 8300000, guid: 7c8f1322462dd994e94d9c909ad05767, type: 3}
@@ -598,6 +604,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 0}
+  hearOnlyOnProximity: 0
+  maxHearingDistance: 500
+  volume: 0.5
 --- !u!114 &121307379223486997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,6 +827,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2845267148943852338
@@ -1270,6 +1282,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2845267149038590580
@@ -2293,6 +2308,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2845267150391239105

@@ -7,7 +7,10 @@ using UnityEngine.Audio;
 public class AudioSourceGenerator : MonoBehaviour
 {
     public AudioMixerGroup mixer;
-    public float maxHearingDistance = 15f;
+    public bool hearOnlyOnProximity = false;
+    public float maxHearingDistance = 500f;
+    public float volume = 0.5f;
+
     public void PlaySound(AudioClip audio)
     {
         GameObject soundObject = new GameObject();
@@ -16,8 +19,13 @@ public class AudioSourceGenerator : MonoBehaviour
         
         source.outputAudioMixerGroup = mixer;
         source.clip = audio;
-        source.volume = 0.5f;
-        source.maxDistance = maxHearingDistance;
+        source.volume = volume;
+        if (hearOnlyOnProximity)
+        {
+            source.spatialBlend = 1;
+            source.rolloffMode = AudioRolloffMode.Linear;
+            source.maxDistance = maxHearingDistance;
+        }
         soundObject.GetComponent<AudioSource>().Play();
 
         Destroy(soundObject, audio.length);
