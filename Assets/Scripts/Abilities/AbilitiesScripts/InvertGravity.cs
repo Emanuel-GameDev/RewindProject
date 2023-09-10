@@ -5,8 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Ability/InvertGravity")]
 public class InvertGravity : Ability
 {
-    [Tooltip("The layers that the ray has to ignore")]
-    [SerializeField] private List<LayerMask> layerToIgnore;
     [Tooltip("distance of the ray used to check layer, set this to 0 in order to have an infinite ray")]
     [SerializeField, Min(0f)] private float rayDistance;
     [SerializeField] private AudioClip upClip;
@@ -71,37 +69,6 @@ public class InvertGravity : Ability
 
         parent.GetComponent<PlayerController>().activateCurrentAbility = false;
         parent.GetComponent<PlayerController>().animator.SetBool("UsingCard", false);
-
-
-        //// Looping through objs hit to avoid objs in ignore layers
-        //for (int i = 0; i < hits.Length; i++)
-        //{
-        //    if (hits[i].collider == null) continue;
-
-        //    foreach (LayerMask mask in layerToIgnore)
-        //    {
-        //        if (hits[i].collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
-        //        {
-        //            ignoreHit = true;
-        //            break;
-        //        }
-        //    }
-
-        //    if (ignoreHit)
-        //    {
-        //        ignoreHit = false;
-        //        continue;
-        //    }
-
-        //    // Make sure to trigger abilty only with the first obj hit by skipping first two layer hit
-        //    if (i > 2) continue;
-
-        //    // Obj valid to activate ability
-        //    Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
-
-        //    rBody.gravityScale = -rBody.gravityScale;
-        //    parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-        //}
 
         isActive = false;
         canActivate = false;
