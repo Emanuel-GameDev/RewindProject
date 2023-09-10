@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7298647726856151651}
   - component: {fileID: 7298647726856151662}
   - component: {fileID: 3843989214561769088}
+  - component: {fileID: 8181471844749614786}
   m_Layer: 7
   m_Name: Golem
   m_TagString: Untagged
@@ -87,6 +88,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!50 &7298647726856151649
 Rigidbody2D:
   serializedVersion: 4
@@ -203,6 +207,23 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8181471844749614786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7298647726856151652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70411331c1d709545b1782901de5bd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 0}
+  hearOnlyOnProximity: 1
+  maxHearingDistance: 50
+  volume: 0.7
+  footStepSounds: []
 --- !u!1 &7298647726904510136
 GameObject:
   m_ObjectHideFlags: 0

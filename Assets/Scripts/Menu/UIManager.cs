@@ -13,10 +13,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image cardImage;
     [SerializeField] TextMeshProUGUI cardName;
     [SerializeField] TextMeshProUGUI cardDescription;
+    [SerializeField] AudioClip cardPickedSound;
 
     [Header("SHOW Pickable DATA")]
     [SerializeField] Image pickableImage;
     [SerializeField] TextMeshProUGUI pickableText;
+    [SerializeField] AudioClip pickablePickedSound;
 
     private Character character;
     private Animator animator;
@@ -24,6 +26,7 @@ public class UIManager : MonoBehaviour
     private AbilityMenu abilityMenu;
     private AbilityWheel abilityWheel;
     private PlayerInputs inputs;
+    private AudioSource audioSource;
 
     private bool canShowMenu;
 
@@ -95,6 +98,20 @@ public class UIManager : MonoBehaviour
 
         abilityMenu.gameObject.SetActive(false);
 
+        if (GetComponent<AudioSource>())
+        {
+            audioSource = GetComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.outputAudioMixerGroup = GameManager.Instance.audioManager.mixer;
+        }
+        else
+        {
+            gameObject.AddComponent(typeof(AudioSource));
+            audioSource = GetComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.outputAudioMixerGroup = GameManager.Instance.audioManager.mixer;
+        }
+
     }
 
     private void SetupReferences()
@@ -135,6 +152,12 @@ public class UIManager : MonoBehaviour
         cardName.text = cardToShow.name;
         cardDescription.text = cardToShow.description;
 
+        audioVolume = GameManager.Instance.audioManager.GetComponent<AudioSource>().volume;
+        GameManager.Instance.audioManager.GetComponent<AudioSource>().volume = 0.05f;
+
+        audioSource.clip = cardPickedSound;
+        audioSource.Play();
+
         animator.SetTrigger("hasToShowCard");
     }
 
@@ -151,9 +174,16 @@ public class UIManager : MonoBehaviour
         pickableImage.sprite = sprite;
         pickableText.text = text;
 
+        audioVolume = GameManager.Instance.audioManager.GetComponent<AudioSource>().volume;
+        GameManager.Instance.audioManager.GetComponent<AudioSource>().volume = 0.05f;
+
+        audioSource.clip = pickablePickedSound;
+        audioSource.Play();
+
+
         animator.SetTrigger("hasToShowPickable");
     }
-
+    float audioVolume;
 
     internal void UpdateWheel()
     {
@@ -178,6 +208,7 @@ public class UIManager : MonoBehaviour
 
         cardToShow.Pick(character);
 
+        GameManager.Instance.audioManager.GetComponent<AudioSource>().volume = audioVolume;
         GameManager.Instance.abilityManager.wheel.canSwitch = true;
         cardToShow = null;
         character = null;
@@ -191,7 +222,7 @@ public class UIManager : MonoBehaviour
         PlayerController.instance.inputs.Player.Enable();
         PlayerController.instance.inputs.AbilityController.Enable();
 
-
+        GameManager.Instance.audioManager.GetComponent<AudioSource>().volume = audioVolume;
         GameManager.Instance.abilityManager.wheel.canSwitch = true;
 
         // Enable menu show

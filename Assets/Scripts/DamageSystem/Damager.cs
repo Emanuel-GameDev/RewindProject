@@ -6,7 +6,7 @@ using UnityEngine;
 public class Damager : MonoBehaviour
 {
     [SerializeField] public int damage = 1;
-    [SerializeField] LayerMask targetLayers;
+    [SerializeField] protected LayerMask targetLayers;
     [SerializeField] float knockbackForce = 1;
 
     public virtual void OnTriggerEnter2D(Collider2D collision)
@@ -40,7 +40,7 @@ public class Damager : MonoBehaviour
 
     }
 
-    private bool IsInLayerMask(int layer, LayerMask layerMask)
+    protected bool IsInLayerMask(int layer, LayerMask layerMask)
     {
         // Converte la LayerMask in un intero bit a bit
         int layerMaskValue = layerMask.value;
