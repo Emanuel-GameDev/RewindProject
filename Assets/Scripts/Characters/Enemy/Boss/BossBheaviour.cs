@@ -571,7 +571,7 @@ public class BossBheaviour : MonoBehaviour
 
     public float GetProjectileVerticalLifeTime()
     {
-            return projectileVerticalLifeTime;
+       return projectileVerticalLifeTime;
     }
 
     #endregion

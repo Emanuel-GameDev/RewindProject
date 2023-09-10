@@ -581,9 +581,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70411331c1d709545b1782901de5bd16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 0}
   hearOnlyOnProximity: 1
-  maxHearingDistance: 50
+  maxHearingDistance: 30
   volume: 0.5
   footStepSounds:
   - {fileID: 8300000, guid: d367b6c80de90894494adab80eb72f12, type: 3}
@@ -591,6 +590,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 33572cb76d8b1564bbaf249767d2c256, type: 3}
   - {fileID: 8300000, guid: 1a8136fae27640749820ea8b0f3f36a7, type: 3}
   - {fileID: 8300000, guid: b00ebc6db178be24185bee50ef4bad75, type: 3}
+  jumpSounds: []
+  damageSounds: []
+  dieSounds: []
 --- !u!114 &22756345937171775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,7 +605,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0bc61176cc55243b9d5686d7582073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 0}
   hearOnlyOnProximity: 0
   maxHearingDistance: 500
   volume: 0.5
