@@ -11,7 +11,6 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] AudioSource mainAudioSource;
     [SerializeField] AudioSource rewindAudioSource;
-    [SerializeField] AudioMixer mixerManager;
 
     [SerializeField] float volume = 0.75f;
     [SerializeField] float fadeDuration = 0.5f;
@@ -89,11 +88,6 @@ public class AudioManager : MonoBehaviour
     {
         if(mainAudioSource.clip != themeClip)
             StartCoroutine(FadeOut(themeClip));
-    }
-
-    public AudioMixer GetMixer()
-    {
-        return mixer;
     }
 
 }
