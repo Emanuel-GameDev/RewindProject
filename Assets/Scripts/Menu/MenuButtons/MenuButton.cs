@@ -80,6 +80,7 @@ public class MenuButton :  Button,ISelectHandler
         {
             gameObject.AddComponent(typeof(AudioSource));
             audioSource = GetComponent<AudioSource>();
+            audioSource.outputAudioMixerGroup = GameManager.Instance.audioManager.mixer;
             audioSource.playOnAwake = false;
             audioSource.volume = 0.5f;
         }

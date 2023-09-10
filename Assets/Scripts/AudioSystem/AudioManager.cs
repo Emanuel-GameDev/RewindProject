@@ -11,7 +11,6 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] AudioSource mainAudioSource;
     [SerializeField] AudioSource rewindAudioSource;
-    [SerializeField] AudioMixer mixer;
 
     [SerializeField] float volume = 0.75f;
     [SerializeField] float fadeDuration = 0.5f;
@@ -19,11 +18,17 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioClip themeClip;
     [SerializeField] AudioClip loopClip;
     [SerializeField] AudioClip rewindClip;
+    [HideInInspector] public AudioMixerGroup mixer;
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else if (Instance != this) Destroy(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        mixer = mainAudioSource.outputAudioMixerGroup;
     }
 
     void Start()
@@ -83,11 +88,6 @@ public class AudioManager : MonoBehaviour
     {
         if(mainAudioSource.clip != themeClip)
             StartCoroutine(FadeOut(themeClip));
-    }
-
-    public AudioMixer GetMixer()
-    {
-        return mixer;
     }
 
 }
