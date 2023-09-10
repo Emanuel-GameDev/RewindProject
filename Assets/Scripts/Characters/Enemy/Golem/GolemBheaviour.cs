@@ -136,8 +136,8 @@ public class GolemBheaviour : MonoBehaviour
     public void OnDie()
     {
         isDead = true;
-        animator.SetTrigger(DEAD);
         coll.enabled = false;
+        animator.SetTrigger(DEAD);
     }
     public void OnHit()
     {

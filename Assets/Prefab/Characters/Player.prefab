@@ -422,12 +422,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 21933585599174570}
-        m_TargetAssemblyTypeName: AudioSourceGenerator, Assembly-CSharp
-        m_MethodName: PlaySound
-        m_Mode: 2
+        m_TargetAssemblyTypeName: MainCharacter_SoundsGenerator, Assembly-CSharp
+        m_MethodName: PlayDieSound
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 1cf67ffe82c49a44eb2072b2b74d9578, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -461,12 +461,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 21933585599174570}
-        m_TargetAssemblyTypeName: AudioSourceGenerator, Assembly-CSharp
-        m_MethodName: PlaySound
-        m_Mode: 2
+        m_TargetAssemblyTypeName: MainCharacter_SoundsGenerator, Assembly-CSharp
+        m_MethodName: PlayDamagedSound
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: 1acbd8e9b18302746af00fab5fbe50cb, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -583,7 +583,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70411331c1d709545b1782901de5bd16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 0}
+  hearOnlyOnProximity: 0
+  maxHearingDistance: 500
+  volume: 0.5
   footStepSounds:
   - {fileID: 8300000, guid: 2346c266c27b9fa4a9acb210af502e56, type: 3}
   - {fileID: 8300000, guid: 5b9789d978218c9418cf566537a91195, type: 3}
@@ -592,6 +594,41 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7aa4f937721d08c499325cd0fdf1aa8e, type: 3}
   - {fileID: 8300000, guid: bde5512775456964d8e9a1bfa01ba77d, type: 3}
   - {fileID: 8300000, guid: d79153215c7cdf44cb24f4d0f6aa548b, type: 3}
+  jumpSounds:
+  - {fileID: 8300000, guid: 9f44867cd8ff82c40b80318903ea288b, type: 3}
+  - {fileID: 8300000, guid: 6ad0fd531339bef4e8226d4bc9d1abfa, type: 3}
+  - {fileID: 8300000, guid: 650bc2c5188f5fd438aa0a7ec2cb03cb, type: 3}
+  - {fileID: 8300000, guid: 23c239bb5360f684fba0a8ca1d1ea8cf, type: 3}
+  - {fileID: 8300000, guid: 01cbf8d527af7f7429d58b7f81adaa6e, type: 3}
+  - {fileID: 8300000, guid: 4eb54e1c1b6071e4dbd07e17fa7ff1e4, type: 3}
+  - {fileID: 8300000, guid: 1c687f831eafd7244a67204aa7c8c357, type: 3}
+  - {fileID: 8300000, guid: 2e1c762047f3a0b4986f45273cf4e1bd, type: 3}
+  - {fileID: 8300000, guid: 8d1be69fa012e3a488fc923d47fbfb58, type: 3}
+  - {fileID: 8300000, guid: e91b00203cc80c845b43102c08ebd163, type: 3}
+  - {fileID: 8300000, guid: 7ef1dd53b7767d84a9c5b8b3a285e1fd, type: 3}
+  damageSounds:
+  - {fileID: 8300000, guid: a004b0826f0c63144810efdbff631f4f, type: 3}
+  - {fileID: 8300000, guid: 5254dec512dc0ca45a5c7edf9706a185, type: 3}
+  - {fileID: 8300000, guid: e000d48ceb23176439a89c965642d791, type: 3}
+  - {fileID: 8300000, guid: e38b0059a9ff4e84689edfbddb9ec7fc, type: 3}
+  - {fileID: 8300000, guid: c15ee3ac074f1b6458cc36957b996a8e, type: 3}
+  - {fileID: 8300000, guid: 4148d355f6cf7384b88da2a848f447f7, type: 3}
+  - {fileID: 8300000, guid: 43d3332feb389f14180769c68149bbbe, type: 3}
+  - {fileID: 8300000, guid: ad7894bfb2d16b74aa66534a0e139778, type: 3}
+  - {fileID: 8300000, guid: 29a069f1df8606742b9fe81e7f75efc0, type: 3}
+  - {fileID: 8300000, guid: 683665df78673e04c92881c552719a9f, type: 3}
+  dieSounds:
+  - {fileID: 8300000, guid: 9778d1f58f28eb94c9784dba31f3b26f, type: 3}
+  - {fileID: 8300000, guid: ededf611cd04f564d8ba6ae4a27d611d, type: 3}
+  - {fileID: 8300000, guid: 1d55521bc5ddaf04f85fe6f1264dd648, type: 3}
+  - {fileID: 8300000, guid: b01d62fee01b49844aad0163652efc2e, type: 3}
+  - {fileID: 8300000, guid: acd88e8a1a236a540b9b018bbd5cd9df, type: 3}
+  - {fileID: 8300000, guid: 8a431d776112d6e41a7a81d09a8356b7, type: 3}
+  - {fileID: 8300000, guid: 6e0b6cddeea5cc248a667bb3f1075716, type: 3}
+  - {fileID: 8300000, guid: 01ef574d0f938a040be29f4cf1ea0cfd, type: 3}
+  - {fileID: 8300000, guid: d5939a4b3acbafb43bfd787ef622e5ab, type: 3}
+  - {fileID: 8300000, guid: 23c491501db5399439fcd4b4c16dd84f, type: 3}
+  - {fileID: 8300000, guid: acee6ff055a7c8a418ff965790a8e792, type: 3}
 --- !u!96 &4548001170967385224
 TrailRenderer:
   serializedVersion: 2
