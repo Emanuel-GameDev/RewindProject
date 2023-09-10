@@ -7,11 +7,14 @@ public class EndManager : MonoBehaviour
 {
     [SerializeField] GameObject moire;
     [SerializeField] GameObject brokenEye;
+    [SerializeField] GameObject exitEndTrigger;
     [SerializeField] SpriteRenderer cover;
     [SerializeField] PlayerController player;
-    [SerializeField] float coverFadeOutDuration = 2f;
+    [SerializeField] float coverFadeOutDuration = 5f;
+    [SerializeField] float coverDurationBeforeFadeOut = 3f;
 
     bool startFadeOut;
+    bool startScene;
     float elapsed;
     Color startColor;
     [SerializeField] Color endColor;
@@ -22,6 +25,7 @@ public class EndManager : MonoBehaviour
         brokenEye.SetActive(false);
         cover.gameObject.SetActive(false);
         startFadeOut = false;
+        startScene = false;
         elapsed = 0;
     }
 
@@ -32,11 +36,12 @@ public class EndManager : MonoBehaviour
         brokenEye.SetActive(true);
         cover.gameObject.SetActive(true);
         startColor = cover.color;
-        startFadeOut = true;
+        startScene = true;
     }
 
     private void Update()
     {
+        if (startScene) Wait();
         if(startFadeOut) CoverFadeOut();
 
         //Temporaneo per test
@@ -45,6 +50,20 @@ public class EndManager : MonoBehaviour
             StartEnd();
         }
 
+    }
+
+    private void Wait()
+    {
+        if(elapsed < coverDurationBeforeFadeOut)
+        {
+            elapsed += Time.deltaTime;
+        }
+        else
+        {
+            startFadeOut = true;
+            startScene = false;
+            elapsed = 0;
+        } 
     }
 
     private void CoverFadeOut()

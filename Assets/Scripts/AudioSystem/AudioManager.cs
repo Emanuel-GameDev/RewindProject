@@ -2,77 +2,88 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] AudioSource audioSource;
+    public static AudioManager Instance;
+
+
+    [SerializeField] AudioSource mainAudioSource;
+    [SerializeField] AudioSource rewindAudioSource;
+    [SerializeField] AudioMixer mixer;
 
     [SerializeField] float volume = 0.75f;
     [SerializeField] float fadeDuration = 0.5f;
 
     [SerializeField] AudioClip themeClip;
+    [SerializeField] AudioClip loopClip;
     [SerializeField] AudioClip rewindClip;
 
-    private AudioClip nextAudio;
-    private float elapsedTime;
-
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else if (Instance != this) Destroy(gameObject);
+    }
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        mainAudioSource = GetComponent<AudioSource>();
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStart, StartRewindClip);
         PubSub.Instance.RegisterFunction(EMessageType.TimeRewindStop, StopRewindClip);
         PlayTrack(themeClip);
+        rewindAudioSource.clip = rewindClip;
+        StopRewindClip(this);
     }
 
     private void StopRewindClip(object obj)
     {
-        StartCoroutine(FadeOut(themeClip));
+        rewindAudioSource.Stop();
+        rewindAudioSource.time = 0;
     }
 
     private void StartRewindClip(object obj)
     {
-        StartCoroutine(FadeOut(rewindClip));
+        rewindAudioSource.Play();
     }
 
     private void PlayTrack(AudioClip clip)
     {
-        audioSource.clip = clip;
-        audioSource.volume = volume;
-        audioSource.loop = true;
-        audioSource.Play();
+        mainAudioSource.clip = clip;
+        mainAudioSource.volume = volume;
+        mainAudioSource.loop = true;
+        mainAudioSource.Play();
     }
 
     private System.Collections.IEnumerator FadeOut(AudioClip clip)
     {
-        float startVolume = audioSource.volume;
+        float startVolume = mainAudioSource.volume;
         float timer = 0.0f;
 
         while (timer < fadeDuration)
         {
             timer += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(startVolume, 0.0f, timer / fadeDuration);
+            mainAudioSource.volume = Mathf.Lerp(startVolume, 0.0f, timer / fadeDuration);
             yield return null;
         }
 
-        audioSource.Stop();
+        mainAudioSource.Stop();
         PlayTrack(clip);
     }
+    
+    public void ChangeMaintTheme(AudioClip audioClip)
+    {
+        StartCoroutine(FadeOut(audioClip));
+    }
 
-    ////Test
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.O))
-    //    {
-    //        StartRewindClip(this);
-    //        Debug.Log("Start");
-    //    }
-    //    if (Input.GetKeyDown(KeyCode.P))
-    //    {
-    //        StopRewindClip(this);
-    //        Debug.Log("Stop");
-    //    }
-    //}
+    public void ResetMainTheme()
+    {
+        StartCoroutine(FadeOut(themeClip));
+    }
 
+    public AudioMixer GetMixer()
+    {
+        return mixer;
+    }
 
 }
