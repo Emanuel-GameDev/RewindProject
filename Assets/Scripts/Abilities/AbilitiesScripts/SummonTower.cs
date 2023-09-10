@@ -9,7 +9,6 @@ public class SummonTower : Ability
     [Tooltip("Radius of the sphere generated to check if summon pos is inside other objects")]
     [SerializeField] private float summonSphereRadius;
     [SerializeField] private LayerMask summonMask;
-    [SerializeField] private float cooldown;
     [SerializeField] private AudioClip summonClip;
     [SerializeField] private AudioClip dismissClip;
 
@@ -109,7 +108,7 @@ public class SummonTower : Ability
     {
         base.UpdateAbility();
 
-        if (!canActivate && Time.time >= lastActivationTime + cooldown)
+        if (!canActivate && Time.time >= lastActivationTime + cooldownTime)
         {
             canActivate = true;
             lastActivationTime = 0f;

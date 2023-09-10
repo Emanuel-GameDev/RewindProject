@@ -9,7 +9,6 @@ public class CreateWind : Ability
 {
     [Header("WIND DATA")]
     [SerializeField] GameObject windZonePrefab;
-    [SerializeField] private float cooldown;
     [Tooltip("with this bool checked the cooldown will scale based on the time the ability is used, start cooldown is 0")]
     [SerializeField] private bool scalingCooldown;
     [Tooltip("The divider applied to the scale. the operation is seconds / this var")]
@@ -48,7 +47,7 @@ public class CreateWind : Ability
         }
 
         if (scalingCooldown)
-            cooldown = 0f;
+            cooldownTime = 0f;
 
         if (facingRight) SetWindZoneRotation(0f);
         else SetWindZoneRotation(180f);
@@ -89,9 +88,9 @@ public class CreateWind : Ability
             windZoneObj.GetComponent<AreaEffector2D>().forceMagnitude += (Time.deltaTime * forceMultiplier);
 
             if (scalingCooldown)
-                cooldown += (Time.deltaTime / cooldownDivider);
+                cooldownTime += (Time.deltaTime / cooldownDivider);
         }
-        if (!canActivate && Time.time >= (lastActivationTime + cooldown))
+        if (!canActivate && Time.time >= (lastActivationTime + cooldownTime))
         {
             canActivate = true;
         }
