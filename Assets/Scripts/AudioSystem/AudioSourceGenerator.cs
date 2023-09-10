@@ -1,6 +1,3 @@
-using Mono.CompilerServices.SymbolWriter;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -12,10 +9,17 @@ public class AudioSourceGenerator : MonoBehaviour
 
     public void PlaySound(AudioClip audio)
     {
+        GameObject soundObject = CreateSource(audio);
+
+        Destroy(soundObject, audio.length);
+    }
+
+    private GameObject CreateSource(AudioClip audio)
+    {
         GameObject soundObject = new GameObject();
 
         AudioSource source = soundObject.AddComponent<AudioSource>();
-        
+
         source.outputAudioMixerGroup = GameManager.Instance.audioManager.mixer;
         source.clip = audio;
         source.volume = volume;
@@ -26,8 +30,20 @@ public class AudioSourceGenerator : MonoBehaviour
             source.maxDistance = maxHearingDistance;
         }
         soundObject.GetComponent<AudioSource>().Play();
-
-        Destroy(soundObject, audio.length);
+        return soundObject;
     }
 
+    public GameObject PlaySoundRepeat(AudioClip audio)
+    {
+        GameObject soundObject = CreateSource(audio);
+
+        soundObject.GetComponent<AudioSource>().loop = true;
+
+        return soundObject;
+    }
+
+    public void DestroyRepeatingSound(GameObject GO)
+    {
+        Destroy(GO);
+    }
 }

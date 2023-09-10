@@ -6,7 +6,12 @@ public class SummonTower : Ability
 {
     [SerializeField] private GameObject towerPrefab;
     [SerializeField] private Vector2 summonOffset;
+    [Tooltip("Radius of the sphere generated to check if summon pos is inside other objects")]
+    [SerializeField] private float summonSphereRadius;
+    [SerializeField] private LayerMask summonMask;
     [SerializeField] private float cooldown;
+    [SerializeField] private AudioClip summonClip;
+    [SerializeField] private AudioClip dismissClip;
 
     [Header("TOWER DATA")]
     [SerializeField] private int hp;
@@ -18,6 +23,7 @@ public class SummonTower : Ability
     private bool canActivate = true;
     private float lastActivationTime;
     private bool active = false;
+    private Character character;
 
     private void OnEnable()
     {
@@ -41,21 +47,55 @@ public class SummonTower : Ability
     {
         if (!canActivate || currentTower == null || active) return;
 
+        character = parent.GetComponent<Character>();
         PlayerController player = parent.GetComponent<PlayerController>();
 
-        if (!player.grounded || !currentTower.CanBeActivated()) return;
-        
         Vector2 summonPos;
+        float summonRot;
 
-        if (facingRight)
-            summonPos = new Vector2(player.transform.position.x + summonOffset.x, player.transform.position.y + summonOffset.y);
+        bool gravityDown = player.IsGravityDownward();
+
+        GameObject contact = currentTower.GetContactPoint(player.transform.position, gravityDown);
+        Debug.Log(contact.name);
+
+        if (contact == null)
+        {
+            Debug.LogError("NO COntact found, can't activate ability");
+            return;
+        }
+
+        if (gravityDown)
+        {
+            if (facingRight)
+                summonPos = new Vector2(player.transform.position.x + summonOffset.x, contact.transform.position.y + summonOffset.y);
+            else
+                summonPos = new Vector2(player.transform.position.x - summonOffset.x, contact.transform.position.y + summonOffset.y);
+
+            summonRot = 0f;
+        }
         else
-            summonPos = new Vector2(player.transform.position.x - summonOffset.x, player.transform.position.y + summonOffset.y);
+        {
+            if (facingRight)
+                summonPos = new Vector2(player.transform.position.x + summonOffset.x, contact.transform.position.y - summonOffset.y);
+            else
+                summonPos = new Vector2(player.transform.position.x - summonOffset.x, contact.transform.position.y - summonOffset.y);
+
+            summonRot = 180f;
+        }
+
+        if (!player.grounded || !currentTower.CanBeActivated(summonPos, summonSphereRadius, summonMask)) return;
 
         parent.GetComponent<Animator>().SetTrigger("Defending");
-        currentTower.Activate(this, summonPos, facingRight);
+
+        currentTower.Activate(this, summonPos, summonRot, facingRight);
+        parent.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(summonClip);
 
         active = true;
+    }
+
+    public void DismissAudio()
+    {
+        character.gameObject.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(dismissClip);
     }
 
     public void StartCooldown()
@@ -84,6 +124,7 @@ public class SummonTower : Ability
         currentTower.Initialize(hp, collisionMask);
 
         canActivate = true;
+        active = false;
     }
 
     private void CheckHorizontalFacing(InputAction.CallbackContext obj)
