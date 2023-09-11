@@ -68,13 +68,13 @@ public class RewindTimeAbility : Ability
     {
         if (!isActive)
         {
+            player = parent.GetComponent<PlayerController>();
             player.ActivateCardAnimation(this);
             player.StartCoroutine(StopAimation(parent));
             PubSub.Instance.Notify(EMessageType.ParryStart, this);
             isActive = true;
             started = true;
             elapsedTime = 0;
-            player = parent.GetComponent<PlayerController>();
             player.inputs.Player.Disable();
         }
     }
