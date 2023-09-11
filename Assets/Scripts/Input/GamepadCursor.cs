@@ -47,27 +47,28 @@ public class GamepadCursor : MonoBehaviour
 
         InputSystem.onAfterUpdate += UpdateMotion;
         playerInputs.onControlsChanged += OnControlsChanged;
-
+        
     }
 
     private void Start()
     {
         //SetFakeCursor(true);
         //SetRealCursor(false);
-        
+        SetFakeCursor(false);
+        SetRealCursor(false);
 
-        if (playerInputs.currentControlScheme == mouseScheme)
-        {
-            cursorTransform.gameObject.SetActive(false);
-            Cursor.visible = true;
-            previousControlScheme = mouseScheme;
-        }
-        else if (playerInputs.currentControlScheme == gamepadScheme)
-        {
-            cursorTransform.gameObject.SetActive(true);
-            Cursor.visible = false;
-            previousControlScheme = gamepadScheme;
-        }
+        //if (playerInputs.currentControlScheme == mouseScheme)
+        //{
+        //    cursorTransform.gameObject.SetActive(false);
+        //    Cursor.visible = true;
+        //    previousControlScheme = mouseScheme;
+        //}
+        //else if (playerInputs.currentControlScheme == gamepadScheme)
+        //{
+        //    cursorTransform.gameObject.SetActive(true);
+        //    Cursor.visible = false;
+        //    previousControlScheme = gamepadScheme;
+        //}
     }
 
     private void OnControlsChanged(PlayerInput input)
@@ -86,6 +87,14 @@ public class GamepadCursor : MonoBehaviour
             InputState.Change(virtualMouse.position, currentMouse.position.ReadValue());
             AnchorCursor(currentMouse.position.ReadValue());
             previousControlScheme = gamepadScheme;
+        }
+    }
+
+    private void Update()
+    {
+        if(playerInputs.currentControlScheme == gamepadScheme)
+        {
+            Cursor.visible = false;
         }
     }
 

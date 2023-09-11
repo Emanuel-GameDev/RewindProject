@@ -176,9 +176,9 @@ public class AbilityMenu : MonoBehaviour
     {
         if (!gameObject.activeSelf)
         {
-            Cursor.visible = true;
-            GameManager.Instance.fakeCursor.SetFakeCursor(true);
-            GameManager.Instance.fakeCursor.gameObject.SetActive(true);
+            Cursor.visible = false;
+            GameManager.Instance.fakeCursor.SetFakeCursor(false);
+            //GameManager.Instance.fakeCursor.gameObject.SetActive(true);
             gameObject.SetActive(true);
         }
 
@@ -197,9 +197,8 @@ public class AbilityMenu : MonoBehaviour
     {
         if (gameObject.activeSelf)
         {
-            Cursor.visible = false;
-            GameManager.Instance.fakeCursor.SetFakeCursor(false);
-            GameManager.Instance.fakeCursor.gameObject.SetActive(false);
+            //Cursor.visible = false;
+            //GameManager.Instance.fakeCursor.SetFakeCursor(false);
             gameObject.SetActive(false);
         }
 
