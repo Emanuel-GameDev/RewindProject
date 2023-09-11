@@ -175,10 +175,20 @@ public class AbilityMenu : MonoBehaviour
     public void Open()
     {
         if (!gameObject.activeSelf)
+        {
+            Cursor.visible = false;
+            GameManager.Instance.fakeCursor.SetFakeCursor(false);
+            //GameManager.Instance.fakeCursor.gameObject.SetActive(true);
             gameObject.SetActive(true);
+        }
 
         originalTimeScale = Time.timeScale;
         Time.timeScale = timeDividerOnMenuOpen;
+
+        
+
+        Cursor.visible = true;
+        GameManager.Instance.fakeCursor.SetFakeCursor(true);
 
         LoadCards();
     }
@@ -186,7 +196,12 @@ public class AbilityMenu : MonoBehaviour
     public void Close()
     {
         if (gameObject.activeSelf)
+        {
+            //Cursor.visible = false;
+            //GameManager.Instance.fakeCursor.SetFakeCursor(false);
             gameObject.SetActive(false);
+        }
+
 
         loadedSlots.Clear();
         passiveLoadedSlots.Clear();
