@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using TMPro;
-using UnityEditor;
 using UnityEngine.UI;
 
 
@@ -31,7 +30,11 @@ public class MenuButton :  Button,ISelectHandler
         }
 
     }
-    
+    public void ReloadLevel()
+    {
+        LevelManager.instance.ReloadLevel();
+    }
+
     //public override void OnSubmit(BaseEventData eventData)
     //{
     //    base.OnSubmit(eventData);
@@ -86,7 +89,7 @@ public class MenuButton :  Button,ISelectHandler
         }
     }
 
-    public void LoadLevel(SceneAsset levelToLoad)
+    public void LoadLevel(string levelToLoad)
     {
         LevelManager.instance.LoadLevel(levelToLoad);
     }

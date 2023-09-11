@@ -12,7 +12,7 @@ public class Checkpoint : MonoBehaviour
 {
     public bool taken = false;
     public GameObject menu; 
-    public SceneAsset Hub;
+    public string Hub;
     [SerializeField] public MenuButton eventSystemDefaultButton;
 
     private void Start()

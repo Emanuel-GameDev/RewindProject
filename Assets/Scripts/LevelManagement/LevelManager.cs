@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ToolBox.Serialization;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -113,13 +112,16 @@ public class LevelManager : MonoBehaviour
         }
         
 
-        DataSerializer.FileSaving -= DeleteSaves;
+       DataSerializer.FileSaving -= DeleteSaves;
     }
 
     private void DeleteSaves()
     {
-        if(deleteSavesOnEditorQuit && EditorApplication.isPlaying)
-        DataSerializer.DeleteAll();
+        //if (deleteSavesOnEditorQuit && EditorApplication.isPlaying)
+        //{
+        //    Debug.Log("Delete");
+        //    DataSerializer.DeleteAll();
+        //}
     }
 
 
@@ -185,7 +187,7 @@ public class LevelManager : MonoBehaviour
             PlayerController.instance.inputs.Enable();
     }
 
-    public void LoadLevel(SceneAsset levelToLoad)
+    public void LoadLevel(string levelToLoad)
     {
         if (loadingScreen && fadeInOnLevelUnload)
         {
@@ -193,7 +195,7 @@ public class LevelManager : MonoBehaviour
             loadingScreen.SetActive(true);
             GetComponent<Animator>().SetTrigger("FadeIn");
         }
-        StartCoroutine(LoadSceneAsynchronously(levelToLoad.name));
+        StartCoroutine(LoadSceneAsynchronously(levelToLoad));
     }
 
     public void ActivateDeathScreen()

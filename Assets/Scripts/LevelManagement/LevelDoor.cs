@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelDoor : MonoBehaviour
 {
-    [SerializeField] SceneAsset levelToLoad;
+    [SerializeField] string levelToLoad;
     [SerializeField] GameObject levelSelectionMenu;
     [SerializeField] public MenuButton eventSystemDefaultButton;
 
@@ -18,8 +18,8 @@ public class LevelDoor : MonoBehaviour
 
     private void OnEnable()
     {
-        if (DataSerializer.HasKey(levelToLoad.name + "TAKENCHECKPOINTS"))
-            checkpointTaken = DataSerializer.Load<List<bool>>(levelToLoad.name + "TAKENCHECKPOINTS");
+        if (DataSerializer.HasKey(levelToLoad + "TAKENCHECKPOINTS"))
+            checkpointTaken = DataSerializer.Load<List<bool>>(levelToLoad + "TAKENCHECKPOINTS");
 
         PlayerController.instance.inputs.Menu.Enable();
 

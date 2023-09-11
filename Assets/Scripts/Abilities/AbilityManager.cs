@@ -3,6 +3,7 @@ using System.Linq;
 using ToolBox.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AbilityManager : MonoBehaviour
 {
@@ -35,8 +36,6 @@ public class AbilityManager : MonoBehaviour
 
         if (!GameManager.Instance.debug)
         {
-
-
             if (DataSerializer.TryLoad<List<string>>("ABILITIES", out abilityNameToSave))
             {
                 foreach (string abilityName in abilityNameToSave)

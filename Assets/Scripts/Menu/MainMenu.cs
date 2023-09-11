@@ -6,6 +6,7 @@ using UnityEngine;
 public class MainMenu : Menu
 {
     [SerializeField] MenuButton continueButton;
+    [SerializeField] string hubName;
 
     public override void Start()
     {
@@ -16,6 +17,11 @@ public class MainMenu : Menu
         else
             continueButton.gameObject.SetActive(false);
 
+    }
+    
+    public void LoadLevel(string hubName)
+    {
+        LevelManager.instance.LoadLevel(hubName);   
     }
 
     public void GameStartedOnce()
