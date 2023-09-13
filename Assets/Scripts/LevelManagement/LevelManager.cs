@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ToolBox.Serialization;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    [SerializeField] List<Checkpoint> checkpoints;
+    public List<Checkpoint> checkpoints;
     public static LevelManager instance;
 
     [HideInInspector] public List<bool> checkpointsTaken;
@@ -18,61 +18,112 @@ public class LevelManager : MonoBehaviour
 
     public bool deleteSavesOnEditorQuit=false; 
     public PlayerInputs inputs { get; private set; }
-    
+
+    [SerializeField] bool hideCursor;
+
+    [Header("Loadings")]
+    [SerializeField] GameObject loadingScreen;
+    [SerializeField] bool fadeInOnLevelUnload = true;
+    [SerializeField] bool fadeOutOnLevelLoad = true;
+
+    PlayableDirector playableDirector;
 
     private void OnEnable()
     {
         instance = this;
-        inputs = new PlayerInputs();
-        inputs.Player.Enable();
-        PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
 
-        SceneManager.sceneLoaded += OnLevelLoaded;
-        inputs.Player.Respawn.performed += OnRespawn;
+        playableDirector = GetComponent<PlayableDirector>();
+        playableDirector.time = 0;
+
+        Time.timeScale = 1;
+
+
+        level = SceneManager.GetActiveScene();
+
+        GetSpawnPoint();
+
+        if (PlayerController.instance)
+        {
+            Respawn();
+
+            inputs = PlayerController.instance.inputs;
+            PubSub.Instance.RegisterFunction(EMessageType.CheckpointVisited, SaveCheckpoints);
+
+        }
+        
+
+        if (loadingScreen)
+        {
+            if (fadeOutOnLevelLoad)
+            {
+                loadingScreen.SetActive(true);
+                GetComponent<Animator>().SetTrigger("FadeOut");
+
+                if (PlayerController.instance)
+                    PlayerController.instance.inputs.Disable();
+
+            }
+            else
+            {
+                loadingScreen.SetActive(false);
+
+                if (PlayerController.instance)
+                    PlayerController.instance.inputs.Enable();
+            }
+
+
+        }
+
 
         DataSerializer.FileSaving += DeleteSaves;
     }
-
     
+    private void Start()
+    {
+        SetCheckpoint();
+        // Locks the cursor
+        if (hideCursor)
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+        }
+    }
 
 
     private void SaveCheckpoints(object obj)
     {
+        
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
             checkpointsTaken[i] = checkpoints[i].taken;
         }
 
         DataSerializer.Save(level.name + "TAKENCHECKPOINTS", checkpointsTaken);
+
+
     }
 
     private void OnDisable()
     {
-        inputs.Player.Disable();
+        if (PlayerController.instance)
+        {
+            inputs.Player.Disable();
 
-        SceneManager.sceneLoaded -= OnLevelLoaded;
-        inputs.Player.Respawn.performed -= OnRespawn;
+        }
+        
 
-        DataSerializer.FileSaving -= DeleteSaves;
+       DataSerializer.FileSaving -= DeleteSaves;
     }
 
     private void DeleteSaves()
     {
-        if(deleteSavesOnEditorQuit && EditorApplication.isPlaying)
-        DataSerializer.DeleteAll();
+        //if (deleteSavesOnEditorQuit && EditorApplication.isPlaying)
+        //{
+        //    Debug.Log("Delete");
+        //    DataSerializer.DeleteAll();
+        //}
     }
 
-    private void OnLevelLoaded(Scene arg0, LoadSceneMode arg1)
-    {
-        level = SceneManager.GetActiveScene();
-
-
-        GetSpawnPoint();
-
-        SetCheckpoint();
-
-        Respawn();
-    }
 
     private void SetCheckpoint()
     {
@@ -82,7 +133,7 @@ public class LevelManager : MonoBehaviour
         if (DataSerializer.HasKey(level.name + "TAKENCHECKPOINTS"))
             checkpointsTaken = DataSerializer.Load<List<bool>>(level.name + "TAKENCHECKPOINTS");
         else
-            checkpointsTaken = new List<bool>() { true,false,false };
+            checkpointsTaken = new List<bool>() { true,false,false,false,false };
 
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
@@ -93,11 +144,8 @@ public class LevelManager : MonoBehaviour
 
     private void GetSpawnPoint()
     {
-        if (!DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad))
-            return;
-
-        DataSerializer.DeleteKey("CHECKPOINTIDTOLOAD");
-
+        DataSerializer.TryLoad("CHECKPOINTIDTOLOAD", out int idToLoad);
+       
 
 
         if (checkpoints.Count < 1)
@@ -109,12 +157,6 @@ public class LevelManager : MonoBehaviour
     }
 
 
-
-    private void OnRespawn(InputAction.CallbackContext obj)
-    {
-        Respawn();
-    }
-
     public void Respawn()
     {
         if(DataSerializer.TryLoad("SPAWNPOINT", out Vector3 spawnPoint))
@@ -122,6 +164,7 @@ public class LevelManager : MonoBehaviour
         else
             Teleport(PlayerController.instance.gameObject, checkpoints[0].transform.position);
 
+        
         PlayerController.instance.GetComponent<Damageable>().SetMaxHealth();
     }
 
@@ -134,5 +177,77 @@ public class LevelManager : MonoBehaviour
     {
         objectToTeleport.transform.position = new Vector3(teleportPosition.x, teleportPosition.y, 0);
     }
+
+    public void LoadingScreenEnded()
+    {
+        if(loadingScreen)
+            loadingScreen.SetActive(false);
+
+        if (PlayerController.instance)
+            PlayerController.instance.inputs.Enable();
+    }
+
+    public void LoadLevel(string levelToLoad)
+    {
+        if (loadingScreen && fadeInOnLevelUnload)
+        {
+            Time.timeScale = 1;
+            loadingScreen.SetActive(true);
+            GetComponent<Animator>().SetTrigger("FadeIn");
+        }
+        StartCoroutine(LoadSceneAsynchronously(levelToLoad));
+    }
+
+    public void ActivateDeathScreen()
+    {
+        PlayerController.instance.inputs.Disable();
+        PlayerController.instance.gameObject.SetActive(false);
+
+        playableDirector.Play(playableDirector.playableAsset);
+        
+    }
+
+    public void DeathScreenEnded()
+    {
+        LoadSceneAsynchronously(level.name);
+    }
+
+    public void ReloadLevel()
+    {
+        if (loadingScreen && fadeInOnLevelUnload)
+        {
+            Time.timeScale = 1;
+            loadingScreen.SetActive(true);
+            GetComponent<Animator>().SetTrigger("FadeIn");
+        }
+        StartCoroutine(LoadSceneAsynchronously(level.name));
+        //SceneManager.LoadScene(level.name);
+    }
+
+
+    public IEnumerator LoadSceneAsynchronously(string nameLevelToLoad)
+    {
+        
+
+        if (PlayerController.instance)
+        {
+            PlayerController.instance.inputs.Disable();
+        }
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync(nameLevelToLoad);
+
+        AudioSource[] components = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource a in components)
+        {
+            a.Stop();
+        }
+
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
+    }
+
 
 }

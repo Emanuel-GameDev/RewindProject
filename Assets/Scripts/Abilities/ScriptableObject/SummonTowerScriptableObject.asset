@@ -12,7 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e370207b559c148a1e1e4b63315eb8, type: 3}
   m_Name: SummonTowerScriptableObject
   m_EditorClassIdentifier: 
-  name: SummonTower
-  icon: {fileID: 21300000, guid: 04c57d5f57710ea458db903eeaaf0d6d, type: 3}
+  name: XVI - La Torre
+  description: La rovina ineluttabile
+  tutorial: LA TORRE INCREDIB ILE
+  icon: {fileID: 21300000, guid: 9ae69a19f77bbb34c9fa2fecc6b58ba7, type: 3}
   cooldownTime: 0
-  towerPrefab: {fileID: 2820619917356115125, guid: e5cdd7076c67d9f4a8ceef81691252c4, type: 3}
+  passive: 0
+  smallIcon: {fileID: 21300000, guid: 721a6dadd2c63964abde46b286269a7d, type: 3}
+  global: 0
+  isActive: 0
+  towerPrefab: {fileID: 7463475878522753492, guid: e5cdd7076c67d9f4a8ceef81691252c4, type: 3}
+  summonOffset: {x: 1, y: 0}
+  summonSphereRadius: 1.22
+  summonMask:
+    serializedVersion: 2
+    m_Bits: 256
+  cooldown: 0.5
+  summonClip: {fileID: 8300000, guid: 62d33e55c04b1424c9ee847d4983de76, type: 3}
+  dismissClip: {fileID: 8300000, guid: 59b17e441cbd7e941aaa0fd6c798ffec, type: 3}
+  hp: 1
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 576

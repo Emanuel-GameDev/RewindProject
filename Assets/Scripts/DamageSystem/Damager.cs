@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,8 @@ using UnityEngine;
 public class Damager : MonoBehaviour
 {
     [SerializeField] public int damage = 1;
-    [SerializeField] LayerMask targetLayers;
+    [SerializeField] protected LayerMask targetLayers;
+    [SerializeField] float knockbackForce = 1;
 
     public virtual void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,10 +23,24 @@ public class Damager : MonoBehaviour
 
     public void DealDamage(Damageable damageable)
     {
-        damageable.TakeDamage(damage);
+        if (damageable.invincible)
+            return;
+
+        damageable.TakeDamage(damage, this);
+
+        if (damageable.knockable && knockbackForce>0)
+            KnockBack(damageable);
     }
 
-    private bool IsInLayerMask(int layer, LayerMask layerMask)
+    private void KnockBack(Damageable damageable)
+    {
+        damageable.gameObject.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 300);
+        Vector2 vec = new Vector2((damageable.GetComponentInParent<Transform>(true).position.x - transform.position.x), 0);
+        damageable.gameObject.GetComponent<Rigidbody2D>().AddForce(vec.normalized * knockbackForce * 1000);
+
+    }
+
+    protected bool IsInLayerMask(int layer, LayerMask layerMask)
     {
         // Converte la LayerMask in un intero bit a bit
         int layerMaskValue = layerMask.value;

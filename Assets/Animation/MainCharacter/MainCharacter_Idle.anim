@@ -74,10 +74,49 @@ AnimationClip:
     path: 
     classID: 70
     script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_FlipX
+    path: Sprite
+    classID: 212
+    script: {fileID: 0}
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 05c4d3a1bb7f7684fb5c256d3a4a9311, type: 3}
+      value: {fileID: 21300000, guid: b8f381d5a519dd44c84536821ae0864c, type: 3}
+    - time: 0.1
+      value: {fileID: 21300000, guid: e6d053199d30c484c98e5ec906f4c5e6, type: 3}
+    - time: 0.2
+      value: {fileID: 21300000, guid: 149a15e18fdba374a86889c362afee49, type: 3}
+    - time: 0.3
+      value: {fileID: 21300000, guid: a50d143eae5ecaf4bbac2e577a785ae5, type: 3}
+    - time: 0.4
+      value: {fileID: 21300000, guid: 0a0c262415fb3e244b35f54dbc883005, type: 3}
+    - time: 0.5
+      value: {fileID: 21300000, guid: 92295bd919107ca44a1682cea05ad393, type: 3}
+    - time: 0.6
+      value: {fileID: 21300000, guid: 5c5b097ec4426f7419649209c7e1ec46, type: 3}
+    - time: 0.7
+      value: {fileID: 21300000, guid: 4f45350f26261a64aa04f7bc32165472, type: 3}
+    - time: 0.8
+      value: {fileID: 21300000, guid: 985779ce8325aab43a94a1cef5a5c928, type: 3}
+    - time: 0.9
+      value: {fileID: 21300000, guid: 7340702442bec0742add9894e81e210b, type: 3}
+    - time: 1
+      value: {fileID: 21300000, guid: 7340702442bec0742add9894e81e210b, type: 3}
     attribute: m_Sprite
     path: Sprite
     classID: 212
@@ -89,6 +128,13 @@ AnimationClip:
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
     genericBindings:
+    - serializedVersion: 2
+      path: 850496168
+      attribute: 555744692
+      script: {fileID: 0}
+      typeID: 212
+      customType: 0
+      isPPtrCurve: 0
     - serializedVersion: 2
       path: 850496168
       attribute: 0
@@ -118,19 +164,29 @@ AnimationClip:
       customType: 0
       isPPtrCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 05c4d3a1bb7f7684fb5c256d3a4a9311, type: 3}
+    - {fileID: 21300000, guid: b8f381d5a519dd44c84536821ae0864c, type: 3}
+    - {fileID: 21300000, guid: e6d053199d30c484c98e5ec906f4c5e6, type: 3}
+    - {fileID: 21300000, guid: 149a15e18fdba374a86889c362afee49, type: 3}
+    - {fileID: 21300000, guid: a50d143eae5ecaf4bbac2e577a785ae5, type: 3}
+    - {fileID: 21300000, guid: 0a0c262415fb3e244b35f54dbc883005, type: 3}
+    - {fileID: 21300000, guid: 92295bd919107ca44a1682cea05ad393, type: 3}
+    - {fileID: 21300000, guid: 5c5b097ec4426f7419649209c7e1ec46, type: 3}
+    - {fileID: 21300000, guid: 4f45350f26261a64aa04f7bc32165472, type: 3}
+    - {fileID: 21300000, guid: 985779ce8325aab43a94a1cef5a5c928, type: 3}
+    - {fileID: 21300000, guid: 7340702442bec0742add9894e81e210b, type: 3}
+    - {fileID: 21300000, guid: 7340702442bec0742add9894e81e210b, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.016666668
+    m_StopTime: 1.0166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 0
-    m_LoopBlend: 0
+    m_LoopTime: 1
+    m_LoopBlend: 1
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
     m_LoopBlendPositionXZ: 0
@@ -196,6 +252,25 @@ AnimationClip:
     attribute: m_Size.x
     path: 
     classID: 70
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: Infinity
+        outSlope: Infinity
+        tangentMode: 103
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_FlipX
+    path: Sprite
+    classID: 212
     script: {fileID: 0}
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0

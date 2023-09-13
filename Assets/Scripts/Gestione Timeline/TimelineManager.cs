@@ -17,6 +17,8 @@ public class TimelineManager : MonoBehaviour
     [SerializeField] float lockTime = 5f;
     [Tooltip("Usato per collegare le timeline con le Zone corrispondenti")]
     [SerializeField] List<TimeZone> timeZones;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip audioClip;
 
     private float timelineDuration;
     public eZone actualZone { get; private set; }
@@ -49,6 +51,7 @@ public class TimelineManager : MonoBehaviour
     private bool isForwarding = false;
     private bool isRewinding = false;
     private bool canUseRewind = false;
+    private bool dontLockAtStart = false;
 
 
     //Instance
@@ -101,6 +104,14 @@ public class TimelineManager : MonoBehaviour
 
         timelineDirector.playOnAwake = false;
         timelineDirector.extrapolationMode = DirectorWrapMode.Hold;
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.outputAudioMixerGroup = GameManager.Instance.audioManager.mixer;
+        }
+        audioSource.clip = audioClip;
+        audioSource.Stop();
         //RewindIsactive = false;
     }
 
@@ -127,7 +138,19 @@ public class TimelineManager : MonoBehaviour
             if (elapsedTime > lockTime)
             {
                 PlayCurrentTimeline();
+                audioSource.Stop();
             }
+            else
+                PlayAudioWithIncreasingSpeed();
+        }
+    }
+
+    private void PlayAudioWithIncreasingSpeed()
+    {
+        if (audioSource.time < lockTime)
+        {
+            float pitch = Mathf.Lerp(1.0f, (audioSource.clip.length / lockTime), audioSource.time / lockTime);
+            audioSource.pitch = pitch;
         }
     }
 
@@ -161,7 +184,7 @@ public class TimelineManager : MonoBehaviour
     //FUNZIONI PUBBLICHE
     //==========================================================================================================
     #region Funzioni Pubbliche
-    public void ChangeTimeline(eZone zone)
+    public void ChangeTimeline(eZone zone, bool dontLockAtStart)
     {
         if(zone == actualZone) 
             return;
@@ -182,6 +205,7 @@ public class TimelineManager : MonoBehaviour
         SetTime(timezone.actualTime);
 
         actualZone = zone;
+        this.dontLockAtStart = dontLockAtStart;
     }
 
     public void PlayCurrentTimeline()
@@ -193,13 +217,15 @@ public class TimelineManager : MonoBehaviour
 
     public void LockInTime()
     {
-        if (timelineIsAtStart || timelineIsAtEnd)
+        if ((timelineIsAtStart && !dontLockAtStart) || timelineIsAtEnd)
         {
             RewindIsactive = false;
         }
         else
         {
             isLocked = true;
+            audioSource.Play();
+            audioSource.pitch = 1.0f;
             PauseTimeline();
             elapsedTime = 0;
             RewindIsactive = false;
@@ -232,27 +258,37 @@ public class TimelineManager : MonoBehaviour
         }
     }
 
-    public void StartStopControlTimeline()
+    public bool StartStopControlTimeline()
     {
         if (isLocked || isPlaying || !canUseRewind)
-            return;
-        
+            return false;
+
         if (!RewindIsactive)
+        {
             RewindIsactive = true;
+            return true;
+        }
         else
+        {
             LockInTime();
+            return false;
+        }
     }
 
-    public void StartForwarding()
+    public bool StartForwarding()
     {
-        if (!CanRewind()) return;
+        if (!CanRewind()) return false;
+
         isForwarding = true;
+        return true;
     }
 
-    public void StartRewinding()
+    public bool StartRewinding()
     {
-        if (!CanRewind()) return;
+        if (!CanRewind()) return false;
+
         isRewinding = true;
+        return true;
     }
 
     public void StopForwarding()
@@ -273,10 +309,10 @@ public class TimelineManager : MonoBehaviour
     public void SetAtEnd(eZone zone)
     {
         eZone actualZone = this.actualZone;
-        ChangeTimeline(zone);
+        ChangeTimeline(zone, dontLockAtStart);
         SetTime(timelineDuration);
         timelineDirector.Evaluate();
-        ChangeTimeline(actualZone);
+        ChangeTimeline(actualZone, dontLockAtStart);
     }
 
     #endregion

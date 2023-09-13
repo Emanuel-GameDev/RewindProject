@@ -1,5 +1,6 @@
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraTrigger : MonoBehaviour
 {
@@ -15,6 +16,42 @@ public class CameraTrigger : MonoBehaviour
     CameraData cameraData;
     CameraData prevCameraData;
     private bool triggered = false;
+    private bool facingRight;
+    private bool currentDirRight;
+    private bool exitedSameDirection = false;
+    private PlayerInputs inputs;
+
+    private void OnEnable()
+    {
+        inputs = PlayerController.instance.inputs;
+
+        if (!inputs.Player.enabled)
+            inputs.Player.Enable();
+
+        inputs.Player.Walk.performed += CheckHorizontalFacing;
+        inputs.Player.Run.performed += CheckHorizontalFacing;
+
+    }
+
+    private void OnDisable()
+    {
+        inputs.Player.Walk.performed -= CheckHorizontalFacing;
+        inputs.Player.Run.performed -= CheckHorizontalFacing;
+    }
+
+    private void CheckHorizontalFacing(InputAction.CallbackContext obj)
+    {
+        float value = obj.ReadValue<float>();
+
+        if (value < 0)
+        {
+            facingRight = false;
+        }
+        else
+        {
+            facingRight = true;
+        }
+    }
 
     private void Start()
     {
@@ -24,22 +61,32 @@ public class CameraTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Check player collision
-        if (collision.gameObject.GetComponent<Character>() != null && !triggered)
+        if (collision.gameObject.GetComponent<PlayerController>() != null && !triggered)
         {
             if (cameraData == null) return;
 
+            currentDirRight = facingRight;
+
             SaveCameraData();
+
             PubSub.Instance.Notify(EMessageType.CameraSwitch, cameraData);
             triggered = true;
         }
-        else if (collision.gameObject.GetComponent<Character>() != null && triggered)
+        else if (collision.gameObject.GetComponent<PlayerController>() != null && triggered)
         {
-            if (prevCameraData == null) return;
+            if (prevCameraData == null || !exitedSameDirection) return;
 
             PubSub.Instance.Notify(EMessageType.CameraSwitch, prevCameraData);
 
             triggered = false;
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (facingRight != currentDirRight) return;
+
+        exitedSameDirection = true;
     }
 
     // Used to save camera data on first trigger

@@ -6,13 +6,16 @@ public class EnviromentDamager : Damager
 {
     public override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Damageable>())
+        if (IsInLayerMask(collision.gameObject.layer, targetLayers))
         {
-            if(collision.gameObject.GetComponent<Damageable>().Health>damage)
-            LevelManager.instance.FastRespawn();
+            if (collision.gameObject.GetComponent<Damageable>())
+            {
+                if (collision.gameObject.GetComponent<Damageable>().Health > damage)
+                    LevelManager.instance.FastRespawn();
 
-            DealDamage(collision.gameObject.GetComponent<Damageable>());
+                DealDamage(collision.gameObject.GetComponent<Damageable>());
 
+            }
         }
     }
 }

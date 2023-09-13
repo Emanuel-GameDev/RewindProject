@@ -16,28 +16,27 @@ public class ParallaxItem : MonoBehaviour
     {
         mainCam = GameManager.Instance.cameraManager.mainCam;
         lastCamPos = mainCam.transform.position;
-        lenght = GetComponent<SpriteRenderer>().size.x;
+        lenght = GetComponent<SpriteRenderer>().sprite.bounds.size.x;
+        Debug.Log(gameObject.name + "   " + lenght);
     }
 
 
-    private void LateUpdate()
+    private void LateUpdate()   
     {
-    //    // Di quanto si sta spostando la telecamera
-    //    Vector3 deltaMovement = mainCam.transform.position - lastCamPos;
+        // Di quanto si sta spostando la telecamera
+        Vector3 deltaMovement = mainCam.transform.position - lastCamPos;
 
-    //    // 1 si muove come telecamera 0 sta fermo
-    //    _backgrounds[1].position += new Vector3(deltaMovement.x * backgroundSpeed.x, deltaMovement.y * backgroundSpeed.y);
-    //    lastCamPos = mainCam.transform.position;
+        // 1 si muove come telecamera 0 sta fermo
+        transform.position += new Vector3(deltaMovement.x * backgroundSpeed.x, deltaMovement.y * backgroundSpeed.y);
+        lastCamPos = mainCam.transform.position;
 
-    //    if (mainCam.transform.position.x - _backgrounds[1].position.x > lenght)
-    //    {
-    //        //transform.position = new Vector3(transform.position.x + lenght, transform.position.y);
-    //        Debug.Log("shift right");
-    //    }
-    //    else if (mainCam.transform.position.x - transform.position.x < -lenght)
-    //    {
-    //        //transform.position = new Vector3(transform.position.x - lenght, transform.position.y);
-    //        Debug.Log("Shift left");
-    //    }
+        if (mainCam.transform.position.x - transform.position.x > lenght)
+        {
+            transform.position = new Vector3(transform.position.x + lenght, transform.position.y);
+        }
+        else if (mainCam.transform.position.x - transform.position.x < -lenght)
+        {
+            transform.position = new Vector3(transform.position.x - lenght, transform.position.y);
+        }
     }
 }

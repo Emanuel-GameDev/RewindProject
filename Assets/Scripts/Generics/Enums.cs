@@ -10,7 +10,15 @@ public enum EMessageType
     AbilityPicked,
     AbilityAnimStart,
     TimeRewindStart,
-    TimeRewindStop
+    TimeRewindStop,
+    RewindZoneEntered,
+    CardSelected,
+    DeathCardActivated,
+    DeathCardDisactivated,
+    SpawnBoss,
+    BossfightStart,
+    ParryStart,
+    ParryStop
 }
 
 public enum EAbilityState

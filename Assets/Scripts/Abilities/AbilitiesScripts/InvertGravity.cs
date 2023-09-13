@@ -1,67 +1,101 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Timers;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Ability/InvertGravity")]
 public class InvertGravity : Ability
 {
-    [SerializeField] LayerMask targetMask;
-    //private float elapsedTime = 0;
-    //private EAbilityState state = EAbilityState.ready;
-    bool readyToUse = true;
+    [Tooltip("distance of the ray used to check layer, set this to 0 in order to have an infinite ray")]
+    [SerializeField, Min(0f)] private float rayDistance;
+    [SerializeField] private AudioClip upClip;
+    [SerializeField] private AudioClip downClip;
+
+    private float lastActivationTime = 0f;
+    private Animator animator;
+    private bool canActivate = true;
 
     public override void Activate1(GameObject parent)
     {
-        if (!readyToUse)
-            return;
-        
-        RaycastHit2D hit;
-        Vector3 rayDirection;
+        if (!canActivate) return;
 
-        if (PlayerController.instance.IsGravityDownward())
+        animator.SetBool("UsingCard", true);
+        animator.SetTrigger("ActivateCard");
+
+        parent.GetComponent<PlayerController>().StartCoroutine(WaitToInvert(parent));
+    }
+
+    private void Invert(GameObject parent)
+    {
+        RaycastHit2D[] hits;
+        Vector3 rayDirection;
+        isActive = true;
+        //bool ignoreHit = false;
+        LayerMask layerMask = LayerMask.GetMask("Ground");
+        bool hitted = false;
+        bool downGravity = PlayerController.instance.IsGravityDownward();
+
+        if (downGravity)
             rayDirection = Vector3.up; // Direzione verso l'alto
         else
             rayDirection = Vector3.down; // Direzione verso il basso
 
-        hit = Physics2D.Raycast(parent.transform.position, rayDirection, Mathf.Infinity, targetMask);
+        // Apply ray distance if needed
+        if (rayDistance > 0)
+            hits = Physics2D.RaycastAll(parent.transform.position, rayDirection, rayDistance);
+        else
+            hits = Physics2D.RaycastAll(parent.transform.position, rayDirection, Mathf.Infinity);
 
-        if (hit.collider != null)
+        foreach (RaycastHit2D hit in hits)
         {
-            // Il raycast ha colpito un oggetto nel layer "Ground"
-            Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
-
-            rBody.gravityScale = -rBody.gravityScale;
-            parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
-            readyToUse = false;
-            LevelManager.instance.StartCoroutine(Cooldown());
+            if (hit.collider != null && hit.collider.gameObject.layer == Mathf.RoundToInt(Mathf.Log(layerMask.value, 2f)))
+            {
+                hitted = true;
+                break;
+            }
         }
 
+        if (!hitted) return;
 
+        if (downGravity)
+            parent.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(upClip);
+        else
+            parent.GetComponent<MainCharacter_SoundsGenerator>().PlaySound(downClip);
+
+        // Obj valid to activate ability
+        Rigidbody2D rBody = parent.GetComponent<Rigidbody2D>();
+
+        rBody.gravityScale = -rBody.gravityScale;
+        parent.transform.localScale = new Vector3(parent.transform.localScale.x, -parent.transform.localScale.y, parent.transform.localScale.z);
+
+        parent.GetComponent<PlayerController>().activateCurrentAbility = false;
+        parent.GetComponent<PlayerController>().animator.SetBool("UsingCard", false);
+
+        isActive = false;
+        canActivate = false;
+        lastActivationTime = Time.time;
     }
 
-    private void OnEnable()
+    public override void Pick(Character picker)
     {
-        readyToUse = true;
+        base.Pick(picker);
+
+        animator = picker.gameObject.GetComponent<Animator>();
     }
 
-    IEnumerator Cooldown()
+    public override void UpdateAbility()
     {
-        yield return new WaitForSeconds(cooldownTime);
-        readyToUse = true;
+        if (!canActivate && Time.time >= lastActivationTime + cooldownTime)
+        {
+            canActivate = true;
+        }
     }
 
-    //private void Update()
-    //{
-    //    if(state == EAbilityState.cooldown)
-    //    {
-    //        elapsedTime += Time.deltaTime;
+    private IEnumerator WaitToInvert(GameObject parent)
+    {
+        yield return new WaitUntil(() => parent.GetComponent<PlayerController>().activateCurrentAbility == true);
+        Invert(parent);
+    }
 
-    //        if (elapsedTime > cooldownTime) 
-    //        {
-    //            state = EAbilityState.ready;
-    //        }
-    //    }
-    //}
 
 }
+

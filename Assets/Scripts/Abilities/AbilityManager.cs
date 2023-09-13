@@ -1,73 +1,133 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ToolBox.Serialization;
 using UnityEngine;
-using UnityEngine.UI;   
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AbilityManager : MonoBehaviour
 {
     [SerializeField] List<Ability> _gameAbilities;
-    [SerializeField] private List<Ability> _abilities;
+    [SerializeField] public List<Ability> _abilities;
 
-    [SerializeField] List<string> abilityNameToSave = new List<string>();
-    
+    [SerializeField] public List<string> abilityNameToSave = new List<string>();
+
     [SerializeField] private List<AbilityHolder> _holders = new List<AbilityHolder>();
-    [SerializeField] private AbilityWheel _wheel;
+
+    public AbilityWheel wheel;
+
+    
+
+    #region Debug Variables
+    [HideInInspector]
+    public List<Ability> DebugAbilities = new List<Ability>();
+
+    #endregion
 
     private void Awake()
     {
         PubSub.Instance.RegisterFunction(EMessageType.AbilityPicked, AddToAbilities);
         PubSub.Instance.RegisterFunction(EMessageType.ActiveAbilityChanged, GiveAbility);
-        
-        if (DataSerializer.TryLoad<List<string>>("ABILITIES", out abilityNameToSave))
+
+    }
+
+    private void Start()
+    {
+
+        if (!GameManager.Instance.debug)
         {
-            foreach(string abilityName in abilityNameToSave)
+            if (DataSerializer.TryLoad<List<string>>("ABILITIES", out abilityNameToSave))
             {
-                Ability abilityToGive = _gameAbilities.Find(a => a.name == abilityName);
-                AddToAbilities(abilityToGive);
+                foreach (string abilityName in abilityNameToSave)
+                {
+                    Ability abilityToGive = _gameAbilities.Find(a => a.name == abilityName);
+                    abilityToGive.Pick(PlayerController.instance);
+                }
+
+            }
+            else
+            {
+                abilityNameToSave = new List<string>();
+                _abilities = new List<Ability>();
             }
 
-        }
-        else
-        {
-            abilityNameToSave = new List<string>();
-            _abilities = new List<Ability>();
         }
 
     }
 
     private void AddToAbilities(object obj)
     {
+        // Filter
         if (obj is not Ability) return;
-        Ability newAbility = (Ability)obj;
+        Ability newAbility = obj as Ability;
 
-        _abilities.Add(newAbility);
+        // Add to unlocked abilities
+        if (GameManager.Instance.debug)
+            DebugAbilities.Add(newAbility);
+        else
+            _abilities.Add(newAbility);
 
-        _wheel.AddToWheel(newAbility);
+        if (!newAbility.passive)
+        {
+            // Add to wheel
+            wheel.AddToWheel(newAbility);
+        }
 
-        if(!abilityNameToSave.Contains(newAbility.name))
+        if (!abilityNameToSave.Contains(newAbility.name))
             abilityNameToSave.Add(newAbility.name);
 
         DataSerializer.Save<List<string>>("ABILITIES", abilityNameToSave);
     }
 
+    private void Update()
+    {
+        List<Ability> abilities;
+        if (GameManager.Instance.debug)
+            abilities = DebugAbilities;
+        else
+            abilities = _abilities;
+        
+        foreach (Ability ability in abilities)
+        {
+            if (ability.global)
+            {
+                ability.UpdateAbility();
+            } 
+        }
+    }
+
     public void GiveAbility(object obj)
     {
-        if (obj is not Image) return;
+        if (obj is not Sprite) return;
 
-        Image abilityIcon = (Image)obj;
+        Sprite abilityIcon = (Sprite)obj;
         Ability newActiveAbility = GetAbilityFrom(abilityIcon);
 
         foreach (AbilityHolder holder in _holders)
         {
             holder.activeAbility = newActiveAbility;
+
+            if (holder.abilityIconReminder)
+            {
+                holder.abilityIconReminder.gameObject.SetActive(true);
+                holder.abilityIconReminder.sprite = newActiveAbility.smallIcon;
+            }
         }
     }
 
-    private Ability GetAbilityFrom(Image abilityIcon)
+    public Ability GetAbilityFrom(Sprite abilityIcon)
     {
-        return _abilities.Where(ability => ability.icon == abilityIcon.sprite)?.First();
+        if (GameManager.Instance.debug)
+            return DebugAbilities.Where(ability => ability.icon == abilityIcon)?.First();
+
+        return _abilities.Where(ability => ability.icon == abilityIcon)?.First();
+    }
+
+    public List<Ability> GetUnlockedAbilities()
+    {
+        if (GameManager.Instance.debug)
+            return DebugAbilities;
+        else
+            return _abilities;
     }
 }

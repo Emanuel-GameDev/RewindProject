@@ -12,8 +12,9 @@ public class PlayerFallingState : State
     {
         player.fallStartPoint = player.transform.position.y;
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
-
+        player.canAttack = false;
         player.animator.SetTrigger("Fall");
+        player.animator.SetBool("Attacking", false);
     }
 
     public override void Update()
@@ -22,7 +23,6 @@ public class PlayerFallingState : State
         player.AbortJump();
         player.CalculateFallSpeed();
         player.CheckFriction();
-
 
         if (player.rBody.velocity.y == 0)
         {
@@ -38,7 +38,7 @@ public class PlayerFallingState : State
             player.stateMachine.SetState(PlayerState.PlayerJumping);
         }
 
-        if (!player.isFalling)
+        if (!player.isFalling && player.grounded)
         {
             if (player.CheckMaxFallDistanceReached())
             {
@@ -47,7 +47,7 @@ public class PlayerFallingState : State
                     if (player.GetComponent<Damageable>().Health > 1)
                         LevelManager.instance.FastRespawn();
 
-                    player.GetComponent<Damageable>().TakeDamage(1);
+                    player.GetComponent<Damageable>().TakeDamage(1, new Damager());
                 }
             }
 
@@ -59,7 +59,7 @@ public class PlayerFallingState : State
     public override void Exit()
     {
         base.Exit();
-        player.animator.SetBool("Falling", player.isFalling);
+        player.animator.SetBool("Falling",false);
         player.fallStartPoint = 0;
     }
 }

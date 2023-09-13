@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddd26e1288715247ac124a0297cae71, type: 3}
+  m_Name: CreateWind
+  m_EditorClassIdentifier: 
+  name: VII - Il Carro
+  description: Il vento del cambiamento
+  tutorial: 'ol ao ola ola ola '
+  icon: {fileID: 21300000, guid: 48d7603a19ed0234a88689ec426d5086, type: 3}
+  cooldownTime: 0.5
+  passive: 0
+  smallIcon: {fileID: 21300000, guid: 9bc33fb1ae33a58408c9c07ad19d2792, type: 3}
+  global: 0
+  isActive: 0
+  windZonePrefab: {fileID: 5198929173573209287, guid: b7bf3314f5a237c40aa451dec2abb8c8, type: 3}
+  cooldown: 0.5
+  scalingCooldown: 0
+  cooldownDivider: 1
+  forceMagnitude: 1500
+  forceMultiplier: 4
+  forceAngle: 0
+  colliderMask:
+  - serializedVersion: 2
+    m_Bits: 128
+  - serializedVersion: 2
+    m_Bits: 256
+  - serializedVersion: 2
+    m_Bits: 1280
+  windClip: {fileID: 8300000, guid: 40357cf24cf1a6643b72e8b0ecfa6216, type: 3}

@@ -8,6 +8,6 @@ public class SampleSceneLoader : MonoBehaviour
 
     private void Start()
     {
-        SceneManager.LoadScene(scene.BuildIndex);
+        SceneManager.LoadScene(scene.SceneName);
     }
 }

@@ -23,4 +23,10 @@ public class FlipRotation : MonoBehaviour
             }
         }
     }
+
+    private void Start()
+    {
+        target = GetComponentInParent<EnemyThree>().GetTarget().transform;
+    }
+
 }

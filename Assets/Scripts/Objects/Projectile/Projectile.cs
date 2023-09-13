@@ -4,40 +4,61 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] float lifeTime;
-    float elapsedTime;
-    private Vector2 direction;
-    private SpriteRenderer spriteRenderer;
-    private Rigidbody2D body;
+    [SerializeField] protected float speed;
+    [SerializeField] public  float lifeTime;
+    [SerializeField] protected LayerMask targetLayers;
+    protected float elapsedTime;
+    protected private Vector2 direction;
+    protected SpriteRenderer spriteRenderer;
+    protected Rigidbody2D body;
+    protected Collider2D coll;
+    protected Animator animator;
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
         body.isKinematic = true;
     }
 
-    void Update()
+    protected virtual void Update()
     {
         body.velocity = direction * speed * Time.deltaTime;
 
         if (elapsedTime >= lifeTime)
-            Dismiss();
+            StopAndExplode();
 
         elapsedTime += Time.deltaTime;
     }
 
-    public void Dismiss()
+    public virtual void Dismiss()
     {
-        ProjectilePool.Instance.DismissProjectile(this);
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        Dismiss();
+        //animator.SetTrigger("Spawn");
+        //ProjectilePool.Instance.DismissProjectile(this);
+        Destroy(this.gameObject);
     }
 
-    public void Inizialize(Vector2 direction, Vector2 position, float speed)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (IsInLayerMask(collision.gameObject.layer, targetLayers))
+        {
+            if (!collision.isTrigger)
+            {
+                StopAndExplode();
+            }
+        } 
+    }
+
+    protected void StopAndExplode()
+    {
+        coll.enabled = false;
+        speed = 0;
+        animator.SetTrigger("Explode");
+    }
+
+    public virtual void Inizialize(Vector2 direction, Vector2 position, float speed)
     {
         this.direction = direction;
         if(direction == Vector2.left)
@@ -53,4 +74,14 @@ public class Projectile : MonoBehaviour
         elapsedTime = 0;
         gameObject.SetActive(true);
     }
+
+    protected bool IsInLayerMask(int layer, LayerMask layerMask)
+    {
+        // Converte la LayerMask in un intero bit a bit
+        int layerMaskValue = layerMask.value;
+
+        // Controlla se il bit corrispondente alla layer dell'oggetto è attivo
+        return (layerMaskValue & (1 << layer)) != 0;
+    }
+
 }

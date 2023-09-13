@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,15 @@ public class Damageable : MonoBehaviour
 {
     public int maxHealth = 1;
 
-    [SerializeField] HealthBar healthBar;
+    [SerializeField] public HealthBar healthBar;
+    [SerializeField] public bool knockable = false;
 
     int _health;
+
+    [HideInInspector] public bool invincible = false;
+    [SerializeField] public float invincibilitySeconds = 0.2f;
+
+    private Damager lastDamager;
 
     public int Health 
     {
@@ -17,6 +24,7 @@ public class Damageable : MonoBehaviour
 
         set
         {
+            int oldHealth= _health;
             _health = Mathf.Clamp(value, 0, maxHealth);
             healthBar?.UpdateHealthBar(_health);
 
@@ -26,21 +34,31 @@ public class Damageable : MonoBehaviour
                 //da rivedere quando ci saranno le animazioni
                 Die();
             }
-            else
+            else if(oldHealth > _health)
             {
                 TakeHit();
+            }
+            else
+            {
+                TakeHeal();
             }
         }
     }
 
+    private void TakeHeal()
+    {
+        OnHeal?.Invoke();
+    }
 
     [SerializeField] UnityEvent OnDie;
     [SerializeField] UnityEvent OnHit;
+    [SerializeField] UnityEvent OnHeal;
 
 
     private void Start()
     {
         SetMaxHealth();
+        invincible = false;
     }
 
     public void SetMaxHealth()
@@ -59,11 +77,15 @@ public class Damageable : MonoBehaviour
         ChangeHealth(healthToHeal);
     }
 
-    public void TakeDamage(int healthToRemove)
+    public virtual void TakeDamage(int healthToRemove, Damager damager)
     {
-        
-        ChangeHealth(-healthToRemove);
-        
+        if (!invincible)
+        {
+            lastDamager = damager;
+            ChangeHealth(-healthToRemove);
+            if(gameObject.activeSelf)
+                StartCoroutine(InvincibilitySecons(invincibilitySeconds));
+        }
     }
 
     public void Die()
@@ -73,6 +95,18 @@ public class Damageable : MonoBehaviour
     public void TakeHit()
     {
         OnHit?.Invoke();
+    }
+
+    IEnumerator InvincibilitySecons(float seconds)
+    {
+        invincible = true;
+        yield return new WaitForSeconds(seconds);
+        invincible = false;
+    }
+
+    public Damager GetLastDamager()
+    {
+        return lastDamager;
     }
 
 }
