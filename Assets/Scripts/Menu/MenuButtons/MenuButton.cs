@@ -89,10 +89,12 @@ public class MenuButton :  Button,ISelectHandler
         }
     }
 
-    public void LoadLevel(string levelToLoad)
+   
+
+    public void LoadLevel(SerializedScene levelToLoad)
     {
-        LevelManager.instance.LoadLevel(levelToLoad);
+        LevelManager.instance.LoadLevel(levelToLoad.SceneName);
     }
 
-   
+
 }

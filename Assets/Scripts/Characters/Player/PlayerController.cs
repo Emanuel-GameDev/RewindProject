@@ -150,8 +150,8 @@ public class PlayerController : Character
 
     private void Update()
     {
-        GroundCheck();
         CheckRotation();
+        GroundCheck();
         stateMachine.StateUpdate();
 
         if (previousHorizontalInputs.Count >= 5)
@@ -435,10 +435,11 @@ public class PlayerController : Character
         int h;
 
         if (IsGravityDownward())
-            h = Physics2D.CircleCastNonAlloc(transform.position, 0.1f, Vector2.down, hits, 5f, groundMask);
-        //h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 3f, groundMask);
+            //h = Physics2D.CircleCastNonAlloc(transform.position, 0.1f, Vector2.down, hits, 5f, groundMask);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.down, hits, 3f, groundMask);
         else
-            h = Physics2D.CircleCastNonAlloc(transform.position, 0.1f, Vector2.up, hits, 5f, groundMask);
+            //h = Physics2D.CircleCastNonAlloc(transform.position, 0.1f, Vector2.up, hits, 5f, groundMask);
+            h = Physics2D.RaycastNonAlloc(transform.position, Vector2.up, hits, 3f, groundMask);
 
         if (h >= 1)
         {

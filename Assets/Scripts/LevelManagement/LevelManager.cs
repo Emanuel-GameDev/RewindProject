@@ -28,6 +28,15 @@ public class LevelManager : MonoBehaviour
 
     PlayableDirector playableDirector;
 
+    private void OnValidate()
+    {
+        if (deleteSavesOnEditorQuit)
+        {
+            Debug.Log("Deleted");
+            DataSerializer.DeleteAll();
+        }
+    }
+
     private void OnEnable()
     {
         instance = this;
@@ -75,7 +84,6 @@ public class LevelManager : MonoBehaviour
         }
 
 
-        DataSerializer.FileSaving += DeleteSaves;
     }
     
     private void Start()
@@ -112,17 +120,8 @@ public class LevelManager : MonoBehaviour
         }
         
 
-       DataSerializer.FileSaving -= DeleteSaves;
     }
 
-    private void DeleteSaves()
-    {
-        //if (deleteSavesOnEditorQuit && EditorApplication.isPlaying)
-        //{
-        //    Debug.Log("Delete");
-        //    DataSerializer.DeleteAll();
-        //}
-    }
 
 
     private void SetCheckpoint()

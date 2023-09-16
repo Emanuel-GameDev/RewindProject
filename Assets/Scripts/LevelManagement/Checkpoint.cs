@@ -11,8 +11,11 @@ using UnityEngine.SceneManagement;
 public class Checkpoint : MonoBehaviour
 {
     public bool taken = false;
-    public GameObject menu; 
-    public string Hub;
+    public GameObject menu;
+
+    [SerializeField, SceneDetails]
+    private SerializedScene Hub;
+
     [SerializeField] public MenuButton eventSystemDefaultButton;
 
     private void Start()
@@ -79,7 +82,7 @@ public class Checkpoint : MonoBehaviour
 
     public void ReturnToHub()
     {
-        LevelManager.instance.LoadLevel(Hub);
+        LevelManager.instance.LoadLevel(Hub.SceneName);
     }
 
     private void OnDisable()

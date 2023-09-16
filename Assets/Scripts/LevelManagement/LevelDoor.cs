@@ -8,7 +8,9 @@ using UnityEngine.SceneManagement;
 
 public class LevelDoor : MonoBehaviour
 {
-    [SerializeField] string levelToLoad;
+    [SerializeField, SceneDetails]
+    private SerializedScene levelToLoad;
+
     [SerializeField] GameObject levelSelectionMenu;
     [SerializeField] public MenuButton eventSystemDefaultButton;
 
@@ -135,7 +137,7 @@ public class LevelDoor : MonoBehaviour
 
     public void LoadLevel()
     {
-        LevelManager.instance.LoadLevel(levelToLoad);
+        LevelManager.instance.LoadLevel(levelToLoad.SceneName);
     }
 
 }

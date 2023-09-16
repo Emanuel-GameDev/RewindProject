@@ -16,6 +16,14 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] AudioClip nextTabAudioClip;
 
+    [SerializeField, SceneDetails]
+    private SerializedScene hub;
+
+    [SerializeField, SceneDetails]
+    private SerializedScene titleScreen;
+
+
+
 
     [HideInInspector] public Menu[] submenus;
 
@@ -105,6 +113,16 @@ public class MenuManager : MonoBehaviour
             GetComponentsInChildren<Menu>()[GetComponentsInChildren<Menu>().Length - 1].SetEventSystemSelection();
 
 
+    }
+
+    public void LoadHub()
+    {
+        LevelManager.instance.LoadLevel(hub.SceneName);
+    }
+
+    public void LoadTitleScreen()
+    {
+        LevelManager.instance.LoadLevel(titleScreen.SceneName);
     }
 
     public virtual void OnDisable()

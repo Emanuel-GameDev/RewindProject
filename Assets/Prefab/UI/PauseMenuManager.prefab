@@ -8621,10 +8621,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2671929050427534655}
-        m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
-        m_MethodName: LoadLevel
-        m_Mode: 5
+      - m_Target: {fileID: 2671929051345569959}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: LoadHub
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -23968,6 +23968,16 @@ MonoBehaviour:
   buttonSelectedSound: {fileID: 8300000, guid: e6456d2f4a26d0f4e8cb61e741e8fcdb, type: 3}
   buttonClickSound: {fileID: 8300000, guid: 1acbd8e9b18302746af00fab5fbe50cb, type: 3}
   nextTabAudioClip: {fileID: 8300000, guid: 5acff9f72e6667d47a1147c7d1c103b6, type: 3}
+  hub:
+    sceneReference: {fileID: 102900000, guid: 9f0e1bbfa8ca6c244b1ed6da3cba33d6, type: 3}
+    sceneName: HUB
+    scenePath: Assets/Scenes/Build/HUB.unity
+    buildIndex: 5
+  titleScreen:
+    sceneReference: {fileID: 102900000, guid: 43f0a3ab689be5844b84edd758a97507, type: 3}
+    sceneName: TitleScreen
+    scenePath: Assets/Scenes/Build/Intro/TitleScreen.unity
+    buildIndex: 3
   submenus: []
 --- !u!82 &2671929051345569957
 AudioSource:
@@ -33274,10 +33284,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2671929051871684271}
-        m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
-        m_MethodName: LoadLevel
-        m_Mode: 5
+      - m_Target: {fileID: 2671929051345569959}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: LoadTitleScreen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

@@ -6,7 +6,12 @@ using UnityEngine;
 public class MainMenu : Menu
 {
     [SerializeField] MenuButton continueButton;
-    [SerializeField] string hubName;
+
+    [SerializeField, SceneDetails]
+    private SerializedScene hub;
+
+    [SerializeField, SceneDetails]
+    private SerializedScene intro;
 
     public override void Start()
     {
@@ -19,9 +24,14 @@ public class MainMenu : Menu
 
     }
     
-    public void LoadLevel(string hubName)
+    public void LoadHub()
     {
-        LevelManager.instance.LoadLevel(hubName);   
+        LevelManager.instance.LoadLevel(hub.SceneName);   
+    }
+
+    public void LoadIntro()
+    {
+        LevelManager.instance.LoadLevel(intro.SceneName);
     }
 
     public void GameStartedOnce()
