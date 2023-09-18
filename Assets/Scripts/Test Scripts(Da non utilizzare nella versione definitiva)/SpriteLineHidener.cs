@@ -6,6 +6,7 @@ public class SpriteLineHidener : MonoBehaviour
 {
     [SerializeField] List<SpriteRenderer> targetSprites;
     [SerializeField] List<LineRenderer> targetLines;
+    [SerializeField] List<GameObject> gameObjects;
 
     public void Hide()
     {
@@ -21,6 +22,12 @@ public class SpriteLineHidener : MonoBehaviour
             line.startColor = color;
             line.endColor = color;
         }
+
+        foreach(GameObject gameObject in gameObjects)
+        {
+            gameObject.SetActive(false);
+        }
+
     }
 
     public void Show() 
@@ -37,6 +44,12 @@ public class SpriteLineHidener : MonoBehaviour
             line.startColor = color;
             line.endColor = color;
         }
+
+        foreach (GameObject gameObject in gameObjects)
+        {
+            gameObject.SetActive(true);
+        }
+
     }
 
 
