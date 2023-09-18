@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class DamageableParts : Damageable
 {
-    private Damageable damageableMaster;
+     [SerializeField] Damageable damageableMaster;
 
     public new void TakeDamage(int damage, Damager damager)
     {
@@ -19,6 +19,7 @@ public class DamageableParts : Damageable
 
     private void Start()
     {
-        damageableMaster = GetComponentInParent<Damageable>();
+        if(damageableMaster == null)
+            damageableMaster = GetComponentInParent<Damageable>();
     }
 }
