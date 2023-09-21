@@ -201,7 +201,7 @@ public class BossBheaviour : MonoBehaviour
         {
             nextState = eBossState.ChangeGroundAttack;
         }
-        else if(nonRewindableAttackCount > maxConsecutiveNonRewindableAttacks)
+        else if(nonRewindableAttackCount >= maxConsecutiveNonRewindableAttacks)
         {
             nextState = eBossState.RewindableAttack;
         }
