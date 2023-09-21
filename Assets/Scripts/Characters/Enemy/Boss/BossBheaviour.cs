@@ -197,15 +197,7 @@ public class BossBheaviour : MonoBehaviour
     {
         eBossState nextState = eBossState.Start;
 
-        if (Enum.Equals(currentState, eBossState.Falling))
-        {
-            nextState = eBossState.Stunned;
-        }
-        else if (Enum.Equals(currentState, eBossState.Stunned))
-        {
-            nextState = eBossState.Moving;
-        }
-        else if(changeGroundStarted && changeGroundCountdown <= 0)
+        if(changeGroundStarted && changeGroundCountdown <= 0)
         {
             nextState = eBossState.ChangeGroundAttack;
         }
@@ -269,6 +261,7 @@ public class BossBheaviour : MonoBehaviour
     {
         stateMachine.SetState(state);
         currentState = state;
+        nextState = state;
     }
 
     public void ChangeState()
