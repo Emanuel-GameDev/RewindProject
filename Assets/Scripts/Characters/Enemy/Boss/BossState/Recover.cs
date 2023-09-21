@@ -6,7 +6,7 @@ using UnityEngine;
 public class Recover : State
 {
     BossBheaviour bossBheaviour;
-    float revcoverTime = 5f;
+    float recoverTime = 5f;
     float elapsed;
     Vector2 startPosition;
     Vector2 endPosition;
@@ -19,14 +19,14 @@ public class Recover : State
     public override void Update()
     {
         elapsed += Time.deltaTime;
-        if (elapsed > revcoverTime)
+        if (elapsed > recoverTime)
         {
             bossBheaviour.SetCurrentPosition(recoverPosition);
             bossBheaviour.ChangeState();
         }
         else
         {
-            float t = elapsed / revcoverTime;
+            float t = elapsed / recoverTime;
             bossBheaviour.GetBossBody().transform.position = Vector3.Lerp(startPosition, endPosition, t);
         }
     }
@@ -34,7 +34,7 @@ public class Recover : State
     {
         Debug.Log(this.GetType().Name);
         elapsed = 0;
-        revcoverTime = bossBheaviour.GetRecoverTime();
+        recoverTime = bossBheaviour.GetRecoverTime();
         startPosition = bossBheaviour.GetBossBody().transform.position;
         SetRecoverPosition();
         endPosition = recoverPosition.transform.position;
