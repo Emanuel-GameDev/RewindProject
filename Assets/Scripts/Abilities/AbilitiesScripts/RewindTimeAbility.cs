@@ -6,15 +6,15 @@ public class RewindTimeAbility : Ability
 {
     [SerializeField] float parryTime = 0.3f;
     private float elapsedTime = 0;
-    bool started = false;
+    bool parryStarted = false;
     private PlayerController player;
 
     public override void Activate1(GameObject parent)
     {
         if (TimelineManager.Instance.StartForwarding())
             isActive = true;
-        else
-            Parry(parent);
+        
+        Parry(parent);
     }
 
     public override void Activate2(GameObject parent)
@@ -22,8 +22,8 @@ public class RewindTimeAbility : Ability
         
         if (TimelineManager.Instance.StartRewinding())
             isActive = true;
-        else
-            Parry(parent);
+        
+        Parry(parent);
     }
 
     public override void Activate3(GameObject parent)
@@ -49,18 +49,23 @@ public class RewindTimeAbility : Ability
     {
         if (isActive)
         {
-            elapsedTime += Time.deltaTime;
-
-            if (started && elapsedTime > parryTime)
+            if (parryStarted)
             {
-                PubSub.Instance.Notify(EMessageType.ParryStop, this);
-                started = false;
-            }
+                elapsedTime += Time.deltaTime;
 
-            if (elapsedTime > (cooldownTime + parryTime))
-            {
-                isActive = false;
+                if(elapsedTime > parryTime)
+                {
+                    PubSub.Instance.Notify(EMessageType.ParryStop, this);
+                }
+
+                if (elapsedTime > (cooldownTime + parryTime))
+                {
+                    isActive = false;
+                    parryStarted = false;
+                }
+
             }
+            
         }
     }
 
@@ -73,7 +78,7 @@ public class RewindTimeAbility : Ability
             player.StartCoroutine(StopAimation(parent));
             PubSub.Instance.Notify(EMessageType.ParryStart, this);
             isActive = true;
-            started = true;
+            parryStarted = true;
             elapsedTime = 0;
             player.inputs.Player.Disable();
         }
