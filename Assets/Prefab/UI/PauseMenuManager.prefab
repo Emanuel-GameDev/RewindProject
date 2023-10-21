@@ -2518,7 +2518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929049992155547
 GameObject:
@@ -2586,7 +2586,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: asdsadasd
+  m_text: L'Eremita
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
   m_sharedMaterial: {fileID: -4138214425767729984, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
@@ -3897,7 +3897,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gandalf
+  m_text: 'La Giustizia
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
   m_sharedMaterial: {fileID: -4138214425767729984, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
@@ -5243,7 +5245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929050249710158
 GameObject:
@@ -5718,9 +5720,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gandalf Sax, also known as Epic Gandalf Sax, is a viral video of Lord of
-    the Rings character Gandalf (Ian McKellen) nodding his head in a loop in time
-    with the Epic Sax Guy music.
+  m_Text: Premi RB (controller) o LMB (mouse) per attaccare.
 --- !u!1 &2671929050293463700
 GameObject:
   m_ObjectHideFlags: 0
@@ -6690,7 +6690,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929050348617147
 GameObject:
@@ -7273,9 +7273,12 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gandalf Sax, also known as Epic Gandalf Sax, is a viral video of Lord of
-    the Rings character Gandalf (Ian McKellen) nodding his head in a loop in time
-    with the Epic Sax Guy music.
+  m_Text: 'Premi RB (controller) o LMB (mouse) per evocare una sfera.
+
+    Tieni
+    premuto LB (controller) o LMB (mouse) e trascina per guidare la sfera.
+
+'
 --- !u!1 &2671929050381677845
 GameObject:
   m_ObjectHideFlags: 0
@@ -8393,7 +8396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ab328256ef25d4d920e5192d7f0610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoTutorial: {fileID: 32900000, guid: acaf03b19cd4f24408f7b5ebe3b6e5d6, type: 3}
+  videoTutorial: {fileID: 32900000, guid: 946e626e2d16a1c43b3db8a87416a84b, type: 3}
 --- !u!114 &2671929050423623037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8532,7 +8535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929050427534649
 GameObject:
@@ -8619,16 +8622,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2671929050427534655}
-        m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
-        m_MethodName: LoadLevel
-        m_Mode: 2
+      - m_Target: {fileID: 2671929051345569959}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: LoadHub
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 102900000, guid: 9f0e1bbfa8ca6c244b1ed6da3cba33d6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEditor.SceneAsset, UnityEditor.CoreModule
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: TestReflection
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!222 &2671929050427534653
@@ -9772,9 +9775,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gandalf Sax, also known as Epic Gandalf Sax, is a viral video of Lord of
-    the Rings character Gandalf (Ian McKellen) nodding his head in a loop in time
-    with the Epic Sax Guy music.
+  m_Text: Premi RB (controller) o LMB per difenderti con la Torre.
 --- !u!1 &2671929050545752018
 GameObject:
   m_ObjectHideFlags: 0
@@ -11827,7 +11828,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gandalf
+  m_text: La Torre
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
   m_sharedMaterial: {fileID: -4138214425767729984, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
@@ -12418,7 +12419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ab328256ef25d4d920e5192d7f0610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoTutorial: {fileID: 32900000, guid: c8103d36fb867454a828e44566688d6d, type: 3}
+  videoTutorial: {fileID: 32900000, guid: 780e819c80218c84694df3a09532e180, type: 3}
 --- !u!114 &2671929050712301758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15216,7 +15217,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gandalf
+  m_text: Il Mago
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
   m_sharedMaterial: {fileID: -4138214425767729984, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
@@ -15364,9 +15365,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gandalf Sax, also known as Epic Gandalf Sax, is a viral video of Lord of
-    the Rings character Gandalf (Ian McKellen) nodding his head in a loop in time
-    with the Epic Sax Guy music.sd asdasdasd asd
+  m_Text: "Usa  RB e LB (controller) o LMB e RMB (Mouse) per manovrare il tempo.\r\nUsa
+    X (controller) o TAB (tastiera)  per tenere il tempo sospeso. \r\n"
 --- !u!1 &2671929050906385725
 GameObject:
   m_ObjectHideFlags: 0
@@ -17499,7 +17499,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gandalf
+  m_text: L'Appeso
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
   m_sharedMaterial: {fileID: -4138214425767729984, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
@@ -19887,7 +19887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929051122940338
 GameObject:
@@ -20789,6 +20789,7 @@ RectTransform:
   - {fileID: 2671929051580097680}
   - {fileID: 2671929051325853488}
   - {fileID: 2671929050712301752}
+  - {fileID: 2479823023697897201}
   m_Father: {fileID: 2671929051615496384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -21303,7 +21304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929051192050224
 GameObject:
@@ -23198,9 +23199,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 2671929051302023804}
+        m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
+        m_MethodName: ReloadLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23767,7 +23768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ab328256ef25d4d920e5192d7f0610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoTutorial: {fileID: 32900000, guid: c8103d36fb867454a828e44566688d6d, type: 3}
+  videoTutorial: {fileID: 32900000, guid: 9eedfad9a40a38b4eae990ab2379eb73, type: 3}
 --- !u!114 &2671929051325853494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23967,6 +23968,16 @@ MonoBehaviour:
   buttonSelectedSound: {fileID: 8300000, guid: e6456d2f4a26d0f4e8cb61e741e8fcdb, type: 3}
   buttonClickSound: {fileID: 8300000, guid: 1acbd8e9b18302746af00fab5fbe50cb, type: 3}
   nextTabAudioClip: {fileID: 8300000, guid: 5acff9f72e6667d47a1147c7d1c103b6, type: 3}
+  hub:
+    sceneReference: {fileID: 102900000, guid: 9f0e1bbfa8ca6c244b1ed6da3cba33d6, type: 3}
+    sceneName: HUB
+    scenePath: Assets/Scenes/Build/HUB.unity
+    buildIndex: 5
+  titleScreen:
+    sceneReference: {fileID: 102900000, guid: 43f0a3ab689be5844b84edd758a97507, type: 3}
+    sceneName: TitleScreen
+    scenePath: Assets/Scenes/Build/Intro/TitleScreen.unity
+    buildIndex: 3
   submenus: []
 --- !u!82 &2671929051345569957
 AudioSource:
@@ -24636,7 +24647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929051404514548
 GameObject:
@@ -26385,7 +26396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ab328256ef25d4d920e5192d7f0610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoTutorial: {fileID: 32900000, guid: c8103d36fb867454a828e44566688d6d, type: 3}
+  videoTutorial: {fileID: 32900000, guid: ea48eeb2160a2514b8e328cc510805a7, type: 3}
 --- !u!114 &2671929051580097686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27297,7 +27308,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Gandalf
+  m_text: Il Carro
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
   m_sharedMaterial: {fileID: -4138214425767729984, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
@@ -29288,7 +29299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929051719000778
 GameObject:
@@ -31119,7 +31130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ab328256ef25d4d920e5192d7f0610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoTutorial: {fileID: 32900000, guid: c8103d36fb867454a828e44566688d6d, type: 3}
+  videoTutorial: {fileID: 32900000, guid: f044e64172b7f2948adc170279a30c48, type: 3}
 --- !u!114 &2671929051796446924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31258,7 +31269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929051798343892
 GameObject:
@@ -31758,7 +31769,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingStateActive: 1
+  startingStateActive: 0
   objActive: 0
 --- !u!1 &2671929051832729647
 GameObject:
@@ -33273,16 +33284,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2671929051871684271}
-        m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
-        m_MethodName: LoadLevel
-        m_Mode: 2
+      - m_Target: {fileID: 2671929051345569959}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: LoadTitleScreen
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 102900000, guid: 43f0a3ab689be5844b84edd758a97507, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEditor.SceneAsset, UnityEditor.CoreModule
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: TitleScreen
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!222 &2671929051871684269
@@ -35615,7 +35626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ab328256ef25d4d920e5192d7f0610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoTutorial: {fileID: 32900000, guid: c8103d36fb867454a828e44566688d6d, type: 3}
+  videoTutorial: {fileID: 32900000, guid: 57d48deb3d00ab542a50dde5be8329c6, type: 3}
 --- !u!114 &2671929051990374891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36670,9 +36681,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gandalf Sax, also known as Epic Gandalf Sax, is a viral video of Lord of
-    the Rings character Gandalf (Ian McKellen) nodding his head in a loop in time
-    with the Epic Sax Guy music.
+  m_Text: Tieni premuto RB (controller) o LMB per evocare il vento.
 --- !u!1 &2671929052081606548
 GameObject:
   m_ObjectHideFlags: 0
@@ -37142,9 +37151,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Gandalf Sax, also known as Epic Gandalf Sax, is a viral video of Lord of
-    the Rings character Gandalf (Ian McKellen) nodding his head in a loop in time
-    with the Epic Sax Guy music.
+  m_Text: "Premi RB (controller) o LMB (mouse) per invertire la gravit\xE0.\r\n\r\n"
 --- !u!1 &2671929052104548401
 GameObject:
   m_ObjectHideFlags: 0
@@ -38307,6 +38314,88 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingStateActive: 0
   objActive: 0
+--- !u!1 &3798499898290511139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8268104523817171799}
+  - component: {fileID: 1154584073974472895}
+  - component: {fileID: 1983082240237757550}
+  m_Layer: 5
+  m_Name: Description
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8268104523817171799
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3798499898290511139}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2479823023697897201}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1154584073974472895
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3798499898290511139}
+  m_CullTransparentMesh: 1
+--- !u!114 &1983082240237757550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3798499898290511139}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "L'effetto di questa carta sar\xE0 sempre attivo\r\nPremi due volte A (controller)
+    o SPAZIO (tastiera) per effettuare un doppio salto\r\nPremi B (controller) o
+    SHIFT (tastiera)  per scattare.\r\n"
 --- !u!1 &4295648368512151436
 GameObject:
   m_ObjectHideFlags: 0
@@ -38821,6 +38910,425 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &5689022055460776598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6301158872944292343}
+  - component: {fileID: 8230427680072826901}
+  - component: {fileID: 741011285334600673}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6301158872944292343
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689022055460776598}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2479823023697897201}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.05, y: 0.2}
+  m_AnchorMax: {x: 1, y: 0.8}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8230427680072826901
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689022055460776598}
+  m_CullTransparentMesh: 1
+--- !u!114 &741011285334600673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5689022055460776598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'La Temperanza
+
+'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
+  m_sharedMaterial: {fileID: -4138214425767729984, guid: ce3f09d3510d0a04e8a554a3e1c3c3c7, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 32.8
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 1
+  m_fontSizeMax: 100
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &5692409552632245463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2479823023697897201}
+  - component: {fileID: 8293066100794519759}
+  - component: {fileID: 7991496349881311765}
+  - component: {fileID: 2471956095185427702}
+  - component: {fileID: 7794991617283705097}
+  - component: {fileID: 6088100325625722024}
+  - component: {fileID: 8578069518523169966}
+  - component: {fileID: 8095520741194355375}
+  m_Layer: 5
+  m_Name: VideoButton (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2479823023697897201
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6301158872944292343}
+  - {fileID: 8268104523817171799}
+  m_Father: {fileID: 2671929051166105630}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 70}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8293066100794519759
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_CullTransparentMesh: 1
+--- !u!114 &7991496349881311765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: 100
+  m_FlexibleWidth: 100
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
+--- !u!114 &2471956095185427702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda1e12fb310dac4eb0981c69fa1fa28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 4
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 2
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 1, g: 0.6666667, b: 0, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: -754912457, guid: 97d1205ba3aa73340995528879c863e1, type: 3}
+    m_PressedSprite: {fileID: -2119145905, guid: 32dbd8cd804b1524e9ca56e21a122212, type: 3}
+    m_SelectedSprite: {fileID: -754912457, guid: 97d1205ba3aa73340995528879c863e1, type: 3}
+    m_DisabledSprite: {fileID: -2119145905, guid: 32dbd8cd804b1524e9ca56e21a122212, type: 3}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 6088100325625722024}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2471956095185427702}
+        m_TargetAssemblyTypeName: MenuVideoButton, Assembly-CSharp
+        m_MethodName: ChangeVideoMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7794991617283705097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3ab328256ef25d4d920e5192d7f0610, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  videoTutorial: {fileID: 32900000, guid: 35864dc4507d41948ba3a6078a36d6a5, type: 3}
+--- !u!114 &6088100325625722024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -2119145905, guid: 32dbd8cd804b1524e9ca56e21a122212, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!82 &8578069518523169966
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: eb91bef634741424d98851aa98c12a43, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &8095520741194355375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692409552632245463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a5d6fca643b36b40a4b93e841e2483b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingStateActive: 0
+  objActive: 0
 --- !u!1 &6035746522224456106
 GameObject:
   m_ObjectHideFlags: 0

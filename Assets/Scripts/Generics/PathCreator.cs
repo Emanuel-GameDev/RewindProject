@@ -87,7 +87,7 @@ public class PathCreator : MonoBehaviour
         if(points.Count==0)
             point = new Vector2 (transform.position.x, transform.position.y);
         else
-            point = new Vector2(points[points.Count-1].x, points[points.Count -1].y) + nextPoint ;
+            point = new Vector2(points[points.Count-1].x, points[points.Count -1].y) + nextPoint;
 
 
         if (points.Count > 1)

@@ -45,8 +45,6 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] GameObject projectilePrefab;
     [Tooltip("Imposta il numero di proiettili che vengono sparati")]
     [SerializeField] int numberOfProjectile = 5;
-    [Tooltip("Imposta la distanza tra un proiettile e l'altro")]
-    [SerializeField] float distanceBetweenProjectile = 5f;
     [Tooltip("Imposta quanto tempo deve passare prima che i proiettili vengano creati")]
     [SerializeField] float waitBeforeSpawn = 2f;
     [Tooltip("Imposta quanto tempo deve passare prima che i proiettili vengano sparati dopo essere stati creati")]
@@ -55,10 +53,20 @@ public class BossBheaviour : MonoBehaviour
     [SerializeField] float projectileVerticalOffset = 2f;
     [Tooltip("Imposta la distanza orizzontale in cui compaiono i proiettili rispetto ai punti di sosta del boss")]
     [SerializeField] float projectileHorizontalOffset = 5f;
-    [Tooltip("Imposta la velocità di movimento dei proiettili")]
-    [SerializeField] float projectileSpeed = 750f;
-    [Tooltip("Imposta la durata dei proiettili e quanto tempo passa prima che il boss cambi stato dopo aver sparato")]
-    [SerializeField] float projectileLifeTime = 5f;
+
+    [Tooltip("Imposta la distanza tra un proiettile verticale e l'altro")]
+    [SerializeField] float distanceBetweenVerticalProjectile = 5f;
+    [Tooltip("Imposta la velocità di movimento dei proiettili verticali")]
+    [SerializeField] float projectileVerticalSpeed = 750f;
+    [Tooltip("Imposta la durata dei proiettili verticali e quanto tempo passa prima che il boss cambi stato dopo aver sparato")]
+    [SerializeField] float projectileVerticalLifeTime = 5f;
+
+    [Tooltip("Imposta la distanza tra un proiettile orizzontale e l'altro")]
+    [SerializeField] float distanceBetweenHorizontalProjectile = 5f;
+    [Tooltip("Imposta la velocità di movimento dei proiettili orizzontali")]
+    [SerializeField] float projectileHorizontalSpeed = 750f;
+    [Tooltip("Imposta la durata dei proiettili orizzontali e quanto tempo passa prima che il boss cambi stato dopo aver sparato")]
+    [SerializeField] float projectileHorizontalLifeTime = 5f;
 
     [Header("Uroboro Attack Settings")]
     [SerializeField] GameObject uroboro1;
@@ -189,19 +197,11 @@ public class BossBheaviour : MonoBehaviour
     {
         eBossState nextState = eBossState.Start;
 
-        if (Enum.Equals(currentState, eBossState.Falling))
-        {
-            nextState = eBossState.Stunned;
-        }
-        else if (Enum.Equals(currentState, eBossState.Stunned))
-        {
-            nextState = eBossState.Moving;
-        }
-        else if(changeGroundStarted && changeGroundCountdown <= 0)
+        if(changeGroundStarted && changeGroundCountdown <= 0)
         {
             nextState = eBossState.ChangeGroundAttack;
         }
-        else if(nonRewindableAttackCount > maxConsecutiveNonRewindableAttacks)
+        else if(nonRewindableAttackCount >= maxConsecutiveNonRewindableAttacks)
         {
             nextState = eBossState.RewindableAttack;
         }
@@ -261,6 +261,7 @@ public class BossBheaviour : MonoBehaviour
     {
         stateMachine.SetState(state);
         currentState = state;
+        nextState = state;
     }
 
     public void ChangeState()
@@ -313,7 +314,7 @@ public class BossBheaviour : MonoBehaviour
     {
         BossProjectile projectile = Instantiate(projectilePrefab, point, Quaternion.identity).GetComponent<BossProjectile>();
         projectile.Inizialize(Vector2.zero, point, 0);
-        projectile.lifeTime = projectileLifeTime;
+        projectile.lifeTime = projectileHorizontalLifeTime;
 
         return projectile;
     }
@@ -517,10 +518,6 @@ public class BossBheaviour : MonoBehaviour
         return numberOfProjectile;
     }
 
-    public float GetDistanceBetweenProjectile()
-    {
-        return distanceBetweenProjectile;
-    }
     public float GetWaitBeforeSpawn()
     {
         return waitBeforeSpawn;
@@ -540,15 +537,36 @@ public class BossBheaviour : MonoBehaviour
     {
         return projectileHorizontalOffset;
     }
+    public float GetDistanceBetweenVerticalProjectile()
+    {
+        return distanceBetweenVerticalProjectile;
+    }
 
-    public float GetProjectileSpeed()
+    public float GetDistanceBetweenHorizontalProjectile()
     {
-        return projectileSpeed;
+        return distanceBetweenHorizontalProjectile;
     }
-    public float GetProjectileLifeTime()
+
+    public float GetProjectileVerticalSpeed()
     {
-        return projectileLifeTime;
+        return projectileVerticalSpeed;
     }
+
+    public float GetProjectileHorizontalSpeed()
+    {
+        return projectileHorizontalSpeed;
+    }
+
+    public float GetProjectileHorizontalLifeTime()
+    {
+        return projectileHorizontalLifeTime;
+    }
+
+    public float GetProjectileVerticalLifeTime()
+    {
+       return projectileVerticalLifeTime;
+    }
+
     #endregion
 
     #region Uroboro

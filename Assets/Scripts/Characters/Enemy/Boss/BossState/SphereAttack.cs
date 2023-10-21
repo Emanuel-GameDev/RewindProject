@@ -40,7 +40,8 @@ public class SphereAttack : State
 
         if (shooting)
         {
-            if(elapsed> bossBheaviour.GetProjectileLifeTime())
+            float lifetime = isOnCenterPosition ? bossBheaviour.GetProjectileVerticalLifeTime() : bossBheaviour.GetProjectileHorizontalLifeTime();
+            if (elapsed > lifetime)
             {
                 bossBheaviour.ChangeState();
             }
@@ -60,12 +61,13 @@ public class SphereAttack : State
 
     private void Shoot()
     {
-        
-        foreach(BossProjectile projectile in projectiles)
+        float velocity = isOnCenterPosition ? bossBheaviour.GetProjectileVerticalSpeed() : bossBheaviour.GetProjectileHorizontalSpeed();
+
+        foreach (BossProjectile projectile in projectiles)
         {
             if (projectile != null)
             {
-                projectile.Inizialize(directionToShoot, projectile.transform.position, bossBheaviour.GetProjectileSpeed());
+                projectile.Inizialize(directionToShoot, projectile.transform.position, velocity);
             }
         }
         
@@ -77,7 +79,7 @@ public class SphereAttack : State
     {
         if (bossBheaviour.GetCurrentPosition().GetHorizontalPosition() == eHorizontalPosition.Left)
         {
-            spawnPoint.x -= bossBheaviour.GetProjectileHorizontalOffset() + (bossBheaviour.GetDistanceBetweenProjectile() * (bossBheaviour.GetNumberOfProjectile() - 1));
+            spawnPoint.x -= bossBheaviour.GetProjectileHorizontalOffset() + (bossBheaviour.GetDistanceBetweenHorizontalProjectile() * (bossBheaviour.GetNumberOfProjectile() - 1));
             directionToShoot = Vector2.right;
         }
         else
@@ -92,7 +94,7 @@ public class SphereAttack : State
 
     private Vector2 SpawnOnCenter(Vector2 spawnPoint)
     {
-        spawnPoint.x -= bossBheaviour.GetDistanceBetweenProjectile() * (bossBheaviour.GetNumberOfProjectile() - 1) / 2;
+        spawnPoint.x -= bossBheaviour.GetDistanceBetweenVerticalProjectile() * (bossBheaviour.GetNumberOfProjectile() - 1) / 2;
 
         return spawnPoint;
     }
@@ -120,7 +122,7 @@ public class SphereAttack : State
         for (int i = 0; i < bossBheaviour.GetNumberOfProjectile(); i++)
         {
             Vector2 point = spawnPoint;
-            point.x += bossBheaviour.GetDistanceBetweenProjectile() * i;
+            point.x += isOnCenterPosition ? bossBheaviour.GetDistanceBetweenVerticalProjectile() * i : bossBheaviour.GetDistanceBetweenHorizontalProjectile() * i;
             projectiles.Add(bossBheaviour.GenerateProjectile(point));
         }
         readyToShoot = true;

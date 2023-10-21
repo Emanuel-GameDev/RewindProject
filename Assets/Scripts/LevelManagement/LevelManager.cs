@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ToolBox.Serialization;
-using UnityEditor;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -13,9 +13,10 @@ public class LevelManager : MonoBehaviour
     public List<Checkpoint> checkpoints;
     public static LevelManager instance;
 
-    [HideInInspector] public List<bool> checkpointsTaken;
+    /*[HideInInspector]*/ public List<bool> checkpointsTaken;
 
     Scene level;
+
 
     public bool deleteSavesOnEditorQuit=false; 
     public PlayerInputs inputs { get; private set; }
@@ -28,6 +29,18 @@ public class LevelManager : MonoBehaviour
     [SerializeField] bool fadeOutOnLevelLoad = true;
 
     PlayableDirector playableDirector;
+
+    
+    void DeleteSaves()
+    {
+        if (deleteSavesOnEditorQuit && Application.isEditor)
+        {
+            Debug.Log("Deleted");
+            DataSerializer.DeleteAll();
+        }
+    }
+
+    
 
     private void OnEnable()
     {
@@ -74,18 +87,22 @@ public class LevelManager : MonoBehaviour
 
 
         }
-
-
-        DataSerializer.FileSaving += DeleteSaves;
+        
     }
-    
+
+    void OnApplicationQuit()
+    {
+        DeleteSaves();
+    }
+
+
     private void Start()
     {
         SetCheckpoint();
         // Locks the cursor
         if (hideCursor)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
         }
     }
@@ -111,16 +128,9 @@ public class LevelManager : MonoBehaviour
             inputs.Player.Disable();
 
         }
-        
 
-        DataSerializer.FileSaving -= DeleteSaves;
     }
 
-    private void DeleteSaves()
-    {
-        if(deleteSavesOnEditorQuit && EditorApplication.isPlaying)
-        DataSerializer.DeleteAll();
-    }
 
 
     private void SetCheckpoint()
@@ -131,7 +141,9 @@ public class LevelManager : MonoBehaviour
         if (DataSerializer.HasKey(level.name + "TAKENCHECKPOINTS"))
             checkpointsTaken = DataSerializer.Load<List<bool>>(level.name + "TAKENCHECKPOINTS");
         else
+        {
             checkpointsTaken = new List<bool>() { true,false,false,false,false };
+        }
 
         for (int i = 0; i < checkpointsTaken.Count; i++)
         {
@@ -185,7 +197,7 @@ public class LevelManager : MonoBehaviour
             PlayerController.instance.inputs.Enable();
     }
 
-    public void LoadLevel(SceneAsset levelToLoad)
+    public void LoadLevel(string levelToLoad)
     {
         if (loadingScreen && fadeInOnLevelUnload)
         {
@@ -193,7 +205,7 @@ public class LevelManager : MonoBehaviour
             loadingScreen.SetActive(true);
             GetComponent<Animator>().SetTrigger("FadeIn");
         }
-        StartCoroutine(LoadSceneAsynchronously(levelToLoad.name));
+        StartCoroutine(LoadSceneAsynchronously(levelToLoad));
     }
 
     public void ActivateDeathScreen()

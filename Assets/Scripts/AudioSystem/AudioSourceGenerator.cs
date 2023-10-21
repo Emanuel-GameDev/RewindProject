@@ -28,6 +28,7 @@ public class AudioSourceGenerator : MonoBehaviour
             source.spatialBlend = 1;
             source.rolloffMode = AudioRolloffMode.Linear;
             source.maxDistance = maxHearingDistance;
+            soundObject.transform.position = transform.position;
         }
         soundObject.GetComponent<AudioSource>().Play();
         return soundObject;
