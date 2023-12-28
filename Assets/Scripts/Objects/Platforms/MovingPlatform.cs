@@ -35,7 +35,6 @@ public class MovingPlatform : MonoBehaviour
     private bool platformNowJoined = false;
     private IEnumerator activatorCoroutine;
     private int prevId = -1;
-    private GameObject objStanding;
 
     private float timeToWaypoint;
     private float elapsedTime;
@@ -79,12 +78,6 @@ public class MovingPlatform : MonoBehaviour
         {
             TargetNextWaypoint();
         }
-
-        // Move obj without parenting
-        //if (objStanding != null)
-        //{
-        //    objStanding.transform.position = transform.position;
-        //}
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -107,8 +100,7 @@ public class MovingPlatform : MonoBehaviour
                 {
                     if (hit[i].collider != null && hit[i].collider.gameObject.GetComponent<MovingPlatform>())
                     {
-                        collision.gameObject.transform.parent.parent = transform;
-                        //objStanding = collision.gameObject;
+                        collision.gameObject.transform.parent = transform;
                     }
                 }
 
@@ -134,8 +126,7 @@ public class MovingPlatform : MonoBehaviour
         foreach (LayerMask mask in affectedLayers)
         {
             if (collision.gameObject.layer == Mathf.RoundToInt(Mathf.Log(mask.value, 2f)))
-                collision.gameObject.transform.parent.parent = null;
-            //objStanding = null;
+                collision.gameObject.transform.parent = null;
         }
 
         // Check collsion for triggering movement

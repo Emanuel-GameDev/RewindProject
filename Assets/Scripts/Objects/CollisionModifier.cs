@@ -2,23 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 public class CollisionModifier : MonoBehaviour
 {
     [SerializeField] private LayerMask[] ignoreCollision;
 
     [Tooltip("When enabled, the targets are going to set this object's rigidbody to static OnCollisionEnter2D")]
     [SerializeField] private bool useStaticCollision = false;
-
-    private void OnValidate()
-    {
-        if (gameObject.GetComponent<Rigidbody2D>() == null)
-            if (gameObject.GetComponentInChildren<Rigidbody2D>() == null)
-                Debug.LogError("Require RigidBody2D");
-
-        if (gameObject.GetComponent<Collider2D>() == null)
-            if (gameObject.GetComponentInChildren<Collider2D>() == null)
-                Debug.LogError("Require Collider2D");
-    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
